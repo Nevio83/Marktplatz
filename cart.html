@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Warenkorb - Marktplatz</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">Marktplatz</a>
+            <a href="index.html" class="btn btn-outline-secondary">Zurück zum Shop</a>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <h2 class="mb-4">Ihr Warenkorb</h2>
+        
+        <div id="cartItems" class="mb-4">
+            <!-- Dynamische Warenkorb-Artikel -->
+        </div>
+
+        <div class="card p-4">
+            <h4 class="mb-3">Gesamtübersicht</h4>
+            <div class="row">
+                <div class="col-md-6">
+                    <dl class="row">
+                        <dt class="col-sm-6">Zwischensumme:</dt>
+                        <dd class="col-sm-6" id="subtotal">€0.00</dd>
+                        
+                        <dt class="col-sm-6">Versandkosten:</dt>
+                        <dd class="col-sm-6" id="shipping">€4.99</dd>
+                    </dl>
+                </div>
+                <div class="col-md-6">
+                    <dl class="row">
+                        <dt class="col-sm-6 fw-bold">Gesamtsumme:</dt>
+                        <dd class="col-sm-6 fw-bold" id="total">€4.99</dd>
+                    </dl>
+                </div>
+            </div>
+
+            <form id="checkoutForm" class="mt-4">
+                <div class="accordion" id="checkoutSteps">
+                    <!-- Adress/Login-Schritt -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#addressStep">
+                                1. Adresse & Login
+                            </button>
+                        </h2>
+                        <div id="addressStep" class="accordion-collapse collapse show" data-bs-parent="#checkoutSteps">
+                            <div class="accordion-body">
+                                <div class="mb-3">
+                                    <label class="form-label">E-Mail</label>
+                                    <input type="email" class="form-control" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Lieferadresse</label>
+                                    <textarea class="form-control" rows="3" required></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Zahlungsschritt -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#paymentStep">
+                                2. Zahlungsmethode
+                            </button>
+                        </h2>
+                        <div id="paymentStep" class="accordion-collapse collapse" data-bs-parent="#checkoutSteps">
+                            <div class="accordion-body">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="payment" id="paypal" required>
+                                    <label class="form-check-label" for="paypal">PayPal</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="payment" id="creditCard" required>
+                                    <label class="form-check-label" for="creditCard">Kreditkarte</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-success btn-lg mt-4 w-100">
+                    Jetzt bezahlen (€<span id="totalAmount">0.00</span>)
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
