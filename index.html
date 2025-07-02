@@ -24,34 +24,52 @@
             
             <div class="d-flex gap-3 align-items-center">
                 <!-- Search Form -->
-                <form class="d-flex" style="min-width: 300px;">
-                    <div class="input-group">
-                        <input type="search" id="searchInput"
-                               class="form-control rounded-pill" 
-                               placeholder="Suche...">
-                        <button class="btn btn-primary rounded-pill px-4">
-                            <i class="bi bi-search"></i>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                    <form class="d-flex mt-2 mt-lg-0 w-100">
+                      <div class="input-group">
+                        <input type="search" id="searchInput" class="form-control rounded-pill" placeholder="Suche...">
+                        <button class="btn btn-primary rounded-pill px-3">
+                          <i class="bi bi-search"></i>
                         </button>
-                    </div>
-                </form>
-
-                <!-- Action Buttons -->
-                <div class="d-flex gap-2">
-                    <a href="login.html" 
-                       class="btn btn-outline-secondary px-3"
-                       title="Anmelden">
-                        <i class="bi bi-box-arrow-in-right"></i>
-                    </a>
-                    <a href="cart.html" 
-                       class="btn btn-primary position-relative px-3"
-                       title="Warenkorb">
-                        <i class="bi bi-cart3"></i>
-                        <span id="cartCounter" 
-                              class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                            0
-                        </span>
-                    </a>
+                      </div>
+                    </form>
+    
+                  </div>
                 </div>
+                <!-- Warenkorb-Icon -->
+                <div class="position-relative">
+                    <a href="#" class="btn btn-outline-secondary position-relative rounded-pill" id="cartButton">
+                        <i class="bi bi-cart3"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="cartCounter">0</span>
+                    </a>
+                    
+                    <!-- Warenkorb Dropdown -->
+                    <div class="cart-dropdown" id="cartDropdown">
+                        <div class="cart-dropdown-header">
+                            <h6 class="mb-0">Warenkorb</h6>
+                            <button class="btn-close" id="closeCartDropdown"></button>
+                        </div>
+                        <div class="cart-dropdown-body" id="cartDropdownBody">
+                            <div class="empty-cart text-center py-4" id="emptyCartMessage">
+                                <i class="bi bi-cart-x fs-1 text-muted"></i>
+                                <p class="text-muted mt-2">Ihr Warenkorb ist leer</p>
+                            </div>
+                        </div>
+                        <div class="cart-dropdown-footer" id="cartDropdownFooter" style="display: none;">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <strong>Gesamt: €<span id="cartTotal">0.00</span></strong>
+                            </div>
+                            <div class="d-grid gap-2">
+                                <a href="cart.html" class="btn btn-primary">Zur Kasse</a>
+                                <button class="btn btn-outline-secondary" id="clearCart">Warenkorb leeren</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </nav>

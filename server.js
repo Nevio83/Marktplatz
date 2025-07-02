@@ -131,7 +131,47 @@ app.post('/api/reset-password', async (req, res) => {
 
 // Product endpoints
 app.get('/api/products', (req, res) => {
-  res.json(products);
+  try {
+    const { search, minPrice, maxPrice, sortBy, sortOrder } = req.query;
+    
+    let filteredProducts = [...products];
+
+    // Anwenden der Suchfilter
+    if (search) {
+      filteredProducts = filteredProducts.filter(p =>
+        p.name.toLowerCase().includes(search.toLowerCase())
+      );
+    }
+
+    // Preisbereichsfilter
+    if (minPrice) {
+      const min = parseFloat(minPrice);
+      if (isNaN(min)) return res.status(400).json({ error: 'Ungültiger Mindestpreis' });
+      filteredProducts = filteredProducts.filter(p => p.price >= min);
+    }
+    if (maxPrice) {
+      const max = parseFloat(maxPrice);
+      if (isNaN(max)) return res.status(400).json({ error: 'Ungültiger Höchstpreis' });
+      filteredProducts = filteredProducts.filter(p => p.price <= max);
+    }
+
+    // Sortierlogik
+    const validSortFields = ['id', 'name', 'price'];
+    if (!validSortFields.includes(sortBy)) {
+      return res.status(400).json({ error: 'Ungültiges Sortierfeld' });
+    }
+    const order = sortOrder === 'desc' ? -1 : 1;
+    
+    filteredProducts.sort((a, b) => {
+      if (a[sortField] < b[sortField]) return -1 * order;
+      if (a[sortField] > b[sortField]) return 1 * order;
+      return 0;
+    });
+
+    res.json(filteredProducts);
+  } catch (error) {
+    res.status(500).json({ error: 'Filterung fehlgeschlagen' });
+  }
 });
 
 // Cart endpoints
@@ -142,6 +182,46 @@ app.post('/api/cart', authenticateToken, (req, res) => {
   if (!carts[userId]) carts[userId] = [];
   carts[userId].push(item);
   res.status(201).send();
+});
+
+app.put('/api/cart/:itemId', authenticateToken, (req, res) => {
+  try {
+    const { itemId } = req.params;
+    const { quantity } = req.body;
+    const userId = req.user.userId;
+
+    if (!quantity || isNaN(quantity) || quantity < 1 || quantity > 100) {
+      return res.status(400).json({ error: 'Menge muss zwischen 1 und 100 liegen' });
+    }
+
+    const userCart = carts[userId] || [];
+    const itemIndex = userCart.findIndex(i => i.id === itemId);
+    
+    if (itemIndex === -1) {
+      return res.status(404).json({ error: 'Artikel nicht im Warenkorb' });
+    }
+
+    userCart[itemIndex].quantity = quantity;
+    res.json(userCart[itemIndex]);
+  } catch (error) {
+    res.status(500).json({ error: 'Aktualisierung fehlgeschlagen' });
+  }
+});
+
+app.delete('/api/cart/:itemId', authenticateToken, (req, res) => {
+  try {
+    const { itemId } = req.params;
+    const userId = req.user.userId;
+
+    if (!carts[userId] || !Array.isArray(carts[userId])) {
+      carts[userId] = [];
+    }
+
+    carts[userId] = carts[userId].filter(i => i.id !== itemId);
+    res.sendStatus(204);
+  } catch (error) {
+    res.status(500).json({ error: 'Löschen fehlgeschlagen' });
+  }
 });
 
 // Payment endpoints
