@@ -72,9 +72,20 @@ function addToCart(productId) {
       cartItems.push({ ...product, quantity: 1 });
     }
 
+    // Speichere den aktuellen Warenkorb immer im localStorage
     localStorage.setItem('cart', JSON.stringify(cartItems));
     updateCartCounter();
+    renderCartDropdown();
     showAlert('Produkt wurde zum Warenkorb hinzugefügt');
+
+    // --- NEU: Wenn der User auf cart.html ist, direkt die Seite aktualisieren ---
+    if (window.location.pathname.endsWith('cart.html')) {
+      if (typeof updateCartPage === 'function') {
+        updateCartPage();
+      } else if (typeof window.location.reload === 'function') {
+        window.location.reload();
+      }
+    }
   });
 }
 
@@ -87,10 +98,36 @@ function updateCartCounter() {
 
 function showAlert(message) {
   const alert = document.createElement('div');
-  alert.className = 'alert alert-success position-fixed top-0 end-0 m-3';
+  alert.className = 'alert alert-success position-fixed end-0 m-4 shadow-lg fade show';
+  alert.style.zIndex = '20000';
+  alert.style.fontSize = '1rem';
+  alert.style.minWidth = '160px';
+  alert.style.maxWidth = '320px';
+  alert.style.padding = '0.75rem 2rem';
+  alert.style.textAlign = 'center';
+  alert.style.borderRadius = '2rem';
+  alert.style.boxShadow = '0 8px 32px rgba(0,0,0,0.18)';
+  alert.style.background = 'linear-gradient(90deg, #4f8cff 0%, #38c6ff 100%)';
+  alert.style.color = '#fff';
+  alert.style.fontWeight = '500';
+  alert.style.letterSpacing = '0.02em';
+  alert.style.pointerEvents = 'auto';
+  alert.style.position = 'fixed';
+  alert.style.right = '2.5rem';
+  alert.style.top = 'calc(56px + 1.2rem)'; // noch etwas weiter nach unten
+  alert.style.cursor = 'pointer';
   alert.textContent = message;
+  alert.addEventListener('click', () => {
+    window.location.href = 'cart.html';
+  });
   document.body.appendChild(alert);
-  setTimeout(() => alert.remove(), 2000);
+  setTimeout(() => {
+    if (document.body.contains(alert)) {
+      alert.classList.remove('show');
+      alert.classList.add('fade');
+      setTimeout(() => alert.remove(), 400);
+    }
+  }, 1700);
 }
 
 function changeQuantity(productId, change) {
@@ -98,7 +135,6 @@ function changeQuantity(productId, change) {
   const item = cartItems.find(i => Number(i.id) === productId);
   if (!item) return;
   if (item.quantity + change < 1) {
-    // Entferne das Produkt, wenn die Menge kleiner als 1 wird
     cartItems = cartItems.filter(i => Number(i.id) !== productId);
   } else {
     item.quantity += change;

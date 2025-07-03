@@ -6,6 +6,154 @@
     <title>Warenkorb - Marktplatz</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="styles.css" rel="stylesheet">
+    <script src="https://js.stripe.com/v3/"></script>
+    <style>
+    /* Stripe Card Element Styling */
+    .StripeElement {
+      background: #fff;
+      padding: 12px 16px;
+      border-radius: 8px;
+      border: 1px solid #ced4da;
+      font-size: 1.1rem;
+      box-shadow: none;
+      transition: border-color 0.2s;
+    }
+    .StripeElement--focus {
+      border-color: #4f8cff;
+    }
+    #stripe-form label {
+      font-weight: 500;
+    }
+    #stripe-pay-btn {
+      font-size: 1.15rem;
+      padding: 0.75rem 0;
+      border-radius: 2rem;
+      margin-top: 0.5rem;
+    }
+    #stripe-error {
+      min-height: 24px;
+    }
+    .stripe-logos {
+      margin-bottom: 0.5rem;
+    }
+    .stripe-logos img {
+      height: 28px;
+      margin-right: 8px;
+      opacity: 0.85;
+    }
+    .card {
+      max-width: 420px;
+      margin: 2rem auto;
+      border-radius: 18px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+      padding: 2rem;
+    }
+    #stripe-form label {
+      font-weight: 500;
+    }
+    #stripe-pay-btn {
+      font-size: 1.15rem;
+      padding: 0.75rem 0;
+      border-radius: 2rem;
+      margin-top: 0.5rem;
+    }
+    .stripe-logos {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 0.5rem;
+    }
+    .stripe-logos img {
+      height: 28px;
+      opacity: 0.85;
+    }
+    #stripe-error {
+      min-height: 24px;
+    }
+    /* Stripe Checkout Card Style */
+    .checkout-card {
+        max-width: 400px;
+        margin: 2.5rem auto 0 auto;
+        background: #fff;
+        border-radius: 20px;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.13);
+        padding: 2.2rem 2rem 1.5rem 2rem;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1.2rem;
+        border: 1px solid #e3e8ee;
+    }
+    .checkout-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 0.5rem;
+        justify-content: center;
+    }
+    .stripe-logo {
+        height: 32px;
+        border-radius: 7px;
+        background: #fff;
+        box-shadow: 0 2px 8px rgba(50,50,50,0.07);
+        padding: 2px 6px;
+    }
+    .checkout-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #32325d;
+        letter-spacing: 0.01em;
+    }
+    .checkout-summary {
+        background: #f7f9fb;
+        border-radius: 12px;
+        padding: 1rem 1.2rem;
+        margin-bottom: 0.5rem;
+    }
+    .checkout-row {
+        display: flex;
+        justify-content: space-between;
+        font-size: 1.07rem;
+        margin-bottom: 0.3rem;
+    }
+    .checkout-row.total {
+        font-weight: 700;
+        font-size: 1.15rem;
+        color: #0a2540;
+        margin-top: 0.7rem;
+    }
+    .stripe-pay-btn {
+        width: 100%;
+        background: linear-gradient(90deg, #635bff 0%, #00b8f4 100%);
+        color: #fff;
+        font-size: 1.18rem;
+        font-weight: 600;
+        border: none;
+        border-radius: 2rem;
+        padding: 0.85rem 0;
+        margin-top: 0.5rem;
+        box-shadow: 0 2px 8px rgba(99,91,255,0.08);
+        transition: background 0.2s, box-shadow 0.2s;
+        cursor: pointer;
+        letter-spacing: 0.01em;
+    }
+    .stripe-pay-btn:hover {
+        background: linear-gradient(90deg, #00b8f4 0%, #635bff 100%);
+        box-shadow: 0 4px 16px rgba(99,91,255,0.13);
+    }
+    .checkout-footer {
+        text-align: center;
+        color: #7a869a;
+        font-size: 0.98rem;
+        margin-top: 1.2rem;
+    }
+    @media (max-width: 600px) {
+        .checkout-card {
+            padding: 1.2rem 0.5rem 1rem 0.5rem;
+        }
+    }
+    </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -17,84 +165,132 @@
 
     <div class="container mt-4">
         <h2 class="mb-4">Ihr Warenkorb</h2>
-        
-        <div id="cartItems" class="mb-4">
-            <!-- Dynamische Warenkorb-Artikel -->
-        </div>
-
-        <div class="card p-4">
-            <h4 class="mb-3">Gesamtübersicht</h4>
-            <div class="row">
-                <div class="col-md-6">
-                    <dl class="row">
-                        <dt class="col-sm-6">Zwischensumme:</dt>
-                        <dd class="col-sm-6" id="subtotal">€0.00</dd>
-                        
-                        <dt class="col-sm-6">Versandkosten:</dt>
-                        <dd class="col-sm-6" id="shipping">€4.99</dd>
-                    </dl>
+        <div id="cartItems" class="mb-4"></div>
+        <div class="card p-4" style="max-width:420px;margin:auto;box-shadow:0 4px 24px rgba(0,0,0,0.10);border-radius:18px;">
+            <h4 class="mb-3 text-center">Bezahlen</h4>
+            <form id="stripe-form" class="mt-2">
+                <div class="mb-3">
+                    <label for="email" class="form-label">E-Mail</label>
+                    <input type="email" id="email" class="form-control" required autocomplete="email">
                 </div>
-                <div class="col-md-6">
-                    <dl class="row">
-                        <dt class="col-sm-6 fw-bold">Gesamtsumme:</dt>
-                        <dd class="col-sm-6 fw-bold" id="total">€4.99</dd>
-                    </dl>
+                <div class="mb-3 stripe-logos text-center">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/4/41/Visa_Logo.png" alt="Visa" title="Visa">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Mastercard-logo.png" alt="Mastercard" title="Mastercard">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Apple_Pay_logo.svg" alt="Apple Pay" title="Apple Pay">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/1/16/Google_Pay_Logo.svg" alt="Google Pay" title="Google Pay">
                 </div>
-            </div>
-
-            <form id="checkoutForm" class="mt-4">
-                <div class="accordion" id="checkoutSteps">
-                    <!-- Adress/Login-Schritt -->
-                    <div class="accordion-item">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#addressStep">
-                                1. Adresse & Login
-                            </button>
-                        </h2>
-                        <div id="addressStep" class="accordion-collapse collapse show" data-bs-parent="#checkoutSteps">
-                            <div class="accordion-body">
-                                <div class="mb-3">
-                                    <label class="form-label">E-Mail</label>
-                                    <input type="email" class="form-control" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Lieferadresse</label>
-                                    <textarea class="form-control" rows="3" required></textarea>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Zahlungsschritt -->
-                    <div class="accordion-item">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#paymentStep">
-                                2. Zahlungsmethode
-                            </button>
-                        </h2>
-                        <div id="paymentStep" class="accordion-collapse collapse" data-bs-parent="#checkoutSteps">
-                            <div class="accordion-body">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="payment" id="paypal" required>
-                                    <label class="form-check-label" for="paypal">PayPal</label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="payment" id="creditCard" required>
-                                    <label class="form-check-label" for="creditCard">Kreditkarte</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="mb-3">
+                    <label for="card-element" class="form-label">Kartendaten</label>
+                    <div id="card-element" class="form-control" style="height:auto;padding:0;"></div>
                 </div>
-
-                <button type="submit" class="btn btn-success btn-lg mt-4 w-100">
-                    Jetzt bezahlen (€<span id="totalAmount">0.00</span>)
-                </button>
+                <button id="stripe-pay-btn" type="submit" class="btn btn-success w-100">Jetzt bezahlen</button>
+                <div id="stripe-error" class="text-danger mt-2"></div>
+                <div id="stripe-success" class="text-success mt-3 text-center" style="display:none;font-size:1.3rem;">
+                  <svg width="40" height="40" fill="none" viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="12" fill="#28a745" opacity="0.15"/>
+                  <path d="M7 13l3 3 7-7" stroke="#28a745" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <div>Zahlung erfolgreich!</div>
+                </div>
             </form>
+            <div class="mt-4 text-center text-muted" style="font-size:0.95rem;">
+                <i class="bi bi-lock-fill me-1"></i> 
+            </div>
         </div>
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="app.js"></script>
+    <script>
+    // Warenkorb-Anzeige aktualisieren
+    function updateCartPage() {
+      const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+      const cartItemsDiv = document.getElementById('cartItems');
+      const subtotal = document.getElementById('subtotal');
+      const shipping = document.getElementById('shipping');
+      const total = document.getElementById('total');
+
+      if (cartItems.length === 0) {
+        cartItemsDiv.innerHTML = '<div class="alert alert-info text-center">Ihr Warenkorb ist leer.</div>';
+        subtotal.textContent = '€0.00';
+        total.textContent = '€4.99';
+        return;
+      }
+
+      cartItemsDiv.innerHTML = cartItems.map(item => `
+        <div class="d-flex align-items-center mb-3">
+          <img src="${item.image}" alt="${item.name}" style="width:60px;height:60px;object-fit:cover;border-radius:8px;margin-right:16px;">
+          <div class="flex-grow-1">
+            <div class="fw-bold">${item.name}</div>
+            <div>€${item.price.toFixed(2)} x ${item.quantity}</div>
+          </div>
+          <div class="fw-bold">€${(item.price * item.quantity).toFixed(2)}</div>
+        </div>
+      `).join('');
+
+      const sum = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      subtotal.textContent = `€${sum.toFixed(2)}`;
+      total.textContent = `€${(sum + 4.99).toFixed(2)}`;
+    }
+    document.addEventListener('DOMContentLoaded', updateCartPage);
+
+    document.addEventListener('DOMContentLoaded', function () {
+      const stripe = Stripe('pk_test_51RgJy8B31V654n3WvISwKtd2TuquEkWzDLpwPcFvJO8QGOFsRLIJX9RxGGZ0nrVQhNIVHPqYYuTRjgvu1wiJw7Zx00QrJ2Nrvr');
+      const elements = stripe.elements();
+      const card = elements.create('card', { style: { base: { fontSize: '16px' } } });
+      card.mount('#card-element');
+
+      const form = document.getElementById('stripe-form');
+      const errorDiv = document.getElementById('stripe-error');
+      const successDiv = document.getElementById('stripe-success');
+      form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        errorDiv.textContent = '';
+        successDiv.style.display = 'none';
+        form.querySelector('button').disabled = true;
+
+        const cartItems = JSON.parse(localStorage.getItem('cart') || '[]');
+        const email = document.getElementById('email').value;
+
+        if (cartItems.length === 0) {
+          errorDiv.textContent = 'Ihr Warenkorb ist leer.';
+          form.querySelector('button').disabled = false;
+          return;
+        }
+
+        const response = await fetch('/api/create-payment-intent', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ cart: cartItems, email })
+        });
+        const data = await response.json();
+
+        if (!data.clientSecret) {
+          errorDiv.textContent = data.error || 'Fehler bei der Zahlung.';
+          form.querySelector('button').disabled = false;
+          return;
+        }
+
+        const { paymentIntent, error } = await stripe.confirmCardPayment(data.clientSecret, {
+          payment_method: {
+            card: card,
+            billing_details: { email }
+          }
+        });
+
+        if (error) {
+          errorDiv.textContent = error.message;
+          form.querySelector('button').disabled = false;
+        } else if (paymentIntent && paymentIntent.status === 'succeeded') {
+          // Erfolg: grüner Haken anzeigen, Button ausblenden
+          form.querySelector('button').style.display = 'none';
+          errorDiv.textContent = '';
+          successDiv.style.display = 'block';
+          // Optional: nach 2 Sekunden weiterleiten
+          setTimeout(() => {
+            window.location.href = 'success.html';
+          }, 2000);
+        }
+      });
+    });
+    </script>
 </body>
 </html>

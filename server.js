@@ -1,237 +1,73 @@
 require('dotenv').config();
 const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const rateLimit = require('express-rate-limit');
-const helmet = require('helmet');
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
 const stripe = require('stripe')(process.env.STRIPE_KEY);
-const paypal = require('paypal-rest-sdk');
+const path = require('path');
 
 const app = express();
+app.use(express.json());
 
-// Payment provider configuration
-paypal.configure({
-  mode: 'sandbox',
-  client_id: process.env.PAYPAL_CLIENT,
-  client_secret: process.env.PAYPAL_SECRET
-});
+// Statische Dateien (HTML, CSS, JS, Bilder) ausliefern
+app.use(express.static(path.join(__dirname)));
 
-// Security middleware
-app.use(helmet());
-app.use(cors());
-app.use(bodyParser.json());
-app.use(rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 100
-}));
-
-// Data stores
-let users = [];
-let products = [];
-let carts = {};
-let orders = [];
-let resetTokens = {};
-
-// Authentication middleware
-function authenticateToken(req, res, next) {
-  const authHeader = req.headers['authorization'];
-  const token = authHeader?.split(' ')[1];
-  
-  if (!token) return res.sendStatus(401);
-  
-  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-    if (err) return res.sendStatus(403);
-    req.user = user;
-    next();
-  });
-}
-
-// User endpoints
-app.post('/api/register', async (req, res) => {
-  try {
-    const { email, password } = req.body;
-    
-    if (!email || !password) {
-      return res.status(400).json({ error: 'Email and password required' });
+app.post('/api/create-checkout-session', async (req, res) => {
+  const { cart } = req.body;
+  const line_items = cart.map(item => {
+    if (item.id === 1) {
+      return {
+        price: 'price_1RgoIgB31V654n3WL9mzUNNS',
+        quantity: item.quantity,
+      };
     }
-
-    if (users.some(u => u.email === email)) {
-      return res.status(409).json({ error: 'User already exists' });
-    }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = {
-      id: Date.now(),
-      email,
-      password: hashedPassword
+    return {
+      price_data: {
+        currency: 'eur',
+        product_data: { name: item.name },
+        unit_amount: Math.round(item.price * 100),
+      },
+      quantity: item.quantity,
     };
+  });
 
-    users.push(newUser);
-    const token = jwt.sign({ userId: newUser.id }, process.env.JWT_SECRET);
-    res.status(201).json({ token });
-
-  } catch (error) {
-    res.status(500).json({ error: 'Registration failed' });
-  }
-});
-
-app.post('/api/login', async (req, res) => {
   try {
-    const { email, password } = req.body;
-    const user = users.find(u => u.email === email);
-
-    if (!user || !(await bcrypt.compare(password, user.password))) {
-      return res.status(401).json({ error: 'Invalid credentials' });
-    }
-
-    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET);
-    res.json({ token });
-
-  } catch (error) {
-    res.status(500).json({ error: 'Login failed' });
-  }
-});
-
-// Password reset endpoints
-app.post('/api/forgot-password', (req, res) => {
-  try {
-    const { email } = req.body;
-    const user = users.find(u => u.email === email);
-    
-    if (!user) return res.sendStatus(202);
-    
-    const resetToken = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '15m' });
-    resetTokens[resetToken] = user.id;
-    
-    console.log(`Password reset link: http://localhost:3000/reset-password?token=${resetToken}`);
-    res.sendStatus(200);
-  } catch (error) {
-    res.status(500).json({ error: 'Password reset failed' });
-  }
-});
-
-app.post('/api/reset-password', async (req, res) => {
-  try {
-    const { token, newPassword } = req.body;
-    const userId = resetTokens[token];
-    
-    if (!userId) return res.status(401).json({ error: 'Invalid token' });
-    
-    const user = users.find(u => u.id === userId);
-    user.password = await bcrypt.hash(newPassword, 10);
-    delete resetTokens[token];
-    
-    res.sendStatus(200);
-  } catch (error) {
-    res.status(500).json({ error: 'Password update failed' });
-  }
-});
-
-// Product endpoints
-app.get('/api/products', (req, res) => {
-  try {
-    const { search, minPrice, maxPrice, sortBy, sortOrder } = req.query;
-    
-    let filteredProducts = [...products];
-
-    // Anwenden der Suchfilter
-    if (search) {
-      filteredProducts = filteredProducts.filter(p =>
-        p.name.toLowerCase().includes(search.toLowerCase())
-      );
-    }
-
-    // Preisbereichsfilter
-    if (minPrice) {
-      const min = parseFloat(minPrice);
-      if (isNaN(min)) return res.status(400).json({ error: 'Ungültiger Mindestpreis' });
-      filteredProducts = filteredProducts.filter(p => p.price >= min);
-    }
-    if (maxPrice) {
-      const max = parseFloat(maxPrice);
-      if (isNaN(max)) return res.status(400).json({ error: 'Ungültiger Höchstpreis' });
-      filteredProducts = filteredProducts.filter(p => p.price <= max);
-    }
-
-    // Sortierlogik
-    const validSortFields = ['id', 'name', 'price'];
-    if (!validSortFields.includes(sortBy)) {
-      return res.status(400).json({ error: 'Ungültiges Sortierfeld' });
-    }
-    const order = sortOrder === 'desc' ? -1 : 1;
-    
-    filteredProducts.sort((a, b) => {
-      if (a[sortField] < b[sortField]) return -1 * order;
-      if (a[sortField] > b[sortField]) return 1 * order;
-      return 0;
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      line_items,
+      mode: 'payment',
+      success_url: 'http://localhost:3000/success.html',
+      cancel_url: 'http://localhost:3000/cart.html',
     });
-
-    res.json(filteredProducts);
-  } catch (error) {
-    res.status(500).json({ error: 'Filterung fehlgeschlagen' });
+    // Stripe Checkout Link (z.B. für Debugging oder manuelle Weiterleitung)
+    console.log('Stripe Checkout Link:', session.url);
+    res.json({ id: session.id, url: session.url }); // session.url ist der Stripe-Zahlungslink
+  } catch (err) {
+    // Stripe gibt oft einen hilfreichen Fehlertext zurück!
+    console.error('Stripe Checkout Error:', err.message);
+    res.status(500).json({ error: err.message });
   }
 });
 
-// Cart endpoints
-app.post('/api/cart', authenticateToken, (req, res) => {
-  const { item } = req.body;
-  const userId = req.user.userId;
-  
-  if (!carts[userId]) carts[userId] = [];
-  carts[userId].push(item);
-  res.status(201).send();
-});
-
-app.put('/api/cart/:itemId', authenticateToken, (req, res) => {
-  try {
-    const { itemId } = req.params;
-    const { quantity } = req.body;
-    const userId = req.user.userId;
-
-    if (!quantity || isNaN(quantity) || quantity < 1 || quantity > 100) {
-      return res.status(400).json({ error: 'Menge muss zwischen 1 und 100 liegen' });
+app.post('/api/create-payment-intent', async (req, res) => {
+  const { cart, email } = req.body;
+  let amount = 0;
+  for (const item of cart) {
+    if (item.id === 1) {
+      amount += 1000 * item.quantity; // 10.00 EUR * 100
+    } else {
+      amount += Math.round(item.price * 100) * item.quantity;
     }
-
-    const userCart = carts[userId] || [];
-    const itemIndex = userCart.findIndex(i => i.id === itemId);
-    
-    if (itemIndex === -1) {
-      return res.status(404).json({ error: 'Artikel nicht im Warenkorb' });
-    }
-
-    userCart[itemIndex].quantity = quantity;
-    res.json(userCart[itemIndex]);
-  } catch (error) {
-    res.status(500).json({ error: 'Aktualisierung fehlgeschlagen' });
   }
-});
+  amount += 499; // Versandkosten
 
-app.delete('/api/cart/:itemId', authenticateToken, (req, res) => {
   try {
-    const { itemId } = req.params;
-    const userId = req.user.userId;
-
-    if (!carts[userId] || !Array.isArray(carts[userId])) {
-      carts[userId] = [];
+    if (amount < 50) {
+      return res.status(400).json({ error: 'Gesamtbetrag zu niedrig für Stripe.' });
     }
-
-    carts[userId] = carts[userId].filter(i => i.id !== itemId);
-    res.sendStatus(204);
-  } catch (error) {
-    res.status(500).json({ error: 'Löschen fehlgeschlagen' });
-  }
-});
-
-// Payment endpoints
-app.post('/api/payment/stripe', authenticateToken, async (req, res) => {
-  try {
-    const { amount, token } = req.body;
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: amount * 100,
+      amount,
       currency: 'eur',
-      payment_method: token
+      receipt_email: email,
+      description: 'Marktplatz Bestellung',
+      payment_method_types: ['card']
     });
     res.json({ clientSecret: paymentIntent.client_secret });
   } catch (err) {
@@ -239,30 +75,6 @@ app.post('/api/payment/stripe', authenticateToken, async (req, res) => {
   }
 });
 
-app.post('/api/payment/paypal', authenticateToken, async (req, res) => {
-  try {
-    const { orderID } = req.body;
-    const capture = await paypal.captureOrder(orderID);
-    res.json(capture);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-// Order endpoints
-app.post('/api/orders', authenticateToken, (req, res) => {
-  const { items } = req.body;
-  const newOrder = {
-    id: Date.now(),
-    userId: req.user.userId,
-    items,
-    status: 'processing'
-  };
-  orders.push(newOrder);
-  res.status(201).json(newOrder);
-});
-
-// Start server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
