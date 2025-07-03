@@ -98,7 +98,12 @@
         <div class="container mt-5">
             <div class="row mb-4">
                 <div class="col-md-4">
-                 
+                    <select class="form-select rounded-pill" id="categoryFilter">
+                        <option>Alle Kategorien</option>
+                        <option>Elektronik</option>
+                        <option>Fitness</option>
+                        <option>Mode</option>
+                        <option>Haushalt</option>
                     </select>
                 </div>
                 <div class="col-md-4">
@@ -108,33 +113,11 @@
                     </select>
                 </div>
             </div>
-
             <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4" id="productGrid">
-                <!-- Product Cards will be inserted here -->
-                <div class="col">
-                    <div class="card h-100 border-0 shadow-hover">
-                        <div class="ratio ratio-4x3">
-                            <img src="placeholder-product.jpg" 
-                                 class="card-img-top object-fit-cover" 
-                                 alt="Produkt">
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title">Premium Kopfhörer</h5>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <span class="h4 text-primary">€89.99</span>
-                                    <small class="text-muted d-block">inkl. MwSt.</small>
-                                </div>
-                                <button class="btn btn-primary rounded-pill px-3 py-2" data-product-id="1">
-                                    <i class="bi bi-cart-plus me-2"></i>Hinzufügen
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <!-- Hier rendert das JS die Produkte dynamisch -->
             </div>
         </div>
-    </main>
+</main>
 
     <!-- Footer -->
     <footer class="bg-dark text-white mt-5 pt-5 border-top">

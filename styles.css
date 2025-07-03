@@ -48,6 +48,7 @@ body {
 .navbar {
     position: sticky;
     top: 0;
+    z-index: 2100;
     box-shadow: 0 2px 8px rgba(0,0,0,0.04);
     background: rgba(255,255,255,0.98);
 }
@@ -129,16 +130,16 @@ footer {
 
 /* Warenkorb Dropdown Styles */
 .cart-dropdown {
-    position: absolute;
-    top: 100%;
-    right: 0;
+    position: fixed !important;
+    top: 70px; /* Abstand zur Navbar, ggf. anpassen */
+    right: 30px;
     width: 350px;
     max-height: 500px;
     background: white;
     border: 1px solid #dee2e6;
     border-radius: 8px;
     box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-    z-index: 1050;
+    z-index: 2000;
     display: none;
     overflow: hidden;
 }
@@ -157,6 +158,57 @@ footer {
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+.cart-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.cart-item-image {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-right: 10px;
+}
+
+.cart-item-details {
+    flex: 1;
+}
+
+.cart-item-controls {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.quantity-btn {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.quantity-display {
+    min-width: 20px;
+    text-align: center;
+    font-weight: 500;
+}
+
+.remove-item {
+    background: none;
+    border: none;
+    color: #dc3545;
+    cursor: pointer;
+    padding: 2px;
 }
 
 .cart-dropdown-header {
@@ -269,6 +321,6 @@ footer {
 @media (max-width: 768px) {
     .cart-dropdown {
         width: 300px;
-        right: -50px;
+        right: 10px;
     }
 }

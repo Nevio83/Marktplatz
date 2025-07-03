@@ -1,28 +1,7 @@
 [
-  {
-    "id": 1,
-    "name": "Wireless Kopfhörer",
-    "price": 89.99,
-    "category": "Elektronik",
-    "image": "images/headphones.jpg",
-    "description": "Noise-Cancelling Bluetooth-Kopfhörer mit 30h Akkulaufzeit",
-    "variants": {
-      "color": ["Schwarz", "Weiß", "Blau"],
-      "version": ["Standard", "Pro"]
-    },
-    "stock": 15
-  },
-  {
-    "id": 2,
-    "name": "Sportarmband",
-    "price": 29.95,
-    "category": "Fitness",
-    "image": "images/armband.jpg",
-    "description": "Wasserdichtes Fitness-Tracker-Armband mit Herzfrequenzmesser",
-    "variants": {
-      "size": ["S", "M", "L"],
-      "color": ["Schwarz", "Rot"]
-    },
-    "stock": 42
-  }
+  { "id": 1, "name": "Ware ?", "price": 10.00, "category": "Elektronik", "image": "placeholder-product.jpg" },
+  { "id": 2, "name": "Ware ??", "price": 20.00, "category": "Mode", "image": "placeholder-product.jpg" },
+  { "id": 3, "name": "Ware ???", "price": 30.00, "category": "Fitness", "image": "placeholder-product.jpg" },
+  { "id": 4, "name": "Ware ????", "price": 40.00, "category": "Haushalt", "image": "placeholder-product.jpg" },
+  { "id": 5, "name": "Ware ?????", "price": 50.00, "category": "Elektronik", "image": "placeholder-product.jpg" }
 ]
