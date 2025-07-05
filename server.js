@@ -2,6 +2,9 @@ require('dotenv').config();
 const express = require('express');
 const stripe = require('stripe')(process.env.STRIPE_KEY);
 const path = require('path');
+const sgMail = require('@sendgrid/mail');
+
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 const app = express();
 app.use(express.json());
@@ -46,6 +49,59 @@ app.post('/api/create-checkout-session', async (req, res) => {
   }
 });
 
+// Stripe Webhook für Zahlungsbestätigung
+app.post('/stripe-webhook', express.raw({type: 'application/json'}), async (req, res) => {
+  const sig = req.headers['stripe-signature'];
+  
+  try {
+    const event = stripe.webhooks.constructEvent(
+      req.body,
+      sig,
+      process.env.STRIPE_WEBHOOK_SECRET
+    );
+
+    if (event.type === 'checkout.session.completed') {
+      const session = event.data.object;
+      const msg = {
+        to: session.customer_details.email,
+        from: process.env.SENDER_EMAIL,
+  reply_to: isSellerOrder ? sellerEmail : process.env.SUPPORT_EMAIL,
+        subject: 'Zahlungsbestätigung - Marktplatz',
+        text: `Vielen Dank für Ihre Bestellung #${session.id}!\n\nIhre Zahlung wurde erfolgreich verarbeitet.`,        html: `<strong>Bestellbestätigung #${session.id}</strong>
+          <p>Ihre Zahlung wurde erfolgreich verarbeitet und wir bereiten den Versand vor.</p>`
+      };
+      await sgMail.send(msg);
+    }
+    res.status(200).end();
+  } catch (err) {
+    console.error('Webhook Error:', err.message);
+    res.status(400).send(`Webhook Error: ${err.message}`);
+  }
+});
+
+// Legacy E-Mail-Endpunkt (kann später entfernt werden)
+app.post('/api/send-confirmation', async (req, res) => {
+  try {
+    const { email, orderId } = req.body;
+    
+    const msg = {
+      to: email,
+      from: process.env.SENDER_EMAIL,
+  reply_to: isSellerOrder ? sellerEmail : process.env.SUPPORT_EMAIL,
+      subject: 'Bestellbestätigung - Marktplatz',
+      text: `Vielen Dank für Ihre Bestellung #${orderId}!\n\nWir bearbeiten Ihre Bestellung und senden sie innerhalb von 2 Werktagen zu.`,
+      html: `<strong>Bestellbestätigung #${orderId}</strong>
+        <p>Wir haben Ihre Zahlung erhalten und bearbeiten den Versand.</p>`
+    };
+
+    await sgMail.send(msg);
+    res.json({ success: true });
+  } catch (error) {
+    console.error('E-Mail-Fehler:', error);
+    res.status(500).json({ error: 'E-Mail-Versand fehlgeschlagen' });
+  }
+});
+
 app.post('/api/create-payment-intent', async (req, res) => {
   const { cart, email } = req.body;
   let amount = 0;
@@ -75,7 +131,7 @@ app.post('/api/create-payment-intent', async (req, res) => {
   }
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

@@ -14,14 +14,8 @@
     "express-rate-limit": "^6.11.2",
     "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.2",
-    "stripe": "^18.3.0"
-  },
-  "devDependencies": {
-    "nodemon": "^3.0.2",
-    "vite": "^7.0.0",
-    "vite-plugin-html": "^3.2.2"
-  }
-}
+    "stripe": "^18.3.0",
+    "@sendgrid/mail": "^7.7.0"
   },
   "devDependencies": {
     "nodemon": "^3.0.2",
