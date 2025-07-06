@@ -9,293 +9,13 @@
     <link href="styles.css" rel="stylesheet">
     <link href="cart.css" rel="stylesheet">
     <script src="https://js.stripe.com/v3/"></script>
-    <style>
-        body {
-            background: #eaf8f7;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        }
-        .main-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-        .checkout-layout {
-            display: grid;
-            grid-template-columns: 1fr 400px;
-            gap: 3rem;
-            align-items: start;
-        }
-        .left-section {
-            background: white;
-            border-radius: 16px;
-            padding: 2rem;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-        }
-        .right-section {
-            background: white;
-            border-radius: 16px;
-            padding: 2rem;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-            position: sticky;
-            top: 2rem;
-        }
-        .express-checkout {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-        .express-buttons {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            margin-bottom: 1rem;
-        }
-        .express-btn {
-            padding: 12px 24px;
-            border-radius: 8px;
-            border: none;
-            font-weight: 600;
-            cursor: pointer;
-            min-width: 120px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-        .shop-pay { background: #5a31f4; color: white; }
-        .paypal-btn { background: #ffc439; color: #003087; }
-        .google-pay { background: #000; color: white; }
-        .form-section {
-            margin-bottom: 2rem;
-        }
-        .form-section h3 {
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            color: #333;
-        }
-        .form-group {
-            margin-bottom: 1rem;
-        }
-        .form-control {
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 12px;
-            font-size: 14px;
-            background: #f8f9fa;
-        }
-        .form-control:focus {
-            border-color: #007bff;
-            box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
-            outline: none;
-        }
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-        }
-        .country-select {
-            position: relative;
-        }
-        .address-suggestions {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            background: white;
-            border: 1px solid #ddd;
-            border-top: none;
-            border-radius: 0 0 8px 8px;
-            max-height: 200px;
-            overflow-y: auto;
-            z-index: 1000;
-            display: none;
-        }
-        .suggestion-item {
-            padding: 12px;
-            cursor: pointer;
-            border-bottom: 1px solid #eee;
-        }
-        .suggestion-item:hover {
-            background: #f8f9fa;
-        }
-        .payment-section {
-            border: 1px solid #ddd;
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-        }
-        .payment-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 1rem;
-        }
-        .payment-icons {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
-        .payment-icons img {
-            height: 24px;
-        }
-        .more-cards {
-            background: #6c757d;
-            color: white;
-            border-radius: 4px;
-            padding: 2px 6px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-        .card-input {
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 12px;
-            margin-bottom: 1rem;
-        }
-        .card-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-        }
-        .order-item {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 1rem 0;
-            border-bottom: 1px solid #eee;
-        }
-        .item-image {
-            width: 60px;
-            height: 60px;
-            border-radius: 8px;
-            object-fit: cover;
-        }
-        .item-details {
-            flex: 1;
-        }
-        .item-name {
-            font-weight: 600;
-            margin-bottom: 4px;
-        }
-        .item-price {
-            color: #666;
-        }
-        .quantity-badge {
-            background: #6c757d;
-            color: white;
-            border-radius: 50%;
-            width: 24px;
-            height: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            font-weight: 600;
-        }
-        .add-ons {
-            margin: 1.5rem 0;
-        }
-        .add-on-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 1rem;
-            border: 1px solid #eee;
-            border-radius: 8px;
-            margin-bottom: 0.5rem;
-        }
-        .add-on-left {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-        .add-on-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
-        }
-        .add-btn {
-            background: #e91e63;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-        }
-        .discount-section {
-            display: flex;
-            gap: 0.5rem;
-            margin: 1rem 0;
-        }
-        .discount-input {
-            flex: 1;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 12px;
-        }
-        .apply-btn {
-            background: #6c757d;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            padding: 12px 20px;
-            cursor: pointer;
-        }
-        .order-summary {
-            border-top: 1px solid #eee;
-            padding-top: 1rem;
-        }
-        .summary-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 0.5rem;
-        }
-        .total-row {
-            font-weight: 600;
-            font-size: 1.1rem;
-            border-top: 1px solid #eee;
-            padding-top: 0.5rem;
-            margin-top: 0.5rem;
-        }
-        .pay-button {
-            background: #e91e63;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            padding: 16px;
-            width: 100%;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 1rem;
-        }
-        @media (max-width: 768px) {
-            .checkout-layout {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-            .form-row {
-                grid-template-columns: 1fr;
-            }
-            .card-row {
-                grid-template-columns: 1fr;
-            }
-            .express-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-        }
-    </style>
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places"></script>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
         <div class="container">
             <a class="navbar-brand fw-bold" href="index.html">
-                <i class="bi bi-shop"></i> puravida
+                <i class="bi bi-shop"></i> Marktplatz
             </a>
             <a href="index.html" class="btn btn-outline-primary">
                 <i class="bi bi-arrow-left"></i> Zurück zum Shop
@@ -303,271 +23,308 @@
         </div>
     </nav>
 
-    <div class="main-container">
-        <div class="checkout-layout">
-            <div class="left-section">
-                <!-- Kartenzahlung Buttons -->
-                <div class="express-checkout">
-                    <h4 style="margin-bottom: 1rem;">Kartenzahlung</h4>
-                    <div class="express-buttons">
-                        <button class="express-btn paypal-btn" onclick="alert('PayPal Checkout')">
-                            <img src="https://www.paypalobjects.com/webstatic/mktg/Logo/pp-logo-100px.png" alt="PayPal" style="height: 20px;">
-                        </button>
-                        <button class="express-btn google-pay" onclick="alert('Google Pay Checkout')">
-                            <img src="https://developers.google.com/pay/api/web/guides/brand-guidelines/google-pay-mark.png" alt="Google Pay" style="height: 20px;">
-                        </button>
-                    </div>
-                    <div style="display: flex; align-items: center; margin: 1.5rem 0; gap: 1rem;">
-                        <hr style="flex: 1; border: none; border-top: 1px solid #ddd;">
-                        <span style="color: #666; font-size: 14px;">ODER</span>
-                        <hr style="flex: 1; border: none; border-top: 1px solid #ddd;">
-                    </div>
-                </div>
+    <div class="main-container" style="background:#eaf8f7; border-radius:24px; padding:2rem 0;">
+        <div class="page-header">
+            <h1 class="page-title">
+                <i class="bi bi-cart3"></i> Ihr Warenkorb
+            </h1>
+            <p class="page-subtitle">Überprüfen Sie Ihre Artikel und schließen Sie Ihre Bestellung ab</p>
+        </div>
 
-                <!-- Kontakt -->
-                <div class="form-section">
-                    <h3>Kontakt</h3>
-                    <div class="form-group">
-                        <input type="email" class="form-control" placeholder="E-Mail" required>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="emailSignup">
-                        <label class="form-check-label" for="emailSignup" style="font-size: 14px;">
-                            Für E-Mail anmelden, um über alle Dinge von Pura Vida auf dem Laufenden zu bleiben
-                        </label>
-                    </div>
-                </div>
-
-                <!-- Lieferadresse -->
-                <div class="form-section">
-                    <h3>Lieferadresse</h3>
-                    <div class="form-group">
-                        <select class="form-control country-select">
-                            <option>Deutschland</option>
-                            <option>Österreich</option>
-                            <option>Schweiz</option>
-                            <option>Frankreich</option>
-                            <option>Italien</option>
-                            <option>Spanien</option>
-                            <option>Niederlande</option>
-                            <option>Belgien</option>
-                            <option>Polen</option>
-                            <option>Tschechien</option>
-                        </select>
-                    </div>
-                    <div class="form-row">
-                        <input type="text" class="form-control" placeholder="Vorname">
-                        <input type="text" class="form-control" placeholder="Nachname">
-                    </div>
-                    <div class="form-group" style="position: relative;">
-                        <input type="text" class="form-control address-input" placeholder="Adresse" oninput="showAddressSuggestions(this.value)">
-                        <div class="address-suggestions" id="addressSuggestions"></div>
-                    </div>
-                    <div class="form-row">
-                        <input type="text" class="form-control" placeholder="Stadt">
-                        <input type="text" class="form-control" placeholder="Bundesland">
-                    </div>
-                    <div class="form-group">
-                        <input type="tel" class="form-control" placeholder="Telefon (optional)">
-                    </div>
-                </div>
-
-                <!-- Versandmethode -->
-                <div class="form-section">
-                    <h3>Versandmethode</h3>
-                    <div style="background: #e8f5e8; padding: 1rem; border-radius: 8px; font-size: 14px;">
-                        Geben Sie Ihre Versandadresse ein, um die verfügbaren Versandmethoden anzuzeigen.
-                    </div>
-                </div>
-
-                <!-- Zahlung -->
-                <div class="form-section">
-                    <h3>Zahlung</h3>
-                    <p style="color: #666; font-size: 14px; margin-bottom: 1rem;">Alle Transaktionen sind sicher und verschlüsselt.</p>
-                    
-                    <div class="payment-section">
-                        <div class="payment-header">
-                            <div style="display: flex; align-items: center; gap: 8px;">
-                                <input type="radio" name="payment" checked>
-                                <span>Kreditkarte</span>
-                            </div>
-                            <div class="payment-icons">
-                                <img src="https://cdn.jsdelivr.net/gh/aaronfagan/svg-credit-card-payment-icons/flat/visa.svg" alt="Visa">
-                                <img src="https://cdn.jsdelivr.net/gh/aaronfagan/svg-credit-card-payment-icons/flat/mastercard.svg" alt="Mastercard">
-                                <img src="https://cdn.jsdelivr.net/gh/aaronfagan/svg-credit-card-payment-icons/flat/amex.svg" alt="American Express">
-                                <img src="https://cdn.jsdelivr.net/gh/aaronfagan/svg-credit-card-payment-icons/flat/discover.svg" alt="Discover">
-                                <span class="more-cards">+3</span>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Kartennummer">
-                        </div>
-                        <div class="card-row">
-                            <input type="text" class="form-control" placeholder="Ablaufdatum (MM / JJ)">
-                            <input type="text" class="form-control" placeholder="Name auf der Karte">
-                        </div>
-                    </div>
-
-                    <div class="form-check" style="margin-top: 1rem;">
-                        <input class="form-check-input" type="checkbox" id="billingAddress">
-                        <label class="form-check-label" for="billingAddress" style="font-size: 14px;">
-                            Versandoptionen als Rechnungsadresse verwenden
-                        </label>
-                    </div>
-                </div>
-
-                <!-- Erinnerung -->
-                <div class="form-section">
-                    <h3>Erinnerung</h3>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="saveInfo">
-                        <label class="form-check-label" for="saveInfo" style="font-size: 14px;">
-                            Meine Informationen für einen schnelleren Checkout speichern
-                        </label>
-                    </div>
-                </div>
-
-                <button class="pay-button" onclick="processPayment()">
-                    JETZT BEZAHLEN
-                </button>
-            </div>
-
-            <div class="right-section">
-                <!-- Bestellübersicht -->
-                <div id="orderSummary">
-                    <!-- Wird dynamisch gefüllt -->
-                </div>
-            </div>
+        <div id="cartContent">
+            <!-- Wird dynamisch gefüllt -->
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Adressvorschläge
-        function showAddressSuggestions(query) {
-            const suggestions = document.getElementById('addressSuggestions');
-            if (query.length < 2) {
-                suggestions.style.display = 'none';
-                return;
-            }
+    // Währungseinstellungen nach Land
+    const currencyByCountry = {
+        'DE': { symbol: '€', code: 'EUR' },
+        'US': { symbol: '$', code: 'USD' },
+        'GB': { symbol: '£', code: 'GBP' },
+        'CH': { symbol: 'CHF', code: 'CHF' },
+        'AT': { symbol: '€', code: 'EUR' },
+        'FR': { symbol: '€', code: 'EUR' },
+        'IT': { symbol: '€', code: 'EUR' },
+        'ES': { symbol: '€', code: 'EUR' },
+        'NL': { symbol: '€', code: 'EUR' },
+        'BE': { symbol: '€', code: 'EUR' }
+    };
+    
+    let currentCountry = 'DE';
+    let currentCurrency = currencyByCountry[currentCountry];
+    
+    // Google Places Autocomplete
+    let autocomplete;
+    
+    function initializeAutocomplete() {
+        const addressInput = document.getElementById('address');
+        if (addressInput && google && google.maps && google.maps.places) {
+            autocomplete = new google.maps.places.Autocomplete(addressInput, {
+                types: ['address'],
+                componentRestrictions: { country: currentCountry.toLowerCase() }
+            });
             
-            // Mock-Adressvorschläge
-            const mockSuggestions = [
-                '06S24E22CA...01 Spring, Montana, Deutschland',
-                '06131 Water Well, New Mexico, Deutschland',
-                '06155 Water Well, New Mexico, Deutschland',
-                '06110 Water Well, New Mexico, Deutschland',
-                'Maryland\'s 6th Congressional District, MD, Deutschland'
-            ];
-            
-            suggestions.innerHTML = mockSuggestions
-                .filter(addr => addr.toLowerCase().includes(query.toLowerCase()))
-                .map(addr => `<div class="suggestion-item" onclick="selectAddress('${addr}')">${addr}</div>`)
-                .join('');
-            
-            suggestions.style.display = mockSuggestions.length > 0 ? 'block' : 'none';
+            autocomplete.addListener('place_changed', function() {
+                const place = autocomplete.getPlace();
+                if (place.address_components) {
+                    // Land aus Adresse extrahieren und Währung anpassen
+                    const country = place.address_components.find(component => 
+                        component.types.includes('country')
+                    );
+                    if (country && currencyByCountry[country.short_name]) {
+                        currentCountry = country.short_name;
+                        currentCurrency = currencyByCountry[currentCountry];
+                        updateCartPage(); // Preise neu laden
+                    }
+                }
+            });
         }
-        
-        function selectAddress(address) {
-            document.querySelector('.address-input').value = address;
-            document.getElementById('addressSuggestions').style.display = 'none';
-        }
-        
-        // Bestellübersicht laden
-        function loadOrderSummary() {
-            const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
-            const orderSummary = document.getElementById('orderSummary');
-            
-            if (cartItems.length === 0) {
-                orderSummary.innerHTML = `
-                    <div style="text-align: center; padding: 2rem;">
-                        <h4>Warenkorb ist leer</h4>
-                        <a href="index.html" class="btn btn-primary">Weiter einkaufen</a>
-                    </div>
-                `;
-                return;
+    }
+    
+    // Timer-Logik für Bestellübersicht
+    let timerInterval;
+    function startCartTimer() {
+        let timeLeft = 600; // 10 Minuten in Sekunden
+        const timerDiv = document.getElementById('cart-timer');
+        if (!timerDiv) return;
+        timerDiv.textContent = `Ihr Warenkorb leert sich in 10:00 Minuten`;
+        clearInterval(timerInterval);
+        timerInterval = setInterval(() => {
+            timeLeft--;
+            const min = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+            const sec = (timeLeft % 60).toString().padStart(2, '0');
+            timerDiv.textContent = `Ihr Warenkorb leert sich in ${min}:${sec} Minuten`;
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                localStorage.removeItem('cart');
+                updateCartPage();
+                timerDiv.textContent = 'Ihr Warenkorb wurde geleert.';
             }
-            
-            const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            const shipping = 4.99;
-            const total = subtotal + shipping;
-            
-            orderSummary.innerHTML = `
-                <div style="margin-bottom: 1.5rem;">
-                    ${cartItems.map(item => `
-                        <div class="order-item">
-                            <div class="quantity-badge">${item.quantity}</div>
-                            <img src="${item.image}" alt="${item.name}" class="item-image">
-                            <div class="item-details">
-                                <div class="item-name">${item.name}</div>
-                                <div class="item-price">€${item.price.toFixed(2)}</div>
-                            </div>
-                            <div style="font-weight: 600;">€${(item.price * item.quantity).toFixed(2)}</div>
-                        </div>
-                    `).join('')}
-                </div>
-                
-                <div class="add-ons">
-                    <h5 style="margin-bottom: 1rem;">Add-Ons</h5>
-                    <div class="add-on-item">
-                        <div class="add-on-left">
-                            <div class="add-on-icon" style="background: #4fc3f7;"></div>
-                            <div>
-                                <div style="font-weight: 600;">Gift Box</div>
-                                <div style="color: #666; font-size: 14px;">€7.00</div>
-                            </div>
-                        </div>
-                        <button class="add-btn">+</button>
+        }, 1000);
+    }
+
+    function updateCartPage() {
+        const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+        const cartContent = document.getElementById('cartContent');
+        
+        if (cartItems.length === 0) {
+            cartContent.innerHTML = `
+                <div class="empty-cart">
+                    <div class="empty-cart-icon">
+                        <i class="bi bi-cart-x"></i>
                     </div>
-                    <div class="add-on-item">
-                        <div class="add-on-left">
-                            <div class="add-on-icon" style="background: #ffb74d;"></div>
-                            <div>
-                                <div style="font-weight: 600;">Love You Bracelet Card</div>
-                                <div style="color: #666; font-size: 14px;">€9.00</div>
-                            </div>
-                        </div>
-                        <button class="add-btn">+</button>
-                    </div>
-                </div>
-                
-                <div class="discount-section">
-                    <input type="text" class="discount-input" placeholder="Rabattcode eingeben">
-                    <button class="apply-btn">ANWENDEN</button>
-                </div>
-                
-                <div class="order-summary">
-                    <div class="summary-row">
-                        <span>Zwischensumme</span>
-                        <span>€${subtotal.toFixed(2)}</span>
-                    </div>
-                    <div class="summary-row">
-                        <span>Versand</span>
-                        <span>€${shipping.toFixed(2)}</span>
-                    </div>
-                    <div class="summary-row total-row">
-                        <span>Gesamt</span>
-                        <span>€${total.toFixed(2)}</span>
-                    </div>
-                    <div style="font-size: 12px; color: #666; margin-top: 0.5rem;">
-                        TOTAL SAVINGS: €4.00
-                    </div>
+                    <h3>Ihr Warenkorb ist leer</h3>
+                    <p>Entdecken Sie unsere Produkte und fügen Sie Artikel zu Ihrem Warenkorb hinzu.</p>
+                    <a href="index.html" class="continue-shopping">
+                        <i class="bi bi-arrow-left"></i> Weiter einkaufen
+                    </a>
                 </div>
             `;
+            return;
         }
         
-        function processPayment() {
-            alert('Zahlung wird verarbeitet... (Demo)');
+        const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        const shipping = 4.99;
+        const total = subtotal + shipping;
+        
+        cartContent.innerHTML = `
+            <div class="cart-layout">
+                <div class="cart-items-section">
+                    <h3 class="mb-4">
+                        <i class="bi bi-bag-check"></i> Ihre Artikel (${cartItems.length})
+                    </h3>
+                    <div id="cartItemsList">
+                        ${cartItems.map(item => `
+                            <div class="cart-item" data-id="${item.id}">
+                                <img src="${item.image}" alt="${item.name}" class="cart-item-image">
+                                <div class="cart-item-details">
+                                    <h5>${item.name}</h5>
+                                    <div class="cart-item-price">${currentCurrency.symbol}${item.price.toFixed(2)}</div>
+                                </div>
+                                <div class="quantity-controls">
+                                    <button class="quantity-btn" onclick="changeQuantity(${item.id}, -1)">
+                                        <i class="bi bi-dash"></i>
+                                    </button>
+                                    <span class="quantity-display">${item.quantity}</span>
+                                    <button class="quantity-btn" onclick="changeQuantity(${item.id}, 1)">
+                                        <i class="bi bi-plus"></i>
+                                    </button>
+                                </div>
+                                <button class="remove-btn" onclick="removeFromCart(${item.id})">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+                
+                <div class="checkout-section">
+                    <div class="checkout-header">
+                        <h3 class="checkout-title">
+                            <i class="bi bi-credit-card"></i> Bestellung
+                        </h3>
+                    </div>
+                    
+                    <div class="order-summary">
+                        <div id="cart-timer" class="mb-2 text-danger fw-bold"></div>
+                        <div class="summary-row">
+                            <span>Zwischensumme:</span>
+                            <span>${currentCurrency.symbol}${subtotal.toFixed(2)}</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Versand:</span>
+                            <span>${currentCurrency.symbol}${shipping.toFixed(2)}</span>
+                        </div>
+                        <div class="summary-row total">
+                            <span>Gesamt:</span>
+                            <span>${currentCurrency.symbol}${total.toFixed(2)}</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Express-Checkout Bereich -->
+                    <div class="text-center mb-3">
+                        <div class="fw-semibold mb-3" style="font-size:1.1rem;">Express-Checkout</div>
+                        <div class="d-flex justify-content-center gap-2 flex-wrap mb-2">
+                            <button class="btn px-3 py-2 d-flex align-items-center justify-content-center" style="background:#ffc439; color:#222; border-radius:12px; font-weight:600; font-size:0.9rem; border:none; min-width:120px;" onclick="alert('l Checkout (Demo)')">
+                                <img src="karten/paypal.jpg" alt="PayPal" style="height:20px; margin-right:6px;"> PayPal
+                            </button>
+                            <button class="btn px-3 py-2 d-flex align-items-center justify-content-center" style="background:#000; color:#fff; border-radius:12px; font-weight:600; font-size:0.9rem; border:none; min-width:120px;" onclick="alert('Google Pay Checkout (Demo)')">
+                                <img src="karten/google pay.png" alt="Google Pay" style="height:20px; margin-right:6px;"> G Pay
+                            </button>
+                        </div>
+                        <div class="d-flex justify-content-center gap-2 flex-wrap mb-2">
+                            <button class="btn px-3 py-2 d-flex align-items-center justify-content-center" style="background:#fff; color:#222; border-radius:12px; font-weight:600; font-size:0.9rem; border:1.5px solid #222; min-width:120px;" onclick="alert('Apple Pay Checkout (Demo)')">
+                                <i class="bi bi-apple" style="font-size:18px; margin-right:6px;"></i> Apple Pay
+                            </button>
+                            <button class="btn px-3 py-2 d-flex align-items-center justify-content-center" style="background:#ffdaec; color:#222; border-radius:12px; font-weight:600; font-size:0.9rem; border:none; min-width:120px;" onclick="alert('Klarna Checkout (Demo)')">
+                                <img src="karten/klarna.png" alt="Klarna" style="height:20px; margin-right:6px;"> Klarna
+                            </button>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-center my-3" style="gap:1rem;">
+                            <hr style="flex:1; border-top:1.5px solid #cfd8dc; margin:0;">
+                            <span class="text-muted fw-semibold" style="font-size:0.9rem;">ODER</span>
+                            <hr style="flex:1; border-top:1.5px solid #cfd8dc; margin:0;">
+                        </div>
+                    </div>
+                    
+                    <form id="stripe-form" class="payment-form">
+                        <div class="form-group">
+                            <label for="email" class="form-label">
+                                <i class="bi bi-envelope"></i> E-Mail-Adresse
+                            </label>
+                            <input type="email" id="email" class="form-control" required autocomplete="email" placeholder="ihre@email.de">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="address" class="form-label">
+                                <i class="bi bi-geo-alt"></i> Adresse
+                            </label>
+                            <input type="text" id="address" class="form-control" required placeholder="Straße und Hausnummer">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="bi bi-credit-card-2-front"></i> Kartendaten
+                            </label>
+                            <div class="payment-methods mb-2">
+                                <img src="karten/visa.png" alt="Visa" style="height:24px;">
+                                <img src="karten/bancontact.png" alt="Mastercard" style="height:24px;">
+                                <img src="karten/blik.png" alt="Amex" style="height:24px;">
+                                <img src="karten/EPS.png" alt="Discover" style="height:24px;">
+                                <span class="position-relative" style="cursor:pointer;" onmouseover="showMoreCards()" onmouseout="hideMoreCards()">
+                                    <span class="badge bg-secondary">+3</span>
+                                    <div id="more-cards-tooltip" style="display:none;position:absolute;left:30px;top:-10px;z-index:10;background:#222;color:#fff;padding:6px 12px;border-radius:8px;white-space:nowrap;">
+                                        <img src='karten/giropay.png' alt='giropay' style='height:20px;margin-right:4px;'>
+                                        <img src='karten/cartes bancaires.jpg' alt='cartes' style='height:20px;margin-right:4px;'>
+                                        <img src='karten/klarna.png' alt='klarna' style='height:20px;'>
+                                    </div>
+                                </span>
+                            </div>
+                            <input type="text" id="card-number" class="form-control mb-2" placeholder="4242 4242 4242 4242" maxlength="19" oninput="formatCardNumber(this)">
+                            <div class="row">
+                                <div class="col-6">
+                                    <input type="text" id="card-expiry" class="form-control" placeholder="MM/YY" maxlength="5" oninput="formatExpiry(this)">
+                                </div>
+                                <div class="col-3">
+                                    <input type="text" id="card-cvc" class="form-control" placeholder="CVC" maxlength="4">
+                                </div>
+                                <div class="col-3">
+                                    <input type="text" id="card-zip" class="form-control" placeholder="PLZ" maxlength="5">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="checkout-btn">
+                            <i class="bi bi-lock"></i> Sicher bezahlen - ${currentCurrency.symbol}${total.toFixed(2)}
+                        </button>
+                        
+                        <div id="stripe-error"></div>
+                        <div id="stripe-success">
+                            <i class="bi bi-check-circle"></i>
+                            <div>Zahlung erfolgreich!</div>
+                        </div>
+                        
+                        <div class="security-info">
+                            <i class="bi bi-shield-check"></i>
+                            <span>SSL-verschlüsselte sichere Verbindung</span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        `;
+        
+        startCartTimer();
+        setTimeout(initializeAutocomplete, 100);
+    }
+    
+    function showMoreCards() {
+        document.getElementById('more-cards-tooltip').style.display = 'block';
+    }
+    
+    function hideMoreCards() {
+        document.getElementById('more-cards-tooltip').style.display = 'none';
+    }
+    
+    function formatCardNumber(input) {
+        let value = input.value.replace(/\s/g, '').replace(/[^0-9]/gi, '');
+        let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+        input.value = formattedValue;
+    }
+    
+    function formatExpiry(input) {
+        let value = input.value.replace(/\D/g, '');
+        if (value.length >= 2) {
+            value = value.substring(0, 2) + '/' + value.substring(2, 4);
         }
+        input.value = value;
+    }
+    
+    function changeQuantity(productId, change) {
+        let cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+        const itemIndex = cartItems.findIndex(item => item.id === productId);
         
-        // Beim Laden der Seite
-        document.addEventListener('DOMContentLoaded', loadOrderSummary);
-        
-        // Klick außerhalb schließt Adressvorschläge
-        document.addEventListener('click', function(e) {
-            if (!e.target.closest('.form-group')) {
-                document.getElementById('addressSuggestions').style.display = 'none';
+        if (itemIndex !== -1) {
+            cartItems[itemIndex].quantity += change;
+            
+            if (cartItems[itemIndex].quantity <= 0) {
+                cartItems.splice(itemIndex, 1);
             }
-        });
+            
+            localStorage.setItem('cart', JSON.stringify(cartItems));
+            updateCartPage();
+        }
+    }
+    
+    function removeFromCart(productId) {
+        let cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+        cartItems = cartItems.filter(item => item.id !== productId);
+        localStorage.setItem('cart', JSON.stringify(cartItems));
+        updateCartPage();
+    }
+    
+    document.addEventListener('DOMContentLoaded', updateCartPage);
     </script>
 </body>
 </html>
