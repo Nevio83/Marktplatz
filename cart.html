@@ -39,31 +39,53 @@
     <script>
     // Währungseinstellungen nach Land
     const currencyByCountry = {
-        'DE': { symbol: '€', code: 'EUR' },
-        'US': { symbol: '$', code: 'USD' },
-        'GB': { symbol: '£', code: 'GBP' },
-        'CH': { symbol: 'CHF', code: 'CHF' },
-        'AT': { symbol: '€', code: 'EUR' },
-        'FR': { symbol: '€', code: 'EUR' },
-        'IT': { symbol: '€', code: 'EUR' },
-        'ES': { symbol: '€', code: 'EUR' },
-        'NL': { symbol: '€', code: 'EUR' },
-        'BE': { symbol: '€', code: 'EUR' }
+        'DE': { symbol: '€', code: 'EUR', name: 'Deutschland' },
+        'US': { symbol: '$', code: 'USD', name: 'Vereinigte Staaten' },
+        'GB': { symbol: '£', code: 'GBP', name: 'Vereinigtes Königreich' },
+        'CH': { symbol: 'CHF', code: 'CHF', name: 'Schweiz' },
+        'AT': { symbol: '€', code: 'EUR', name: 'Österreich' },
+        'FR': { symbol: '€', code: 'EUR', name: 'Frankreich' },
+        'IT': { symbol: '€', code: 'EUR', name: 'Italien' },
+        'ES': { symbol: '€', code: 'EUR', name: 'Spanien' },
+        'NL': { symbol: '€', code: 'EUR', name: 'Niederlande' },
+        'BE': { symbol: '€', code: 'EUR', name: 'Belgien' },
+        'CA': { symbol: 'CAD$', code: 'CAD', name: 'Kanada' },
+        'AU': { symbol: 'AUD$', code: 'AUD', name: 'Australien' },
+        'JP': { symbol: '¥', code: 'JPY', name: 'Japan' },
+        'BR': { symbol: 'R$', code: 'BRL', name: 'Brasilien' },
+        'MX': { symbol: 'MX$', code: 'MXN', name: 'Mexiko' }
     };
     
     let currentCountry = 'DE';
     let currentCurrency = currencyByCountry[currentCountry];
     
+    // Versandkosten nach Land
+    function getShippingCost(countryCode) {
+        return countryCode === 'DE' ? 0 : 4.99;
+    }
+    
     // Nominatim OpenStreetMap API für Adressvorschläge
     let addressTimeout;
     
     function searchAddresses(query) {
-        if (query.length < 3) return;
+        if (query.length < 3) {
+            document.getElementById('address-suggestions').style.display = 'none';
+            return;
+        }
         
         clearTimeout(addressTimeout);
         addressTimeout = setTimeout(async () => {
             try {
-                const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=5&q=${encodeURIComponent(query)}`);
+                const selectedCountry = document.getElementById('country').value;
+                let searchQuery = query;
+                
+                // Wenn ein Land ausgewählt ist, nur in diesem Land suchen
+                if (selectedCountry && selectedCountry !== '') {
+                    const countryName = currencyByCountry[selectedCountry]?.name || selectedCountry;
+                    searchQuery += `, ${countryName}`;
+                }
+                
+                const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=5&q=${encodeURIComponent(searchQuery)}`);
                 const data = await response.json();
                 showAddressSuggestions(data);
             } catch (error) {
@@ -93,20 +115,42 @@
         document.getElementById('address').value = address;
         document.getElementById('address-suggestions').style.display = 'none';
         
-        // Land aus Adresse extrahieren und Währung anpassen
+        // Land aus Adresse extrahieren und automatisch im Dropdown setzen
         const countryMatch = address.match(/,\s*([A-Za-z\s]+)$/);
         if (countryMatch) {
             const country = countryMatch[1].trim();
-            const countryCode = getCountryCode(country);
+            const countryCode = getCountryCodeFromName(country);
             if (countryCode && currencyByCountry[countryCode]) {
+                // Land im Dropdown setzen
+                const countrySelect = document.getElementById('country');
+                if (countrySelect) {
+                    countrySelect.value = countryCode;
+                }
+                
+                // Währung und Versandkosten aktualisieren
                 currentCountry = countryCode;
                 currentCurrency = currencyByCountry[countryCode];
                 updateCartPage();
             }
         }
+        
+        // Hinweis für Hausnummer anzeigen
+        showHouseNumberHint();
     }
     
-    function getCountryCode(countryName) {
+    function showHouseNumberHint() {
+        const addressField = document.getElementById('address');
+        const hintDiv = document.getElementById('house-number-hint');
+        
+        if (hintDiv) {
+            hintDiv.style.display = 'block';
+            setTimeout(() => {
+                hintDiv.style.display = 'none';
+            }, 5000);
+        }
+    }
+    
+    function getCountryCodeFromName(countryName) {
         const countryMap = {
             'Deutschland': 'DE',
             'Germany': 'DE',
@@ -127,9 +171,31 @@
             'Niederlande': 'NL',
             'Netherlands': 'NL',
             'Belgien': 'BE',
-            'Belgium': 'BE'
+            'Belgium': 'BE',
+            'Canada': 'CA',
+            'Kanada': 'CA',
+            'Australia': 'AU',
+            'Australien': 'AU',
+            'Japan': 'JP',
+            'Brasil': 'BR',
+            'Brazil': 'BR',
+            'Brasilien': 'BR',
+            'Mexico': 'MX',
+            'Mexiko': 'MX'
         };
         return countryMap[countryName];
+    }
+    
+    function onCountryChange() {
+        const selectedCountry = document.getElementById('country').value;
+        if (selectedCountry && currencyByCountry[selectedCountry]) {
+            currentCountry = selectedCountry;
+            currentCurrency = currencyByCountry[selectedCountry];
+            updateCartPage();
+            
+            // Adressfeld leeren wenn Land geändert wird
+            document.getElementById('address').value = '';
+        }
     }
     
     // Timer-Logik für Bestellübersicht
@@ -175,7 +241,7 @@
         }
         
         const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-        const shipping = 4.99;
+        const shipping = getShippingCost(currentCountry);
         const total = subtotal + shipping;
         
         cartContent.innerHTML = `
@@ -224,7 +290,7 @@
                         </div>
                         <div class="summary-row">
                             <span>Versand:</span>
-                            <span>${currentCurrency.symbol}${shipping.toFixed(2)}</span>
+                            <span>${shipping === 0 ? 'Kostenlos' : currentCurrency.symbol + shipping.toFixed(2)}</span>
                         </div>
                         <div class="summary-row total">
                             <span>Gesamt:</span>
@@ -237,7 +303,10 @@
                         <div class="fw-semibold mb-3" style="font-size:1.1rem;">Express-Checkout</div>
                         <div class="d-flex justify-content-center gap-2 flex-wrap mb-2">
                             <button class="btn px-3 py-2 d-flex align-items-center justify-content-center" style="background:#0070ba; color:#fff; border-radius:12px; font-weight:600; font-size:0.9rem; border:none; min-width:120px;" onclick="alert('PayPal Checkout (Demo)')">
-                                <img src="karten/paypal.png" alt="PayPal" style="height:20px; margin-right:6px;"> PayPal
+                                <svg width="20" height="20" viewBox="0 0 24 24" style="margin-right:6px;">
+                                    <path fill="#fff" d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106zm14.146-14.42a.641.641 0 0 1-.633-.74L23.696.901C23.778.382 24.226 0 24.75 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106h-4.606a.641.641 0 0 1-.633-.74l3.107-19.696z"/>
+                                </svg>
+                                PayPal
                             </button>
                             <button class="btn px-3 py-2 d-flex align-items-center justify-content-center" style="background:#000; color:#fff; border-radius:12px; font-weight:600; font-size:0.9rem; border:none; min-width:120px;" onclick="alert('Google Pay Checkout (Demo)')">
                                 <img src="karten/google pay.png" alt="Google Pay" style="height:20px; margin-right:6px;"> G Pay
@@ -266,12 +335,58 @@
                             <input type="email" id="email" class="form-control" required autocomplete="email" placeholder="ihre@email.de">
                         </div>
                         
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="firstname" class="form-label">
+                                        <i class="bi bi-person"></i> Vorname
+                                    </label>
+                                    <input type="text" id="firstname" class="form-control" required placeholder="Vorname">
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="lastname" class="form-label">
+                                        <i class="bi bi-person-fill"></i> Nachname
+                                    </label>
+                                    <input type="text" id="lastname" class="form-control" required placeholder="Nachname">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="country" class="form-label">
+                                <i class="bi bi-globe"></i> Land
+                            </label>
+                            <select id="country" class="form-control" onchange="onCountryChange()" required>
+                                <option value="">Land auswählen</option>
+                                <option value="DE" ${currentCountry === 'DE' ? 'selected' : ''}>Deutschland</option>
+                                <option value="AT" ${currentCountry === 'AT' ? 'selected' : ''}>Österreich</option>
+                                <option value="CH" ${currentCountry === 'CH' ? 'selected' : ''}>Schweiz</option>
+                                <option value="FR" ${currentCountry === 'FR' ? 'selected' : ''}>Frankreich</option>
+                                <option value="IT" ${currentCountry === 'IT' ? 'selected' : ''}>Italien</option>
+                                <option value="ES" ${currentCountry === 'ES' ? 'selected' : ''}>Spanien</option>
+                                <option value="NL" ${currentCountry === 'NL' ? 'selected' : ''}>Niederlande</option>
+                                <option value="BE" ${currentCountry === 'BE' ? 'selected' : ''}>Belgien</option>
+                                <option value="US" ${currentCountry === 'US' ? 'selected' : ''}>Vereinigte Staaten</option>
+                                <option value="GB" ${currentCountry === 'GB' ? 'selected' : ''}>Vereinigtes Königreich</option>
+                                <option value="CA" ${currentCountry === 'CA' ? 'selected' : ''}>Kanada</option>
+                                <option value="AU" ${currentCountry === 'AU' ? 'selected' : ''}>Australien</option>
+                                <option value="JP" ${currentCountry === 'JP' ? 'selected' : ''}>Japan</option>
+                                <option value="BR" ${currentCountry === 'BR' ? 'selected' : ''}>Brasilien</option>
+                                <option value="MX" ${currentCountry === 'MX' ? 'selected' : ''}>Mexiko</option>
+                            </select>
+                        </div>
+                        
                         <div class="form-group position-relative">
                             <label for="address" class="form-label">
                                 <i class="bi bi-geo-alt"></i> Adresse
                             </label>
                             <input type="text" id="address" class="form-control" required placeholder="Straße und Hausnummer" oninput="searchAddresses(this.value)">
                             <div id="address-suggestions" style="display:none;position:absolute;top:100%;left:0;right:0;background:#fff;border:1px solid #ddd;border-top:none;border-radius:0 0 8px 8px;max-height:200px;overflow-y:auto;z-index:1000;"></div>
+                            <div id="house-number-hint" style="display:none;position:absolute;top:100%;left:0;right:0;background:#fff3cd;border:1px solid #ffeaa7;border-radius:0 0 8px 8px;padding:8px;font-size:0.85rem;color:#856404;z-index:999;">
+                                <i class="bi bi-info-circle"></i> Bitte fügen Sie die Hausnummer hinzu, falls noch nicht vorhanden.
+                            </div>
                         </div>
                         
                         <div class="form-group">
@@ -279,16 +394,15 @@
                                 <i class="bi bi-credit-card-2-front"></i> Kartendaten
                             </label>
                             <div class="payment-methods mb-2">
-                                <img src="karten/visa.png" alt="Visa" style="height:24px;">
-                                <img src="karten/bancontact.png" alt="Mastercard" style="height:24px;">
-                                <img src="karten/blik.png" alt="Amex" style="height:24px;">
-                                <img src="karten/EPS.png" alt="Discover" style="height:24px;">
+                                <img src="karten/visa.png" alt="Visa" style="height:30px; margin-right:8px;">
+                                <img src="karten/bancontact.png" alt="Bancontact" style="height:30px; margin-right:8px;">
+                                <img src="karten/blik.png" alt="Blik" style="height:30px; margin-right:8px;">
+                                <img src="karten/EPS.png" alt="EPS" style="height:30px; margin-right:8px;">
                                 <span class="position-relative" style="cursor:pointer;" onmouseover="showMoreCards()" onmouseout="hideMoreCards()">
-                                    <span class="badge bg-secondary">+3</span>
-                                    <div id="more-cards-tooltip" style="display:none;position:absolute;left:30px;top:-10px;z-index:10;background:#222;color:#fff;padding:6px 12px;border-radius:8px;white-space:nowrap;">
-                                        <img src='karten/giropay.png' alt='giropay' style='height:20px;margin-right:4px;'>
-                                        <img src='karten/cartes bancaires.jpg' alt='cartes' style='height:20px;margin-right:4px;'>
-                                        <img src='karten/klarna.png' alt='klarna' style='height:20px;'>
+                                    <span class="badge bg-secondary">+1</span>
+                                    <div id="more-cards-tooltip" style="display:none;position:absolute;left:30px;top:-10px;z-index:10;background:#222;color:#fff;padding:8px 12px;border-radius:8px;white-space:nowrap;">
+                                        <img src='karten/giropay.png' alt='Giropay' style='height:24px;margin-right:6px;'>
+                                        <img src='karten/cartes bancaires.jpg' alt='Cartes Bancaires' style='height:24px;margin-right:6px;'>
                                     </div>
                                 </span>
                             </div>
@@ -381,6 +495,13 @@
                 suggestions.style.display = 'none';
             }
         }
+        
+        if (!e.target.closest('#address')) {
+            const hint = document.getElementById('house-number-hint');
+            if (hint) {
+                hint.style.display = 'none';
+            }
+        }
     });
     
     document.addEventListener('DOMContentLoaded', updateCartPage);
@@ -400,6 +521,18 @@
     
     .address-suggestion:last-child {
         border-bottom: none;
+    }
+    
+    .payment-methods {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 4px;
+    }
+    
+    .payment-methods img {
+        border-radius: 4px;
+        border: 1px solid #e0e0e0;
     }
     </style>
 </body>
