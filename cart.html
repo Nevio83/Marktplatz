@@ -25,7 +25,7 @@
         </div>
     </nav>
 
-    <div class="main-container">
+    <div class="main-container" style="background:#eaf8f7; border-radius:24px; padding:2rem 0;">
         <div class="page-header">
             <h1 class="page-title">
                 <i class="bi bi-cart3"></i> Ihr Warenkorb
@@ -33,6 +33,32 @@
             <p class="page-subtitle">Überprüfen Sie Ihre Artikel und schließen Sie Ihre Bestellung ab</p>
         </div>
 
+        <!-- Express-Checkout Bereich -->
+        <div class="text-center mb-2">
+            <div class="fw-semibold mb-3" style="font-size:1.1rem;">Express-Checkout</div>
+            <div class="d-flex justify-content-center gap-3 flex-wrap mb-2">
+                <button class="btn px-4 py-2 d-flex align-items-center justify-content-center" style="background:#5a31f4; color:#fff; border-radius:14px; font-weight:600; font-size:1.1rem; border:none; min-width:160px;" onclick="alert('Shop Pay Checkout (Demo)')">
+                    <img src="https://cdn.shopify.com/shopifycloud/shop-pay/assets/shop-pay-logo.svg" alt="Shop Pay" style="height:28px; margin-right:10px;"> Shop Pay
+                </button>
+                <button class="btn px-4 py-2 d-flex align-items-center justify-content-center" style="background:#ffc439; color:#222; border-radius:14px; font-weight:600; font-size:1.1rem; border:none; min-width:160px;" onclick="alert('PayPal Checkout (Demo)')">
+                    <img src="karten/bancontact.png" alt="PayPal" style="height:28px; margin-right:10px;"> PayPal
+                </button>
+                <button class="btn px-4 py-2 d-flex align-items-center justify-content-center" style="background:#000; color:#fff; border-radius:14px; font-weight:600; font-size:1.1rem; border:none; min-width:160px;" onclick="alert('Google Pay Checkout (Demo)')">
+                    <img src="karten/google pay.png" alt="Google Pay" style="height:28px; margin-right:10px;"> G Pay
+                </button>
+                <button class="btn px-4 py-2 d-flex align-items-center justify-content-center" style="background:#fff; color:#222; border-radius:14px; font-weight:600; font-size:1.1rem; border:1.5px solid #222; min-width:160px;" onclick="alert('Apple Pay Checkout (Demo)')">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Apple Pay" style="height:24px; margin-right:10px;"> Apple Pay
+                </button>
+                <button class="btn px-4 py-2 d-flex align-items-center justify-content-center" style="background:#ffdaec; color:#222; border-radius:14px; font-weight:600; font-size:1.1rem; border:none; min-width:160px;" onclick="alert('Klarna Checkout (Demo)')">
+                    <img src="karten/klarna.png" alt="Klarna" style="height:28px; margin-right:10px;"> Klarna
+                </button>
+            </div>
+            <div class="d-flex align-items-center justify-content-center my-3" style="gap:1rem;">
+                <hr style="flex:1; border-top:1.5px solid #cfd8dc; margin:0;">
+                <span class="text-muted fw-semibold" style="font-size:1.1rem;">ODER</span>
+                <hr style="flex:1; border-top:1.5px solid #cfd8dc; margin:0;">
+            </div>
+        </div>
         <div id="cartContent">
             <!-- Wird dynamisch gefüllt -->
         </div>
@@ -40,6 +66,28 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+    // Timer-Logik für Bestellübersicht
+    let timerInterval;
+    function startCartTimer() {
+        let timeLeft = 600; // 10 Minuten in Sekunden
+        const timerDiv = document.getElementById('cart-timer');
+        if (!timerDiv) return;
+        timerDiv.textContent = `Ihr Warenkorb leert sich in 10:00 Minuten`;
+        clearInterval(timerInterval);
+        timerInterval = setInterval(() => {
+            timeLeft--;
+            const min = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+            const sec = (timeLeft % 60).toString().padStart(2, '0');
+            timerDiv.textContent = `Ihr Warenkorb leert sich in ${min}:${sec} Minuten`;
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                localStorage.removeItem('cart');
+                updateCartPage();
+                timerDiv.textContent = 'Ihr Warenkorb wurde geleert.';
+            }
+        }, 1000);
+    }
+
     function updateCartPage() {
         const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
         const cartContent = document.getElementById('cartContent');
@@ -103,6 +151,7 @@
                     </div>
                     
                     <div class="order-summary">
+                        <div id="cart-timer" class="mb-2 text-danger fw-bold"></div>
                         <div class="summary-row">
                             <span>Zwischensumme:</span>
                             <span>€${subtotal.toFixed(2)}</span>
@@ -125,11 +174,18 @@
                             <input type="email" id="email" class="form-control" required autocomplete="email" placeholder="ihre@email.de">
                         </div>
                         
-                        <div class="payment-methods">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/4/41/Visa_Logo.png" alt="Visa">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Mastercard-logo.png" alt="Mastercard">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Apple_Pay_logo.svg" alt="Apple Pay">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/1/16/Google_Pay_Logo.svg" alt="Google Pay">
+                        <div class="payment-methods stripe-logos mb-2">
+                            <img src="karten/visa.png" alt="Visa">
+                            <img src="karten/bancontact.png" alt="Mastercard">
+                            <img src="karten/blik.png" alt="Amex">
+                            <img src="karten/EPS.png" alt="Discover">
+                            <span class="position-relative" style="cursor:pointer;" onmouseover="document.getElementById('more-cards-tooltip').style.display='block'" onmouseout="document.getElementById('more-cards-tooltip').style.display='none'">
+                                <span class="badge bg-secondary">+3</span>
+                                <span id="more-cards-tooltip" style="display:none;position:absolute;left:30px;top:-10px;z-index:10;background:#222;color:#fff;padding:6px 12px;border-radius:8px;white-space:nowrap;">
+                                    <img src='karten/giropay.png' alt='giropay' style='height:22px;margin-right:4px;'>
+                                    <img src='karten/cartes bancaires.jpg' alt='cartes' style='height:22px;'>
+                                </span>
+                            </span>
                         </div>
                         
                         <div class="form-group">
@@ -158,6 +214,7 @@
             </div>
         `;
         
+        startCartTimer();
         initializeStripe();
     }
     
