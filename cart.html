@@ -104,7 +104,7 @@
         }
         
         suggestionsDiv.innerHTML = addresses.map(addr => `
-            <div class="address-suggestion" onclick="selectAddress('${addr.display_name.replace(/'/g, "\\'")}')"> 
+            <div class="address-suggestion" onclick="selectAddress(\`${addr.display_name.replace(/`/g, '\\`')}\`)">
                 ${addr.display_name}
             </div>
         `).join('');
@@ -112,6 +112,7 @@
     }
     
     function selectAddress(address) {
+        // Adresse in das Feld eintragen
         document.getElementById('address').value = address;
         document.getElementById('address-suggestions').style.display = 'none';
         
@@ -134,16 +135,16 @@
             }
         }
         
-        // Hinweis für Hausnummer anzeigen
+        // Hinweis für Hausnummer anzeigen (nur nach Klick auf Vorschlag)
         showHouseNumberHint();
     }
     
     function showHouseNumberHint() {
-        const addressField = document.getElementById('address');
         const hintDiv = document.getElementById('house-number-hint');
         
         if (hintDiv) {
             hintDiv.style.display = 'block';
+            hintDiv.innerHTML = '<div class="alert alert-info mt-2"><i class="bi bi-info-circle"></i> Bitte Hausnummer eingeben</div>';
             setTimeout(() => {
                 hintDiv.style.display = 'none';
             }, 5000);
@@ -196,6 +197,19 @@
             // Adressfeld leeren wenn Land geändert wird
             document.getElementById('address').value = '';
         }
+    }
+    
+    // Karten-Dropdown Funktionalität
+    function toggleCardDropdown() {
+        const dropdown = document.getElementById('card-dropdown');
+        const isVisible = dropdown.style.display === 'block';
+        dropdown.style.display = isVisible ? 'none' : 'block';
+    }
+    
+    function selectCard(cardType) {
+        const cardInput = document.getElementById('card-number');
+        cardInput.placeholder = `${cardType} Kartennummer eingeben`;
+        document.getElementById('card-dropdown').style.display = 'none';
     }
     
     // Timer-Logik für Bestellübersicht
@@ -304,7 +318,7 @@
                         <div class="d-flex justify-content-center gap-2 flex-wrap mb-2">
                             <button class="btn px-3 py-2 d-flex align-items-center justify-content-center" style="background:#0070ba; color:#fff; border-radius:12px; font-weight:600; font-size:0.9rem; border:none; min-width:120px;" onclick="alert('PayPal Checkout (Demo)')">
                                 <svg width="20" height="20" viewBox="0 0 24 24" style="margin-right:6px;">
-                                    <path fill="#fff" d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106zm14.146-14.42a.641.641 0 0 1-.633-.74L23.696.901C23.778.382 24.226 0 24.75 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106h-4.606a.641.641 0 0 1-.633-.74l3.107-19.696z"/>
+                                    <path fill="#fff" d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106z"/>
                                 </svg>
                                 PayPal
                             </button>
@@ -382,58 +396,76 @@
                             <label for="address" class="form-label">
                                 <i class="bi bi-geo-alt"></i> Adresse
                             </label>
-                            <input type="text" id="address" class="form-control" required placeholder="Straße und Hausnummer" oninput="searchAddresses(this.value)">
-                            <div id="address-suggestions" style="display:none;position:absolute;top:100%;left:0;right:0;background:#fff;border:1px solid #ddd;border-top:none;border-radius:0 0 8px 8px;max-height:200px;overflow-y:auto;z-index:1000;"></div>
-                            <div id="house-number-hint" style="display:none;position:absolute;top:100%;left:0;right:0;background:#fff3cd;border:1px solid #ffeaa7;border-radius:0 0 8px 8px;padding:8px;font-size:0.85rem;color:#856404;z-index:999;">
-                                <i class="bi bi-info-circle"></i> Bitte fügen Sie die Hausnummer hinzu, falls noch nicht vorhanden.
-                            </div>
+                            <input type="text" id="address" class="form-control" required placeholder="Straße und Hausnummer" oninput="searchAddresses(this.value); showHouseNumberHint();">
+                            <div id="address-suggestions" style="display:none;position:absolute;top:100%;left:0;right:0;background:#fff;border:1px solid #ddd;border-radius:8px;box-shadow:0 4px 6px rgba(0,0,0,0.1);z-index:1000;max-height:200px;overflow-y:auto;"></div>
+                            <div id="house-number-hint" style="display:none;"></div>
                         </div>
                         
                         <div class="form-group">
-                            <label class="form-label">
-                                <i class="bi bi-credit-card-2-front"></i> Kartendaten
+                            <label for="postcode" class="form-label">
+                                <i class="bi bi-mailbox"></i> Postleitzahl
                             </label>
-                            <div class="payment-methods mb-2">
-                                <img src="karten/visa.png" alt="Visa" style="height:30px; margin-right:8px;">
-                                <img src="karten/bancontact.png" alt="Bancontact" style="height:30px; margin-right:8px;">
-                                <img src="karten/blik.png" alt="Blik" style="height:30px; margin-right:8px;">
-                                <img src="karten/EPS.png" alt="EPS" style="height:30px; margin-right:8px;">
-                                <span class="position-relative" style="cursor:pointer;" onmouseover="showMoreCards()" onmouseout="hideMoreCards()">
-                                    <span class="badge bg-secondary">+1</span>
-                                    <div id="more-cards-tooltip" style="display:none;position:absolute;left:30px;top:-10px;z-index:10;background:#222;color:#fff;padding:8px 12px;border-radius:8px;white-space:nowrap;">
-                                        <img src='karten/giropay.png' alt='Giropay' style='height:24px;margin-right:6px;'>
-                                        <img src='karten/cartes bancaires.jpg' alt='Cartes Bancaires' style='height:24px;margin-right:6px;'>
+                            <input type="text" id="postcode" class="form-control" required placeholder="Postleitzahl">
+                        </div>
+                        
+                        <div class="payment-section">
+                            <h4 class="payment-title">
+                                <i class="bi bi-credit-card"></i> Zahlungsinformationen
+                            </h4>
+                            
+                            <!-- PayPal und Google Pay Buttons -->
+                            <div class="d-flex gap-2 mb-3">
+                                <button type="button" class="btn flex-fill" style="background:#0070ba; color:#fff; border-radius:8px; font-weight:600;" onclick="alert('PayPal Zahlung (Demo)')">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" style="margin-right:6px;">
+                                        <path fill="#fff" d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106z"/>
+                                    </svg>
+                                    PayPal
+                                </button>
+                                <button type="button" class="btn flex-fill" style="background:#000; color:#fff; border-radius:8px; font-weight:600;" onclick="alert('Google Pay Zahlung (Demo)')">
+                                    <img src="karten/google pay.png" alt="Google Pay" style="height:16px; margin-right:6px;"> Google Pay
+                                </button>
+                            </div>
+                            
+                            <div class="d-flex align-items-center justify-content-center my-3" style="gap:1rem;">
+                                <hr style="flex:1; border-top:1px solid #ddd; margin:0;">
+                                <span class="text-muted" style="font-size:0.9rem;">oder</span>
+                                <hr style="flex:1; border-top:1px solid #ddd; margin:0;">
+                            </div>
+                            
+                            <!-- Kreditkarte -->
+                            <div class="form-group">
+                                <label class="form-label">
+                                    <i class="bi bi-credit-card"></i> Kreditkarte
+                                </label>
+                                
+                                <!-- Kartenbilder mit Dropdown -->
+                                <div class="card-images mb-3">
+                                    <div class="d-flex align-items-center gap-2 flex-wrap">
+                                        <img src="karten/visa.png" alt="Visa" style="height:30px; border-radius:4px; border:1px solid #ddd; cursor:pointer;" onclick="selectCard('Visa')">
+                                        <img src="karten/bancontact.png" alt="Bancontact" style="height:30px; border-radius:4px; border:1px solid #ddd; cursor:pointer;" onclick="selectCard('Bancontact')">
+                                        <img src="karten/blik.png" alt="Blik" style="height:30px; border-radius:4px; border:1px solid #ddd; cursor:pointer;" onclick="selectCard('Blik')">
+                                        <img src="karten/EPS.png" alt="EPS" style="height:30px; border-radius:4px; border:1px solid #ddd; cursor:pointer;" onclick="selectCard('EPS')">
+                                        <div class="position-relative">
+                                            <button type="button" class="btn btn-outline-secondary" style="height:30px; padding:0 8px; font-size:0.8rem; border-radius:4px;" onclick="toggleCardDropdown()">
+                                                +3
+                                            </button>
+                                            <div id="card-dropdown" style="display:none; position:absolute; top:100%; left:0; background:#fff; border:1px solid #ddd; border-radius:8px; box-shadow:0 4px 6px rgba(0,0,0,0.1); z-index:1000; min-width:150px; padding:8px;">
+                                                <div style="display:flex; flex-direction:column; gap:8px;">
+                                                    <img src="karten/giropay.png" alt="Giropay" style="height:25px; cursor:pointer; border-radius:4px;" onclick="selectCard('Giropay')">
+                                                    <img src="karten/cartes bancaires.jpg" alt="Cartes Bancaires" style="height:25px; cursor:pointer; border-radius:4px;" onclick="selectCard('Cartes Bancaires')">
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                </span>
-                            </div>
-                            <input type="text" id="card-number" class="form-control mb-2" placeholder="4242 4242 4242 4242" maxlength="19" oninput="formatCardNumber(this)">
-                            <div class="row">
-                                <div class="col-6">
-                                    <input type="text" id="card-expiry" class="form-control" placeholder="MM/YY" maxlength="5" oninput="formatExpiry(this)">
                                 </div>
-                                <div class="col-3">
-                                    <input type="text" id="card-cvc" class="form-control" placeholder="CVC" maxlength="4">
-                                </div>
-                                <div class="col-3">
-                                    <input type="text" id="card-zip" class="form-control" placeholder="PLZ" maxlength="5">
-                                </div>
+                                
+                                <input type="text" id="card-number" class="form-control mb-2" placeholder="Kartennummer, Ablaufdatum, Sicherheitscode" required>
                             </div>
                         </div>
                         
-                        <button type="submit" class="checkout-btn">
-                            <i class="bi bi-lock"></i> Sicher bezahlen - ${currentCurrency.symbol}${total.toFixed(2)}
+                        <button type="submit" class="btn btn-primary w-100 checkout-btn">
+                            <i class="bi bi-lock"></i> Jetzt bestellen - ${currentCurrency.symbol}${total.toFixed(2)}
                         </button>
-                        
-                        <div id="stripe-error"></div>
-                        <div id="stripe-success">
-                            <i class="bi bi-check-circle"></i>
-                            <div>Zahlung erfolgreich!</div>
-                        </div>
-                        
-                        <div class="security-info">
-                            <i class="bi bi-shield-check"></i>
-                            <span>SSL-verschlüsselte sichere Verbindung</span>
-                        </div>
                     </form>
                 </div>
             </div>
@@ -441,75 +473,59 @@
         
         startCartTimer();
     }
-    
-    function showMoreCards() {
-        document.getElementById('more-cards-tooltip').style.display = 'block';
-    }
-    
-    function hideMoreCards() {
-        document.getElementById('more-cards-tooltip').style.display = 'none';
-    }
-    
-    function formatCardNumber(input) {
-        let value = input.value.replace(/\s/g, '').replace(/[^0-9]/gi, '');
-        let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
-        input.value = formattedValue;
-    }
-    
-    function formatExpiry(input) {
-        let value = input.value.replace(/\D/g, '');
-        if (value.length >= 2) {
-            value = value.substring(0, 2) + '/' + value.substring(2, 4);
-        }
-        input.value = value;
-    }
-    
+
     function changeQuantity(productId, change) {
-        let cartItems = JSON.parse(localStorage.getItem('cart')) || [];
-        const itemIndex = cartItems.findIndex(item => item.id === productId);
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const itemIndex = cart.findIndex(item => item.id === productId);
         
         if (itemIndex !== -1) {
-            cartItems[itemIndex].quantity += change;
-            
-            if (cartItems[itemIndex].quantity <= 0) {
-                cartItems.splice(itemIndex, 1);
+            cart[itemIndex].quantity += change;
+            if (cart[itemIndex].quantity <= 0) {
+                cart.splice(itemIndex, 1);
             }
-            
-            localStorage.setItem('cart', JSON.stringify(cartItems));
+            localStorage.setItem('cart', JSON.stringify(cart));
             updateCartPage();
         }
     }
-    
+
     function removeFromCart(productId) {
-        let cartItems = JSON.parse(localStorage.getItem('cart')) || [];
-        cartItems = cartItems.filter(item => item.id !== productId);
-        localStorage.setItem('cart', JSON.stringify(cartItems));
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        cart = cart.filter(item => item.id !== productId);
+        localStorage.setItem('cart', JSON.stringify(cart));
         updateCartPage();
     }
-    
-    // Event Listener für das Schließen der Adressvorschläge beim Klicken außerhalb
-    document.addEventListener('click', function(e) {
-        if (!e.target.closest('#address') && !e.target.closest('#address-suggestions')) {
+
+    // Stripe initialisieren
+    const stripe = Stripe('pk_test_51234567890abcdef');
+    const elements = stripe.elements();
+
+    // Formular-Handler
+    document.addEventListener('DOMContentLoaded', function() {
+        updateCartPage();
+        
+        // Klick außerhalb des Dropdowns schließt es
+        document.addEventListener('click', function(event) {
+            const dropdown = document.getElementById('card-dropdown');
+            const button = event.target.closest('button');
+            if (dropdown && !button?.onclick?.toString().includes('toggleCardDropdown')) {
+                dropdown.style.display = 'none';
+            }
+            
             const suggestions = document.getElementById('address-suggestions');
-            if (suggestions) {
+            if (suggestions && !event.target.closest('#address') && !event.target.closest('#address-suggestions')) {
                 suggestions.style.display = 'none';
             }
-        }
-        
-        if (!e.target.closest('#address')) {
-            const hint = document.getElementById('house-number-hint');
-            if (hint) {
-                hint.style.display = 'none';
-            }
-        }
+        });
     });
-    
-    document.addEventListener('DOMContentLoaded', updateCartPage);
     </script>
     
     <style>
+    .hover-item:hover {
+        background-color: #f8f9fa !important;
+    }
+    
     .address-suggestion {
-        padding: 10px;
+        padding: 12px;
         cursor: pointer;
         border-bottom: 1px solid #eee;
         transition: background-color 0.2s;
@@ -523,16 +539,22 @@
         border-bottom: none;
     }
     
-    .payment-methods {
-        display: flex;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 4px;
+    #address-suggestions {
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        max-height: 300px;
+        overflow-y: auto;
+        z-index: 1000;
+    }
+    .card-images img {
+        transition: transform 0.2s, box-shadow 0.2s;
     }
     
-    .payment-methods img {
-        border-radius: 4px;
-        border: 1px solid #e0e0e0;
+    .card-images img:hover {
+        transform: scale(1.05);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
     }
     </style>
 </body>
