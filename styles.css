@@ -24,10 +24,256 @@ body {
     transform: scale(1.04);
 }
 
+/* --- Moderne Button-Styles --- */
+.btn {
+    border-radius: 12px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: none;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
+}
+
+.btn:hover::before {
+    left: 100%;
+}
+
 .btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
     padding: 0.75rem 2rem;
-    border-radius: 50px;
     font-size: 1.1rem;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+    color: white;
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+.btn-outline-secondary {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    color: #6c757d;
+    border: 2px solid #dee2e6;
+    box-shadow: 0 4px 12px rgba(108, 117, 125, 0.15);
+}
+
+.btn-outline-secondary:hover {
+    background: linear-gradient(135deg, #e9ecef 0%, #f8f9fa 100%);
+    color: #495057;
+    border-color: #adb5bd;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(108, 117, 125, 0.25);
+}
+
+.add-to-cart {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    border-radius: 50px;
+    padding: 0.75rem 2rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border: none;
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.18);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: box-shadow 0.2s, transform 0.2s, background 0.25s;
+    position: relative;
+    overflow: hidden;
+}
+.add-to-cart i {
+    font-size: 1.3rem;
+    color: #fff;
+    margin-right: 0.5rem;
+    pointer-events: none;
+}
+.add-to-cart:hover {
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+    box-shadow: 0 12px 35px rgba(102, 126, 234, 0.28);
+    transform: translateY(-2px) scale(1.05);
+}
+.add-to-cart:active {
+    transform: scale(0.97);
+}
+
+/* Warenkorb-Button speziell */
+#cartButton {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: #fff;
+    color: #444;
+    box-shadow: 0 8px 32px rgba(102,126,234,0.13), 0 2px 8px rgba(0,0,0,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    position: relative;
+    border: none;
+    transition: box-shadow 0.2s, transform 0.2s, background 0.25s;
+    padding: 0;
+}
+#cartButton:hover {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    box-shadow: 0 16px 48px rgba(102,126,234,0.22), 0 4px 16px rgba(0,0,0,0.13);
+    transform: translateY(-2px) scale(1.07);
+}
+#cartButton i {
+    font-size: 2.1rem;
+    margin: 0;
+    color: #444;
+    transition: color 0.2s;
+}
+#cartButton:hover i {
+    color: #fff;
+}
+#cartCounter {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    min-width: 22px;
+    height: 22px;
+    padding: 0 6px;
+    background: #e53935;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 700;
+    border-radius: 50%;
+    border: 2.5px solid #fff;
+    box-shadow: 0 2px 8px rgba(229,57,53,0.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    transition: transform 0.18s, box-shadow 0.18s;
+    animation: badgePop 0.4s cubic-bezier(.68,-0.55,.27,1.55);
+}
+@keyframes badgePop {
+    0% { transform: scale(0.5); }
+    60% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+@media (max-width: 600px) {
+    #cartButton {
+        width: 48px;
+        height: 48px;
+        font-size: 1.4rem;
+    }
+    #cartCounter {
+        min-width: 16px;
+        height: 16px;
+        font-size: 0.85rem;
+        top: 2px;
+        right: 2px;
+    }
+}
+
+/* Quantity-Buttons im Warenkorb */
+.quantity-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    color: #fff !important;
+    border: none;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.13);
+    transition: all 0.2s;
+}
+
+.quantity-btn:hover {
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%) !important;
+    color: #fff !important;
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.18);
+}
+
+.quantity-btn:active {
+    transform: scale(0.95);
+}
+
+/* Remove-Button */
+.remove-item {
+    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(220, 53, 69, 0.3);
+    transition: all 0.3s ease;
+}
+
+.remove-item:hover {
+    background: linear-gradient(135deg, #c82333 0%, #dc3545 100%);
+    transform: scale(1.1) rotate(90deg);
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.4);
+    color: white;
+}
+
+/* Form-Buttons */
+.form-control {
+    border-radius: 12px;
+    border: 2px solid #e9ecef;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.form-control:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+    transform: translateY(-1px);
+}
+
+/* Success-Button */
+.success-actions .btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+}
+
+.success-actions .btn-primary:hover {
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
+/* Continue Shopping Button */
+.continue-shopping {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    text-decoration: none;
+    padding: 1rem 2rem;
+    border-radius: 15px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+    display: inline-block;
+}
+
+.continue-shopping:hover {
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4);
+    text-decoration: none;
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
 }
 
 .navbar {
@@ -146,7 +392,8 @@ footer {
 }
 
 .cart-item {
-    display: flex;
+    display: grid;
+    grid-template-columns: 120px 2fr 1.2fr auto;
     align-items: center;
     padding: 10px;
     border-bottom: 1px solid #f0f0f0;
@@ -170,30 +417,10 @@ footer {
     gap: 5px;
 }
 
-.quantity-btn {
-    background: #f8f9fa;
-    border: 1px solid #dee2e6;
-    border-radius: 4px;
-    width: 24px;
-    height: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-}
-
 .quantity-display {
     min-width: 20px;
     text-align: center;
     font-weight: 500;
-}
-
-.remove-item {
-    background: none;
-    border: none;
-    color: #dc3545;
-    cursor: pointer;
-    padding: 2px;
 }
 
 .cart-dropdown-header {
@@ -250,9 +477,12 @@ footer {
     font-size: 14px;
     font-weight: 500;
     margin-bottom: 2px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    /* white-space: nowrap; */
+    /* overflow: hidden; */
+    /* text-overflow: ellipsis; */
+    white-space: normal;
+    overflow: visible;
+    text-overflow: unset;
 }
 
 .cart-item-price {
@@ -266,27 +496,24 @@ footer {
     gap: 5px;
 }
 
-.quantity-btn {
-    width: 25px;
-    height: 25px;
-    border: 1px solid #ddd;
-    background: white;
-    border-radius: 3px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    font-size: 12px;
+/* Entferne die Hintergrundfarbe für .addon-btn und .quantity-btn, damit cart.css greift */
+.quantity-btn, .addon-btn {
+    /* Hintergrundfarbe entfernt! */
 }
 
-.quantity-btn:hover {
-    background-color: #f0f0f0;
+.quantity-btn i, .addon-btn i {
+    font-size: 1.3rem;
+    color: #fff;
+    margin: 0;
+    pointer-events: none;
 }
-
-.quantity-display {
-    min-width: 30px;
-    text-align: center;
-    font-size: 13px;
+.quantity-btn:hover, .addon-btn:hover {
+    background: linear-gradient(135deg, #38f9d7 0%, #43e97b 100%);
+    box-shadow: 0 8px 32px rgba(67,233,123,0.22), 0 4px 16px rgba(56,249,215,0.13);
+    transform: scale(1.12);
+}
+.quantity-btn:active, .addon-btn:active {
+    transform: scale(0.95);
 }
 
 .remove-item {
@@ -449,4 +676,52 @@ footer {
 .stripe-logos img {
   height: 28px;
   opacity: 0.85;
+}
+
+/* Mengensteuerung im Warenkorb-Dropdown wie im großen Warenkorb */
+.cart-dropdown .quantity-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #fff;
+    border-radius: 25px;
+    padding: 0.25rem 1.2rem;
+    border: 2px solid #e9ecef;
+    box-shadow: 0 4px 16px rgba(102,126,234,0.10);
+    min-width: 100px;
+    justify-content: center;
+}
+
+.cart-dropdown .quantity-btn {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    color: #fff !important;
+    border: none;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.13);
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.cart-dropdown .quantity-btn:hover {
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%) !important;
+    transform: scale(1.12);
+    box-shadow: 0 4px 16px rgba(102, 126, 234, 0.18);
+}
+
+.cart-dropdown .quantity-btn:active {
+    transform: scale(0.95);
+}
+
+.cart-dropdown .quantity-display {
+    min-width: 28px;
+    text-align: center;
+    font-weight: 600;
+    color: #2c3e50;
+    font-size: 1.05rem;
 }

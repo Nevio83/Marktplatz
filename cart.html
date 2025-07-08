@@ -14,24 +14,32 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
         <div class="container">
             <a class="navbar-brand fw-bold" href="index.html">
-                <i class="bi bi-shop"></i> Marktplatz
+                <i class="bi bi-shop" aria-hidden="true"></i> Marktplatz
             </a>
             <a href="index.html" class="btn btn-outline-primary">
-                <i class="bi bi-arrow-left"></i> Zurück zum Shop
+                <i class="bi bi-arrow-left" aria-hidden="true"></i> Zurück zum Shop
             </a>
         </div>
     </nav>
 
-    <div class="main-container" style="background:#eaf8f7; border-radius:24px; padding:2rem 0;">
+    <div class="main-container">
         <div class="page-header">
             <h1 class="page-title">
-                <i class="bi bi-cart3"></i> Ihr Warenkorb
+                <i class="bi bi-cart3" aria-hidden="true"></i> Ihr Warenkorb
             </h1>
             <p class="page-subtitle">Überprüfen Sie Ihre Artikel und schließen Sie Ihre Bestellung ab</p>
         </div>
 
         <div id="cartContent">
             <!-- Wird dynamisch gefüllt -->
+        </div>
+    </div>
+
+    <!-- Vorschläge -->
+    <div class="container my-5" id="suggestions-container" style="display: none;">
+        <h2 class="mb-4">Das könnte Ihnen auch gefallen</h2>
+        <div class="row row-cols-1 row-cols-md-2 g-4" id="suggestions-grid">
+            <!-- Vorschläge werden hier dynamisch eingefügt -->
         </div>
     </div>
 

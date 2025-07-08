@@ -199,6 +199,25 @@ function updateCartPage() {
     const cartContent = document.getElementById('cartContent');
     
     if (cartItems.length === 0) {
+        // Bei leerem Warenkorb: 3 zufällige Produktvorschläge anzeigen
+        let allProducts = [];
+        try {
+            allProducts = JSON.parse(localStorage.getItem('allProducts')) || [];
+        } catch (e) { allProducts = []; }
+        if (!allProducts.length) {
+            fetch('products.json')
+                .then(res => res.json())
+                .then(data => {
+                    localStorage.setItem('allProducts', JSON.stringify(data));
+                    updateCartPage();
+                });
+            return;
+        }
+        
+        // 3 zufällige Produkte auswählen
+        const shuffled = [...allProducts].sort(() => 0.5 - Math.random());
+        const randomProducts = shuffled.slice(0, 3);
+        
         cartContent.innerHTML = `
             <div class="empty-cart">
                 <div class="empty-cart-icon">
@@ -209,17 +228,35 @@ function updateCartPage() {
                 <a href="index.html" class="continue-shopping">
                     <i class="bi bi-arrow-left"></i> Weiter einkaufen
                 </a>
+                
+                <!-- Zufällige Produktvorschläge -->
+                <div class="mt-5">
+                    <h4 class="mb-3"><i class="bi bi-lightbulb"></i> Das könnte Ihnen gefallen</h4>
+                    <div class="addon-list">
+                        ${randomProducts.map(product => `
+                            <div class="addon-card">
+                                <img src="${product.image}" class="addon-card-img" alt="${product.name}">
+                                <div class="addon-card-info">
+                                    <div class="addon-card-title">${product.name}</div>
+                                    <div class="addon-card-price">${currentCurrency.symbol}${product.price.toFixed(2)}</div>
+                                </div>
+                                <button class="addon-btn" onclick="addAddonToCart(${product.id})">
+                                    <i class="bi bi-cart-plus"></i> Hinzufügen
+                                </button>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
             </div>
         `;
         return;
     }
     
-    // --- Add-on-Logik: Produkte aus gleicher Kategorie, die nicht im Warenkorb sind ---
+    // --- Add-on-Logik: Maximal 2 Vorschläge aus unterschiedlichen Kategorien im Warenkorb, zufällig ausgewählt ---
     let allProducts = [];
     try {
         allProducts = JSON.parse(localStorage.getItem('allProducts')) || [];
     } catch (e) { allProducts = []; }
-    // Wenn noch nicht im localStorage, lade products.json
     if (!allProducts.length) {
         fetch('products.json')
             .then(res => res.json())
@@ -231,7 +268,22 @@ function updateCartPage() {
     }
     const cartIds = cartItems.map(item => item.id);
     const cartCategories = [...new Set(cartItems.map(item => item.category))];
-    const addonProducts = allProducts.filter(p => cartCategories.includes(p.category) && !cartIds.includes(p.id));
+    // Für jede Kategorie ein zufälliges Add-on, das nicht im Warenkorb ist
+    let categoryAddons = cartCategories.map(cat => {
+        const candidates = allProducts.filter(p => p.category === cat && !cartIds.includes(p.id));
+        if (candidates.length === 0) return null;
+        return candidates[Math.floor(Math.random() * candidates.length)];
+    }).filter(Boolean);
+    // Maximal 2 Add-ons, zufällig aus den Kategorien
+    if (categoryAddons.length > 2) {
+        // Shuffle und nimm die ersten 2
+        for (let i = categoryAddons.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [categoryAddons[i], categoryAddons[j]] = [categoryAddons[j], categoryAddons[i]];
+        }
+        categoryAddons = categoryAddons.slice(0, 2);
+    }
+    const addonProducts = categoryAddons;
     // --- Ende Add-on-Logik ---
 
     const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);

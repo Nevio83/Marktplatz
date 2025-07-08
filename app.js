@@ -233,14 +233,52 @@ function renderCartDropdown() {
 
   if (cartItems.length === 0) {
     footer.style.display = 'none';
-    body.innerHTML = `
-      <div class="empty-cart text-center py-4" id="emptyCartMessage">
-        <i class="bi bi-cart-x fs-1 text-muted"></i>
-        <p class="text-muted mt-2">Ihr Warenkorb ist leer</p>
-      </div>
-    `;
+    
+    // Bei leerem Warenkorb: 3 zufällige Produktvorschläge anzeigen
+    loadProducts().then(products => {
+      if (products.length === 0) {
+        body.innerHTML = `
+          <div class="empty-cart text-center py-4" id="emptyCartMessage">
+            <i class="bi bi-cart-x fs-1 text-muted"></i>
+            <p class="text-muted mt-2">Ihr Warenkorb ist leer</p>
+          </div>
+        `;
+        return;
+      }
+      
+      // 3 zufällige Produkte auswählen
+      const shuffled = [...products].sort(() => 0.5 - Math.random());
+      const randomProducts = shuffled.slice(0, 3);
+      
+      body.innerHTML = `
+        <div class="empty-cart text-center py-3" id="emptyCartMessage">
+          <i class="bi bi-cart-x fs-1 text-muted"></i>
+          <p class="text-muted mt-2 mb-3">Ihr Warenkorb ist leer</p>
+          
+          <!-- Zufällige Produktvorschläge -->
+          <div class="mt-3">
+            <h6 class="mb-2"><i class="bi bi-lightbulb"></i> Das könnte Ihnen gefallen</h6>
+            ${randomProducts.map(product => `
+              <div class="cart-item" style="margin-bottom: 0.5rem;">
+                <img src="${product.image}" class="cart-item-image" alt="${product.name}">
+                <div class="cart-item-details">
+                  <div class="cart-item-name">${product.name}</div>
+                  <div class="cart-item-price">€${product.price.toFixed(2)}</div>
+                </div>
+                <div class="cart-item-controls">
+                  <button class="quantity-btn" onclick="addToCart(${product.id})" style="background: #28a745; color: white; border: none;">
+                    <i class="bi bi-cart-plus"></i>
+                  </button>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    });
     return;
   }
+  
   footer.style.display = 'block';
   body.innerHTML = cartItems.map(item => `
     <div class="cart-item">
@@ -254,9 +292,11 @@ function renderCartDropdown() {
         </div>
       </div>
       <div class="cart-item-controls">
-        <button class="quantity-btn" onclick="changeQuantity(${Number(item.id)}, -1)">-</button>
-        <span class="quantity-display">${item.quantity}</span>
-        <button class="quantity-btn" onclick="changeQuantity(${Number(item.id)}, 1)">+</button>
+        <div class="quantity-controls">
+          <button class="quantity-btn" onclick="changeQuantity(${Number(item.id)}, -1)">-</button>
+          <span class="quantity-display">${item.quantity}</span>
+          <button class="quantity-btn" onclick="changeQuantity(${Number(item.id)}, 1)">+</button>
+        </div>
         <button class="remove-item" onclick="removeFromCart(${Number(item.id)})">&times;</button>
       </div>
     </div>
