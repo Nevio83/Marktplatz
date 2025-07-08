@@ -1,7 +1,14 @@
 [
-  { "id": 1, "name": "Ware ?", "price": 10.00, "category": "Elektronik", "image": "placeholder-product.jpg" },
-  { "id": 2, "name": "Ware ??", "price": 20.00, "category": "Mode", "image": "placeholder-product.jpg" },
-  { "id": 3, "name": "Ware ???", "price": 30.00, "category": "Fitness", "image": "placeholder-product.jpg" },
-  { "id": 4, "name": "Ware ????", "price": 40.00, "category": "Haushalt", "image": "placeholder-product.jpg" },
-  { "id": 5, "name": "Ware ?????", "price": 50.00, "category": "Elektronik", "image": "placeholder-product.jpg" }
+  { "id": 1, "name": "Elektronik Produkt 1", "price": 10.00, "category": "Elektronik", "image": "waren/ware.png" },
+  { "id": 2, "name": "Elektronik Produkt 2", "price": 12.00, "category": "Elektronik", "image": "waren/ware.png" },
+  { "id": 3, "name": "Elektronik Produkt 3", "price": 14.00, "category": "Elektronik", "image": "waren/ware.png" },
+  { "id": 4, "name": "Mode Produkt 1", "price": 20.00, "category": "Mode", "image": "waren/ware.png" },
+  { "id": 5, "name": "Mode Produkt 2", "price": 22.00, "category": "Mode", "image": "waren/ware.png" },
+  { "id": 6, "name": "Mode Produkt 3", "price": 24.00, "category": "Mode", "image": "waren/ware.png" },
+  { "id": 7, "name": "Fitness Produkt 1", "price": 30.00, "category": "Fitness", "image": "waren/ware.png" },
+  { "id": 8, "name": "Fitness Produkt 2", "price": 32.00, "category": "Fitness", "image": "waren/ware.png" },
+  { "id": 9, "name": "Fitness Produkt 3", "price": 34.00, "category": "Fitness", "image": "waren/ware.png" },
+  { "id": 10, "name": "Haushalt Produkt 1", "price": 40.00, "category": "Haushalt", "image": "waren/ware.png" },
+  { "id": 11, "name": "Haushalt Produkt 2", "price": 42.00, "category": "Haushalt", "image": "waren/ware.png" },
+  { "id": 12, "name": "Haushalt Produkt 3", "price": 44.00, "category": "Haushalt", "image": "waren/ware.png" }
 ]

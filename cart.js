@@ -214,6 +214,26 @@ function updateCartPage() {
         return;
     }
     
+    // --- Add-on-Logik: Produkte aus gleicher Kategorie, die nicht im Warenkorb sind ---
+    let allProducts = [];
+    try {
+        allProducts = JSON.parse(localStorage.getItem('allProducts')) || [];
+    } catch (e) { allProducts = []; }
+    // Wenn noch nicht im localStorage, lade products.json
+    if (!allProducts.length) {
+        fetch('products.json')
+            .then(res => res.json())
+            .then(data => {
+                localStorage.setItem('allProducts', JSON.stringify(data));
+                updateCartPage();
+            });
+        return;
+    }
+    const cartIds = cartItems.map(item => item.id);
+    const cartCategories = [...new Set(cartItems.map(item => item.category))];
+    const addonProducts = allProducts.filter(p => cartCategories.includes(p.category) && !cartIds.includes(p.id));
+    // --- Ende Add-on-Logik ---
+
     const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
     const shipping = getShippingCost(currentCountry);
     const total = subtotal + shipping;
@@ -247,6 +267,27 @@ function updateCartPage() {
                         </div>
                     `).join('')}
                 </div>
+                <!-- Add-ons Bereich -->
+                ${addonProducts.length > 0 ? `
+                <div class="mt-5">
+                    <h4 class="mb-3"><i class="bi bi-plus-circle"></i>Add-ons </h4>
+                    <div class="addon-list">
+                        ${addonProducts.map(addon => `
+                            <div class="addon-card">
+                                <img src="${addon.image}" class="addon-card-img" alt="${addon.name}">
+                                <div class="addon-card-info">
+                                    <div class="addon-card-title">${addon.name}</div>
+                                    <div class="addon-card-price">${currentCurrency.symbol}${addon.price.toFixed(2)}</div>
+                                </div>
+                                <button class="addon-btn" onclick="addAddonToCart(${addon.id})">
+                                    <i class="bi bi-cart-plus"></i> Hinzufügen
+                                </button>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+                ` : ''}
+                <!-- Ende Add-ons Bereich -->
             </div>
             
             <div class="checkout-section">
@@ -477,6 +518,25 @@ function changeQuantity(productId, change) {
 function removeFromCart(productId) {
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
     cart = cart.filter(item => item.id !== productId);
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCartPage();
+}
+
+// Add-on zum Warenkorb hinzufügen
+function addAddonToCart(productId) {
+    let allProducts = [];
+    try {
+        allProducts = JSON.parse(localStorage.getItem('allProducts')) || [];
+    } catch (e) { allProducts = []; }
+    const product = allProducts.find(p => p.id === productId);
+    if (!product) return;
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const existing = cart.find(item => item.id === productId);
+    if (existing) {
+        existing.quantity += 1;
+    } else {
+        cart.push({ ...product, quantity: 1 });
+    }
     localStorage.setItem('cart', JSON.stringify(cart));
     updateCartPage();
 }
