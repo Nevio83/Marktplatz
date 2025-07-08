@@ -65,7 +65,7 @@ app.post('/stripe-webhook', express.raw({type: 'application/json'}), async (req,
       const msg = {
         to: session.customer_details.email,
         from: process.env.SENDER_EMAIL,
-  reply_to: isSellerOrder ? sellerEmail : process.env.SUPPORT_EMAIL,
+        reply_to: process.env.SUPPORT_EMAIL,
         subject: 'Zahlungsbestätigung - Marktplatz',
         text: `Vielen Dank für Ihre Bestellung #${session.id}!\n\nIhre Zahlung wurde erfolgreich verarbeitet.`,        html: `<strong>Bestellbestätigung #${session.id}</strong>
           <p>Ihre Zahlung wurde erfolgreich verarbeitet und wir bereiten den Versand vor.</p>`
@@ -87,7 +87,7 @@ app.post('/api/send-confirmation', async (req, res) => {
     const msg = {
       to: email,
       from: process.env.SENDER_EMAIL,
-  reply_to: isSellerOrder ? sellerEmail : process.env.SUPPORT_EMAIL,
+      reply_to: process.env.SUPPORT_EMAIL,
       subject: 'Bestellbestätigung - Marktplatz',
       text: `Vielen Dank für Ihre Bestellung #${orderId}!\n\nWir bearbeiten Ihre Bestellung und senden sie innerhalb von 2 Werktagen zu.`,
       html: `<strong>Bestellbestätigung #${orderId}</strong>
@@ -103,16 +103,19 @@ app.post('/api/send-confirmation', async (req, res) => {
 });
 
 app.post('/api/create-payment-intent', async (req, res) => {
-  const { cart, email } = req.body;
+  const { cart, email, country } = req.body;
   let amount = 0;
   for (const item of cart) {
     if (item.id === 1) {
       amount += 1000 * item.quantity; // 10.00 EUR * 100
     } else {
-      amount += Math.round(item.price * 100) * item.quantity;
+      amount += Math.round((item.price || 0) * 100) * item.quantity;
     }
   }
-  amount += 499; // Versandkosten
+
+  // Versandkosten serverseitig basierend auf dem Land berechnen
+  const shippingCost = country === 'DE' ? 0 : 499;
+  amount += shippingCost;
 
   try {
     if (amount < 50) {
