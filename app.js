@@ -17,12 +17,36 @@ async function loadProducts() {
   }
 }
 
-// Produktgrid rendern
+// Wishlist-Logik
+let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+
+function isInWishlist(productId) {
+  return wishlist.some(item => Number(item.id) === Number(productId));
+}
+
+function toggleWishlist(productId) {
+  loadProducts().then(products => {
+    const product = products.find(p => Number(p.id) === Number(productId));
+    if (!product) return;
+    if (isInWishlist(productId)) {
+      wishlist = wishlist.filter(item => Number(item.id) !== Number(productId));
+    } else {
+      wishlist.push(product);
+    }
+    localStorage.setItem('wishlist', JSON.stringify(wishlist));
+    renderProducts(products); // Herz-Status aktualisieren
+  });
+}
+
+// Produktgrid rendern (mit Herz oben rechts)
 function renderProducts(products) {
   const grid = document.getElementById('productGrid');
   grid.innerHTML = products.map(product => `
     <div class="col">
-      <div class="card h-100 border-0 shadow-hover">
+      <div class="card h-100 border-0 shadow-hover position-relative">
+        <button class="wishlist-btn" data-product-id="${product.id}" aria-label="Zur Wunschliste">
+          <i class="bi ${isInWishlist(product.id) ? 'bi-heart-fill' : 'bi-heart'}"></i>
+        </button>
         <div class="ratio ratio-4x3">
           <img src="${product.image}" class="card-img-top object-fit-cover" alt="${product.name}">
         </div>
@@ -46,6 +70,7 @@ function renderProducts(products) {
     </div>
   `).join('');
   initializeAddToCartButtons();
+  initializeWishlistButtons();
 }
 
 // Add-to-cart Buttons initialisieren
@@ -304,6 +329,17 @@ function renderCartDropdown() {
   totalElement.textContent = cartItems
     .reduce((sum, item) => sum + (item.price * item.quantity), 0)
     .toFixed(2);
+}
+
+// Wishlist-Buttons initialisieren
+function initializeWishlistButtons() {
+  document.querySelectorAll('.wishlist-btn').forEach(button => {
+    button.addEventListener('click', (e) => {
+      e.preventDefault();
+      const productId = parseInt(button.dataset.productId);
+      toggleWishlist(productId);
+    });
+  });
 }
 
 // Filter- und Sortier-Event-Listener
