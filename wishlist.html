@@ -30,18 +30,24 @@
         <p>Deine Wunschliste ist leer.</p>
       </div>
     </div>
+    <div class="d-flex justify-content-center mt-4">
+      <button id="addAllToCart" class="btn btn-primary btn-lg"><i class="bi bi-cart-plus me-2"></i>Alle zum Warenkorb</button>
+    </div>
   </main>
   <script>
     function renderWishlist() {
       const grid = document.getElementById('wishlistGrid');
       const emptyMsg = document.getElementById('wishlistEmpty');
       const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+      const addAllBtn = document.getElementById('addAllToCart');
       if (wishlist.length === 0) {
         grid.innerHTML = '';
         emptyMsg.style.display = '';
+        addAllBtn.style.display = 'none';
         return;
       }
       emptyMsg.style.display = 'none';
+      addAllBtn.style.display = '';
       grid.innerHTML = wishlist.map(product => `
         <div class="col">
           <div class="card h-100 border-0 shadow-hover position-relative">
@@ -79,7 +85,24 @@
         });
       });
     }
-    document.addEventListener('DOMContentLoaded', renderWishlist);
+    document.addEventListener('DOMContentLoaded', function() {
+      renderWishlist();
+      document.getElementById('addAllToCart').addEventListener('click', function() {
+        const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+        if (wishlist.length === 0) return;
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        // Nur Produkte hinzufügen, die noch nicht im Warenkorb sind
+        wishlist.forEach(wish => {
+          if (!cart.some(item => item.id === wish.id)) {
+            cart.push({ ...wish, quantity: 1 });
+          }
+        });
+        localStorage.setItem('cart', JSON.stringify(cart));
+        // Wunschliste leeren (optional: falls du das willst)
+        localStorage.setItem('wishlist', JSON.stringify([]));
+        window.location.href = 'cart.html';
+      });
+    });
   </script>
 </body>
 </html>

@@ -20,6 +20,23 @@ const currencyByCountry = {
 let currentCountry = 'DE';
 let currentCurrency = currencyByCountry[currentCountry];
 
+const currencyConversion = {
+    'EUR': 1,
+    'USD': 1.08,
+    'GBP': 0.85,
+    'CHF': 0.95,
+    'CAD': 1.45,
+    'AUD': 1.65,
+    'JPY': 170,
+    'BRL': 5.5,
+    'MXN': 19.5
+};
+
+function convertPrice(eurPrice, currencyCode) {
+    const factor = currencyConversion[currencyCode] || 1;
+    return eurPrice * factor;
+}
+
 // Versandkosten nach Land
 function getShippingCost(countryCode) {
     return countryCode === 'DE' ? 0 : 4.99;
@@ -286,9 +303,11 @@ function updateCartPage() {
     const addonProducts = categoryAddons;
     // --- Ende Add-on-Logik ---
 
-    const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    // Preise umrechnen für Anzeige
+    const subtotal = cartItems.reduce((sum, item) => sum + (convertPrice(item.price, currentCurrency.code) * item.quantity), 0);
     const shipping = getShippingCost(currentCountry);
-    const total = subtotal + shipping;
+    const shippingConverted = convertPrice(shipping, currentCurrency.code);
+    const total = subtotal + shippingConverted;
     
     cartContent.innerHTML = `
         <div class="cart-layout">
@@ -302,7 +321,7 @@ function updateCartPage() {
                             <img src="${item.image}" alt="${item.name}" class="cart-item-image">
                             <div class="cart-item-details">
                                 <h5>${item.name}</h5>
-                                <div class="cart-item-price">${currentCurrency.symbol}${item.price.toFixed(2)}</div>
+                                <div class="cart-item-price">${currentCurrency.symbol}${convertPrice(item.price, currentCurrency.code).toFixed(2)}</div>
                             </div>
                             <div class="quantity-controls">
                                 <button class="quantity-btn" onclick="changeQuantity(${item.id}, -1)">
@@ -329,7 +348,7 @@ function updateCartPage() {
                                 <img src="${addon.image}" class="addon-card-img" alt="${addon.name}">
                                 <div class="addon-card-info">
                                     <div class="addon-card-title">${addon.name}</div>
-                                    <div class="addon-card-price">${currentCurrency.symbol}${addon.price.toFixed(2)}</div>
+                                    <div class="addon-card-price">${currentCurrency.symbol}${convertPrice(addon.price, currentCurrency.code).toFixed(2)}</div>
                                 </div>
                                 <button class="addon-btn" onclick="addAddonToCart(${addon.id})">
                                     <i class="bi bi-cart-plus"></i> Hinzufügen
@@ -357,7 +376,7 @@ function updateCartPage() {
                     </div>
                     <div class="summary-row">
                         <span>Versand:</span>
-                        <span>${shipping === 0 ? 'Kostenlos' : currentCurrency.symbol + shipping.toFixed(2)}</span>
+                        <span>${shipping === 0 ? 'Kostenlos' : currentCurrency.symbol + shippingConverted.toFixed(2)}</span>
                     </div>
                     <div class="summary-row total">
                         <span>Gesamt:</span>
