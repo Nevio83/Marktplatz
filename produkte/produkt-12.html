@@ -126,7 +126,7 @@
                             </div>
                             
                             <div class="action-buttons">
-                                <button class="buy-now-btn" onclick="addToCartWithQuantity()">
+                                <button class="buy-now-btn" id="buyNowBtn">
                                     <i class="bi bi-cart-plus"></i> Jetzt kaufen
                                 </button>
                                 <button class="wishlist-btn" onclick="toggleWishlist(product)">
@@ -226,6 +226,9 @@
     .then(products => {
       const prod = products.find(p => p.id === product.id);
       if (prod && prod.bundles && prod.bundles.length > 0) {
+        renderBundles(prod.bundles);
+      } else {
+        // Fallback: Bundle-Box immer anzeigen
         renderBundles();
       }
     });
@@ -278,9 +281,9 @@
       let cart = getCart();
       const existing = cart.find(item => Number(item.id) === Number(product.id));
       if (existing) {
-          existing.quantity++;
+          existing.quantity += product.quantity || 1;
       } else {
-          cart.push({ ...product, quantity: 1 });
+          cart.push({ ...product, quantity: product.quantity || 1 });
       }
       setCart(cart);
       window.location.href = '../cart.html';
@@ -292,19 +295,19 @@
 
   function addBundleToCart(bundle) {
     let cart = getCart();
-    const bundleId = `${product.id}-${bundle.id}`;
+    const bundleId = bundle.bundleId;
     const existing = cart.find(item => item.bundleId === bundleId);
     if (existing) {
         existing.quantity = 1;
     } else {
         cart.push({
             id: product.id,
-            name: product.name + ' - ' + bundle.name,
+            name: bundle.name,
             price: bundle.price,
             image: product.image,
-            description: product.description + ' (Bundle: ' + bundle.name + ')',
+            description: bundle.description,
             bundleId: bundleId,
-            bundleItems: bundle.items,
+            bundleItems: [], // Keine Items für die neue Staffel
             quantity: 1
         });
     }
@@ -421,10 +424,7 @@
     document.getElementById('totalPrice').textContent = `€${total}`;
   }
 
-  function addToCartWithQuantity() {
-    const quantity = parseInt(document.getElementById('quantity').value, 10) || 1;
-    addToCart(product.id, quantity);
-  }
+
 
   document.addEventListener('DOMContentLoaded', function() {
     // Event-Listener für Hero-Buttons
@@ -455,10 +455,24 @@
 
     // Event-Listener für Quantity-Input
     const quantityInput = document.getElementById('quantity');
+    const buyNowBtn = document.getElementById('buyNowBtn');
+    
     if (quantityInput) {
       quantityInput.addEventListener('input', updateTotalPrice);
       quantityInput.addEventListener('change', updateTotalPrice);
       updateTotalPrice(); // Initialisiere den Preis
+    }
+    
+    if (buyNowBtn) {
+      buyNowBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        const quantity = parseInt(quantityInput.value, 10) || 1;
+        const productToCart = {
+          ...product,
+          quantity: quantity
+        };
+        addToCart(productToCart);
+      });
     }
   });
     </script>
