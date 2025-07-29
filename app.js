@@ -83,13 +83,16 @@ function updateWishlistButtonState(productId) {
 
 // Produktgrid rendern (mit Herz oben rechts)
 function renderProducts(products) {
+  console.log('Rendering', products.length, 'products');
   const grid = document.getElementById('productGrid');
   if (!grid) {
     console.error('Product grid not found!');
     return; // Verhindert Fehler auf anderen Seiten
   }
   
-  grid.innerHTML = products.map(product => `
+  grid.innerHTML = products.map(product => {
+    console.log('Rendering product:', product.id, product.name);
+    return `
     <div class="col">
       <div class="card h-100 border-0 shadow-hover position-relative product-card" data-product-id="${product.id}">
         <button class="wishlist-btn" data-product-id="${product.id}" aria-label="Zur Wunschliste">
@@ -110,15 +113,18 @@ function renderProducts(products) {
             <button class="btn btn-primary rounded-pill px-3 py-2 add-to-cart"
                     data-product-id="${product.id}"
                     data-name="${product.name}"
-                    data-price="${product.price}">
+                    data-price="${product.price}"
+                    onclick="addToCart(${product.id}); return false;">
               <i class="bi bi-cart-plus me-2"></i><span class="btn-text">In den Warenkorb</span>
             </button>
           </div>
         </div>
       </div>
     </div>
-  `).join('');
+  `;
+  }).join('');
   
+  console.log('Products rendered, initializing buttons...');
   initializeAddToCartButtons();
   initializeWishlistButtons();
   initializeProductCardClicks();
@@ -141,24 +147,34 @@ function observeProductCards() {
 
 // Add-to-cart Buttons initialisieren
 function initializeAddToCartButtons() {
-  const buttons = document.querySelectorAll('.add-to-cart');
-  
-  buttons.forEach((button) => {
-    // Remove any existing event listeners to prevent duplicates
-    button.replaceWith(button.cloneNode(true));
-  });
-  
-  // Re-select buttons after cloning
-  const freshButtons = document.querySelectorAll('.add-to-cart');
-  
-  freshButtons.forEach((button) => {
-    button.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation(); // Verhindert, dass das Klick-Event zur Karte weitergeht
-      const productId = parseInt(button.dataset.productId);
-      addToCart(productId);
+  // Warte kurz, um sicherzustellen, dass alle Elemente gerendert sind
+  setTimeout(() => {
+    const buttons = document.querySelectorAll('.add-to-cart');
+    console.log('Found', buttons.length, 'add-to-cart buttons');
+    
+    buttons.forEach((button, index) => {
+      const productId = button.dataset.productId;
+      console.log(`Initializing button ${index} for product ${productId}`);
+      
+      // Entferne alle bestehenden Event Listener
+      const newButton = button.cloneNode(true);
+      button.parentNode.replaceChild(newButton, button);
+      
+      // Füge den Event Listener zum neuen Button hinzu
+      newButton.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log('Button clicked for product:', productId);
+        
+        const productId = parseInt(this.dataset.productId);
+        if (productId && !isNaN(productId)) {
+          addToCart(productId);
+        } else {
+          console.error('Invalid product ID:', productId);
+        }
+      });
     });
-  });
+  }, 100);
 }
 
 // Produktkarten-Klicks initialisieren
@@ -184,18 +200,32 @@ function initializeProductCardClicks() {
 
 // Warenkorb-Funktionen
 function addToCart(productId) {
+  console.log('addToCart called with productId:', productId);
+  
+  if (!productId || isNaN(productId)) {
+    console.error('Invalid product ID:', productId);
+    return;
+  }
+  
   loadProducts().then(products => {
+    console.log('Products loaded, looking for product ID:', productId);
     const product = products.find(p => Number(p.id) === Number(productId));
+    
     if (!product) {
       console.error('Product not found for ID:', productId);
+      alert('Produkt konnte nicht gefunden werden.');
       return;
     }
+    
+    console.log('Found product:', product.name);
     const existingItem = cartItems.find(item => Number(item.id) === Number(productId));
 
     if (existingItem) {
       existingItem.quantity++;
+      console.log('Updated existing item quantity:', existingItem.quantity);
     } else {
       cartItems.push({ ...product, quantity: 1 });
+      console.log('Added new item to cart');
     }
 
     // Speichere den aktuellen Warenkorb immer im localStorage
@@ -212,6 +242,9 @@ function addToCart(productId) {
         window.location.reload();
       }
     }
+  }).catch(error => {
+    console.error('Error loading products:', error);
+    alert('Fehler beim Laden der Produkte.');
   });
 }
 
@@ -530,6 +563,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Bilder optimieren und Platzhalter anwenden
     optimizeImages();
     setTimeout(applyPlaceholdersForMissingImages, 100); // Verzögerung für bessere Erkennung
+    
+    // Zusätzliche Button-Initialisierung nach einer kurzen Verzögerung
+    setTimeout(() => {
+      console.log('Additional button initialization...');
+      initializeAddToCartButtons();
+    }, 500);
   });
 
   const clearCartBtn = document.getElementById('clearCart');
@@ -681,10 +720,32 @@ function applyPlaceholdersForMissingImages() {
   });
 }
 
+// Test-Funktion für die Browser-Konsole
+window.testProduct1Button = function() {
+  console.log('Testing Product 1 button...');
+  const button = document.querySelector('.add-to-cart[data-product-id="1"]');
+  if (button) {
+    console.log('Product 1 button found:', button);
+    console.log('Button text:', button.textContent);
+    console.log('Button onclick:', button.onclick);
+    console.log('Button data-product-id:', button.dataset.productId);
+    
+    // Test click
+    button.click();
+  } else {
+    console.error('Product 1 button not found!');
+    console.log('All add-to-cart buttons:', document.querySelectorAll('.add-to-cart'));
+  }
+};
+
 // Stelle sicher, dass changeQuantity, removeFromCart und clearCart global verfügbar sind:
 window.changeQuantity = changeQuantity;
 window.removeFromCart = removeFromCart;
 window.clearCart = clearCart;
+window.addToCart = addToCart;
+window.initializeAddToCartButtons = initializeAddToCartButtons;
+window.renderProducts = renderProducts;
+window.loadProducts = loadProducts;
 
 document.addEventListener('DOMContentLoaded', function() {
   document.querySelectorAll('.category-tile').forEach(tile => {
