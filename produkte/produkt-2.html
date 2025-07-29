@@ -367,7 +367,14 @@
     if (existing) {
       existing.quantity += product.quantity || 1;
     } else {
-      cart.push({ ...product, quantity: product.quantity || 1 });
+      cart.push({ 
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        image: product.image,
+        description: product.description,
+        quantity: product.quantity || 1
+      });
     }
     setCart(cart);
     window.location.href = '../cart.html';
@@ -405,7 +412,11 @@
   function addToCartWithQuantity() {
     const quantity = parseInt(document.getElementById('quantity').value, 10) || 1;
     const productToCart = {
-      ...product,
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.image,
+      description: product.description,
       quantity: quantity
     };
     addToCart(productToCart);
@@ -428,7 +439,11 @@
         e.preventDefault();
         const quantity = parseInt(document.getElementById('quantity').value, 10) || 1;
         const productToCart = {
-          ...product,
+          id: product.id,
+          name: product.name,
+          price: product.price,
+          image: product.image,
+          description: product.description,
           quantity: quantity
         };
         addToCart(productToCart);
