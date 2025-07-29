@@ -168,7 +168,214 @@
     background: linear-gradient(45deg, #667eea, #764ba2);
     color: #fff;
     box-shadow: 0 4px 16px #764ba244;
-} 
+}
+
+/* Schnellbestellung Styles - Elektronik (Lila/Violett) */
+.quick-order-card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(118, 75, 162, 0.1);
+    border: 2px solid #f0f0f0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.quick-order-card:hover {
+    box-shadow: 0 8px 30px rgba(118, 75, 162, 0.15);
+    transform: translateY(-2px);
+}
+
+.quick-order-header {
+    background: linear-gradient(135deg, #764ba2, #667eea);
+    color: white;
+    padding: 1.5rem;
+    text-align: center;
+    position: relative;
+}
+
+.quick-order-header h4 {
+    margin: 0;
+    font-weight: 700;
+    font-size: 1.3rem;
+    letter-spacing: 1px;
+}
+
+.quick-order-header::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid #667eea;
+}
+
+.quick-order-body {
+    padding: 2rem;
+}
+
+.quantity-section {
+    margin-bottom: 1.5rem;
+}
+
+.quantity-label {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.quantity-input-group {
+    display: flex;
+    align-items: center;
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 0.5rem;
+    border: 2px solid #e9ecef;
+    transition: all 0.3s ease;
+}
+
+.quantity-input-group:focus-within {
+    border-color: #764ba2;
+    box-shadow: 0 0 0 3px rgba(118, 75, 162, 0.1);
+}
+
+.quantity-btn {
+    background: #764ba2;
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.quantity-btn:hover {
+    background: #667eea;
+    transform: scale(1.05);
+}
+
+.quantity-input {
+    flex: 1;
+    text-align: center;
+    border: none;
+    background: transparent;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #333;
+    margin: 0 1rem;
+    outline: none;
+}
+
+.price-section {
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    border: 2px solid #e9ecef;
+}
+
+.current-price {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #764ba2;
+    margin-bottom: 0.5rem;
+}
+
+.total-price {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.buy-now-btn {
+    background: linear-gradient(135deg, #764ba2, #667eea);
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 15px rgba(118, 75, 162, 0.3);
+}
+
+.buy-now-btn:hover {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(118, 75, 162, 0.4);
+}
+
+.wishlist-btn {
+    background: transparent;
+    color: #764ba2;
+    border: 2px solid #764ba2;
+    padding: 0.8rem 2rem;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.wishlist-btn:hover {
+    background: #764ba2;
+    color: white;
+    transform: translateY(-1px);
+}
+
+.features-section {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid #f0f0f0;
+}
+
+.features-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.features-list li {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.features-list i {
+    color: #764ba2;
+    font-size: 1rem;
+    width: 20px;
+    text-align: center;
+}
 
 /* Mobile Optimierungen für Elektronik-Seiten */
 @media (max-width: 768px) {
@@ -640,5 +847,100 @@
     .bundle-box {
         margin-left: 8px;
         margin-right: 8px;
+    }
+} 
+
+/* Mobile Responsive für Schnellbestellung */
+@media (max-width: 768px) {
+    .quick-order-card {
+        margin: 1rem 0;
+    }
+    
+    .quick-order-header {
+        padding: 1rem;
+    }
+    
+    .quick-order-header h4 {
+        font-size: 1.1rem;
+    }
+    
+    .quick-order-body {
+        padding: 1.5rem;
+    }
+    
+    .quantity-input-group {
+        padding: 0.3rem;
+    }
+    
+    .quantity-btn {
+        width: 35px;
+        height: 35px;
+        font-size: 1rem;
+    }
+    
+    .quantity-input {
+        font-size: 1rem;
+        margin: 0 0.5rem;
+    }
+    
+    .price-section {
+        padding: 1rem;
+    }
+    
+    .current-price {
+        font-size: 1.5rem;
+    }
+    
+    .total-price {
+        font-size: 1.2rem;
+    }
+    
+    .buy-now-btn {
+        padding: 0.8rem 1.5rem;
+        font-size: 1rem;
+    }
+    
+    .wishlist-btn {
+        padding: 0.6rem 1.5rem;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .quick-order-body {
+        padding: 1rem;
+    }
+    
+    .quantity-btn {
+        width: 30px;
+        height: 30px;
+        font-size: 0.9rem;
+    }
+    
+    .quantity-input {
+        font-size: 0.9rem;
+        margin: 0 0.3rem;
+    }
+    
+    .current-price {
+        font-size: 1.3rem;
+    }
+    
+    .total-price {
+        font-size: 1.1rem;
+    }
+    
+    .buy-now-btn {
+        padding: 0.7rem 1rem;
+        font-size: 0.9rem;
+    }
+    
+    .wishlist-btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+    }
+    
+    .features-list li {
+        font-size: 0.8rem;
     }
 } 

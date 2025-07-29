@@ -124,6 +124,8 @@ if (searchInput && mobileSearchBtn) {
 
     <!-- Main Content -->
     <main>
+    <script src="app.js"></script>
+    <script src="cart.js"></script>
       
         <!-- Product Grid -->
         <section class="container my-5">
@@ -134,25 +136,25 @@ if (searchInput && mobileSearchBtn) {
   <div class="row g-4 category-grid">
     <div class="col-md-3">
       <a href="#" class="category-tile" data-category="Elektronik">
-        <img src="produkt bilder/ware.png" alt="Elektronik" class="img-fluid rounded-4 w-100" style="aspect-ratio: 4/3; object-fit: cover;">
+        <img src="produkt bilder/ware.png" alt="Elektronik" class="img-fluid rounded-4 w-100">
         <span class="category-label">Elektronik</span>
       </a>
     </div>
     <div class="col-md-3">
       <a href="#" class="category-tile" data-category="Mode">
-        <img src="produkt bilder/ware.png" alt="Mode" class="img-fluid rounded-4 w-100" style="aspect-ratio: 4/3; object-fit: cover;">
+        <img src="produkt bilder/ware.png" alt="Mode" class="img-fluid rounded-4 w-100">
         <span class="category-label">Mode</span>
       </a>
     </div>
     <div class="col-md-3">
       <a href="#" class="category-tile" data-category="Fitness">
-        <img src="produkt bilder/ware.png" alt="Fitness" class="img-fluid rounded-4 w-100" style="aspect-ratio: 4/3; object-fit: cover;">
+        <img src="produkt bilder/ware.png" alt="Fitness" class="img-fluid rounded-4 w-100">
         <span class="category-label">Fitness</span>
       </a>
     </div>
     <div class="col-md-3">
       <a href="#" class="category-tile" data-category="Haushalt">
-        <img src="produkt bilder/ware.png" alt="Haushalt" class="img-fluid rounded-4 w-100" style="aspect-ratio: 4/3; object-fit: cover;">
+        <img src="produkt bilder/ware.png" alt="Haushalt" class="img-fluid rounded-4 w-100">
         <span class="category-label">Haushalt</span>
       </a>
     </div>
@@ -176,9 +178,31 @@ if (searchInput && mobileSearchBtn) {
                     </select>
                 </div>
             </div>
-            <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4" id="productGrid">
-                <!-- Hier rendert das JS die Produkte dynamisch -->
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4" id="productGrid">
+                <!-- Produktkarten werden hier dynamisch eingefügt -->
             </div>
+            <template id="productTemplate">
+                <div class="col">
+                    <div class="product-card h-100">
+                        <div class="product-image-container">
+                            <img src="" alt="" class="product-image">
+                            <button class="wishlist-btn" aria-label="Zur Wunschliste hinzufügen">
+                                <i class="bi bi-heart"></i>
+                            </button>
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <h3 class="card-title text-truncate"></h3>
+                            <p class="card-text text-muted mb-3 flex-grow-1"></p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="h4 mb-0"></span>
+                                <button class="btn btn-primary add-to-cart px-4 rounded-pill">
+                                    <i class="bi bi-cart-plus me-2"></i>In den Warenkorb
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </template>
         </div>
 </main>
 

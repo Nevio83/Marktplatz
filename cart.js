@@ -20,6 +20,19 @@ const currencyByCountry = {
 let currentCountry = 'DE';
 let currentCurrency = currencyByCountry[currentCountry];
 
+// Funktion zum Abrufen des Warenkorbs aus dem localStorage
+function getCart() {
+    try {
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        return cart;
+    } catch (e) {
+        console.error("Fehler beim Parsen des Warenkorbs aus dem localStorage:", e);
+        return [];
+    }
+}
+
+
+
 const currencyConversion = {
     'EUR': 1,
     'USD': 1.08,
@@ -231,8 +244,14 @@ function startCartTimer() {
 }
 
 function updateCartPage() {
-    const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+    console.log('updateCartPage called');
+    // Aktualisiere cartItems aus dem localStorage
+    const cartItems = getCart();
+    console.log('Cart items from getCart:', cartItems);
     const cartContent = document.getElementById('cartContent');
+    
+    // Debug-Ausgabe
+    console.log('Cart Items:', cartItems);
     
     if (cartItems.length === 0) {
         // Bei leerem Warenkorb: 3 zufällige Produktvorschläge anzeigen
@@ -615,15 +634,30 @@ function changeQuantity(productId, change) {
             cart.splice(itemIndex, 1);
         }
         localStorage.setItem('cart', JSON.stringify(cart));
+        if (typeof updateCartCounter === 'function') {
+            updateCartCounter();
+        }
         updateCartPage();
     }
 }
 
 function removeFromCart(productId) {
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
-    cart = cart.filter(item => item.id !== productId);
+    cart = cart.filter(item => Number(item.id) !== Number(productId));
     localStorage.setItem('cart', JSON.stringify(cart));
+    if (typeof updateCartCounter === 'function') {
+        updateCartCounter();
+    }
+    window.location.href = 'cart.html';
+}
+
+function clearCart() {
+    localStorage.removeItem('cart');
+    cartItems = [];
     updateCartPage();
+    if (typeof updateCartCounter === 'function') {
+        updateCartCounter();
+    }
 }
 
 // Add-on zum Warenkorb hinzufügen
@@ -632,17 +666,24 @@ function addAddonToCart(productId) {
     try {
         allProducts = JSON.parse(localStorage.getItem('allProducts')) || [];
     } catch (e) { allProducts = []; }
-    const product = allProducts.find(p => p.id === productId);
+    const product = allProducts.find(p => Number(p.id) === Number(productId));
     if (!product) return;
+    
+    // Lade den aktuellen Warenkorb aus dem localStorage
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
-    const existing = cart.find(item => item.id === productId);
+    const existing = cart.find(item => Number(item.id) === Number(productId));
+    
     if (existing) {
         existing.quantity += 1;
     } else {
         cart.push({ ...product, quantity: 1 });
     }
+    
+    // Speichere den aktualisierten Warenkorb
     localStorage.setItem('cart', JSON.stringify(cart));
-    updateCartPage();
+    
+    // Aktualisiere die Seite
+    window.location.href = 'cart.html';
 }
 
 // Stripe initialisieren
