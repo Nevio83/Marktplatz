@@ -274,10 +274,8 @@
         bundleId: `${product.id}-qty${s.qty}`,
         quantity: 1
       });
-      // Kurze Verzögerung für die Benachrichtigung, dann Weiterleitung
-      setTimeout(() => {
-        window.location.href = '../cart.html';
-      }, 1000);
+      // Sofortige Weiterleitung
+      window.location.href = '../cart.html';
     });
   }
 
@@ -302,7 +300,6 @@
       });
     }
     setCart(cart);
-    showNotification('Bundle zum Warenkorb hinzugefügt');
   }
 
   function getWishlist() {
@@ -318,7 +315,6 @@
     let wishlist = getWishlist();
     if (isInWishlist(product.id)) {
       wishlist = wishlist.filter(item => Number(item.id) !== Number(product.id));
-      showNotification('Von der Wunschliste entfernt', 'info');
     } else {
       wishlist.push({
         id: product.id,
@@ -327,7 +323,6 @@
         image: product.image,
         description: product.description
       });
-      showNotification('Zur Wunschliste hinzugefügt');
     }
     setWishlist(wishlist);
     updateWishlistButton();
@@ -358,7 +353,6 @@
       cart.push({ ...product, quantity: product.quantity || 1 });
     }
     setCart(cart);
-    showNotification('Zum Warenkorb hinzugefügt');
   }
 
   function addToCartAndRedirect() {
@@ -367,10 +361,8 @@
       quantity: 1
     };
     addToCart(productToAdd);
-    // Kurze Verzögerung für die Benachrichtigung, dann Weiterleitung
-    setTimeout(() => {
-      window.location.href = '../cart.html';
-    }, 1000);
+    // Sofortige Weiterleitung
+    window.location.href = '../cart.html';
   }
   function showNotification(message, type = 'success') {
     // Erstelle eine schöne Benachrichtigung
@@ -440,10 +432,8 @@
           quantity: qty
         };
         addToCart(productToCart);
-        // Kurze Verzögerung für die Benachrichtigung, dann Weiterleitung
-        setTimeout(() => {
-          window.location.href = '../cart.html';
-        }, 1000);
+        // Sofortige Weiterleitung
+        window.location.href = '../cart.html';
       });
     }
   });
