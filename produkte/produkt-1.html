@@ -227,7 +227,7 @@
               </div>
             </div>
           `).join('')}
-          <button type="submit" class="btn bundle-add-btn">In den Warenkorb</button>
+          <button type="submit" class="btn bundle-add-btn" onclick="addBundleAndRedirect(event)">In den Warenkorb</button>
         </form>
       </div>
     `;
@@ -261,22 +261,7 @@
       });
     });
 
-    section.querySelector('#bundleForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const idx = Array.from(radios).findIndex(r => r.checked);
-      const s = staffel[idx];
-      addBundleToCart({
-        id: product.id,
-        name: product.name + ` (${s.qty} Set${s.qty>1?'s':''})`,
-        price: s.price * s.qty, // Gesamtpreis für das Bundle
-        image: product.image,
-        description: product.description + ` (Bundle: ${s.qty} Set${s.qty>1?'s':''})`,
-        bundleId: `${product.id}-qty${s.qty}`,
-        quantity: 1
-      });
-      // Sofortige Weiterleitung
-      window.location.href = '../cart.html';
-    });
+    // Der Bundle-Button verwendet jetzt onclick="addBundleAndRedirect(event)"
   }
 
   function addBundleToCart(bundle) {
@@ -300,6 +285,34 @@
       });
     }
     setCart(cart);
+  }
+
+  function addBundleAndRedirect(event) {
+    event.preventDefault();
+    const form = event.target.closest('form');
+    const selectedRadio = form.querySelector('input[name="bundle"]:checked');
+    if (!selectedRadio) return;
+    
+    const idx = parseInt(selectedRadio.value);
+    const staffel = [
+      {qty: 1, price: product.price, original: product.price},
+      {qty: 2, price: product.price * 0.85, original: product.price},
+      {qty: 3, price: product.price * 0.80, original: product.price}
+    ];
+    const s = staffel[idx];
+    
+    addBundleToCart({
+      id: product.id,
+      name: product.name + ` (${s.qty} Set${s.qty>1?'s':''})`,
+      price: s.price * s.qty, // Gesamtpreis für das Bundle
+      image: product.image,
+      description: product.description + ` (Bundle: ${s.qty} Set${s.qty>1?'s':''})`,
+      bundleId: `${product.id}-qty${s.qty}`,
+      quantity: 1
+    });
+    
+    // Sofortige Weiterleitung
+    window.location.href = '../cart.html';
   }
 
   function getWishlist() {
