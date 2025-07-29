@@ -115,7 +115,7 @@ function renderProducts(products) {
                     data-name="${product.name}"
                     data-price="${product.price}"
                     onclick="addToCart(${product.id}); return false;">
-              <i class="bi bi-cart-plus me-2"></i><span class="btn-text">In den Warenkorb</span>
+              <i class="bi bi-cart-plus"></i>
             </button>
           </div>
         </div>
