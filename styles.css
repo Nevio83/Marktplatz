@@ -262,6 +262,20 @@ body {
     gap: 8px;
     min-height: 56px;
     min-width: 140px;
+    position: relative;
+    z-index: 10;
+    pointer-events: auto;
+    cursor: pointer;
+    text-decoration: none;
+    user-select: none;
+}
+
+.product-card .btn.add-to-cart .btn-text {
+    display: inline !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    color: white !important;
+    font-weight: 600 !important;
 }
 
 .product-card .btn.add-to-cart:hover {

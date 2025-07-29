@@ -84,7 +84,10 @@ function updateWishlistButtonState(productId) {
 // Produktgrid rendern (mit Herz oben rechts)
 function renderProducts(products) {
   const grid = document.getElementById('productGrid');
-  if (!grid) return; // Verhindert Fehler auf anderen Seiten
+  if (!grid) {
+    console.error('Product grid not found!');
+    return; // Verhindert Fehler auf anderen Seiten
+  }
   
   grid.innerHTML = products.map(product => `
     <div class="col">
@@ -108,13 +111,14 @@ function renderProducts(products) {
                     data-product-id="${product.id}"
                     data-name="${product.name}"
                     data-price="${product.price}">
-              <i class="bi bi-cart-plus me-2"></i><span class="btn-text">Hinzufügen</span>
+              <i class="bi bi-cart-plus me-2"></i><span class="btn-text">In den Warenkorb</span>
             </button>
           </div>
         </div>
       </div>
     </div>
   `).join('');
+  
   initializeAddToCartButtons();
   initializeWishlistButtons();
   initializeProductCardClicks();
@@ -137,7 +141,17 @@ function observeProductCards() {
 
 // Add-to-cart Buttons initialisieren
 function initializeAddToCartButtons() {
-  document.querySelectorAll('.add-to-cart').forEach(button => {
+  const buttons = document.querySelectorAll('.add-to-cart');
+  
+  buttons.forEach((button) => {
+    // Remove any existing event listeners to prevent duplicates
+    button.replaceWith(button.cloneNode(true));
+  });
+  
+  // Re-select buttons after cloning
+  const freshButtons = document.querySelectorAll('.add-to-cart');
+  
+  freshButtons.forEach((button) => {
     button.addEventListener('click', (e) => {
       e.preventDefault();
       e.stopPropagation(); // Verhindert, dass das Klick-Event zur Karte weitergeht
@@ -152,7 +166,10 @@ function initializeProductCardClicks() {
   document.querySelectorAll('.product-card').forEach(card => {
     card.addEventListener('click', (e) => {
       // Verhindere Navigation bei Klicks auf Buttons oder deren Kinder
-      if (e.target.closest('.wishlist-btn') || e.target.closest('.add-to-cart')) {
+      if (e.target.closest('.wishlist-btn') || 
+          e.target.closest('.add-to-cart') || 
+          e.target.classList.contains('add-to-cart') ||
+          e.target.closest('button')) {
         return;
       }
       
@@ -169,7 +186,10 @@ function initializeProductCardClicks() {
 function addToCart(productId) {
   loadProducts().then(products => {
     const product = products.find(p => Number(p.id) === Number(productId));
-    if (!product) return;
+    if (!product) {
+      console.error('Product not found for ID:', productId);
+      return;
+    }
     const existingItem = cartItems.find(item => Number(item.id) === Number(productId));
 
     if (existingItem) {
