@@ -395,7 +395,7 @@
   function updateTotalPrice() {
     const quantity = parseInt(document.getElementById('quantity').value, 10) || 1;
     const total = (product.price * quantity).toFixed(2);
-    document.getElementById('totalPrice').textContent = total;
+    document.getElementById('totalPrice').textContent = `€${total}`;
   }
 
   function addToCartWithQuantity() {
