@@ -22,10 +22,16 @@ async function loadProducts() {
 
 // Wishlist-Logik (bereits initialisiert oben)
 
+function getWishlist() {
+  return JSON.parse(localStorage.getItem('wishlist')) || [];
+}
+
+function setWishlist(wishlist) {
+  localStorage.setItem('wishlist', JSON.stringify(wishlist));
+}
+
 function isInWishlist(productId) {
-  // Lade immer die aktuelle Wunschliste aus dem localStorage
-  const currentWishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
-  return currentWishlist.some(item => Number(item.id) === Number(productId));
+  return getWishlist().some(item => Number(item.id) === Number(productId));
 }
 
 function toggleWishlist(productId) {
@@ -36,26 +42,43 @@ function toggleWishlist(productId) {
       alert('Produkt konnte nicht zur Wunschliste hinzugefügt werden.');
       return;
     }
-    wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+    
+    let wishlist = getWishlist();
+    
     if (isInWishlist(productId)) {
       wishlist = wishlist.filter(item => Number(item.id) !== Number(productId));
       showAlert('Produkt von der Wunschliste entfernt', 'wishlist.html');
     } else {
-      // Nur vollständige Produktobjekte speichern
-      const fullProduct = {
+      wishlist.push({
         id: product.id,
-        name: product.name || 'Produkt',
-        price: typeof product.price === 'number' ? product.price : 0,
-        category: product.category || '',
-        image: product.image || 'waren/ware.png',
-        description: product.description || ''
-      };
-      wishlist.push(fullProduct);
+        name: product.name,
+        price: product.price,
+        image: product.image,
+        description: product.description
+      });
       showAlert('Produkt zur Wunschliste hinzugefügt', 'wishlist.html');
     }
-    localStorage.setItem('wishlist', JSON.stringify(wishlist));
-    renderProducts(products); // Herz-Status aktualisieren
+    
+    setWishlist(wishlist);
+    
+    // Update only the specific wishlist button instead of re-rendering everything
+    updateWishlistButtonState(productId);
   });
+}
+
+// Update wishlist button state without re-rendering
+function updateWishlistButtonState(productId) {
+  const wishlistBtn = document.querySelector(`.wishlist-btn[data-product-id="${productId}"]`);
+  if (wishlistBtn) {
+    const icon = wishlistBtn.querySelector('i');
+    if (icon) {
+      if (isInWishlist(productId)) {
+        icon.className = 'bi bi-heart-fill';
+      } else {
+        icon.className = 'bi bi-heart';
+      }
+    }
+  }
 }
 
 // Produktgrid rendern (mit Herz oben rechts)
