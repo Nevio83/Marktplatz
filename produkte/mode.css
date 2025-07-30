@@ -625,7 +625,7 @@
 
 /* Neue Ähnliche Produkte Sektion - Ultra Modernes Design */
 .similar-products-section {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #ff6b9d 0%, #c44569 100%);
   padding: 5rem 0;
   position: relative;
   overflow: hidden;
@@ -765,7 +765,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #ff6b9d, #c44569);
   color: white;
   text-decoration: none;
   padding: 0.75rem 1.5rem;
@@ -777,7 +777,7 @@
   cursor: pointer;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 8px 20px rgba(255, 107, 157, 0.3);
   margin-top: auto;
 }
 
@@ -797,11 +797,11 @@
 }
 
 .view-product-btn:hover {
-  background: linear-gradient(135deg, #5a6fd8, #6a4190);
+  background: linear-gradient(135deg, #e55a8a, #b03a5a);
   color: white;
   text-decoration: none;
   transform: translateY(-3px);
-  box-shadow: 0 12px 30px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 12px 30px rgba(255, 107, 157, 0.4);
 }
 
 .view-product-btn i {
