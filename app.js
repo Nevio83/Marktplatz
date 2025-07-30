@@ -1,6 +1,42 @@
 // Warenkorb-Initialisierung
 let cartItems = JSON.parse(localStorage.getItem('cart')) || [];
 
+// Make sure clearCart is globally available immediately
+window.clearCart = function() {
+  console.log('clearCart function called');
+  try {
+    cartItems = [];
+    localStorage.setItem('cart', JSON.stringify(cartItems));
+    
+    // Update counter and dropdown immediately
+    if (typeof updateCartCounter === 'function') {
+      updateCartCounter();
+    } else {
+      console.log('updateCartCounter function not available');
+    }
+    
+    // Sofort ausblenden
+    console.log('Cart cleared, hiding dropdown');
+    const cartDropdown = document.getElementById('cartDropdown');
+    if (cartDropdown) {
+      cartDropdown.classList.remove('show');
+      cartDropdown.style.display = 'none';
+    }
+    
+    // Show confirmation message
+    if (typeof showAlert === 'function') {
+      showAlert('Warenkorb wurde geleert');
+    } else {
+      alert('Warenkorb wurde geleert');
+    }
+    
+    console.log('Cart cleared successfully');
+  } catch (error) {
+    console.error('Error in clearCart:', error);
+    alert('Fehler beim Leeren des Warenkorbs: ' + error.message);
+  }
+};
+
 // Wishlist-Initialisierung
 let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
 
@@ -240,6 +276,9 @@ function addProductToCart(products, productId) {
   }
   
   console.log('Found product:', product.name);
+  
+  // Always read from localStorage to ensure we have the latest data
+  cartItems = JSON.parse(localStorage.getItem('cart')) || [];
   const existingItem = cartItems.find(item => Number(item.id) === Number(productId));
 
   if (existingItem) {
@@ -252,8 +291,11 @@ function addProductToCart(products, productId) {
 
   // Speichere den aktuellen Warenkorb immer im localStorage
   localStorage.setItem('cart', JSON.stringify(cartItems));
+  
+  // Update counter and dropdown immediately
   updateCartCounter();
-  renderCartDropdown();
+  
+  // Show alert
   showAlert('Produkt wurde zum Warenkorb hinzugefügt');
 
   // --- NEU: Wenn der User auf cart.html ist, direkt die Seite aktualisieren ---
@@ -266,14 +308,39 @@ function addProductToCart(products, productId) {
   }
 }
 
-function updateCartCounter() {
+// Make updateCartCounter globally available
+window.updateCartCounter = function() {
   const counter = document.getElementById('cartCounter');
   if (counter) {
-    counter.textContent = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+    // Always read from localStorage to ensure we have the latest data
+    const currentCart = JSON.parse(localStorage.getItem('cart')) || [];
+    const totalItems = currentCart.reduce((sum, item) => sum + (item.quantity || 0), 0);
+    console.log('Updating cart counter - total items:', totalItems);
+    
+    // Update counter text
+    counter.textContent = totalItems;
+    
+    // Show/hide counter based on total items
+    if (totalItems === 0) {
+      counter.style.display = 'none';
+    } else {
+      counter.style.display = 'flex';
+    }
+    
+    // Force re-render of dropdown if it's currently open
+    const cartDropdown = document.getElementById('cartDropdown');
+    if (cartDropdown && cartDropdown.classList.contains('show')) {
+      if (typeof renderCartDropdown === 'function') {
+        renderCartDropdown();
+      }
+    }
+  } else {
+    console.log('Cart counter element not found');
   }
-}
+};
 
-function showAlert(message, redirectTo = 'cart.html') {
+// Make showAlert globally available
+window.showAlert = function(message, redirectTo = 'cart.html') {
   const alert = document.createElement('div');
   alert.className = 'alert alert-success position-fixed end-0 m-4 shadow-lg fade show';
   alert.style.zIndex = '20000';
@@ -291,7 +358,7 @@ function showAlert(message, redirectTo = 'cart.html') {
   alert.style.pointerEvents = 'auto';
   alert.style.position = 'fixed';
   alert.style.right = '2.5rem';
-  alert.style.top = 'calc(56px + 1.2rem)'; // noch etwas weiter nach unten
+  alert.style.top = 'calc(56px + 1.2rem)';
   alert.style.cursor = 'pointer';
   alert.textContent = message;
   alert.addEventListener('click', () => {
@@ -305,60 +372,72 @@ function showAlert(message, redirectTo = 'cart.html') {
       setTimeout(() => alert.remove(), 400);
     }
   }, 1700);
-}
+};
 
 function changeQuantity(productId, change) {
+  console.log('changeQuantity called with:', productId, change);
   productId = Number(productId);
+  // Always read from localStorage to ensure we have the latest data
+  cartItems = JSON.parse(localStorage.getItem('cart')) || [];
   const item = cartItems.find(i => Number(i.id) === productId);
-  if (!item) return;
+  if (!item) {
+    console.log('Item not found:', productId);
+    return;
+  }
   
   // Bei Bundles (Items mit bundleId) keine Mengenänderung erlauben
   if (item.bundleId) {
+    console.log('Bundle item, no quantity change allowed');
     return; // Keine Änderung bei Bundles
   }
   
+  console.log('Before change - quantity:', item.quantity);
   if (item.quantity + change < 1) {
     cartItems = cartItems.filter(i => Number(i.id) !== productId);
+    console.log('Item removed from cart');
   } else {
     item.quantity += change;
+    console.log('After change - quantity:', item.quantity);
   }
   localStorage.setItem('cart', JSON.stringify(cartItems));
+  
+  // Update counter and dropdown immediately
   updateCartCounter();
-  renderCartDropdown();
-  // Dropdown nach 1 Sekunde ausblenden, wenn leer
+  
+  // Sofort ausblenden wenn Warenkorb leer ist
   if (cartItems.length === 0) {
-    setTimeout(() => {
-      const cartDropdown = document.getElementById('cartDropdown');
-      if (cartDropdown) cartDropdown.classList.remove('show');
-    }, 1000);
+    console.log('Cart is now empty, hiding dropdown');
+    const cartDropdown = document.getElementById('cartDropdown');
+    if (cartDropdown) {
+      cartDropdown.classList.remove('show');
+      cartDropdown.style.display = 'none';
+    }
   }
 }
 
 function removeFromCart(productId) {
+  console.log('removeFromCart called with:', productId);
   productId = Number(productId);
+  // Always read from localStorage to ensure we have the latest data
+  cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+  const beforeCount = cartItems.length;
   cartItems = cartItems.filter(i => Number(i.id) !== productId);
+  const afterCount = cartItems.length;
+  console.log('Items in cart before:', beforeCount, 'after:', afterCount);
   localStorage.setItem('cart', JSON.stringify(cartItems));
+  
+  // Update counter and dropdown immediately
   updateCartCounter();
-  renderCartDropdown();
-  // Dropdown nach 1 Sekunde ausblenden, wenn leer
+  
+  // Sofort ausblenden wenn Warenkorb leer ist
   if (cartItems.length === 0) {
-    setTimeout(() => {
-      const cartDropdown = document.getElementById('cartDropdown');
-      if (cartDropdown) cartDropdown.classList.remove('show');
-    }, 1000);
-  }
-}
-
-function clearCart() {
-  cartItems = [];
-  localStorage.setItem('cart', JSON.stringify(cartItems));
-  updateCartCounter();
-  renderCartDropdown();
-  // Dropdown nach 1 Sekunde ausblenden
-  setTimeout(() => {
+    console.log('Cart is now empty, hiding dropdown');
     const cartDropdown = document.getElementById('cartDropdown');
-    if (cartDropdown) cartDropdown.classList.remove('show');
-  }, 1000);
+    if (cartDropdown) {
+      cartDropdown.classList.remove('show');
+      cartDropdown.style.display = 'none';
+    }
+  }
 }
 
 // Filter- und Sortierfunktionen
@@ -396,6 +475,7 @@ function initializeCartDropdown() {
   if (cartButton && cartDropdown) {
     cartButton.addEventListener('click', (e) => {
       e.preventDefault();
+      // Always render fresh data when opening dropdown
       renderCartDropdown();
       cartDropdown.classList.toggle('show');
       // Sichtbarkeit für mobile Geräte absichern
@@ -413,17 +493,44 @@ function initializeCartDropdown() {
       cartDropdown.style.display = 'none'; // Overlay immer ausblenden
     });
   }
+  
+  // Initialize clear cart button
+  const clearCartBtn = document.getElementById('clearCart');
+  if (clearCartBtn) {
+    console.log('Clear cart button found, adding event listener');
+    // Remove any existing event listeners
+    clearCartBtn.removeEventListener('click', clearCart);
+    clearCartBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      console.log('Clear cart button clicked');
+      clearCart();
+    });
+  } else {
+    console.log('Clear cart button not found');
+  }
 }
 
 function renderCartDropdown() {
+  console.log('renderCartDropdown called');
   cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+  console.log('Cart items loaded:', cartItems);
+  
   const body = document.getElementById('cartDropdownBody');
   const footer = document.getElementById('cartDropdownFooter');
   const totalElement = document.getElementById('cartTotal');
 
-  if (!body || !footer || !totalElement) return;
+  if (!body || !footer || !totalElement) {
+    console.error('Required cart dropdown elements not found:', {
+      body: !!body,
+      footer: !!footer,
+      totalElement: !!totalElement
+    });
+    return;
+  }
 
   if (cartItems.length === 0) {
+    console.log('Cart is empty, showing empty state');
     footer.style.display = 'none';
     
     // Bei leerem Warenkorb: 3 zufällige Produktvorschläge anzeigen
@@ -471,7 +578,13 @@ function renderCartDropdown() {
     return;
   }
   
+  console.log('Rendering cart items:', cartItems.length);
   footer.style.display = 'block';
+  
+  // Calculate total for display
+  const total = cartItems.reduce((sum, item) => sum + (typeof item.price === 'number' ? item.price * item.quantity : 0), 0);
+  console.log('Cart total calculated:', total);
+  
   body.innerHTML = cartItems.map(item => `
     <div class="cart-item">
       <img src="${item.image}" class="cart-item-image" alt="${item.name}">
@@ -483,25 +596,44 @@ function renderCartDropdown() {
           <strong>€${(typeof item.price === 'number' ? (item.price * item.quantity).toFixed(2) : '0.00')}</strong>
         </div>
       </div>
-              <div class="cart-item-controls">
-          ${item.bundleId ? `
-            <div class="quantity-controls disabled">
-              <span class="quantity-display">1</span>
-            </div>
-          ` : `
-            <div class="quantity-controls" style="display: flex; align-items: center; gap: 4px;">
-              <button class="quantity-btn" onclick="changeQuantity(${Number(item.id)}, -1)">-</button>
-              <span class="quantity-display">${item.quantity}</span>
-              <button class="quantity-btn" onclick="changeQuantity(${Number(item.id)}, 1)">+</button>
-            </div>
-          `}
-          <button class="remove-item" onclick="removeFromCart(${Number(item.id)})">&times;</button>
-        </div>
+      <div class="cart-item-controls">
+        ${item.bundleId ? `
+          <div class="quantity-controls disabled">
+            <span class="quantity-display">1</span>
+          </div>
+        ` : `
+          <div class="quantity-controls" style="display: flex; align-items: center; gap: 4px;">
+            <button class="quantity-btn" onclick="changeQuantity(${Number(item.id)}, -1)" style="cursor: pointer; pointer-events: auto;">-</button>
+            <span class="quantity-display">${item.quantity}</span>
+            <button class="quantity-btn" onclick="changeQuantity(${Number(item.id)}, 1)" style="cursor: pointer; pointer-events: auto;">+</button>
+          </div>
+        `}
+        <button class="remove-item" onclick="removeFromCart(${Number(item.id)})" style="cursor: pointer; pointer-events: auto;">&times;</button>
+      </div>
     </div>
   `).join('');
-  totalElement.textContent = cartItems
-    .reduce((sum, item) => sum + (typeof item.price === 'number' ? item.price * item.quantity : 0), 0)
-    .toFixed(2);
+  
+  // Update total immediately
+  totalElement.textContent = total.toFixed(2);
+  console.log('Cart dropdown rendered successfully with total:', total.toFixed(2));
+  
+  // Re-initialize clear cart button after rendering
+  setTimeout(() => {
+    const clearCartBtn = document.getElementById('clearCart');
+    if (clearCartBtn) {
+      console.log('Re-initializing clear cart button');
+      // Remove any existing event listeners
+      const newClearCartBtn = clearCartBtn.cloneNode(true);
+      clearCartBtn.parentNode.replaceChild(newClearCartBtn, clearCartBtn);
+      
+      newClearCartBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log('Clear cart button clicked (re-initialized)');
+        clearCart();
+      });
+    }
+  }, 100);
 }
 
 // Wishlist-Buttons initialisieren
@@ -592,14 +724,6 @@ document.addEventListener('DOMContentLoaded', () => {
       initializeAddToCartButtons();
     }, 500);
   });
-
-  const clearCartBtn = document.getElementById('clearCart');
-  if (clearCartBtn) {
-    clearCartBtn.addEventListener('click', function(e) {
-      e.preventDefault();
-      clearCart();
-    });
-  }
 });
 
 // Bilder optimieren
@@ -760,6 +884,72 @@ window.testProduct1Button = function() {
   }
 };
 
+// Test-Funktion für Cart Dropdown
+window.testCartDropdown = function() {
+  console.log('Testing cart dropdown functionality...');
+  
+  // Test cart counter
+  const counter = document.getElementById('cartCounter');
+  console.log('Cart counter element:', counter);
+  console.log('Cart counter text:', counter ? counter.textContent : 'not found');
+  
+  // Test cart dropdown
+  const dropdown = document.getElementById('cartDropdown');
+  console.log('Cart dropdown element:', dropdown);
+  console.log('Cart dropdown classes:', dropdown ? dropdown.className : 'not found');
+  
+  // Test cart dropdown body
+  const body = document.getElementById('cartDropdownBody');
+  console.log('Cart dropdown body:', body);
+  console.log('Cart dropdown body HTML:', body ? body.innerHTML.substring(0, 200) + '...' : 'not found');
+  
+  // Test quantity buttons
+  const quantityButtons = document.querySelectorAll('#cartDropdown .quantity-btn');
+  console.log('Quantity buttons found:', quantityButtons.length);
+  quantityButtons.forEach((btn, index) => {
+    console.log(`Quantity button ${index}:`, btn);
+    console.log(`Button onclick:`, btn.onclick);
+    console.log(`Button text:`, btn.textContent);
+  });
+  
+  // Test remove buttons
+  const removeButtons = document.querySelectorAll('#cartDropdown .remove-item');
+  console.log('Remove buttons found:', removeButtons.length);
+  removeButtons.forEach((btn, index) => {
+    console.log(`Remove button ${index}:`, btn);
+    console.log(`Button onclick:`, btn.onclick);
+    console.log(`Button text:`, btn.textContent);
+  });
+  
+  // Test current cart state
+  const currentCart = JSON.parse(localStorage.getItem('cart')) || [];
+  console.log('Current cart from localStorage:', currentCart);
+  console.log('Cart items count:', currentCart.length);
+};
+
+// Test-Funktion für Empty Cart Verhalten
+window.testEmptyCart = function() {
+  console.log('Testing empty cart behavior...');
+  
+  // Leere den Warenkorb
+  clearCart();
+  
+  // Prüfe den Zähler
+  setTimeout(() => {
+    const counter = document.getElementById('cartCounter');
+    console.log('Cart counter after clearing:', counter ? counter.textContent : 'not found');
+    console.log('Cart counter display:', counter ? counter.style.display : 'not found');
+    
+    // Füge ein Produkt hinzu
+    testAddProduct1();
+    
+    setTimeout(() => {
+      console.log('Cart counter after adding product:', counter ? counter.textContent : 'not found');
+      console.log('Cart counter display:', counter ? counter.style.display : 'not found');
+    }, 500);
+  }, 500);
+};
+
 // Direkte Test-Funktion für Produkt 1
 window.testAddProduct1 = function() {
   console.log('Directly adding product 1 to cart...');
@@ -798,6 +988,11 @@ window.addProductToCart = addProductToCart;
 window.initializeAddToCartButtons = initializeAddToCartButtons;
 window.renderProducts = renderProducts;
 window.loadProducts = loadProducts;
+window.testCartDropdown = testCartDropdown;
+window.testEmptyCart = testEmptyCart;
+window.testLiveUpdates = testLiveUpdates;
+window.testClearCartButton = testClearCartButton;
+window.testClearCartSimple = testClearCartSimple;
 
 document.addEventListener('DOMContentLoaded', function() {
   document.querySelectorAll('.category-tile').forEach(tile => {
@@ -827,3 +1022,138 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 });
+
+// Test-Funktion für Live Updates
+window.testLiveUpdates = function() {
+  console.log('Testing live updates...');
+  
+  // Test 1: Add product and check counter
+  console.log('=== Test 1: Adding product ===');
+  testAddProduct1();
+  
+  setTimeout(() => {
+    const counter = document.getElementById('cartCounter');
+    console.log('Counter after adding product:', counter ? counter.textContent : 'not found');
+    console.log('Counter display:', counter ? counter.style.display : 'not found');
+    
+    // Test 2: Open dropdown and check content
+    console.log('=== Test 2: Opening dropdown ===');
+    const cartButton = document.getElementById('cartButton');
+    if (cartButton) {
+      cartButton.click();
+      
+      setTimeout(() => {
+        const dropdown = document.getElementById('cartDropdown');
+        const body = document.getElementById('cartDropdownBody');
+        const footer = document.getElementById('cartDropdownFooter');
+        const total = document.getElementById('cartTotal');
+        
+        console.log('Dropdown visible:', dropdown ? dropdown.classList.contains('show') : 'not found');
+        console.log('Dropdown body content length:', body ? body.innerHTML.length : 'not found');
+        console.log('Footer visible:', footer ? footer.style.display : 'not found');
+        console.log('Total amount:', total ? total.textContent : 'not found');
+        
+        // Test 3: Change quantity
+        console.log('=== Test 3: Changing quantity ===');
+        const quantityBtn = document.querySelector('#cartDropdown .quantity-btn');
+        if (quantityBtn) {
+          console.log('Quantity button found, clicking...');
+          quantityBtn.click();
+          
+          setTimeout(() => {
+            console.log('Counter after quantity change:', counter ? counter.textContent : 'not found');
+            console.log('Total after quantity change:', total ? total.textContent : 'not found');
+            
+            // Test 4: Remove item
+            console.log('=== Test 4: Removing item ===');
+            const removeBtn = document.querySelector('#cartDropdown .remove-item');
+            if (removeBtn) {
+              console.log('Remove button found, clicking...');
+              removeBtn.click();
+              
+              setTimeout(() => {
+                console.log('Counter after removal:', counter ? counter.textContent : 'not found');
+                console.log('Counter display after removal:', counter ? counter.style.display : 'not found');
+                console.log('Dropdown visible after removal:', dropdown ? dropdown.classList.contains('show') : 'not found');
+              }, 500);
+            } else {
+              console.log('Remove button not found');
+            }
+          }, 500);
+        } else {
+          console.log('Quantity button not found');
+        }
+      }, 500);
+    } else {
+      console.log('Cart button not found');
+    }
+  }, 500);
+};
+
+// Test-Funktion für Clear Cart Button
+window.testClearCartButton = function() {
+  console.log('Testing clear cart button...');
+  
+  // First, add some items to cart
+  console.log('=== Step 1: Adding items to cart ===');
+  testAddProduct1();
+  
+  setTimeout(() => {
+    // Open dropdown
+    console.log('=== Step 2: Opening dropdown ===');
+    const cartButton = document.getElementById('cartButton');
+    if (cartButton) {
+      cartButton.click();
+      
+      setTimeout(() => {
+        // Check if clear cart button exists
+        console.log('=== Step 3: Checking clear cart button ===');
+        const clearCartBtn = document.getElementById('clearCart');
+        console.log('Clear cart button found:', !!clearCartBtn);
+        
+        if (clearCartBtn) {
+          console.log('Clear cart button text:', clearCartBtn.textContent);
+          console.log('Clear cart button HTML:', clearCartBtn.outerHTML);
+          
+          // Test clicking the button
+          console.log('=== Step 4: Clicking clear cart button ===');
+          clearCartBtn.click();
+          
+          setTimeout(() => {
+            console.log('=== Step 5: Checking result ===');
+            const counter = document.getElementById('cartCounter');
+            const dropdown = document.getElementById('cartDropdown');
+            
+            console.log('Cart counter after clear:', counter ? counter.textContent : 'not found');
+            console.log('Cart counter display:', counter ? counter.style.display : 'not found');
+            console.log('Dropdown visible:', dropdown ? dropdown.classList.contains('show') : 'not found');
+            
+            // Check localStorage
+            const currentCart = JSON.parse(localStorage.getItem('cart')) || [];
+            console.log('Cart in localStorage after clear:', currentCart);
+            console.log('Cart items count:', currentCart.length);
+          }, 500);
+        } else {
+          console.log('Clear cart button not found!');
+        }
+      }, 500);
+    } else {
+      console.log('Cart button not found!');
+    }
+  }, 500);
+};
+
+// Simple test function to check if clearCart is working
+window.testClearCartSimple = function() {
+  console.log('Testing clearCart function availability...');
+  console.log('window.clearCart available:', typeof window.clearCart === 'function');
+  console.log('window.updateCartCounter available:', typeof window.updateCartCounter === 'function');
+  console.log('window.showAlert available:', typeof window.showAlert === 'function');
+  
+  if (typeof window.clearCart === 'function') {
+    console.log('clearCart function is available, testing...');
+    window.clearCart();
+  } else {
+    console.error('clearCart function is not available!');
+  }
+};
