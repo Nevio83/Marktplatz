@@ -800,9 +800,11 @@ footer a:hover {
 /* Mobile-zentriertes Hilfe-Panel */
 @media (max-width: 768px) {
   .hilfe-panel {
-    bottom: 50%;
-    right: 50%;
-    transform: translate(50%, 50%) translateY(20px);
+    top: 50%;
+    left: 50%;
+    bottom: auto;
+    right: auto;
+    transform: translate(-50%, -50%) translateY(20px);
     width: 90vw;
     max-width: 320px;
     max-height: 80vh;
@@ -810,7 +812,7 @@ footer a:hover {
   }
   
   .hilfe-panel.offen {
-    transform: translate(50%, 50%) translateY(0);
+    transform: translate(-50%, -50%) translateY(0);
   }
 }
 
