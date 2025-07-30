@@ -1,6 +1,42 @@
 // Warenkorb-Initialisierung
 let cartItems = JSON.parse(localStorage.getItem('cart')) || [];
 
+// Make sure clearCart is globally available immediately
+window.clearCart = function() {
+  console.log('clearCart function called');
+  try {
+    cartItems = [];
+    localStorage.setItem('cart', JSON.stringify(cartItems));
+    
+    // Update counter and dropdown immediately
+    if (typeof updateCartCounter === 'function') {
+      updateCartCounter();
+    } else {
+      console.log('updateCartCounter function not available');
+    }
+    
+    // Sofort ausblenden
+    console.log('Cart cleared, hiding dropdown');
+    const cartDropdown = document.getElementById('cartDropdown');
+    if (cartDropdown) {
+      cartDropdown.classList.remove('show');
+      cartDropdown.style.display = 'none';
+    }
+    
+    // Show confirmation message
+    if (typeof showAlert === 'function') {
+      showAlert('Warenkorb wurde geleert');
+    } else {
+      alert('Warenkorb wurde geleert');
+    }
+    
+    console.log('Cart cleared successfully');
+  } catch (error) {
+    console.error('Error in clearCart:', error);
+    alert('Fehler beim Leeren des Warenkorbs: ' + error.message);
+  }
+};
+
 // Wishlist-Initialisierung
 let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
 
@@ -272,7 +308,8 @@ function addProductToCart(products, productId) {
   }
 }
 
-function updateCartCounter() {
+// Make updateCartCounter globally available
+window.updateCartCounter = function() {
   const counter = document.getElementById('cartCounter');
   if (counter) {
     // Always read from localStorage to ensure we have the latest data
@@ -293,14 +330,17 @@ function updateCartCounter() {
     // Force re-render of dropdown if it's currently open
     const cartDropdown = document.getElementById('cartDropdown');
     if (cartDropdown && cartDropdown.classList.contains('show')) {
-      renderCartDropdown();
+      if (typeof renderCartDropdown === 'function') {
+        renderCartDropdown();
+      }
     }
   } else {
     console.log('Cart counter element not found');
   }
-}
+};
 
-function showAlert(message, redirectTo = 'cart.html') {
+// Make showAlert globally available
+window.showAlert = function(message, redirectTo = 'cart.html') {
   const alert = document.createElement('div');
   alert.className = 'alert alert-success position-fixed end-0 m-4 shadow-lg fade show';
   alert.style.zIndex = '20000';
@@ -318,7 +358,7 @@ function showAlert(message, redirectTo = 'cart.html') {
   alert.style.pointerEvents = 'auto';
   alert.style.position = 'fixed';
   alert.style.right = '2.5rem';
-  alert.style.top = 'calc(56px + 1.2rem)'; // noch etwas weiter nach unten
+  alert.style.top = 'calc(56px + 1.2rem)';
   alert.style.cursor = 'pointer';
   alert.textContent = message;
   alert.addEventListener('click', () => {
@@ -332,7 +372,7 @@ function showAlert(message, redirectTo = 'cart.html') {
       setTimeout(() => alert.remove(), 400);
     }
   }, 1700);
-}
+};
 
 function changeQuantity(productId, change) {
   console.log('changeQuantity called with:', productId, change);
@@ -398,28 +438,6 @@ function removeFromCart(productId) {
       cartDropdown.style.display = 'none';
     }
   }
-}
-
-function clearCart() {
-  console.log('clearCart function called');
-  cartItems = [];
-  localStorage.setItem('cart', JSON.stringify(cartItems));
-  
-  // Update counter and dropdown immediately
-  updateCartCounter();
-  
-  // Sofort ausblenden
-  console.log('Cart cleared, hiding dropdown');
-  const cartDropdown = document.getElementById('cartDropdown');
-  if (cartDropdown) {
-    cartDropdown.classList.remove('show');
-    cartDropdown.style.display = 'none';
-  }
-  
-  // Show confirmation message
-  showAlert('Warenkorb wurde geleert');
-  
-  console.log('Cart cleared successfully');
 }
 
 // Filter- und Sortierfunktionen
@@ -974,6 +992,7 @@ window.testCartDropdown = testCartDropdown;
 window.testEmptyCart = testEmptyCart;
 window.testLiveUpdates = testLiveUpdates;
 window.testClearCartButton = testClearCartButton;
+window.testClearCartSimple = testClearCartSimple;
 
 document.addEventListener('DOMContentLoaded', function() {
   document.querySelectorAll('.category-tile').forEach(tile => {
@@ -1122,4 +1141,19 @@ window.testClearCartButton = function() {
       console.log('Cart button not found!');
     }
   }, 500);
+};
+
+// Simple test function to check if clearCart is working
+window.testClearCartSimple = function() {
+  console.log('Testing clearCart function availability...');
+  console.log('window.clearCart available:', typeof window.clearCart === 'function');
+  console.log('window.updateCartCounter available:', typeof window.updateCartCounter === 'function');
+  console.log('window.showAlert available:', typeof window.showAlert === 'function');
+  
+  if (typeof window.clearCart === 'function') {
+    console.log('clearCart function is available, testing...');
+    window.clearCart();
+  } else {
+    console.error('clearCart function is not available!');
+  }
 };

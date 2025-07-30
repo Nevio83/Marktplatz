@@ -53,7 +53,7 @@
               </div>
               <div class="d-grid gap-2">
                 <a href="cart.html" class="btn btn-primary">Zur Kasse</a>
-                <button class="btn btn-outline-secondary" id="clearCart" aria-label="Warenkorb leeren">
+                <button class="btn btn-outline-secondary" id="clearCart" onclick="clearCart()" aria-label="Warenkorb leeren">
                     <i class="bi bi-trash"></i>
                 </button>
               </div>
@@ -61,6 +61,58 @@
           </div>
         </div>
     </nav>
+    
+    <script>
+    // Ensure clearCart function is available
+    if (typeof clearCart === 'undefined') {
+        window.clearCart = function() {
+            console.log('Fallback clearCart called');
+            try {
+                // Clear cart from localStorage
+                localStorage.setItem('cart', JSON.stringify([]));
+                
+                // Update counter
+                const counter = document.getElementById('cartCounter');
+                if (counter) {
+                    counter.textContent = '0';
+                    counter.style.display = 'none';
+                }
+                
+                // Hide dropdown
+                const dropdown = document.getElementById('cartDropdown');
+                if (dropdown) {
+                    dropdown.classList.remove('show');
+                    dropdown.style.display = 'none';
+                }
+                
+                // Show alert
+                alert('Warenkorb wurde geleert');
+                
+                console.log('Cart cleared via fallback function');
+            } catch (error) {
+                console.error('Error in fallback clearCart:', error);
+                alert('Fehler beim Leeren des Warenkorbs');
+            }
+        };
+    }
+    
+    // Add event listener as fallback
+    document.addEventListener('DOMContentLoaded', function() {
+        const clearCartBtn = document.getElementById('clearCart');
+        if (clearCartBtn) {
+            clearCartBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('Clear cart button clicked via event listener');
+                if (typeof clearCart === 'function') {
+                    clearCart();
+                } else {
+                    console.error('clearCart function not available');
+                }
+            });
+        }
+    });
+    </script>
 <style>
 @media (max-width: 600px) {
   .container-fluid.nav-flex {
