@@ -43,8 +43,16 @@ let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
 // Produktdaten laden
 async function loadProducts() {
   try {
+    console.log('Loading products from products.json...');
     const response = await fetch('products.json');
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
     const products = await response.json();
+    console.log('Products loaded successfully:', products.length);
+    
     // Füge eine Standardbeschreibung hinzu, falls nicht vorhanden
     return products.map(p => ({
       ...p,
@@ -52,7 +60,43 @@ async function loadProducts() {
     }));
   } catch (error) {
     console.error('Fehler beim Laden der Produkte:', error);
-    return [];
+    
+    // Fallback: Verwende Test-Produkte wenn products.json nicht verfügbar ist
+    console.log('Using fallback products...');
+    return [
+      {
+        id: 1,
+        name: "Elektronik Produkt 1",
+        price: 10.00,
+        category: "Elektronik",
+        image: "produkt bilder/ware.png",
+        description: "Innovative Technologie für Ihren Alltag."
+      },
+      {
+        id: 2,
+        name: "Mode Produkt 1",
+        price: 20.00,
+        category: "Mode",
+        image: "produkt bilder/ware.png",
+        description: "Modisch und hochwertig für jeden Anlass."
+      },
+      {
+        id: 3,
+        name: "Fitness Produkt 1",
+        price: 30.00,
+        category: "Fitness",
+        image: "produkt bilder/ware.png",
+        description: "Für ein aktives und gesundes Leben."
+      },
+      {
+        id: 4,
+        name: "Haushalt Produkt 1",
+        price: 40.00,
+        category: "Haushalt",
+        image: "produkt bilder/ware.png",
+        description: "Praktisch und zuverlässig für Ihr Zuhause."
+      }
+    ];
   }
 }
 
@@ -117,13 +161,17 @@ function updateWishlistButtonState(productId) {
 
 // Produktgrid rendern (mit Herz oben rechts)
 function renderProducts(products) {
+  console.log('renderProducts called with', products.length, 'products');
+  
   const grid = document.getElementById('productGrid');
   if (!grid) {
     console.error('Product grid not found!');
     return; // Verhindert Fehler auf anderen Seiten
   }
   
+  console.log('Rendering products to grid...');
   grid.innerHTML = products.map(product => {
+    console.log('Rendering product:', product.name);
     return `
     <div class="col">
       <div class="card h-100 border-0 shadow-hover position-relative product-card" data-product-id="${product.id}">
@@ -380,12 +428,15 @@ function debounce(func, timeout = 300) {
 }
 
 function filterProducts(products, searchText, category) {
+  console.log('filterProducts called with:', { searchText, category, productsCount: products.length });
   const filtered = products.filter(product => {
     const matchesSearch = product.name.toLowerCase().includes(searchText.toLowerCase()) ||
       product.description.toLowerCase().includes(searchText.toLowerCase());
     const matchesCategory = category === 'Alle Kategorien' || product.category === category;
+    console.log(`Product "${product.name}" (${product.category}): search=${matchesSearch}, category=${matchesCategory}`);
     return matchesSearch && matchesCategory;
   });
+  console.log('filterProducts result:', filtered.length, 'products');
   return filtered;
 }
 
@@ -592,16 +643,20 @@ document.addEventListener('DOMContentLoaded', () => {
   const priceSort = document.getElementById('priceSort');
 
   const updateFilters = debounce(() => {
+    console.log('updateFilters called');
     loadProducts().then(products => {
+      console.log('Products loaded in updateFilters:', products.length);
       const filtered = filterProducts(
         products,
         searchInput ? searchInput.value : '',
         categoryFilter ? categoryFilter.value : 'Alle Kategorien'
       );
+      console.log('Filtered products:', filtered.length);
       const sorted = sortProducts(
         filtered,
         priceSort ? priceSort.value : 'Aufsteigend'
       );
+      console.log('Sorted products:', sorted.length);
       renderProducts(sorted);
     });
   }, 300);
@@ -635,7 +690,10 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Initiales Laden und Rendern
+  console.log('Starting initial product load...');
   loadProducts().then(products => {
+    console.log('Initial products loaded:', products.length);
+    
     // Speichere die Produkte im localStorage für bessere Verfügbarkeit
     localStorage.setItem('allProducts', JSON.stringify(products));
     
@@ -644,10 +702,14 @@ document.addEventListener('DOMContentLoaded', () => {
       searchInput ? searchInput.value : '',
       categoryFilter ? categoryFilter.value : 'Alle Kategorien'
     );
+    console.log('Initial filtered products:', filtered.length);
+    
     const sorted = sortProducts(
       filtered,
       priceSort ? priceSort.value : 'Aufsteigend'
     );
+    console.log('Initial sorted products:', sorted.length);
+    
     renderProducts(sorted);
     
     // Bilder optimieren und Platzhalter anwenden
@@ -659,6 +721,8 @@ document.addEventListener('DOMContentLoaded', () => {
       initializeAddToCartButtons();
       setupCategoryButtons(); // Kategorie-Buttons erneut einrichten
     }, 500);
+  }).catch(error => {
+    console.error('Error in initial product load:', error);
   });
 });
 
@@ -931,6 +995,7 @@ window.testClearCartButton = testClearCartButton;
 window.testClearCartSimple = testClearCartSimple;
 window.testCategoryButtons = testCategoryButtons;
 window.setupCategoryButtons = setupCategoryButtons;
+window.renderTestProducts = renderTestProducts;
 
 // Einfache Funktion zum Überprüfen der Produkte
 window.checkProducts = function() {
@@ -939,6 +1004,31 @@ window.checkProducts = function() {
     console.log('Product categories:', [...new Set(products.map(p => p.category))]);
     console.log('First product:', products[0]);
   });
+};
+
+// Funktion zum direkten Rendern von Test-Produkten
+window.renderTestProducts = function() {
+  const testProducts = [
+    {
+      id: 1,
+      name: "Test Elektronik",
+      price: 10.00,
+      category: "Elektronik",
+      image: "produkt bilder/ware.png",
+      description: "Test Produkt"
+    },
+    {
+      id: 2,
+      name: "Test Mode",
+      price: 20.00,
+      category: "Mode",
+      image: "produkt bilder/ware.png",
+      description: "Test Produkt"
+    }
+  ];
+  
+  console.log('Rendering test products...');
+  renderProducts(testProducts);
 };
 
 function setupCategoryButtons() {
