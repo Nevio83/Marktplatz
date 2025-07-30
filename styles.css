@@ -782,8 +782,8 @@ footer a:hover {
 /* Moderne Hilfe-Panel */
 .hilfe-panel {
   position: fixed;
-  top: 50%;
-  left: 50%;
+  bottom: 100px;
+  right: 100px;
   width: 280px;
   background: var(--card-bg);
   border-radius: var(--border-radius);
@@ -791,7 +791,7 @@ footer a:hover {
   border: 1px solid var(--border-color);
   opacity: 0;
   visibility: hidden;
-  transform: translate(-50%, -50%) translateY(20px);
+  transform: translateY(20px);
   transition: all 0.3s ease;
   z-index: 999;
   overflow: hidden;
@@ -800,17 +800,26 @@ footer a:hover {
 /* Mobile-Hilfe-Panel Anpassungen */
 @media (max-width: 768px) {
   .hilfe-panel {
+    top: 50%;
+    left: 50%;
+    bottom: auto;
+    right: auto;
+    transform: translate(-50%, -50%) translateY(20px);
     width: 90vw;
     max-width: 320px;
     max-height: 80vh;
     overflow-y: auto;
+  }
+  
+  .hilfe-panel.offen {
+    transform: translate(-50%, -50%) translateY(0);
   }
 }
 
 .hilfe-panel.offen {
     opacity: 1;
     visibility: visible;
-    transform: translate(-50%, -50%) translateY(0);
+    transform: translateY(0);
 }
 
 .hilfe-panel-header {
