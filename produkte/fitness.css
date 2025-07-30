@@ -1410,3 +1410,36 @@
         font-size: 0.8rem;
     }
 }
+
+/* Kategorie-spezifische Button-Farben für Fitness */
+.product-card .btn.add-to-cart {
+    background: linear-gradient(135deg, #3498db, #00bcd4) !important;
+    border: none !important;
+    color: white !important;
+    transition: all 0.3s ease;
+}
+
+.product-card .btn.add-to-cart:hover {
+    background: linear-gradient(135deg, #00bcd4, #3498db) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(52, 152, 219, 0.3);
+}
+
+.product-card .btn.add-to-cart:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.2);
+}
+
+/* Warenkorb-Button Farbe für Fitness */
+#cartButton {
+    background: linear-gradient(135deg, #3498db, #00bcd4) !important;
+}
+
+#cartButton:hover {
+    background: linear-gradient(135deg, #00bcd4, #3498db) !important;
+}
+
+/* Preis-Farbe für Fitness */
+.product-card .h4 {
+    color: #3498db !important;
+}
