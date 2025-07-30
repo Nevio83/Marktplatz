@@ -1264,3 +1264,22 @@
         font-size: 0.8rem;
     }
 }
+
+/* Kategorie-spezifische Button-Farben für Haushalt */
+.product-card .btn.add-to-cart {
+    background: linear-gradient(135deg, #e74c3c, #fd79a8) !important;
+    border: none !important;
+    color: white !important;
+    transition: all 0.3s ease;
+}
+
+.product-card .btn.add-to-cart:hover {
+    background: linear-gradient(135deg, #fd79a8, #e74c3c) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(231, 76, 60, 0.3);
+}
+
+.product-card .btn.add-to-cart:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 15px rgba(231, 76, 60, 0.2);
+}
