@@ -1248,4 +1248,18 @@
 .product-card .btn.add-to-cart:active {
     transform: translateY(0);
     box-shadow: 0 4px 15px rgba(118, 75, 162, 0.2);
+}
+
+/* Warenkorb-Button Farbe für Elektronik */
+#cartButton {
+    background: linear-gradient(135deg, #764ba2, #667eea) !important;
+}
+
+#cartButton:hover {
+    background: linear-gradient(135deg, #667eea, #764ba2) !important;
+}
+
+/* Preis-Farbe für Elektronik */
+.product-card .h4 {
+    color: #764ba2 !important;
 } 

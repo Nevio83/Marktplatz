@@ -241,7 +241,7 @@ body {
 .product-card .h4 {
     font-size: 1.3rem;
     font-weight: 700;
-    color: #ff6b6b;
+    color: var(--primary-color);
     margin: 0;
 }
 
@@ -363,7 +363,7 @@ body {
 /* Moderne Warenkorb-Button */
 #cartButton {
     position: relative;
-    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+    background: var(--primary-gradient);
     border: none;
     border-radius: 50%;
     width: 48px;
@@ -380,7 +380,6 @@ body {
 #cartButton:hover {
     transform: scale(1.1);
     box-shadow: var(--shadow-medium);
-    background: linear-gradient(135deg, #ee5a24, #ff6b6b);
 }
 
 #cartCounter {
@@ -1001,7 +1000,6 @@ footer a:hover {
     
     .product-card .h4 {
         font-size: 1.2rem;
-        color: #ff6b6b;
     }
     
     /* Touch-optimierte Hinzufügen-Buttons für Mobile */

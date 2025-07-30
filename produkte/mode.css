@@ -1282,3 +1282,17 @@
     transform: translateY(0);
     box-shadow: 0 4px 15px rgba(230, 126, 34, 0.2);
 }
+
+/* Warenkorb-Button Farbe für Mode */
+#cartButton {
+    background: linear-gradient(135deg, #e67e22, #d35400) !important;
+}
+
+#cartButton:hover {
+    background: linear-gradient(135deg, #d35400, #e67e22) !important;
+}
+
+/* Preis-Farbe für Mode */
+.product-card .h4 {
+    color: #e67e22 !important;
+}

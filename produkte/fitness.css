@@ -1429,3 +1429,17 @@
     transform: translateY(0);
     box-shadow: 0 4px 15px rgba(52, 152, 219, 0.2);
 }
+
+/* Warenkorb-Button Farbe für Fitness */
+#cartButton {
+    background: linear-gradient(135deg, #3498db, #00bcd4) !important;
+}
+
+#cartButton:hover {
+    background: linear-gradient(135deg, #00bcd4, #3498db) !important;
+}
+
+/* Preis-Farbe für Fitness */
+.product-card .h4 {
+    color: #3498db !important;
+}

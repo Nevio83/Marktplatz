@@ -1283,3 +1283,17 @@
     transform: translateY(0);
     box-shadow: 0 4px 15px rgba(231, 76, 60, 0.2);
 }
+
+/* Warenkorb-Button Farbe für Haushalt */
+#cartButton {
+    background: linear-gradient(135deg, #e74c3c, #fd79a8) !important;
+}
+
+#cartButton:hover {
+    background: linear-gradient(135deg, #fd79a8, #e74c3c) !important;
+}
+
+/* Preis-Farbe für Haushalt */
+.product-card .h4 {
+    color: #e74c3c !important;
+}
