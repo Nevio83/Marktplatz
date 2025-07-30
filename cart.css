@@ -1046,10 +1046,18 @@ body {
     justify-content: center;
     box-shadow: 0 2px 8px rgba(102,126,234,0.13);
     transition: background 0.2s, transform 0.2s;
+    cursor: pointer;
+    pointer-events: auto;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
   }
   #cartDropdown .quantity-btn:hover {
     background: linear-gradient(135deg,#764ba2,#667eea);
     transform: scale(1.08);
+  }
+  #cartDropdown .quantity-btn:active {
+    transform: scale(0.95);
   }
   #cartDropdown .remove-item {
     background: linear-gradient(135deg,#ff6b6b,#ee5a52);
@@ -1065,10 +1073,18 @@ body {
     margin-left: 0.5rem;
     box-shadow: 0 2px 8px rgba(255,107,107,0.13);
     transition: background 0.2s, transform 0.2s;
+    cursor: pointer;
+    pointer-events: auto;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
   }
   #cartDropdown .remove-item:hover {
     background: linear-gradient(135deg,#ff5252,#f44336);
     transform: scale(1.08) rotate(15deg);
+  }
+  #cartDropdown .remove-item:active {
+    transform: scale(0.95) rotate(15deg);
   }
   #cartDropdown .empty-cart {
     background: #fff;
@@ -1743,5 +1759,77 @@ html, body {
 
   .cart-item .quantity-controls {
     gap: 0.2rem !important;
+  }
+}
+
+#cartDropdown .cart-item-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: auto;
+  pointer-events: auto;
+  z-index: 10;
+  position: relative;
+}
+
+#cartDropdown .quantity-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-left: 0.5rem;
+  pointer-events: auto;
+}
+
+/* Mobile-specific improvements for cart dropdown buttons */
+@media (max-width: 600px) {
+  #cartDropdown .quantity-btn,
+  #cartDropdown .remove-item {
+    min-width: 44px;
+    min-height: 44px;
+    font-size: 1.4rem;
+    font-weight: bold;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    pointer-events: auto;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    position: relative;
+    z-index: 10;
+  }
+  
+  #cartDropdown .quantity-btn:active,
+  #cartDropdown .remove-item:active {
+    transform: scale(0.9);
+    transition: transform 0.1s ease;
+  }
+  
+  #cartDropdown .cart-item-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-left: auto;
+    pointer-events: auto;
+    z-index: 10;
+    position: relative;
+    padding: 0.5rem;
+  }
+  
+  #cartDropdown .quantity-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-left: 0.5rem;
+    pointer-events: auto;
+  }
+  
+  #cartDropdown .quantity-display {
+    font-size: 1.1rem;
+    font-weight: bold;
+    min-width: 20px;
+    text-align: center;
   }
 }
