@@ -944,6 +944,11 @@ document.addEventListener('DOMContentLoaded', function() {
       if (grid) {
         grid.scrollIntoView({ behavior: 'smooth' });
       }
+      // Clear search input when category is clicked
+      const searchInput = document.getElementById('searchInput');
+      if (searchInput) {
+        searchInput.value = '';
+      }
     });
   });
   // NEU: 'Alle Produkte entdecken' Button zeigt wieder alle Produkte
@@ -954,6 +959,11 @@ document.addEventListener('DOMContentLoaded', function() {
       if (filter) {
         filter.value = 'Alle Kategorien';
         filter.dispatchEvent(new Event('change'));
+      }
+      // Clear search input when "Alle Produkte entdecken" is clicked
+      const searchInput = document.getElementById('searchInput');
+      if (searchInput) {
+        searchInput.value = '';
       }
     });
   }
