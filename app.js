@@ -386,12 +386,16 @@ function debounce(func, timeout = 300) {
 }
 
 function filterProducts(products, searchText, category) {
-  return products.filter(product => {
+  console.log('filterProducts called with:', { searchText, category, productsCount: products.length });
+  const filtered = products.filter(product => {
     const matchesSearch = product.name.toLowerCase().includes(searchText.toLowerCase()) ||
       product.description.toLowerCase().includes(searchText.toLowerCase());
     const matchesCategory = category === 'Alle Kategorien' || product.category === category;
+    console.log(`Product "${product.name}" (${product.category}): search=${matchesSearch}, category=${matchesCategory}`);
     return matchesSearch && matchesCategory;
   });
+  console.log('filterProducts result:', filtered.length, 'products');
+  return filtered;
 }
 
 function sortProducts(products, sortOrder) {
@@ -597,23 +601,36 @@ document.addEventListener('DOMContentLoaded', () => {
   const priceSort = document.getElementById('priceSort');
 
   const updateFilters = debounce(() => {
+    console.log('updateFilters called');
     loadProducts().then(products => {
+      console.log('Products loaded:', products.length);
       const filtered = filterProducts(
         products,
         searchInput ? searchInput.value : '',
         categoryFilter ? categoryFilter.value : 'Alle Kategorien'
       );
+      console.log('Filtered products:', filtered.length);
       const sorted = sortProducts(
         filtered,
         priceSort ? priceSort.value : 'Aufsteigend'
       );
+      console.log('Sorted products:', sorted.length);
       renderProducts(sorted);
     });
   }, 300);
 
-  if (searchInput) searchInput.addEventListener('input', updateFilters);
-  if (categoryFilter) categoryFilter.addEventListener('change', updateFilters);
-  if (priceSort) priceSort.addEventListener('change', updateFilters);
+  if (searchInput) {
+    searchInput.addEventListener('input', updateFilters);
+    console.log('Added input event listener to searchInput');
+  }
+  if (categoryFilter) {
+    categoryFilter.addEventListener('change', updateFilters);
+    console.log('Added change event listener to categoryFilter');
+  }
+  if (priceSort) {
+    priceSort.addEventListener('change', updateFilters);
+    console.log('Added change event listener to priceSort');
+  }
 
   // Speichere die Sucheingabe bei Enter und verhindere Seitenreload
   if (searchInput) {
@@ -658,6 +675,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
       console.log('Additional button initialization...');
       initializeAddToCartButtons();
+      setupCategoryButtons(); // Kategorie-Buttons erneut einrichten
     }, 500);
   });
 });
@@ -929,51 +947,106 @@ window.testEmptyCart = testEmptyCart;
 window.testLiveUpdates = testLiveUpdates;
 window.testClearCartButton = testClearCartButton;
 window.testClearCartSimple = testClearCartSimple;
+window.testCategoryButtons = testCategoryButtons;
+window.setupCategoryButtons = setupCategoryButtons;
 
-document.addEventListener('DOMContentLoaded', function() {
-  document.querySelectorAll('.category-tile').forEach(tile => {
-    tile.addEventListener('click', function(e) {
+function setupCategoryButtons() {
+  console.log('Setting up category buttons...');
+  
+  const categoryTiles = document.querySelectorAll('.category-tile');
+  console.log('Found category tiles:', categoryTiles.length);
+  
+  categoryTiles.forEach((tile, index) => {
+    console.log(`Setting up tile ${index + 1}:`, tile.dataset.category);
+    
+    // Remove existing event listeners
+    const newTile = tile.cloneNode(true);
+    tile.parentNode.replaceChild(newTile, tile);
+    
+    newTile.addEventListener('click', function(e) {
+      console.log('Category tile clicked:', this.dataset.category);
       e.preventDefault();
+      e.stopPropagation();
+      
       const category = this.dataset.category;
       const filter = document.getElementById('categoryFilter');
+      console.log('Category filter found:', !!filter);
+      
       if (filter) {
         filter.value = category;
+        console.log('Set filter value to:', category);
         filter.dispatchEvent(new Event('change'));
+        console.log('Dispatched change event');
       }
+      
       const grid = document.getElementById('productGrid');
+      console.log('Product grid found:', !!grid);
+      
       if (grid) {
         grid.scrollIntoView({ behavior: 'smooth' });
+        console.log('Scrolled to product grid');
       }
+      
       // Clear search input when category is clicked
       const searchInput = document.getElementById('searchInput');
-      if (searchInput) searchInput.value = '';
+      if (searchInput) {
+        searchInput.value = '';
+        console.log('Cleared search input');
+      }
       
       // Add visual feedback for selected category
       document.querySelectorAll('.category-tile').forEach(t => {
         t.classList.remove('selected');
       });
       this.classList.add('selected');
+      console.log('Added selected class to clicked tile');
     });
   });
+  
   // NEU: 'Alle Produkte entdecken' Button zeigt wieder alle Produkte
   const allBtn = document.querySelector('a.btn.btn-outline-dark');
+  console.log('Found "Alle Produkte entdecken" button:', !!allBtn);
+  
   if (allBtn) {
-    allBtn.addEventListener('click', function(e) {
+    // Remove existing event listeners
+    const newAllBtn = allBtn.cloneNode(true);
+    allBtn.parentNode.replaceChild(newAllBtn, allBtn);
+    
+    newAllBtn.addEventListener('click', function(e) {
+      console.log('"Alle Produkte entdecken" button clicked');
+      e.preventDefault();
+      e.stopPropagation();
+      
       const filter = document.getElementById('categoryFilter');
+      console.log('Category filter found for all products:', !!filter);
+      
       if (filter) {
         filter.value = 'Alle Kategorien';
+        console.log('Set filter to "Alle Kategorien"');
         filter.dispatchEvent(new Event('change'));
+        console.log('Dispatched change event for all products');
       }
+      
       // Clear search input when "Alle Produkte entdecken" is clicked
       const searchInput = document.getElementById('searchInput');
-      if (searchInput) searchInput.value = '';
+      if (searchInput) {
+        searchInput.value = '';
+        console.log('Cleared search input for all products');
+      }
       
       // Remove visual feedback from all categories
       document.querySelectorAll('.category-tile').forEach(t => {
         t.classList.remove('selected');
       });
+      console.log('Removed selected class from all category tiles');
     });
   }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('DOM Content Loaded - Setting up category tiles...');
+  setupCategoryButtons();
+});
 });
 
 // Test-Funktion für Live Updates
@@ -1109,4 +1182,39 @@ window.testClearCartSimple = function() {
   } else {
     console.error('clearCart function is not available!');
   }
+};
+
+// Test-Funktion für Kategorie-Buttons
+window.testCategoryButtons = function() {
+  console.log('=== Testing Category Buttons ===');
+  
+  const categoryTiles = document.querySelectorAll('.category-tile');
+  console.log('Found category tiles:', categoryTiles.length);
+  
+  categoryTiles.forEach((tile, index) => {
+    console.log(`Tile ${index + 1}:`, {
+      category: tile.dataset.category,
+      text: tile.textContent.trim(),
+      hasClickHandler: tile.onclick !== null
+    });
+  });
+  
+  const allBtn = document.querySelector('a.btn.btn-outline-dark');
+  console.log('"Alle Produkte entdecken" button:', {
+    found: !!allBtn,
+    text: allBtn ? allBtn.textContent.trim() : 'not found',
+    hasClickHandler: allBtn ? allBtn.onclick !== null : false
+  });
+  
+  const categoryFilter = document.getElementById('categoryFilter');
+  console.log('Category filter:', {
+    found: !!categoryFilter,
+    value: categoryFilter ? categoryFilter.value : 'not found',
+    options: categoryFilter ? Array.from(categoryFilter.options).map(opt => opt.value) : []
+  });
+  
+  // Teste die Kategorie-Buttons manuell
+  console.log('=== Manual Test ===');
+  setupCategoryButtons();
+  console.log('Category buttons setup completed');
 };
