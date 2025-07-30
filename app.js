@@ -401,6 +401,7 @@ function removeFromCart(productId) {
 }
 
 function clearCart() {
+  console.log('clearCart function called');
   cartItems = [];
   localStorage.setItem('cart', JSON.stringify(cartItems));
   
@@ -414,6 +415,11 @@ function clearCart() {
     cartDropdown.classList.remove('show');
     cartDropdown.style.display = 'none';
   }
+  
+  // Show confirmation message
+  showAlert('Warenkorb wurde geleert');
+  
+  console.log('Cart cleared successfully');
 }
 
 // Filter- und Sortierfunktionen
@@ -473,10 +479,17 @@ function initializeCartDropdown() {
   // Initialize clear cart button
   const clearCartBtn = document.getElementById('clearCart');
   if (clearCartBtn) {
+    console.log('Clear cart button found, adding event listener');
+    // Remove any existing event listeners
+    clearCartBtn.removeEventListener('click', clearCart);
     clearCartBtn.addEventListener('click', function(e) {
       e.preventDefault();
+      e.stopPropagation();
+      console.log('Clear cart button clicked');
       clearCart();
     });
+  } else {
+    console.log('Clear cart button not found');
   }
 }
 
@@ -585,6 +598,24 @@ function renderCartDropdown() {
   // Update total immediately
   totalElement.textContent = total.toFixed(2);
   console.log('Cart dropdown rendered successfully with total:', total.toFixed(2));
+  
+  // Re-initialize clear cart button after rendering
+  setTimeout(() => {
+    const clearCartBtn = document.getElementById('clearCart');
+    if (clearCartBtn) {
+      console.log('Re-initializing clear cart button');
+      // Remove any existing event listeners
+      const newClearCartBtn = clearCartBtn.cloneNode(true);
+      clearCartBtn.parentNode.replaceChild(newClearCartBtn, clearCartBtn);
+      
+      newClearCartBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log('Clear cart button clicked (re-initialized)');
+        clearCart();
+      });
+    }
+  }, 100);
 }
 
 // Wishlist-Buttons initialisieren
@@ -675,14 +706,6 @@ document.addEventListener('DOMContentLoaded', () => {
       initializeAddToCartButtons();
     }, 500);
   });
-
-  const clearCartBtn = document.getElementById('clearCart');
-  if (clearCartBtn) {
-    clearCartBtn.addEventListener('click', function(e) {
-      e.preventDefault();
-      clearCart();
-    });
-  }
 });
 
 // Bilder optimieren
@@ -950,6 +973,7 @@ window.loadProducts = loadProducts;
 window.testCartDropdown = testCartDropdown;
 window.testEmptyCart = testEmptyCart;
 window.testLiveUpdates = testLiveUpdates;
+window.testClearCartButton = testClearCartButton;
 
 document.addEventListener('DOMContentLoaded', function() {
   document.querySelectorAll('.category-tile').forEach(tile => {
@@ -1043,6 +1067,59 @@ window.testLiveUpdates = function() {
       }, 500);
     } else {
       console.log('Cart button not found');
+    }
+  }, 500);
+};
+
+// Test-Funktion für Clear Cart Button
+window.testClearCartButton = function() {
+  console.log('Testing clear cart button...');
+  
+  // First, add some items to cart
+  console.log('=== Step 1: Adding items to cart ===');
+  testAddProduct1();
+  
+  setTimeout(() => {
+    // Open dropdown
+    console.log('=== Step 2: Opening dropdown ===');
+    const cartButton = document.getElementById('cartButton');
+    if (cartButton) {
+      cartButton.click();
+      
+      setTimeout(() => {
+        // Check if clear cart button exists
+        console.log('=== Step 3: Checking clear cart button ===');
+        const clearCartBtn = document.getElementById('clearCart');
+        console.log('Clear cart button found:', !!clearCartBtn);
+        
+        if (clearCartBtn) {
+          console.log('Clear cart button text:', clearCartBtn.textContent);
+          console.log('Clear cart button HTML:', clearCartBtn.outerHTML);
+          
+          // Test clicking the button
+          console.log('=== Step 4: Clicking clear cart button ===');
+          clearCartBtn.click();
+          
+          setTimeout(() => {
+            console.log('=== Step 5: Checking result ===');
+            const counter = document.getElementById('cartCounter');
+            const dropdown = document.getElementById('cartDropdown');
+            
+            console.log('Cart counter after clear:', counter ? counter.textContent : 'not found');
+            console.log('Cart counter display:', counter ? counter.style.display : 'not found');
+            console.log('Dropdown visible:', dropdown ? dropdown.classList.contains('show') : 'not found');
+            
+            // Check localStorage
+            const currentCart = JSON.parse(localStorage.getItem('cart')) || [];
+            console.log('Cart in localStorage after clear:', currentCart);
+            console.log('Cart items count:', currentCart.length);
+          }, 500);
+        } else {
+          console.log('Clear cart button not found!');
+        }
+      }, 500);
+    } else {
+      console.log('Cart button not found!');
     }
   }, 500);
 };
