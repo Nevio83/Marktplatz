@@ -470,6 +470,7 @@ body {
     margin: 0;
     font-weight: 600;
     color: var(--text-primary);
+    visibility: hidden;
 }
 
 .cart-dropdown .btn-close {
