@@ -255,8 +255,11 @@ function addProductToCart(products, productId) {
 
   // Speichere den aktuellen Warenkorb immer im localStorage
   localStorage.setItem('cart', JSON.stringify(cartItems));
+  
+  // Update counter and dropdown immediately
   updateCartCounter();
-  renderCartDropdown();
+  
+  // Show alert
   showAlert('Produkt wurde zum Warenkorb hinzugefügt');
 
   // --- NEU: Wenn der User auf cart.html ist, direkt die Seite aktualisieren ---
@@ -276,13 +279,21 @@ function updateCartCounter() {
     const currentCart = JSON.parse(localStorage.getItem('cart')) || [];
     const totalItems = currentCart.reduce((sum, item) => sum + (item.quantity || 0), 0);
     console.log('Updating cart counter - total items:', totalItems);
+    
+    // Update counter text
     counter.textContent = totalItems;
     
-    // Hide counter if cart is empty
+    // Show/hide counter based on total items
     if (totalItems === 0) {
       counter.style.display = 'none';
     } else {
-      counter.style.display = 'block';
+      counter.style.display = 'flex';
+    }
+    
+    // Force re-render of dropdown if it's currently open
+    const cartDropdown = document.getElementById('cartDropdown');
+    if (cartDropdown && cartDropdown.classList.contains('show')) {
+      renderCartDropdown();
     }
   } else {
     console.log('Cart counter element not found');
@@ -349,8 +360,9 @@ function changeQuantity(productId, change) {
     console.log('After change - quantity:', item.quantity);
   }
   localStorage.setItem('cart', JSON.stringify(cartItems));
+  
+  // Update counter and dropdown immediately
   updateCartCounter();
-  renderCartDropdown();
   
   // Sofort ausblenden wenn Warenkorb leer ist
   if (cartItems.length === 0) {
@@ -373,8 +385,9 @@ function removeFromCart(productId) {
   const afterCount = cartItems.length;
   console.log('Items in cart before:', beforeCount, 'after:', afterCount);
   localStorage.setItem('cart', JSON.stringify(cartItems));
+  
+  // Update counter and dropdown immediately
   updateCartCounter();
-  renderCartDropdown();
   
   // Sofort ausblenden wenn Warenkorb leer ist
   if (cartItems.length === 0) {
@@ -390,8 +403,9 @@ function removeFromCart(productId) {
 function clearCart() {
   cartItems = [];
   localStorage.setItem('cart', JSON.stringify(cartItems));
+  
+  // Update counter and dropdown immediately
   updateCartCounter();
-  renderCartDropdown();
   
   // Sofort ausblenden
   console.log('Cart cleared, hiding dropdown');
@@ -437,6 +451,7 @@ function initializeCartDropdown() {
   if (cartButton && cartDropdown) {
     cartButton.addEventListener('click', (e) => {
       e.preventDefault();
+      // Always render fresh data when opening dropdown
       renderCartDropdown();
       cartDropdown.classList.toggle('show');
       // Sichtbarkeit für mobile Geräte absichern
@@ -452,6 +467,15 @@ function initializeCartDropdown() {
       e.preventDefault();
       cartDropdown.classList.remove('show');
       cartDropdown.style.display = 'none'; // Overlay immer ausblenden
+    });
+  }
+  
+  // Initialize clear cart button
+  const clearCartBtn = document.getElementById('clearCart');
+  if (clearCartBtn) {
+    clearCartBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      clearCart();
     });
   }
 }
@@ -558,8 +582,9 @@ function renderCartDropdown() {
     </div>
   `).join('');
   
+  // Update total immediately
   totalElement.textContent = total.toFixed(2);
-  console.log('Cart dropdown rendered successfully');
+  console.log('Cart dropdown rendered successfully with total:', total.toFixed(2));
 }
 
 // Wishlist-Buttons initialisieren
@@ -924,6 +949,7 @@ window.renderProducts = renderProducts;
 window.loadProducts = loadProducts;
 window.testCartDropdown = testCartDropdown;
 window.testEmptyCart = testEmptyCart;
+window.testLiveUpdates = testLiveUpdates;
 
 document.addEventListener('DOMContentLoaded', function() {
   document.querySelectorAll('.category-tile').forEach(tile => {
@@ -953,3 +979,70 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 });
+
+// Test-Funktion für Live Updates
+window.testLiveUpdates = function() {
+  console.log('Testing live updates...');
+  
+  // Test 1: Add product and check counter
+  console.log('=== Test 1: Adding product ===');
+  testAddProduct1();
+  
+  setTimeout(() => {
+    const counter = document.getElementById('cartCounter');
+    console.log('Counter after adding product:', counter ? counter.textContent : 'not found');
+    console.log('Counter display:', counter ? counter.style.display : 'not found');
+    
+    // Test 2: Open dropdown and check content
+    console.log('=== Test 2: Opening dropdown ===');
+    const cartButton = document.getElementById('cartButton');
+    if (cartButton) {
+      cartButton.click();
+      
+      setTimeout(() => {
+        const dropdown = document.getElementById('cartDropdown');
+        const body = document.getElementById('cartDropdownBody');
+        const footer = document.getElementById('cartDropdownFooter');
+        const total = document.getElementById('cartTotal');
+        
+        console.log('Dropdown visible:', dropdown ? dropdown.classList.contains('show') : 'not found');
+        console.log('Dropdown body content length:', body ? body.innerHTML.length : 'not found');
+        console.log('Footer visible:', footer ? footer.style.display : 'not found');
+        console.log('Total amount:', total ? total.textContent : 'not found');
+        
+        // Test 3: Change quantity
+        console.log('=== Test 3: Changing quantity ===');
+        const quantityBtn = document.querySelector('#cartDropdown .quantity-btn');
+        if (quantityBtn) {
+          console.log('Quantity button found, clicking...');
+          quantityBtn.click();
+          
+          setTimeout(() => {
+            console.log('Counter after quantity change:', counter ? counter.textContent : 'not found');
+            console.log('Total after quantity change:', total ? total.textContent : 'not found');
+            
+            // Test 4: Remove item
+            console.log('=== Test 4: Removing item ===');
+            const removeBtn = document.querySelector('#cartDropdown .remove-item');
+            if (removeBtn) {
+              console.log('Remove button found, clicking...');
+              removeBtn.click();
+              
+              setTimeout(() => {
+                console.log('Counter after removal:', counter ? counter.textContent : 'not found');
+                console.log('Counter display after removal:', counter ? counter.style.display : 'not found');
+                console.log('Dropdown visible after removal:', dropdown ? dropdown.classList.contains('show') : 'not found');
+              }, 500);
+            } else {
+              console.log('Remove button not found');
+            }
+          }, 500);
+        } else {
+          console.log('Quantity button not found');
+        }
+      }, 500);
+    } else {
+      console.log('Cart button not found');
+    }
+  }, 500);
+};
