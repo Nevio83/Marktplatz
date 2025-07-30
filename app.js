@@ -269,7 +269,13 @@ function addProductToCart(products, productId) {
 function updateCartCounter() {
   const counter = document.getElementById('cartCounter');
   if (counter) {
-    counter.textContent = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+    // Always read from localStorage to ensure we have the latest data
+    const currentCart = JSON.parse(localStorage.getItem('cart')) || [];
+    const totalItems = currentCart.reduce((sum, item) => sum + item.quantity, 0);
+    console.log('Updating cart counter - total items:', totalItems);
+    counter.textContent = totalItems;
+  } else {
+    console.log('Cart counter element not found');
   }
 }
 
@@ -308,19 +314,29 @@ function showAlert(message, redirectTo = 'cart.html') {
 }
 
 function changeQuantity(productId, change) {
+  console.log('changeQuantity called with:', productId, change);
   productId = Number(productId);
+  // Always read from localStorage to ensure we have the latest data
+  cartItems = JSON.parse(localStorage.getItem('cart')) || [];
   const item = cartItems.find(i => Number(i.id) === productId);
-  if (!item) return;
+  if (!item) {
+    console.log('Item not found:', productId);
+    return;
+  }
   
   // Bei Bundles (Items mit bundleId) keine Mengenänderung erlauben
   if (item.bundleId) {
+    console.log('Bundle item, no quantity change allowed');
     return; // Keine Änderung bei Bundles
   }
   
+  console.log('Before change - quantity:', item.quantity);
   if (item.quantity + change < 1) {
     cartItems = cartItems.filter(i => Number(i.id) !== productId);
+    console.log('Item removed from cart');
   } else {
     item.quantity += change;
+    console.log('After change - quantity:', item.quantity);
   }
   localStorage.setItem('cart', JSON.stringify(cartItems));
   updateCartCounter();
@@ -335,8 +351,14 @@ function changeQuantity(productId, change) {
 }
 
 function removeFromCart(productId) {
+  console.log('removeFromCart called with:', productId);
   productId = Number(productId);
+  // Always read from localStorage to ensure we have the latest data
+  cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+  const beforeCount = cartItems.length;
   cartItems = cartItems.filter(i => Number(i.id) !== productId);
+  const afterCount = cartItems.length;
+  console.log('Items in cart before:', beforeCount, 'after:', afterCount);
   localStorage.setItem('cart', JSON.stringify(cartItems));
   updateCartCounter();
   renderCartDropdown();
@@ -416,14 +438,25 @@ function initializeCartDropdown() {
 }
 
 function renderCartDropdown() {
+  console.log('renderCartDropdown called');
   cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+  console.log('Cart items loaded:', cartItems);
+  
   const body = document.getElementById('cartDropdownBody');
   const footer = document.getElementById('cartDropdownFooter');
   const totalElement = document.getElementById('cartTotal');
 
-  if (!body || !footer || !totalElement) return;
+  if (!body || !footer || !totalElement) {
+    console.error('Required cart dropdown elements not found:', {
+      body: !!body,
+      footer: !!footer,
+      totalElement: !!totalElement
+    });
+    return;
+  }
 
   if (cartItems.length === 0) {
+    console.log('Cart is empty, showing empty state');
     footer.style.display = 'none';
     
     // Bei leerem Warenkorb: 3 zufällige Produktvorschläge anzeigen
@@ -471,7 +504,13 @@ function renderCartDropdown() {
     return;
   }
   
+  console.log('Rendering cart items:', cartItems.length);
   footer.style.display = 'block';
+  
+  // Calculate total for display
+  const total = cartItems.reduce((sum, item) => sum + (typeof item.price === 'number' ? item.price * item.quantity : 0), 0);
+  console.log('Cart total calculated:', total);
+  
   body.innerHTML = cartItems.map(item => `
     <div class="cart-item">
       <img src="${item.image}" class="cart-item-image" alt="${item.name}">
@@ -483,25 +522,25 @@ function renderCartDropdown() {
           <strong>€${(typeof item.price === 'number' ? (item.price * item.quantity).toFixed(2) : '0.00')}</strong>
         </div>
       </div>
-              <div class="cart-item-controls">
-          ${item.bundleId ? `
-            <div class="quantity-controls disabled">
-              <span class="quantity-display">1</span>
-            </div>
-          ` : `
-            <div class="quantity-controls" style="display: flex; align-items: center; gap: 4px;">
-              <button class="quantity-btn" onclick="changeQuantity(${Number(item.id)}, -1)">-</button>
-              <span class="quantity-display">${item.quantity}</span>
-              <button class="quantity-btn" onclick="changeQuantity(${Number(item.id)}, 1)">+</button>
-            </div>
-          `}
-          <button class="remove-item" onclick="removeFromCart(${Number(item.id)})">&times;</button>
-        </div>
+      <div class="cart-item-controls">
+        ${item.bundleId ? `
+          <div class="quantity-controls disabled">
+            <span class="quantity-display">1</span>
+          </div>
+        ` : `
+          <div class="quantity-controls" style="display: flex; align-items: center; gap: 4px;">
+            <button class="quantity-btn" onclick="changeQuantity(${Number(item.id)}, -1)" style="cursor: pointer; pointer-events: auto;">-</button>
+            <span class="quantity-display">${item.quantity}</span>
+            <button class="quantity-btn" onclick="changeQuantity(${Number(item.id)}, 1)" style="cursor: pointer; pointer-events: auto;">+</button>
+          </div>
+        `}
+        <button class="remove-item" onclick="removeFromCart(${Number(item.id)})" style="cursor: pointer; pointer-events: auto;">&times;</button>
+      </div>
     </div>
   `).join('');
-  totalElement.textContent = cartItems
-    .reduce((sum, item) => sum + (typeof item.price === 'number' ? item.price * item.quantity : 0), 0)
-    .toFixed(2);
+  
+  totalElement.textContent = total.toFixed(2);
+  console.log('Cart dropdown rendered successfully');
 }
 
 // Wishlist-Buttons initialisieren
@@ -760,6 +799,49 @@ window.testProduct1Button = function() {
   }
 };
 
+// Test-Funktion für Cart Dropdown
+window.testCartDropdown = function() {
+  console.log('Testing cart dropdown functionality...');
+  
+  // Test cart counter
+  const counter = document.getElementById('cartCounter');
+  console.log('Cart counter element:', counter);
+  console.log('Cart counter text:', counter ? counter.textContent : 'not found');
+  
+  // Test cart dropdown
+  const dropdown = document.getElementById('cartDropdown');
+  console.log('Cart dropdown element:', dropdown);
+  console.log('Cart dropdown classes:', dropdown ? dropdown.className : 'not found');
+  
+  // Test cart dropdown body
+  const body = document.getElementById('cartDropdownBody');
+  console.log('Cart dropdown body:', body);
+  console.log('Cart dropdown body HTML:', body ? body.innerHTML.substring(0, 200) + '...' : 'not found');
+  
+  // Test quantity buttons
+  const quantityButtons = document.querySelectorAll('#cartDropdown .quantity-btn');
+  console.log('Quantity buttons found:', quantityButtons.length);
+  quantityButtons.forEach((btn, index) => {
+    console.log(`Quantity button ${index}:`, btn);
+    console.log(`Button onclick:`, btn.onclick);
+    console.log(`Button text:`, btn.textContent);
+  });
+  
+  // Test remove buttons
+  const removeButtons = document.querySelectorAll('#cartDropdown .remove-item');
+  console.log('Remove buttons found:', removeButtons.length);
+  removeButtons.forEach((btn, index) => {
+    console.log(`Remove button ${index}:`, btn);
+    console.log(`Button onclick:`, btn.onclick);
+    console.log(`Button text:`, btn.textContent);
+  });
+  
+  // Test current cart state
+  const currentCart = JSON.parse(localStorage.getItem('cart')) || [];
+  console.log('Current cart from localStorage:', currentCart);
+  console.log('Cart items count:', currentCart.length);
+};
+
 // Direkte Test-Funktion für Produkt 1
 window.testAddProduct1 = function() {
   console.log('Directly adding product 1 to cart...');
@@ -798,6 +880,7 @@ window.addProductToCart = addProductToCart;
 window.initializeAddToCartButtons = initializeAddToCartButtons;
 window.renderProducts = renderProducts;
 window.loadProducts = loadProducts;
+window.testCartDropdown = testCartDropdown;
 
 document.addEventListener('DOMContentLoaded', function() {
   document.querySelectorAll('.category-tile').forEach(tile => {
