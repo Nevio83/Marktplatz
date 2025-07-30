@@ -419,21 +419,6 @@ function clearSearchInput() {
   var searchInput = document.getElementById('searchInput');
   if (searchInput) searchInput.value = '';
 }
-document.addEventListener('DOMContentLoaded', function() {
-  // Kategorie-Kacheln
-  document.querySelectorAll('.category-tile').forEach(tile => {
-    tile.addEventListener('click', function() {
-      clearSearchInput();
-    });
-  });
-  // 'Alle Produkte entdecken'-Button
-  var allBtn = document.querySelector('a.btn.btn-outline-dark');
-  if (allBtn) {
-    allBtn.addEventListener('click', function() {
-      clearSearchInput();
-    });
-  }
-});
 </script>
 
 <!-- Scripts am Ende laden für bessere Performance -->
