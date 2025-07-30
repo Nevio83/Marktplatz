@@ -170,9 +170,12 @@ function renderProducts(products) {
   }
   
   console.log('Rendering products to grid...');
-  grid.innerHTML = products.map(product => {
+  
+  // Einfache, robuste HTML-Generierung
+  let html = '';
+  products.forEach(product => {
     console.log('Rendering product:', product.name);
-    return `
+    html += `
     <div class="col">
       <div class="card h-100 border-0 shadow-hover position-relative product-card" data-product-id="${product.id}">
         <button class="wishlist-btn" data-product-id="${product.id}" aria-label="Zur Wunschliste">
@@ -201,14 +204,22 @@ function renderProducts(products) {
         </div>
       </div>
     </div>
-  `;
-  }).join('');
+    `;
+  });
   
-  initializeAddToCartButtons();
-  initializeWishlistButtons();
-  initializeProductCardClicks();
-  observeProductCards();
-  optimizeImages(); // Bilder nach dem Rendern optimieren
+  console.log('Setting innerHTML...');
+  grid.innerHTML = html;
+  console.log('innerHTML set successfully');
+  
+  // Button-Initialisierung
+  setTimeout(() => {
+    console.log('Initializing buttons...');
+    initializeAddToCartButtons();
+    initializeWishlistButtons();
+    initializeProductCardClicks();
+    observeProductCards();
+    optimizeImages();
+  }, 100);
 }
 
 function observeProductCards() {
@@ -996,6 +1007,47 @@ window.testClearCartSimple = testClearCartSimple;
 window.testCategoryButtons = testCategoryButtons;
 window.setupCategoryButtons = setupCategoryButtons;
 window.renderTestProducts = renderTestProducts;
+window.setSimpleProducts = setSimpleProducts;
+window.checkDOM = checkDOM;
+
+// Einfache Funktion zum direkten Setzen von HTML
+window.setSimpleProducts = function() {
+  const grid = document.getElementById('productGrid');
+  if (grid) {
+    console.log('Setting simple products HTML...');
+    grid.innerHTML = `
+      <div class="col">
+        <div class="card h-100">
+          <img src="produkt bilder/ware.png" class="card-img-top" alt="Test Produkt">
+          <div class="card-body">
+            <h5 class="card-title">Test Produkt 1</h5>
+            <p class="card-text">Ein Testprodukt</p>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="h4 text-primary">€10.00</span>
+              <button class="btn btn-primary">Zum Warenkorb</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card h-100">
+          <img src="produkt bilder/ware.png" class="card-img-top" alt="Test Produkt">
+          <div class="card-body">
+            <h5 class="card-title">Test Produkt 2</h5>
+            <p class="card-text">Ein weiteres Testprodukt</p>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="h4 text-primary">€20.00</span>
+              <button class="btn btn-primary">Zum Warenkorb</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+    console.log('Simple products HTML set successfully');
+  } else {
+    console.error('Product grid not found for simple products');
+  }
+};
 
 // Einfache Funktion zum Überprüfen der Produkte
 window.checkProducts = function() {
@@ -1004,6 +1056,22 @@ window.checkProducts = function() {
     console.log('Product categories:', [...new Set(products.map(p => p.category))]);
     console.log('First product:', products[0]);
   });
+};
+
+// Funktion zum Überprüfen des DOM
+window.checkDOM = function() {
+  console.log('=== DOM Check ===');
+  console.log('Document ready state:', document.readyState);
+  console.log('Product grid found:', !!document.getElementById('productGrid'));
+  console.log('Category filter found:', !!document.getElementById('categoryFilter'));
+  console.log('Category tiles found:', document.querySelectorAll('.category-tile').length);
+  console.log('All products button found:', !!document.querySelector('a.btn.btn-outline-dark'));
+  
+  const grid = document.getElementById('productGrid');
+  if (grid) {
+    console.log('Product grid innerHTML length:', grid.innerHTML.length);
+    console.log('Product grid children:', grid.children.length);
+  }
 };
 
 // Funktion zum direkten Rendern von Test-Produkten
@@ -1022,6 +1090,22 @@ window.renderTestProducts = function() {
       name: "Test Mode",
       price: 20.00,
       category: "Mode",
+      image: "produkt bilder/ware.png",
+      description: "Test Produkt"
+    },
+    {
+      id: 3,
+      name: "Test Fitness",
+      price: 30.00,
+      category: "Fitness",
+      image: "produkt bilder/ware.png",
+      description: "Test Produkt"
+    },
+    {
+      id: 4,
+      name: "Test Haushalt",
+      price: 40.00,
+      category: "Haushalt",
       image: "produkt bilder/ware.png",
       description: "Test Produkt"
     }
@@ -1104,7 +1188,24 @@ function setupCategoryButtons() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+  console.log('DOM Content Loaded - Starting initialization...');
   setupCategoryButtons();
+  
+  // Direkte Produkt-Anzeige beim Laden
+  console.log('Loading products immediately...');
+  loadProducts().then(products => {
+    console.log('Products loaded on DOM ready:', products.length);
+    if (products.length > 0) {
+      renderProducts(products);
+    } else {
+      console.log('No products loaded, using fallback...');
+      renderTestProducts();
+    }
+  }).catch(error => {
+    console.error('Error loading products on DOM ready:', error);
+    console.log('Using fallback products...');
+    renderTestProducts();
+  });
 });
 });
 
