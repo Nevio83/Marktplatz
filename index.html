@@ -414,23 +414,52 @@ if (searchInput && mobileSearchBtn) {
   });
 </script>
 <script>
-// Suchfeld leeren, wenn auf eine Kategorie oder 'Alle Produkte entdecken' geklickt wird
+// Suchfeld leeren und Kategorien filtern
 function clearSearchInput() {
   var searchInput = document.getElementById('searchInput');
   if (searchInput) searchInput.value = '';
 }
+
+function filterByCategory(category) {
+  // Update the category filter dropdown
+  const categoryFilter = document.getElementById('categoryFilter');
+  if (categoryFilter) {
+    categoryFilter.value = category;
+    // Trigger the change event to update products
+    categoryFilter.dispatchEvent(new Event('change'));
+  }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
   // Kategorie-Kacheln
   document.querySelectorAll('.category-tile').forEach(tile => {
-    tile.addEventListener('click', function() {
+    tile.addEventListener('click', function(e) {
+      e.preventDefault();
       clearSearchInput();
+      const category = this.getAttribute('data-category');
+      if (category) {
+        filterByCategory(category);
+        // Scroll to product grid
+        const productGrid = document.getElementById('productGrid');
+        if (productGrid) {
+          productGrid.scrollIntoView({ behavior: 'smooth' });
+        }
+      }
     });
   });
+  
   // 'Alle Produkte entdecken'-Button
   var allBtn = document.querySelector('a.btn.btn-outline-dark');
   if (allBtn) {
-    allBtn.addEventListener('click', function() {
+    allBtn.addEventListener('click', function(e) {
+      e.preventDefault();
       clearSearchInput();
+      filterByCategory('Alle Kategorien');
+      // Scroll to product grid
+      const productGrid = document.getElementById('productGrid');
+      if (productGrid) {
+        productGrid.scrollIntoView({ behavior: 'smooth' });
+      }
     });
   }
 });

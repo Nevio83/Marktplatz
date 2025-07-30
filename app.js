@@ -42,9 +42,13 @@ let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
 
 // Produktdaten laden
 async function loadProducts() {
+  console.log('loadProducts function called');
   try {
+    console.log('Fetching products.json...');
     const response = await fetch('products.json');
+    console.log('Response status:', response.status);
     const products = await response.json();
+    console.log('Products parsed:', products.length);
     // Füge eine Standardbeschreibung hinzu, falls nicht vorhanden
     return products.map(p => ({
       ...p,
@@ -118,6 +122,7 @@ function updateWishlistButtonState(productId) {
 // Produktgrid rendern (mit Herz oben rechts)
 function renderProducts(products) {
   console.log('Rendering', products.length, 'products');
+  console.log('Product grid element:', document.getElementById('productGrid'));
   const grid = document.getElementById('productGrid');
   if (!grid) {
     console.error('Product grid not found!');
@@ -586,11 +591,15 @@ function initializeWishlistButtons() {
 
 // Filter- und Sortier-Event-Listener
 document.addEventListener('DOMContentLoaded', () => {
-  updateCartCounter();
-  initializeCartDropdown();
+  console.log('DOMContentLoaded event fired');
+  console.log('Document ready state:', document.readyState);
   
-  // Sofortige Platzhalter für fehlende Bilder anwenden
-  applyPlaceholdersForMissingImages();
+  try {
+    updateCartCounter();
+    initializeCartDropdown();
+    
+    // Sofortige Platzhalter für fehlende Bilder anwenden
+    applyPlaceholdersForMissingImages();
 
   const searchInput = document.getElementById('searchInput');
   const categoryFilter = document.getElementById('categoryFilter');
@@ -635,6 +644,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Initiales Laden und Rendern
   loadProducts().then(products => {
+    console.log('Products loaded:', products.length, 'products');
+    console.log('First few products:', products.slice(0, 3));
+    
     // Speichere die Produkte im localStorage für bessere Verfügbarkeit
     localStorage.setItem('allProducts', JSON.stringify(products));
     console.log('Products saved to localStorage:', products.length);
@@ -644,10 +656,14 @@ document.addEventListener('DOMContentLoaded', () => {
       searchInput ? searchInput.value : '',
       categoryFilter ? categoryFilter.value : 'Alle Kategorien'
     );
+    console.log('Filtered products:', filtered.length);
+    
     const sorted = sortProducts(
       filtered,
       priceSort ? priceSort.value : 'Aufsteigend'
     );
+    console.log('Sorted products:', sorted.length);
+    
     renderProducts(sorted);
     
     // Bilder optimieren und Platzhalter anwenden
@@ -659,7 +675,12 @@ document.addEventListener('DOMContentLoaded', () => {
       console.log('Additional button initialization...');
       initializeAddToCartButtons();
     }, 500);
+  }).catch(error => {
+    console.error('Error loading products:', error);
   });
+  } catch (error) {
+    console.error('Error in DOMContentLoaded:', error);
+  }
 });
 
 // Bilder optimieren
@@ -1092,4 +1113,28 @@ window.testClearCartSimple = function() {
   } else {
     console.error('clearCart function is not available!');
   }
+};
+
+// Test function to check product loading
+window.testProductLoading = function() {
+  console.log('Testing product loading...');
+  console.log('Product grid element:', document.getElementById('productGrid'));
+  console.log('Category filter element:', document.getElementById('categoryFilter'));
+  console.log('Price sort element:', document.getElementById('priceSort'));
+  
+  loadProducts().then(products => {
+    console.log('Products loaded successfully:', products.length);
+    console.log('First product:', products[0]);
+    
+    const filtered = filterProducts(products, '', 'Alle Kategorien');
+    console.log('Filtered products:', filtered.length);
+    
+    const sorted = sortProducts(filtered, 'Aufsteigend');
+    console.log('Sorted products:', sorted.length);
+    
+    renderProducts(sorted);
+    console.log('Products rendered');
+  }).catch(error => {
+    console.error('Error in testProductLoading:', error);
+  });
 };
