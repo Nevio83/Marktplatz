@@ -311,12 +311,20 @@ if (searchInput && mobileSearchBtn) {
   const hilfeButton = document.getElementById('hilfeButton');
   const hilfePanel = document.getElementById('hilfePanel');
   const hilfePanelClose = document.getElementById('hilfePanelClose');
+  
   hilfeButton.addEventListener('click', () => {
-    hilfePanel.classList.add('offen');
+    // Toggle: Wenn Panel offen ist, schließe es; wenn geschlossen, öffne es
+    if (hilfePanel.classList.contains('offen')) {
+      hilfePanel.classList.remove('offen');
+    } else {
+      hilfePanel.classList.add('offen');
+    }
   });
+  
   hilfePanelClose.addEventListener('click', () => {
     hilfePanel.classList.remove('offen');
   });
+  
   // Schließe das Panel beim Klick außerhalb
   document.addEventListener('mousedown', function(event) {
     if (
