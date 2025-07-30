@@ -637,7 +637,19 @@ function changeQuantity(productId, change) {
         if (typeof updateCartCounter === 'function') {
             updateCartCounter();
         }
-        updateCartPage();
+        
+        // Check if we're on the cart page or main page
+        if (window.location.pathname.includes('cart.html')) {
+            // If on cart page, update the cart page
+            if (typeof updateCartPage === 'function') {
+                updateCartPage();
+            }
+        } else {
+            // If on main page, update the dropdown
+            if (typeof renderCartDropdown === 'function') {
+                renderCartDropdown();
+            }
+        }
     }
 }
 
@@ -648,13 +660,36 @@ function removeFromCart(productId) {
     if (typeof updateCartCounter === 'function') {
         updateCartCounter();
     }
-    window.location.href = 'cart.html';
+    
+    // Check if we're on the cart page or main page
+    if (window.location.pathname.includes('cart.html')) {
+        // If on cart page, redirect to cart.html
+        window.location.href = 'cart.html';
+    } else {
+        // If on main page, just update the dropdown
+        if (typeof renderCartDropdown === 'function') {
+            renderCartDropdown();
+        }
+    }
 }
 
 function clearCart() {
     localStorage.removeItem('cart');
     cartItems = [];
-    updateCartPage();
+    
+    // Check if we're on the cart page or main page
+    if (window.location.pathname.includes('cart.html')) {
+        // If on cart page, update the cart page
+        if (typeof updateCartPage === 'function') {
+            updateCartPage();
+        }
+    } else {
+        // If on main page, update the dropdown
+        if (typeof renderCartDropdown === 'function') {
+            renderCartDropdown();
+        }
+    }
+    
     if (typeof updateCartCounter === 'function') {
         updateCartCounter();
     }
