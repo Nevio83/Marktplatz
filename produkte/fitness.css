@@ -721,51 +721,9 @@
 
 .price-container {
   display: flex;
-  align-items: flex-start;
-  gap: 0.75rem;
+  align-items: center;
+  justify-content: center;
   margin-bottom: 1rem;
-  flex-wrap: wrap;
-}
-
-.current-price {
-  font-size: 1.3rem;
-  font-weight: 800;
-  color: #2c3e50;
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  line-height: 1;
-}
-
-.price-badge {
-  background: linear-gradient(135deg, #ff6b6b, #ee5a24);
-  color: white;
-  padding: 0.35rem 0.75rem;
-  border-radius: 20px;
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
-  position: relative;
-  overflow: hidden;
-  white-space: nowrap;
-}
-
-.price-badge::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-  transition: left 0.5s ease;
-}
-
-.similar-product-card:hover .price-badge::before {
-  left: 100%;
 }
 
 .view-product-btn {
@@ -820,20 +778,15 @@
   transform: translateX(6px);
 }
 
-/* Preis-Anzeige Verbesserungen */
-.price-info {
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-  flex: 1;
-  min-width: 0;
-}
-
-.original-price {
-  font-size: 0.85rem;
-  color: #6c757d;
-  text-decoration: line-through;
-  font-weight: 400;
+/* Preis-Anzeige */
+.current-price {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #2c3e50;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   line-height: 1;
 }
 
