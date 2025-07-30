@@ -155,6 +155,9 @@ body {
     position: relative;
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
 }
 
 .product-card:hover {
@@ -1063,12 +1066,15 @@ footer a:hover {
     }
     
     #productGrid .col,
-    #productGrid .col-md-3,
-    #productGrid .col-lg-4 {
-        padding-left: 4px;
-        padding-right: 4px;
-        margin-bottom: 12px;
-    }
+#productGrid .col-md-3,
+#productGrid .col-lg-4 {
+    padding-left: 4px;
+    padding-right: 4px;
+    margin-bottom: 12px;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
     
     .navbar-brand {
         font-size: 1.2rem;

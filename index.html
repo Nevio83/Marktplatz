@@ -177,9 +177,22 @@ if (searchInput && mobileSearchBtn) {
                         <option>Absteigend</option>
                     </select>
                 </div>
+                <div class="col-md-4">
+                    <button onclick="testProductLoading()" class="btn btn-primary w-100">Teste Produkte</button>
+                </div>
             </div>
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4" id="productGrid">
                 <!-- Produktkarten werden hier dynamisch eingefügt -->
+                <div class="col">
+                    <div class="card h-100 border-0 shadow-hover position-relative product-card" style="background: red; padding: 20px; color: white;">
+                        <h5>Test Produkt</h5>
+                        <p>Dies ist ein Test-Produkt um zu sehen ob die Anzeige funktioniert.</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="h4 text-white">€10.00</span>
+                            <button class="btn btn-light">Test Button</button>
+                        </div>
+                    </div>
+                </div>
             </div>
             <template id="productTemplate">
                 <div class="col">
@@ -414,23 +427,52 @@ if (searchInput && mobileSearchBtn) {
   });
 </script>
 <script>
-// Suchfeld leeren, wenn auf eine Kategorie oder 'Alle Produkte entdecken' geklickt wird
+// Suchfeld leeren und Kategorien filtern
 function clearSearchInput() {
   var searchInput = document.getElementById('searchInput');
   if (searchInput) searchInput.value = '';
 }
+
+function filterByCategory(category) {
+  // Update the category filter dropdown
+  const categoryFilter = document.getElementById('categoryFilter');
+  if (categoryFilter) {
+    categoryFilter.value = category;
+    // Trigger the change event to update products
+    categoryFilter.dispatchEvent(new Event('change'));
+  }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
   // Kategorie-Kacheln
   document.querySelectorAll('.category-tile').forEach(tile => {
-    tile.addEventListener('click', function() {
+    tile.addEventListener('click', function(e) {
+      e.preventDefault();
       clearSearchInput();
+      const category = this.getAttribute('data-category');
+      if (category) {
+        filterByCategory(category);
+        // Scroll to product grid
+        const productGrid = document.getElementById('productGrid');
+        if (productGrid) {
+          productGrid.scrollIntoView({ behavior: 'smooth' });
+        }
+      }
     });
   });
+  
   // 'Alle Produkte entdecken'-Button
   var allBtn = document.querySelector('a.btn.btn-outline-dark');
   if (allBtn) {
-    allBtn.addEventListener('click', function() {
+    allBtn.addEventListener('click', function(e) {
+      e.preventDefault();
       clearSearchInput();
+      filterByCategory('Alle Kategorien');
+      // Scroll to product grid
+      const productGrid = document.getElementById('productGrid');
+      if (productGrid) {
+        productGrid.scrollIntoView({ behavior: 'smooth' });
+      }
     });
   }
 });

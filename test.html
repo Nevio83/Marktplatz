@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test - Produkte</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="styles.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Produkt Test</h1>
+        <button onclick="testProductLoading()" class="btn btn-primary mb-3">Teste Produkt-Loading</button>
+        <div id="productGrid" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+            <!-- Produkte werden hier angezeigt -->
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        // Test function
+        function testProductLoading() {
+            console.log('Testing product loading...');
+            loadProducts().then(products => {
+                console.log('Products loaded:', products.length);
+                renderProducts(products);
+            }).catch(error => {
+                console.error('Error:', error);
+            });
+        }
+        
+        // Auto-load on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Page loaded, testing products...');
+            testProductLoading();
+        });
+    </script>
+</body>
+</html>
