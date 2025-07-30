@@ -43,8 +43,16 @@ let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
 // Produktdaten laden
 async function loadProducts() {
   try {
+    console.log('Loading products from products.json...');
     const response = await fetch('products.json');
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
     const products = await response.json();
+    console.log('Products loaded successfully:', products.length);
+    
     // Füge eine Standardbeschreibung hinzu, falls nicht vorhanden
     return products.map(p => ({
       ...p,
@@ -52,7 +60,43 @@ async function loadProducts() {
     }));
   } catch (error) {
     console.error('Fehler beim Laden der Produkte:', error);
-    return [];
+    
+    // Fallback: Verwende Test-Produkte wenn products.json nicht verfügbar ist
+    console.log('Using fallback products...');
+    return [
+      {
+        id: 1,
+        name: "Elektronik Produkt 1",
+        price: 10.00,
+        category: "Elektronik",
+        image: "produkt bilder/ware.png",
+        description: "Innovative Technologie für Ihren Alltag."
+      },
+      {
+        id: 2,
+        name: "Mode Produkt 1",
+        price: 20.00,
+        category: "Mode",
+        image: "produkt bilder/ware.png",
+        description: "Modisch und hochwertig für jeden Anlass."
+      },
+      {
+        id: 3,
+        name: "Fitness Produkt 1",
+        price: 30.00,
+        category: "Fitness",
+        image: "produkt bilder/ware.png",
+        description: "Für ein aktives und gesundes Leben."
+      },
+      {
+        id: 4,
+        name: "Haushalt Produkt 1",
+        price: 40.00,
+        category: "Haushalt",
+        image: "produkt bilder/ware.png",
+        description: "Praktisch und zuverlässig für Ihr Zuhause."
+      }
+    ];
   }
 }
 
@@ -117,16 +161,21 @@ function updateWishlistButtonState(productId) {
 
 // Produktgrid rendern (mit Herz oben rechts)
 function renderProducts(products) {
-  console.log('Rendering', products.length, 'products');
+  console.log('renderProducts called with', products.length, 'products');
+  
   const grid = document.getElementById('productGrid');
   if (!grid) {
     console.error('Product grid not found!');
     return; // Verhindert Fehler auf anderen Seiten
   }
   
-  grid.innerHTML = products.map(product => {
-    console.log('Rendering product:', product.id, product.name);
-    return `
+  console.log('Rendering products to grid...');
+  
+  // Einfache, robuste HTML-Generierung
+  let html = '';
+  products.forEach(product => {
+    console.log('Rendering product:', product.name);
+    html += `
     <div class="col">
       <div class="card h-100 border-0 shadow-hover position-relative product-card" data-product-id="${product.id}">
         <button class="wishlist-btn" data-product-id="${product.id}" aria-label="Zur Wunschliste">
@@ -155,15 +204,22 @@ function renderProducts(products) {
         </div>
       </div>
     </div>
-  `;
-  }).join('');
+    `;
+  });
   
-  console.log('Products rendered, initializing buttons...');
-  initializeAddToCartButtons();
-  initializeWishlistButtons();
-  initializeProductCardClicks();
-  observeProductCards();
-  optimizeImages(); // Bilder nach dem Rendern optimieren
+  console.log('Setting innerHTML...');
+  grid.innerHTML = html;
+  console.log('innerHTML set successfully');
+  
+  // Button-Initialisierung
+  setTimeout(() => {
+    console.log('Initializing buttons...');
+    initializeAddToCartButtons();
+    initializeWishlistButtons();
+    initializeProductCardClicks();
+    observeProductCards();
+    optimizeImages();
+  }, 100);
 }
 
 function observeProductCards() {
@@ -184,11 +240,9 @@ function initializeAddToCartButtons() {
   // Warte kurz, um sicherzustellen, dass alle Elemente gerendert sind
   setTimeout(() => {
     const buttons = document.querySelectorAll('.add-to-cart');
-    console.log('Found', buttons.length, 'add-to-cart buttons');
     
     buttons.forEach((button, index) => {
       const productId = button.dataset.productId;
-      console.log(`Initializing button ${index} for product ${productId}`);
       
       // Entferne alle bestehenden Event Listener
       const newButton = button.cloneNode(true);
@@ -198,7 +252,6 @@ function initializeAddToCartButtons() {
       newButton.addEventListener('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
-        console.log('Button clicked for product:', productId);
         
         const productId = parseInt(this.dataset.productId);
         if (productId && !isNaN(productId)) {
@@ -386,12 +439,16 @@ function debounce(func, timeout = 300) {
 }
 
 function filterProducts(products, searchText, category) {
-  return products.filter(product => {
+  console.log('filterProducts called with:', { searchText, category, productsCount: products.length });
+  const filtered = products.filter(product => {
     const matchesSearch = product.name.toLowerCase().includes(searchText.toLowerCase()) ||
       product.description.toLowerCase().includes(searchText.toLowerCase());
     const matchesCategory = category === 'Alle Kategorien' || product.category === category;
+    console.log(`Product "${product.name}" (${product.category}): search=${matchesSearch}, category=${matchesCategory}`);
     return matchesSearch && matchesCategory;
   });
+  console.log('filterProducts result:', filtered.length, 'products');
+  return filtered;
 }
 
 function sortProducts(products, sortOrder) {
@@ -597,23 +654,33 @@ document.addEventListener('DOMContentLoaded', () => {
   const priceSort = document.getElementById('priceSort');
 
   const updateFilters = debounce(() => {
+    console.log('updateFilters called');
     loadProducts().then(products => {
+      console.log('Products loaded in updateFilters:', products.length);
       const filtered = filterProducts(
         products,
         searchInput ? searchInput.value : '',
         categoryFilter ? categoryFilter.value : 'Alle Kategorien'
       );
+      console.log('Filtered products:', filtered.length);
       const sorted = sortProducts(
         filtered,
         priceSort ? priceSort.value : 'Aufsteigend'
       );
+      console.log('Sorted products:', sorted.length);
       renderProducts(sorted);
     });
   }, 300);
 
-  if (searchInput) searchInput.addEventListener('input', updateFilters);
-  if (categoryFilter) categoryFilter.addEventListener('change', updateFilters);
-  if (priceSort) priceSort.addEventListener('change', updateFilters);
+  if (searchInput) {
+    searchInput.addEventListener('input', updateFilters);
+  }
+  if (categoryFilter) {
+    categoryFilter.addEventListener('change', updateFilters);
+  }
+  if (priceSort) {
+    priceSort.addEventListener('change', updateFilters);
+  }
 
   // Speichere die Sucheingabe bei Enter und verhindere Seitenreload
   if (searchInput) {
@@ -634,20 +701,26 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Initiales Laden und Rendern
+  console.log('Starting initial product load...');
   loadProducts().then(products => {
+    console.log('Initial products loaded:', products.length);
+    
     // Speichere die Produkte im localStorage für bessere Verfügbarkeit
     localStorage.setItem('allProducts', JSON.stringify(products));
-    console.log('Products saved to localStorage:', products.length);
     
     const filtered = filterProducts(
       products,
       searchInput ? searchInput.value : '',
       categoryFilter ? categoryFilter.value : 'Alle Kategorien'
     );
+    console.log('Initial filtered products:', filtered.length);
+    
     const sorted = sortProducts(
       filtered,
       priceSort ? priceSort.value : 'Aufsteigend'
     );
+    console.log('Initial sorted products:', sorted.length);
+    
     renderProducts(sorted);
     
     // Bilder optimieren und Platzhalter anwenden
@@ -656,9 +729,11 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Zusätzliche Button-Initialisierung nach einer kurzen Verzögerung
     setTimeout(() => {
-      console.log('Additional button initialization...');
       initializeAddToCartButtons();
+      setupCategoryButtons(); // Kategorie-Buttons erneut einrichten
     }, 500);
+  }).catch(error => {
+    console.error('Error in initial product load:', error);
   });
 });
 
@@ -929,34 +1004,209 @@ window.testEmptyCart = testEmptyCart;
 window.testLiveUpdates = testLiveUpdates;
 window.testClearCartButton = testClearCartButton;
 window.testClearCartSimple = testClearCartSimple;
+window.testCategoryButtons = testCategoryButtons;
+window.setupCategoryButtons = setupCategoryButtons;
+window.renderTestProducts = renderTestProducts;
+window.setSimpleProducts = setSimpleProducts;
+window.checkDOM = checkDOM;
 
-document.addEventListener('DOMContentLoaded', function() {
-  document.querySelectorAll('.category-tile').forEach(tile => {
-    tile.addEventListener('click', function(e) {
+// Einfache Funktion zum direkten Setzen von HTML
+window.setSimpleProducts = function() {
+  const grid = document.getElementById('productGrid');
+  if (grid) {
+    console.log('Setting simple products HTML...');
+    grid.innerHTML = `
+      <div class="col">
+        <div class="card h-100">
+          <img src="produkt bilder/ware.png" class="card-img-top" alt="Test Produkt">
+          <div class="card-body">
+            <h5 class="card-title">Test Produkt 1</h5>
+            <p class="card-text">Ein Testprodukt</p>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="h4 text-primary">€10.00</span>
+              <button class="btn btn-primary">Zum Warenkorb</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card h-100">
+          <img src="produkt bilder/ware.png" class="card-img-top" alt="Test Produkt">
+          <div class="card-body">
+            <h5 class="card-title">Test Produkt 2</h5>
+            <p class="card-text">Ein weiteres Testprodukt</p>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="h4 text-primary">€20.00</span>
+              <button class="btn btn-primary">Zum Warenkorb</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+    console.log('Simple products HTML set successfully');
+  } else {
+    console.error('Product grid not found for simple products');
+  }
+};
+
+// Einfache Funktion zum Überprüfen der Produkte
+window.checkProducts = function() {
+  loadProducts().then(products => {
+    console.log('Loaded products:', products.length);
+    console.log('Product categories:', [...new Set(products.map(p => p.category))]);
+    console.log('First product:', products[0]);
+  });
+};
+
+// Funktion zum Überprüfen des DOM
+window.checkDOM = function() {
+  console.log('=== DOM Check ===');
+  console.log('Document ready state:', document.readyState);
+  console.log('Product grid found:', !!document.getElementById('productGrid'));
+  console.log('Category filter found:', !!document.getElementById('categoryFilter'));
+  console.log('Category tiles found:', document.querySelectorAll('.category-tile').length);
+  console.log('All products button found:', !!document.querySelector('a.btn.btn-outline-dark'));
+  
+  const grid = document.getElementById('productGrid');
+  if (grid) {
+    console.log('Product grid innerHTML length:', grid.innerHTML.length);
+    console.log('Product grid children:', grid.children.length);
+  }
+};
+
+// Funktion zum direkten Rendern von Test-Produkten
+window.renderTestProducts = function() {
+  const testProducts = [
+    {
+      id: 1,
+      name: "Test Elektronik",
+      price: 10.00,
+      category: "Elektronik",
+      image: "produkt bilder/ware.png",
+      description: "Test Produkt"
+    },
+    {
+      id: 2,
+      name: "Test Mode",
+      price: 20.00,
+      category: "Mode",
+      image: "produkt bilder/ware.png",
+      description: "Test Produkt"
+    },
+    {
+      id: 3,
+      name: "Test Fitness",
+      price: 30.00,
+      category: "Fitness",
+      image: "produkt bilder/ware.png",
+      description: "Test Produkt"
+    },
+    {
+      id: 4,
+      name: "Test Haushalt",
+      price: 40.00,
+      category: "Haushalt",
+      image: "produkt bilder/ware.png",
+      description: "Test Produkt"
+    }
+  ];
+  
+  console.log('Rendering test products...');
+  renderProducts(testProducts);
+};
+
+function setupCategoryButtons() {
+  const categoryTiles = document.querySelectorAll('.category-tile');
+  
+  categoryTiles.forEach((tile, index) => {
+    // Remove existing event listeners
+    const newTile = tile.cloneNode(true);
+    tile.parentNode.replaceChild(newTile, tile);
+    
+    newTile.addEventListener('click', function(e) {
       e.preventDefault();
+      e.stopPropagation();
+      
       const category = this.dataset.category;
       const filter = document.getElementById('categoryFilter');
+      
       if (filter) {
         filter.value = category;
         filter.dispatchEvent(new Event('change'));
       }
+      
       const grid = document.getElementById('productGrid');
       if (grid) {
         grid.scrollIntoView({ behavior: 'smooth' });
       }
+      
+      // Clear search input when category is clicked
+      const searchInput = document.getElementById('searchInput');
+      if (searchInput) {
+        searchInput.value = '';
+      }
+      
+      // Add visual feedback for selected category
+      document.querySelectorAll('.category-tile').forEach(t => {
+        t.classList.remove('selected');
+      });
+      this.classList.add('selected');
     });
   });
+  
   // NEU: 'Alle Produkte entdecken' Button zeigt wieder alle Produkte
   const allBtn = document.querySelector('a.btn.btn-outline-dark');
+  
   if (allBtn) {
-    allBtn.addEventListener('click', function(e) {
+    // Remove existing event listeners
+    const newAllBtn = allBtn.cloneNode(true);
+    allBtn.parentNode.replaceChild(newAllBtn, allBtn);
+    
+    newAllBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      
       const filter = document.getElementById('categoryFilter');
+      
       if (filter) {
         filter.value = 'Alle Kategorien';
         filter.dispatchEvent(new Event('change'));
       }
+      
+      // Clear search input when "Alle Produkte entdecken" is clicked
+      const searchInput = document.getElementById('searchInput');
+      if (searchInput) {
+        searchInput.value = '';
+      }
+      
+      // Remove visual feedback from all categories
+      document.querySelectorAll('.category-tile').forEach(t => {
+        t.classList.remove('selected');
+      });
     });
   }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('DOM Content Loaded - Starting initialization...');
+  setupCategoryButtons();
+  
+  // Direkte Produkt-Anzeige beim Laden
+  console.log('Loading products immediately...');
+  loadProducts().then(products => {
+    console.log('Products loaded on DOM ready:', products.length);
+    if (products.length > 0) {
+      renderProducts(products);
+    } else {
+      console.log('No products loaded, using fallback...');
+      renderTestProducts();
+    }
+  }).catch(error => {
+    console.error('Error loading products on DOM ready:', error);
+    console.log('Using fallback products...');
+    renderTestProducts();
+  });
+});
 });
 
 // Test-Funktion für Live Updates
@@ -1092,4 +1342,29 @@ window.testClearCartSimple = function() {
   } else {
     console.error('clearCart function is not available!');
   }
+};
+
+// Test-Funktion für Kategorie-Buttons
+window.testCategoryButtons = function() {
+  console.log('=== Testing Category Buttons ===');
+  
+  const categoryTiles = document.querySelectorAll('.category-tile');
+  console.log('Found category tiles:', categoryTiles.length);
+  
+  categoryTiles.forEach((tile, index) => {
+    console.log(`Tile ${index + 1}:`, {
+      category: tile.dataset.category,
+      text: tile.textContent.trim()
+    });
+  });
+  
+  const allBtn = document.querySelector('a.btn.btn-outline-dark');
+  console.log('"Alle Produkte entdecken" button found:', !!allBtn);
+  
+  const categoryFilter = document.getElementById('categoryFilter');
+  console.log('Category filter found:', !!categoryFilter);
+  
+  // Teste die Kategorie-Buttons manuell
+  setupCategoryButtons();
+  console.log('Category buttons setup completed');
 };

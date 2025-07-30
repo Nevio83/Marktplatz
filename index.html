@@ -136,25 +136,25 @@ if (searchInput && mobileSearchBtn) {
   <div class="row g-4 category-grid">
     <div class="col-md-3">
       <a href="#" class="category-tile" data-category="Elektronik">
-        <img src="produkt bilder/ware.png" alt="Elektronik" class="img-fluid rounded-4 w-100">
+        <div class="category-icon">?</div>
         <span class="category-label">Elektronik</span>
       </a>
     </div>
     <div class="col-md-3">
       <a href="#" class="category-tile" data-category="Mode">
-        <img src="produkt bilder/ware.png" alt="Mode" class="img-fluid rounded-4 w-100">
+        <div class="category-icon">?</div>
         <span class="category-label">Mode</span>
       </a>
     </div>
     <div class="col-md-3">
       <a href="#" class="category-tile" data-category="Fitness">
-        <img src="produkt bilder/ware.png" alt="Fitness" class="img-fluid rounded-4 w-100">
+        <div class="category-icon">?</div>
         <span class="category-label">Fitness</span>
       </a>
     </div>
     <div class="col-md-3">
       <a href="#" class="category-tile" data-category="Haushalt">
-        <img src="produkt bilder/ware.png" alt="Haushalt" class="img-fluid rounded-4 w-100">
+        <div class="category-icon">?</div>
         <span class="category-label">Haushalt</span>
       </a>
     </div>
@@ -413,28 +413,7 @@ if (searchInput && mobileSearchBtn) {
     }, 100);
   });
 </script>
-<script>
-// Suchfeld leeren, wenn auf eine Kategorie oder 'Alle Produkte entdecken' geklickt wird
-function clearSearchInput() {
-  var searchInput = document.getElementById('searchInput');
-  if (searchInput) searchInput.value = '';
-}
-document.addEventListener('DOMContentLoaded', function() {
-  // Kategorie-Kacheln
-  document.querySelectorAll('.category-tile').forEach(tile => {
-    tile.addEventListener('click', function() {
-      clearSearchInput();
-    });
-  });
-  // 'Alle Produkte entdecken'-Button
-  var allBtn = document.querySelector('a.btn.btn-outline-dark');
-  if (allBtn) {
-    allBtn.addEventListener('click', function() {
-      clearSearchInput();
-    });
-  }
-});
-</script>
+
 
 <!-- Scripts am Ende laden für bessere Performance -->
 <script src="app.js"></script>
