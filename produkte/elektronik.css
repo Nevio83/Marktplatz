@@ -906,54 +906,60 @@
 }
 
 .product-info {
-  padding: 2rem;
+  padding: 1.5rem;
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: auto;
   position: relative;
   z-index: 2;
   background: white;
 }
 
 .product-title {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: 700;
   color: #2c3e50;
-  margin-bottom: 1rem;
-  line-height: 1.4;
-  flex-grow: 1;
+  margin-bottom: 0.75rem;
+  line-height: 1.3;
+  min-height: 2.6rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .price-container {
   display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 2rem;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
   flex-wrap: wrap;
 }
 
 .current-price {
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   font-weight: 800;
   color: #2c3e50;
   background: linear-gradient(135deg, #667eea, #764ba2);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  line-height: 1;
 }
 
 .price-badge {
   background: linear-gradient(135deg, #ff6b6b, #ee5a24);
   color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 25px;
-  font-size: 0.85rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
   position: relative;
   overflow: hidden;
+  white-space: nowrap;
 }
 
 .price-badge::before {
@@ -978,16 +984,17 @@
   background: linear-gradient(135deg, #667eea, #764ba2);
   color: white;
   text-decoration: none;
-  padding: 1rem 2rem;
-  border-radius: 16px;
+  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
   font-weight: 700;
-  font-size: 1rem;
+  font-size: 0.9rem;
   transition: all 0.3s ease;
   border: none;
   cursor: pointer;
   position: relative;
   overflow: hidden;
   box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+  margin-top: auto;
 }
 
 .view-product-btn::before {
@@ -1026,24 +1033,29 @@
 .price-info {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.2rem;
+  flex: 1;
+  min-width: 0;
 }
 
 .original-price {
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   color: #6c757d;
   text-decoration: line-through;
   font-weight: 400;
+  line-height: 1;
 }
 
 .price-savings {
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   color: #28a745;
   font-weight: 600;
   background: rgba(40, 167, 69, 0.1);
-  padding: 0.25rem 0.5rem;
-  border-radius: 8px;
+  padding: 0.2rem 0.4rem;
+  border-radius: 6px;
   display: inline-block;
+  line-height: 1;
+  white-space: nowrap;
 }
 
 /* Mobile Grid für ähnliche Produkte */
