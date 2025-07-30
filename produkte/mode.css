@@ -813,12 +813,12 @@
   transform: translateX(6px);
 }
 
-/* Preis-Anzeige */
+/* Preis-Anzeige - Mode (Pink/Rosa) */
 .current-price {
   font-size: 1.5rem;
   font-weight: 800;
   color: #2c3e50;
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #ff6b9d, #c44569);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

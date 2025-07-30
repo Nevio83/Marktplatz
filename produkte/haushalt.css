@@ -814,12 +814,12 @@
   transform: translateX(6px);
 }
 
-/* Preis-Anzeige */
+/* Preis-Anzeige - Haushalt (Orange) */
 .current-price {
   font-size: 1.5rem;
   font-weight: 800;
   color: #2c3e50;
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #f39c12, #e67e22);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
