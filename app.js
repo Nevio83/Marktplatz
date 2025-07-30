@@ -124,8 +124,32 @@ function renderProducts(products) {
     return; // Verhindert Fehler auf anderen Seiten
   }
   
+  // Kategorie-Farben definieren
+  const categoryColors = {
+    'Elektronik': {
+      background: 'linear-gradient(135deg, #764ba2, #667eea)',
+      hover: 'linear-gradient(135deg, #667eea, #764ba2)'
+    },
+    'Mode': {
+      background: 'linear-gradient(135deg, #e67e22, #d35400)',
+      hover: 'linear-gradient(135deg, #d35400, #e67e22)'
+    },
+    'Fitness': {
+      background: 'linear-gradient(135deg, #3498db, #00bcd4)',
+      hover: 'linear-gradient(135deg, #00bcd4, #3498db)'
+    },
+    'Haushalt': {
+      background: 'linear-gradient(135deg, #e74c3c, #fd79a8)',
+      hover: 'linear-gradient(135deg, #fd79a8, #e74c3c)'
+    }
+  };
+  
   grid.innerHTML = products.map(product => {
     console.log('Rendering product:', product.id, product.name);
+    
+    // Farbe basierend auf Kategorie
+    const categoryColor = categoryColors[product.category] || categoryColors['Elektronik'];
+    
     return `
     <div class="col">
       <div class="card h-100 border-0 shadow-hover position-relative product-card" data-product-id="${product.id}">
@@ -144,10 +168,14 @@ function renderProducts(products) {
               <span class="h4 text-primary">€${product.price.toFixed(2)}</span>
               <small class="text-muted d-block">inkl. MwSt.</small>
             </div>
-            <button class="btn btn-primary rounded-pill px-3 py-2 add-to-cart"
+            <button class="btn rounded-pill px-3 py-2 add-to-cart category-btn-${product.category.toLowerCase()}"
                     data-product-id="${product.id}"
                     data-name="${product.name}"
                     data-price="${product.price}"
+                    data-category="${product.category}"
+                    style="background: ${categoryColor.background}; border: none; color: white; transition: all 0.3s ease;"
+                    onmouseover="this.style.background='${categoryColor.hover}'"
+                    onmouseout="this.style.background='${categoryColor.background}'"
                     onclick="addToCart(${product.id}); return false;">
               <i class="bi bi-cart-plus"></i>
             </button>
