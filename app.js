@@ -944,6 +944,15 @@ document.addEventListener('DOMContentLoaded', function() {
       if (grid) {
         grid.scrollIntoView({ behavior: 'smooth' });
       }
+      // Clear search input when category is clicked
+      const searchInput = document.getElementById('searchInput');
+      if (searchInput) searchInput.value = '';
+      
+      // Add visual feedback for selected category
+      document.querySelectorAll('.category-tile').forEach(t => {
+        t.classList.remove('selected');
+      });
+      this.classList.add('selected');
     });
   });
   // NEU: 'Alle Produkte entdecken' Button zeigt wieder alle Produkte
@@ -955,6 +964,14 @@ document.addEventListener('DOMContentLoaded', function() {
         filter.value = 'Alle Kategorien';
         filter.dispatchEvent(new Event('change'));
       }
+      // Clear search input when "Alle Produkte entdecken" is clicked
+      const searchInput = document.getElementById('searchInput');
+      if (searchInput) searchInput.value = '';
+      
+      // Remove visual feedback from all categories
+      document.querySelectorAll('.category-tile').forEach(t => {
+        t.classList.remove('selected');
+      });
     });
   }
 });
