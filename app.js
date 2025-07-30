@@ -240,6 +240,9 @@ function addProductToCart(products, productId) {
   }
   
   console.log('Found product:', product.name);
+  
+  // Always read from localStorage to ensure we have the latest data
+  cartItems = JSON.parse(localStorage.getItem('cart')) || [];
   const existingItem = cartItems.find(item => Number(item.id) === Number(productId));
 
   if (existingItem) {
@@ -271,9 +274,16 @@ function updateCartCounter() {
   if (counter) {
     // Always read from localStorage to ensure we have the latest data
     const currentCart = JSON.parse(localStorage.getItem('cart')) || [];
-    const totalItems = currentCart.reduce((sum, item) => sum + item.quantity, 0);
+    const totalItems = currentCart.reduce((sum, item) => sum + (item.quantity || 0), 0);
     console.log('Updating cart counter - total items:', totalItems);
     counter.textContent = totalItems;
+    
+    // Hide counter if cart is empty
+    if (totalItems === 0) {
+      counter.style.display = 'none';
+    } else {
+      counter.style.display = 'block';
+    }
   } else {
     console.log('Cart counter element not found');
   }
@@ -341,12 +351,15 @@ function changeQuantity(productId, change) {
   localStorage.setItem('cart', JSON.stringify(cartItems));
   updateCartCounter();
   renderCartDropdown();
-  // Dropdown nach 1 Sekunde ausblenden, wenn leer
+  
+  // Sofort ausblenden wenn Warenkorb leer ist
   if (cartItems.length === 0) {
-    setTimeout(() => {
-      const cartDropdown = document.getElementById('cartDropdown');
-      if (cartDropdown) cartDropdown.classList.remove('show');
-    }, 1000);
+    console.log('Cart is now empty, hiding dropdown');
+    const cartDropdown = document.getElementById('cartDropdown');
+    if (cartDropdown) {
+      cartDropdown.classList.remove('show');
+      cartDropdown.style.display = 'none';
+    }
   }
 }
 
@@ -362,12 +375,15 @@ function removeFromCart(productId) {
   localStorage.setItem('cart', JSON.stringify(cartItems));
   updateCartCounter();
   renderCartDropdown();
-  // Dropdown nach 1 Sekunde ausblenden, wenn leer
+  
+  // Sofort ausblenden wenn Warenkorb leer ist
   if (cartItems.length === 0) {
-    setTimeout(() => {
-      const cartDropdown = document.getElementById('cartDropdown');
-      if (cartDropdown) cartDropdown.classList.remove('show');
-    }, 1000);
+    console.log('Cart is now empty, hiding dropdown');
+    const cartDropdown = document.getElementById('cartDropdown');
+    if (cartDropdown) {
+      cartDropdown.classList.remove('show');
+      cartDropdown.style.display = 'none';
+    }
   }
 }
 
@@ -376,11 +392,14 @@ function clearCart() {
   localStorage.setItem('cart', JSON.stringify(cartItems));
   updateCartCounter();
   renderCartDropdown();
-  // Dropdown nach 1 Sekunde ausblenden
-  setTimeout(() => {
-    const cartDropdown = document.getElementById('cartDropdown');
-    if (cartDropdown) cartDropdown.classList.remove('show');
-  }, 1000);
+  
+  // Sofort ausblenden
+  console.log('Cart cleared, hiding dropdown');
+  const cartDropdown = document.getElementById('cartDropdown');
+  if (cartDropdown) {
+    cartDropdown.classList.remove('show');
+    cartDropdown.style.display = 'none';
+  }
 }
 
 // Filter- und Sortierfunktionen
@@ -842,6 +861,29 @@ window.testCartDropdown = function() {
   console.log('Cart items count:', currentCart.length);
 };
 
+// Test-Funktion für Empty Cart Verhalten
+window.testEmptyCart = function() {
+  console.log('Testing empty cart behavior...');
+  
+  // Leere den Warenkorb
+  clearCart();
+  
+  // Prüfe den Zähler
+  setTimeout(() => {
+    const counter = document.getElementById('cartCounter');
+    console.log('Cart counter after clearing:', counter ? counter.textContent : 'not found');
+    console.log('Cart counter display:', counter ? counter.style.display : 'not found');
+    
+    // Füge ein Produkt hinzu
+    testAddProduct1();
+    
+    setTimeout(() => {
+      console.log('Cart counter after adding product:', counter ? counter.textContent : 'not found');
+      console.log('Cart counter display:', counter ? counter.style.display : 'not found');
+    }, 500);
+  }, 500);
+};
+
 // Direkte Test-Funktion für Produkt 1
 window.testAddProduct1 = function() {
   console.log('Directly adding product 1 to cart...');
@@ -881,6 +923,7 @@ window.initializeAddToCartButtons = initializeAddToCartButtons;
 window.renderProducts = renderProducts;
 window.loadProducts = loadProducts;
 window.testCartDropdown = testCartDropdown;
+window.testEmptyCart = testEmptyCart;
 
 document.addEventListener('DOMContentLoaded', function() {
   document.querySelectorAll('.category-tile').forEach(tile => {
