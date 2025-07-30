@@ -660,6 +660,9 @@ document.addEventListener('DOMContentLoaded', () => {
       initializeAddToCartButtons();
     }, 500);
   });
+  
+  // Initialize category tiles
+  initializeCategoryTiles();
 });
 
 // Bilder optimieren
@@ -930,7 +933,8 @@ window.testLiveUpdates = testLiveUpdates;
 window.testClearCartButton = testClearCartButton;
 window.testClearCartSimple = testClearCartSimple;
 
-document.addEventListener('DOMContentLoaded', function() {
+// Initialize category tiles and "Alle Produkte entdecken" button
+function initializeCategoryTiles() {
   document.querySelectorAll('.category-tile').forEach(tile => {
     tile.addEventListener('click', function(e) {
       e.preventDefault();
@@ -967,7 +971,7 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   }
-});
+}
 
 // Test-Funktion für Live Updates
 window.testLiveUpdates = function() {
