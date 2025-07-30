@@ -79,28 +79,7 @@ app.post('/stripe-webhook', express.raw({type: 'application/json'}), async (req,
   }
 });
 
-// Legacy E-Mail-Endpunkt (kann später entfernt werden)
-app.post('/api/send-confirmation', async (req, res) => {
-  try {
-    const { email, orderId } = req.body;
-    
-    const msg = {
-      to: email,
-      from: process.env.SENDER_EMAIL,
-      reply_to: process.env.SUPPORT_EMAIL,
-      subject: 'Bestellbestätigung - Marktplatz',
-      text: `Vielen Dank für Ihre Bestellung #${orderId}!\n\nWir bearbeiten Ihre Bestellung und senden sie innerhalb von 2 Werktagen zu.`,
-      html: `<strong>Bestellbestätigung #${orderId}</strong>
-        <p>Wir haben Ihre Zahlung erhalten und bearbeiten den Versand.</p>`
-    };
-
-    await sgMail.send(msg);
-    res.json({ success: true });
-  } catch (error) {
-    console.error('E-Mail-Fehler:', error);
-    res.status(500).json({ error: 'E-Mail-Versand fehlgeschlagen' });
-  }
-});
+// Legacy endpoint removed to reduce code duplication
 
 app.post('/api/create-payment-intent', async (req, res) => {
   const { cart, email, country } = req.body;

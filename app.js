@@ -102,17 +102,15 @@ function toggleWishlist(productId) {
   });
 }
 
-// Update wishlist button state without re-rendering
 function updateWishlistButtonState(productId) {
-  const wishlistBtn = document.querySelector(`.wishlist-btn[data-product-id="${productId}"]`);
-  if (wishlistBtn) {
-    const icon = wishlistBtn.querySelector('i');
-    if (icon) {
-      if (isInWishlist(productId)) {
-        icon.className = 'bi bi-heart-fill';
-      } else {
-        icon.className = 'bi bi-heart';
-      }
+  const button = document.querySelector(`[data-product-id="${productId}"] .wishlist-btn`);
+  if (button) {
+    if (isInWishlist(productId)) {
+      button.classList.add('active');
+      button.innerHTML = '<i class="bi bi-heart-fill"></i>';
+    } else {
+      button.classList.remove('active');
+      button.innerHTML = '<i class="bi bi-heart"></i>';
     }
   }
 }
@@ -374,71 +372,9 @@ window.showAlert = function(message, redirectTo = 'cart.html') {
   }, 1700);
 };
 
-function changeQuantity(productId, change) {
-  console.log('changeQuantity called with:', productId, change);
-  productId = Number(productId);
-  // Always read from localStorage to ensure we have the latest data
-  cartItems = JSON.parse(localStorage.getItem('cart')) || [];
-  const item = cartItems.find(i => Number(i.id) === productId);
-  if (!item) {
-    console.log('Item not found:', productId);
-    return;
-  }
-  
-  // Bei Bundles (Items mit bundleId) keine Mengenänderung erlauben
-  if (item.bundleId) {
-    console.log('Bundle item, no quantity change allowed');
-    return; // Keine Änderung bei Bundles
-  }
-  
-  console.log('Before change - quantity:', item.quantity);
-  if (item.quantity + change < 1) {
-    cartItems = cartItems.filter(i => Number(i.id) !== productId);
-    console.log('Item removed from cart');
-  } else {
-    item.quantity += change;
-    console.log('After change - quantity:', item.quantity);
-  }
-  localStorage.setItem('cart', JSON.stringify(cartItems));
-  
-  // Update counter and dropdown immediately
-  updateCartCounter();
-  
-  // Sofort ausblenden wenn Warenkorb leer ist
-  if (cartItems.length === 0) {
-    console.log('Cart is now empty, hiding dropdown');
-    const cartDropdown = document.getElementById('cartDropdown');
-    if (cartDropdown) {
-      cartDropdown.classList.remove('show');
-      cartDropdown.style.display = 'none';
-    }
-  }
-}
+// changeQuantity function moved to cart.js to avoid duplication
 
-function removeFromCart(productId) {
-  console.log('removeFromCart called with:', productId);
-  productId = Number(productId);
-  // Always read from localStorage to ensure we have the latest data
-  cartItems = JSON.parse(localStorage.getItem('cart')) || [];
-  const beforeCount = cartItems.length;
-  cartItems = cartItems.filter(i => Number(i.id) !== productId);
-  const afterCount = cartItems.length;
-  console.log('Items in cart before:', beforeCount, 'after:', afterCount);
-  localStorage.setItem('cart', JSON.stringify(cartItems));
-  
-  // Update counter and dropdown immediately
-  updateCartCounter();
-  
-  // Sofort ausblenden wenn Warenkorb leer ist
-  if (cartItems.length === 0) {
-    console.log('Cart is now empty, hiding dropdown');
-    const cartDropdown = document.getElementById('cartDropdown');
-    if (cartDropdown) {
-      cartDropdown.classList.remove('show');
-      cartDropdown.style.display = 'none';
-    }
-  }
-}
+// removeFromCart function moved to cart.js to avoid duplication
 
 // Filter- und Sortierfunktionen
 function debounce(func, timeout = 300) {
