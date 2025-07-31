@@ -1,6 +1,52 @@
 // Warenkorb-Initialisierung
 let cartItems = JSON.parse(localStorage.getItem('cart')) || [];
 
+// Make showAlert globally available immediately
+window.showAlert = function(message, redirectTo = 'cart.html') {
+  console.log('showAlert called with:', message, redirectTo);
+  
+  const alert = document.createElement('div');
+  alert.className = 'alert alert-success position-fixed end-0 m-4 shadow-lg fade show';
+  alert.style.zIndex = '20000';
+  alert.style.fontSize = '1rem';
+  alert.style.minWidth = '160px';
+  alert.style.maxWidth = '320px';
+  alert.style.padding = '0.75rem 2rem';
+  alert.style.textAlign = 'center';
+  alert.style.borderRadius = '2rem';
+  alert.style.boxShadow = '0 8px 32px rgba(0,0,0,0.18)';
+  alert.style.background = 'linear-gradient(90deg, #4f8cff 0%, #38c6ff 100%)';
+  alert.style.color = '#fff';
+  alert.style.fontWeight = '500';
+  alert.style.letterSpacing = '0.02em';
+  alert.style.pointerEvents = 'auto';
+  alert.style.position = 'fixed';
+  alert.style.right = '2.5rem';
+  alert.style.top = 'calc(56px + 1.2rem)';
+  alert.style.cursor = 'pointer';
+  alert.textContent = message;
+  
+  alert.addEventListener('click', () => {
+    console.log('Alert clicked, redirecting to:', redirectTo);
+    window.location.href = redirectTo;
+  });
+  
+  document.body.appendChild(alert);
+  
+  setTimeout(() => {
+    if (document.body.contains(alert)) {
+      alert.classList.remove('show');
+      alert.classList.add('fade');
+      setTimeout(() => alert.remove(), 400);
+    }
+  }, 1700);
+};
+
+// Also make it available as a regular function
+function showAlert(message, redirectTo = 'cart.html') {
+  window.showAlert(message, redirectTo);
+}
+
 // Make sure clearCart is globally available immediately
 window.clearCart = function() {
   console.log('clearCart function called');
@@ -337,40 +383,7 @@ window.updateCartCounter = function() {
   }
 };
 
-// Make showAlert globally available
-window.showAlert = function(message, redirectTo = 'cart.html') {
-  const alert = document.createElement('div');
-  alert.className = 'alert alert-success position-fixed end-0 m-4 shadow-lg fade show';
-  alert.style.zIndex = '20000';
-  alert.style.fontSize = '1rem';
-  alert.style.minWidth = '160px';
-  alert.style.maxWidth = '320px';
-  alert.style.padding = '0.75rem 2rem';
-  alert.style.textAlign = 'center';
-  alert.style.borderRadius = '2rem';
-  alert.style.boxShadow = '0 8px 32px rgba(0,0,0,0.18)';
-  alert.style.background = 'linear-gradient(90deg, #4f8cff 0%, #38c6ff 100%)';
-  alert.style.color = '#fff';
-  alert.style.fontWeight = '500';
-  alert.style.letterSpacing = '0.02em';
-  alert.style.pointerEvents = 'auto';
-  alert.style.position = 'fixed';
-  alert.style.right = '2.5rem';
-  alert.style.top = 'calc(56px + 1.2rem)';
-  alert.style.cursor = 'pointer';
-  alert.textContent = message;
-  alert.addEventListener('click', () => {
-    window.location.href = redirectTo;
-  });
-  document.body.appendChild(alert);
-  setTimeout(() => {
-    if (document.body.contains(alert)) {
-      alert.classList.remove('show');
-      alert.classList.add('fade');
-      setTimeout(() => alert.remove(), 400);
-    }
-  }, 1700);
-};
+
 
 // changeQuantity function moved to cart.js to avoid duplication
 
