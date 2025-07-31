@@ -235,8 +235,8 @@
 }
 .bundle-badge {
     position: absolute;
-    top: -8px;
-    right: -8px;
+    top: 5px;
+    right: 5px;
     background: #667eea;
     color: white;
     padding: 0.4em 1em;
@@ -246,7 +246,7 @@
     box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
     animation: bounce 2s infinite;
     z-index: 10;
-    max-width: calc(100% + 16px);
+    max-width: calc(100% - 10px);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
