@@ -14,9 +14,15 @@
     <div class="container-fluid nav-flex">
       <a class="navbar-brand fw-bold mb-0 h1" href="index.html">Wunschliste</a>
    
-      <a href="index.html" class="back-to-shop-btn d-inline-flex align-items-center ms-auto">
-        <i class="bi bi-arrow-left me-2"></i> Zurück zum Shop
-      </a>
+      <div class="d-flex align-items-center gap-3">
+        <button class="btn btn-outline-primary wishlist-trigger" onclick="toggleWishlistPopup()" aria-label="Wunschliste anzeigen">
+          <i class="bi bi-heart"></i>
+          <span id="wishlistCounter">0</span>
+        </button>
+        <a href="index.html" class="back-to-shop-btn d-inline-flex align-items-center">
+          <i class="bi bi-arrow-left me-2"></i> Zurück zum Shop
+        </a>
+      </div>
     </div>
   </nav>
   <main>
@@ -42,6 +48,28 @@
       </button>
     </div>
   </main>
+
+  <!-- Wunschliste Popup -->
+  <div class="wishlist-popup" id="wishlistPopup">
+    <div class="wishlist-popup-header">
+      <h6 class="mb-0"><i class="bi bi-heart"></i> Wunschliste</h6>
+      <button class="btn-close" id="closeWishlistPopup" aria-label="Schließen">&times;</button>
+    </div>
+    <div class="wishlist-popup-body" id="wishlistPopupBody">
+      <div class="empty-wishlist text-center py-4" id="emptyWishlistMessage">
+        <i class="bi bi-heart fs-1 text-muted"></i>
+        <p class="text-muted mt-2">Ihre Wunschliste ist leer</p>
+      </div>
+    </div>
+    <div class="wishlist-popup-footer" id="wishlistPopupFooter" style="display: none;">
+      <div class="d-grid gap-2">
+        <a href="wishlist.html" class="btn btn-primary">Zur Wunschliste</a>
+        <button class="btn btn-outline-secondary" id="clearWishlist" aria-label="Wunschliste leeren">
+            <i class="bi bi-trash"></i>
+        </button>
+      </div>
+    </div>
+  </div>
 
   <script>
     // Wunschliste initialisieren
@@ -107,6 +135,8 @@
       
       // Sofort neu rendern - Button verschwindet automatisch wenn Wunschliste leer
       renderWishlist();
+      renderWishlistPopup();
+      updateWishlistCounter();
     }
 
     function addToCartAndRemoveFromWishlist(productId) {
@@ -132,6 +162,64 @@
       
       // Sofort neu rendern - Button verschwindet automatisch wenn Wunschliste leer
       renderWishlist();
+      renderWishlistPopup();
+      updateWishlistCounter();
+    }
+
+    function updateWishlistCounter() {
+      const counter = document.getElementById('wishlistCounter');
+      if (counter) {
+        const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+        const totalItems = wishlist.length;
+        counter.textContent = totalItems;
+        
+        // Show/hide counter based on total items
+        if (totalItems === 0) {
+          counter.style.display = 'none';
+        } else {
+          counter.style.display = 'inline';
+        }
+      }
+    }
+
+    function renderWishlistPopup() {
+      const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+      const body = document.getElementById('wishlistPopupBody');
+      const footer = document.getElementById('wishlistPopupFooter');
+      const emptyMessage = document.getElementById('emptyWishlistMessage');
+
+      if (!body || !footer) return;
+
+      if (wishlist.length === 0) {
+        footer.style.display = 'none';
+        body.innerHTML = `
+          <div class="empty-wishlist text-center py-4" id="emptyWishlistMessage">
+            <i class="bi bi-heart fs-1 text-muted"></i>
+            <p class="text-muted mt-2">Ihre Wunschliste ist leer</p>
+          </div>
+        `;
+        return;
+      }
+
+      footer.style.display = 'block';
+      
+      body.innerHTML = wishlist.map(item => `
+        <div class="wishlist-popup-item">
+          <img src="${item.image}" class="wishlist-popup-item-image" alt="${item.name}">
+          <div class="wishlist-popup-item-details">
+            <div class="wishlist-popup-item-name">${item.name}</div>
+            <div class="wishlist-popup-item-price">€${(typeof item.price === 'number' ? item.price.toFixed(2) : '0.00')}</div>
+          </div>
+          <div class="wishlist-popup-item-controls">
+            <button class="wishlist-popup-add-cart" onclick="addToCartAndRemoveFromWishlist(${item.id})" title="Zum Warenkorb hinzufügen">
+              <i class="bi bi-cart-plus"></i>
+            </button>
+            <button class="wishlist-popup-remove" onclick="removeFromWishlist(${item.id})" title="Von Wunschliste entfernen">
+              <i class="bi bi-trash"></i>
+            </button>
+          </div>
+        </div>
+      `).join('');
     }
 
     function renderWishlist() {
@@ -246,6 +334,67 @@
       }
       
       renderWishlist();
+      renderWishlistPopup();
+      updateWishlistCounter();
+      
+      // Wishlist Popup Funktionalität
+      const wishlistPopup = document.getElementById('wishlistPopup');
+      const closeWishlistPopup = document.getElementById('closeWishlistPopup');
+      const clearWishlist = document.getElementById('clearWishlist');
+      
+      // Popup öffnen/schließen
+      function toggleWishlistPopup() {
+        if (wishlistPopup.classList.contains('show')) {
+          wishlistPopup.classList.remove('show');
+          document.body.classList.remove('wishlist-open');
+        } else {
+          wishlistPopup.classList.add('show');
+          document.body.classList.add('wishlist-open');
+          renderWishlistPopup();
+        }
+      }
+      
+      // Close button event listener
+      if (closeWishlistPopup) {
+        closeWishlistPopup.addEventListener('click', function() {
+          wishlistPopup.classList.remove('show');
+          document.body.classList.remove('wishlist-open');
+        });
+      }
+      
+      // Clear wishlist button event listener
+      if (clearWishlist) {
+        clearWishlist.addEventListener('click', function() {
+          const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+          if (wishlist.length === 0) return;
+          
+          localStorage.setItem('wishlist', JSON.stringify([]));
+          showNotification('Wunschliste wurde geleert', 'info');
+          
+          renderWishlist();
+          renderWishlistPopup();
+          updateWishlistCounter();
+          
+          // Close popup after clearing
+          setTimeout(() => {
+            wishlistPopup.classList.remove('show');
+            document.body.classList.remove('wishlist-open');
+          }, 1000);
+        });
+      }
+      
+      // Click outside to close
+      document.addEventListener('click', function(event) {
+        if (wishlistPopup.classList.contains('show') && 
+            !wishlistPopup.contains(event.target) &&
+            !event.target.closest('.wishlist-trigger')) {
+          wishlistPopup.classList.remove('show');
+          document.body.classList.remove('wishlist-open');
+        }
+      });
+      
+      // Make toggleWishlistPopup globally available
+      window.toggleWishlistPopup = toggleWishlistPopup;
       
       // Event-Listener für "Alle zum Warenkorb" Button
       const addAllBtn = document.getElementById('addAllToCart');
@@ -276,6 +425,8 @@
           // Kurz warten, dann zur Warenkorb-Seite weiterleiten
           setTimeout(() => {
             renderWishlist(); // Aktualisiere die Wunschliste nach dem Hinzufügen
+            renderWishlistPopup();
+            updateWishlistCounter();
             window.location.href = 'cart.html';
           }, 1500);
         });
@@ -295,12 +446,18 @@
           
           // Wunschliste sofort neu rendern
           renderWishlist();
+          renderWishlistPopup();
+          updateWishlistCounter();
         });
       }
 
       // Wunschliste bei Storage-Änderung neu rendern (z.B. bei mehreren Tabs)
       window.addEventListener('storage', function(e) {
-        if (e.key === 'wishlist') renderWishlist();
+        if (e.key === 'wishlist') {
+          renderWishlist();
+          renderWishlistPopup();
+          updateWishlistCounter();
+        }
       });
     });
   </script>
