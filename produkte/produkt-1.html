@@ -360,6 +360,11 @@
     let wishlist = getWishlist();
     if (isInWishlist(product.id)) {
       wishlist = wishlist.filter(item => Number(item.id) !== Number(product.id));
+      if (typeof showAlert === 'function') {
+        showAlert('Produkt von der Wunschliste entfernt', 'wishlist.html');
+      } else {
+        showNotification('Produkt von der Wunschliste entfernt');
+      }
     } else {
       wishlist.push({
         id: product.id,
@@ -368,6 +373,11 @@
         image: product.image,
         description: product.description
       });
+      if (typeof showAlert === 'function') {
+        showAlert('Produkt zur Wunschliste hinzugefügt', 'wishlist.html');
+      } else {
+        showNotification('Produkt zur Wunschliste hinzugefügt');
+      }
     }
     setWishlist(wishlist);
     updateWishlistButton();
