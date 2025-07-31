@@ -129,7 +129,7 @@
                                 <button class="buy-now-btn" id="buyNowBtn">
                                     <i class="bi bi-cart-plus"></i> Jetzt kaufen
                                 </button>
-                                <button class="wishlist-btn" onclick="toggleWishlist(product)">
+                                <button class="wishlist-btn" id="cardWishlistBtn">
                                     <i class="bi bi-heart"></i> Zur Wunschliste hinzufügen
                                 </button>
                             </div>
@@ -281,14 +281,27 @@
     updateWishlistButton();
   }
   function updateWishlistButton() {
-    const btn = document.getElementById('wishlistBtn');
-    if (!btn) return;
+    const heroBtn = document.getElementById('wishlistBtn');
+    const cardBtn = document.getElementById('cardWishlistBtn');
+    
     if (isInWishlist(product.id)) {
-      btn.classList.add('active');
-      btn.innerHTML = '<i class="bi bi-heart-fill"></i> Entfernen';
+      if (heroBtn) {
+        heroBtn.classList.add('active');
+        heroBtn.innerHTML = '<i class="bi bi-heart-fill"></i> Entfernen';
+      }
+      if (cardBtn) {
+        cardBtn.classList.add('active');
+        cardBtn.innerHTML = '<i class="bi bi-heart-fill"></i> Entfernen';
+      }
     } else {
-      btn.classList.remove('active');
-      btn.innerHTML = '<i class="bi bi-heart"></i> Zur Wunschliste';
+      if (heroBtn) {
+        heroBtn.classList.remove('active');
+        heroBtn.innerHTML = '<i class="bi bi-heart"></i> Zur Wunschliste';
+      }
+      if (cardBtn) {
+        cardBtn.classList.remove('active');
+        cardBtn.innerHTML = '<i class="bi bi-heart"></i> Zur Wunschliste';
+      }
     }
   }
   function getCart() {
@@ -459,6 +472,17 @@
 
 
   document.addEventListener('DOMContentLoaded', function() {
+    // Card Wishlist-Button
+    let cardWishlistBtn = document.getElementById('cardWishlistBtn');
+    if (cardWishlistBtn) {
+      cardWishlistBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        toggleWishlist(product);
+      });
+    }
+    
+    // Update both wishlist buttons on page load
+    updateWishlistButton();
     // Event-Listener für Hero-Buttons
     const cartBtn = document.getElementById('cartBtn');
     const wishlistBtn = document.getElementById('wishlistBtn');
