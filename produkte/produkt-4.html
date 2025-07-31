@@ -349,8 +349,12 @@
     let wishlist = getWishlist();
     if (isInWishlist(product.id)) {
       wishlist = wishlist.filter(item => Number(item.id) !== Number(product.id));
-      showNotification('Von der Wunschliste entfernt', 'info');
-            } else {
+      if (typeof showAlert === 'function') {
+        showAlert('Produkt von der Wunschliste entfernt', 'wishlist.html');
+      } else {
+        showNotification('Von der Wunschliste entfernt', 'info');
+      }
+    } else {
       wishlist.push({
         id: product.id,
         name: product.name,
@@ -358,7 +362,11 @@
         image: product.image,
         description: product.description
       });
-      ('Zur Wunschliste hinzugefügt');
+      if (typeof showAlert === 'function') {
+        showAlert('Produkt zur Wunschliste hinzugefügt', 'wishlist.html');
+      } else {
+        showNotification('Zur Wunschliste hinzugefügt');
+      }
     }
     setWishlist(wishlist);
     updateWishlistButton();
