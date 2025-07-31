@@ -106,7 +106,7 @@
                                 <button class="buy-now-btn" onclick="addToCartWithQuantity()">
                                     <i class="bi bi-cart-plus"></i> Jetzt kaufen
                                 </button>
-                                <button class="wishlist-btn" onclick="toggleWishlist(product)">
+                                <button class="wishlist-btn" id="cardWishlistBtn">
                                     <i class="bi bi-heart"></i> Zur Wunschliste
                                 </button>
                             </div>
@@ -330,7 +330,13 @@
       });
     }
     setCart(cart);
-    window.location.href = '../cart.html';
+    // Zeige Popup statt Weiterleitung
+    if (typeof showAlert === 'function') {
+      showAlert('Produkt wurde zum Warenkorb hinzugefügt');
+    } else {
+      // Fallback: Erstelle eigene Benachrichtigung
+      showNotification('Produkt wurde zum Warenkorb hinzugefügt');
+    }
   }
 
   function getWishlist() {
@@ -397,7 +403,13 @@
       });
     }
     setCart(cart);
-    window.location.href = '../cart.html';
+    // Zeige Popup statt Weiterleitung
+    if (typeof showAlert === 'function') {
+      showAlert('Produkt wurde zum Warenkorb hinzugefügt');
+    } else {
+      // Fallback: Erstelle eigene Benachrichtigung
+      showNotification('Produkt wurde zum Warenkorb hinzugefügt');
+    }
   }
   function showNotification(message, type = 'success') {
     // Optional: Notification-Logik aus wishlist.html übernehmen
@@ -442,6 +454,17 @@
     addToCart(productToCart);
   }
   document.addEventListener('DOMContentLoaded', function() {
+    // Card Wishlist-Button
+    let cardWishlistBtn = document.getElementById('cardWishlistBtn');
+    if (cardWishlistBtn) {
+      cardWishlistBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        toggleWishlist(product);
+      });
+    }
+    
+    // Update both wishlist buttons on page load
+    updateWishlistButton();
     // Hero Wishlist-Button
     let heroWishlistBtn = document.getElementById('wishlistBtn');
     if (heroWishlistBtn) {
@@ -484,5 +507,6 @@
     }
   });
 </script>
+<script src="../app.js"></script>
 </body>
 </html>

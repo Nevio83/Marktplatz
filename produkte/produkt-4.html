@@ -106,7 +106,7 @@
                                 <button class="buy-now-btn">
                                     <i class="bi bi-cart-plus"></i> Jetzt kaufen
                                 </button>
-                                <button class="wishlist-btn" onclick="toggleWishlist(product)">
+                                <button class="wishlist-btn" id="cardWishlistBtn">
                                     <i class="bi bi-heart"></i> Zur Wunschliste
                                 </button>
                             </div>
@@ -333,7 +333,13 @@
       });
     }
     setCart(cart);
-    window.location.href = '../cart.html';
+    // Zeige Popup statt Weiterleitung
+    if (typeof showAlert === 'function') {
+      showAlert('Produkt wurde zum Warenkorb hinzugefügt');
+    } else {
+      // Fallback: Erstelle eigene Benachrichtigung
+      showNotification('Produkt wurde zum Warenkorb hinzugefügt');
+    }
   }
 
   function getWishlist() {
@@ -350,7 +356,7 @@
     if (isInWishlist(product.id)) {
       wishlist = wishlist.filter(item => Number(item.id) !== Number(product.id));
       showNotification('Von der Wunschliste entfernt', 'info');
-            } else {
+    } else {
       wishlist.push({
         id: product.id,
         name: product.name,
@@ -358,20 +364,33 @@
         image: product.image,
         description: product.description
       });
-      ('Zur Wunschliste hinzugefügt');
+      showNotification('Zur Wunschliste hinzugefügt');
     }
     setWishlist(wishlist);
     updateWishlistButton();
   }
   function updateWishlistButton() {
-    const btn = document.getElementById('wishlistBtn');
-    if (!btn) return;
+    const heroBtn = document.getElementById('wishlistBtn');
+    const cardBtn = document.getElementById('cardWishlistBtn');
+    
     if (isInWishlist(product.id)) {
-      btn.classList.add('active');
-      btn.innerHTML = '<i class="bi bi-heart-fill"></i> Entfernen';
+      if (heroBtn) {
+        heroBtn.classList.add('active');
+        heroBtn.innerHTML = '<i class="bi bi-heart-fill"></i> Entfernen';
+      }
+      if (cardBtn) {
+        cardBtn.classList.add('active');
+        cardBtn.innerHTML = '<i class="bi bi-heart-fill"></i> Entfernen';
+      }
     } else {
-      btn.classList.remove('active');
-      btn.innerHTML = '<i class="bi bi-heart"></i> Zur Wunschliste';
+      if (heroBtn) {
+        heroBtn.classList.remove('active');
+        heroBtn.innerHTML = '<i class="bi bi-heart"></i> Zur Wunschliste';
+      }
+      if (cardBtn) {
+        cardBtn.classList.remove('active');
+        cardBtn.innerHTML = '<i class="bi bi-heart"></i> Zur Wunschliste';
+      }
     }
   }
   function getCart() {
@@ -389,7 +408,13 @@
       cart.push({ ...product, quantity: product.quantity || 1 });
     }
     setCart(cart);
-      window.location.href = '../cart.html';
+      // Zeige Popup statt Weiterleitung
+    if (typeof showAlert === 'function') {
+      showAlert('Produkt wurde zum Warenkorb hinzugefügt');
+    } else {
+      // Fallback: Erstelle eigene Benachrichtigung
+      showNotification('Produkt wurde zum Warenkorb hinzugefügt');
+    }
   }
   function showNotification(message, type = 'success') {
     alert(message);
@@ -402,7 +427,13 @@
       quantity: quantity
     };
     addToCart(productToCart);
-    window.location.href = '../cart.html';
+    // Zeige Popup statt Weiterleitung
+    if (typeof showAlert === 'function') {
+      showAlert('Produkt wurde zum Warenkorb hinzugefügt');
+    } else {
+      // Fallback: Erstelle eigene Benachrichtigung
+      showNotification('Produkt wurde zum Warenkorb hinzugefügt');
+    }
   }
 
   // Mengenfunktionen für Schnellbestellung
@@ -441,6 +472,17 @@
   }
 
   document.addEventListener('DOMContentLoaded', function() {
+    // Card Wishlist-Button
+    let cardWishlistBtn = document.getElementById('cardWishlistBtn');
+    if (cardWishlistBtn) {
+      cardWishlistBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        toggleWishlist(product);
+      });
+    }
+    
+    // Update both wishlist buttons on page load
+    updateWishlistButton();
     let wishlistBtn = document.getElementById('wishlistBtn');
     if (!wishlistBtn) {
       const hero = document.querySelector('.product-hero .col-lg-6');
@@ -483,10 +525,17 @@
           quantity: qty
         };
         addToCart(productToCart);
-        window.location.href = '../cart.html';
+        // Zeige Popup statt Weiterleitung
+    if (typeof showAlert === 'function') {
+      showAlert('Produkt wurde zum Warenkorb hinzugefügt');
+    } else {
+      // Fallback: Erstelle eigene Benachrichtigung
+      showNotification('Produkt wurde zum Warenkorb hinzugefügt');
+    }
       });
     }
   });
     </script>
+<script src="../app.js"></script>
 </body>
 </html>
