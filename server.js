@@ -17,7 +17,7 @@ app.post('/api/create-checkout-session', async (req, res) => {
   const line_items = cart.map(item => {
     if (item.id === 1) {
       return {
-        price: 'price_1RgoIgB31V654n3WL9mzUNNS',
+        price: 'price_XXXXXXXXXXXXXXXXXXXXXXXX',
         quantity: item.quantity,
       };
     }

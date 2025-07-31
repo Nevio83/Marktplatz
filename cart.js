@@ -722,7 +722,7 @@ function addAddonToCart(productId) {
 }
 
 // Stripe initialisieren
-const stripe = Stripe('pk_test_51RgJy8B31V654n3WvISwKtd2TuquEkWzDLpwPcFvJO8QGOFsRLIJX9RxGGZ0nrVQhNIVHPqYYuTRjgvu1wiJw7Zx00QrJ2Nrvr');
+const stripe = Stripe('pk_test_XXXXXXXXXXXXXXXXXXXXXXXX');
 let elements, cardNumber, cardExpiry, cardCvc;
 let stripeInitialized = false;
 
