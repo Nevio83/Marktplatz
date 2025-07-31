@@ -335,27 +335,24 @@
     setCart(cart);
     // Zeige Popup statt Weiterleitung
     if (typeof showAlert === 'function') {
-      showAlert('Produkt wurde zum Warenkorb hinzugefügt');
-    } else {
-      // Fallback: Erstelle eigene Benachrichtigung
-      showNotification('Produkt wurde zum Warenkorb hinzugefügt');
+        showAlert('Zur Wunschliste hinzugefügt', '../wishlist.html');
+      } else {
+        showNotification('Zur Wunschliste hinzugefügt');
+      }
     }
+    setWishlist(wishlist);
+    updateWishlistButton();
   }
-
-  function getWishlist() {
-    return JSON.parse(localStorage.getItem('wishlist')) || [];
-  }
-  function setWishlist(wishlist) {
-    localStorage.setItem('wishlist', JSON.stringify(wishlist));
-  }
-  function isInWishlist(id) {
-    return getWishlist().some(item => Number(item.id) === Number(id));
-  }
+  
   function toggleWishlist(product) {
     let wishlist = getWishlist();
     if (isInWishlist(product.id)) {
       wishlist = wishlist.filter(item => Number(item.id) !== Number(product.id));
-      showNotification('Von der Wunschliste entfernt', 'info');
+      if (typeof showAlert === 'function') {
+        showAlert('Von der Wunschliste entfernt', '../wishlist.html');
+      } else {
+        showNotification('Von der Wunschliste entfernt', 'info');
+      }
     } else {
       wishlist.push({
         id: product.id,
@@ -364,12 +361,16 @@
         image: product.image,
         description: product.description
       });
-      showNotification('Zur Wunschliste hinzugefügt');
+      if (typeof showAlert === 'function') {
+        showAlert('Zur Wunschliste hinzugefügt', '../wishlist.html');
+      } else {
+        showNotification('Zur Wunschliste hinzugefügt');
+      }
     }
     setWishlist(wishlist);
     updateWishlistButton();
   }
-  function updateWishlistButton() {
+function updateWishlistButton() {
     const heroBtn = document.getElementById('wishlistBtn');
     const cardBtn = document.getElementById('cardWishlistBtn');
     
@@ -410,7 +411,7 @@
     setCart(cart);
       // Zeige Popup statt Weiterleitung
     if (typeof showAlert === 'function') {
-      showAlert('Produkt wurde zum Warenkorb hinzugefügt');
+      showAlert('Produkt wurde zum Warenkorb hinzugefügt', '../cart.html');
     } else {
       // Fallback: Erstelle eigene Benachrichtigung
       showNotification('Produkt wurde zum Warenkorb hinzugefügt');
@@ -429,7 +430,7 @@
     addToCart(productToCart);
     // Zeige Popup statt Weiterleitung
     if (typeof showAlert === 'function') {
-      showAlert('Produkt wurde zum Warenkorb hinzugefügt');
+      showAlert('Produkt wurde zum Warenkorb hinzugefügt', '../cart.html');
     } else {
       // Fallback: Erstelle eigene Benachrichtigung
       showNotification('Produkt wurde zum Warenkorb hinzugefügt');
@@ -527,7 +528,7 @@
         addToCart(productToCart);
         // Zeige Popup statt Weiterleitung
     if (typeof showAlert === 'function') {
-      showAlert('Produkt wurde zum Warenkorb hinzugefügt');
+      showAlert('Produkt wurde zum Warenkorb hinzugefügt', '../cart.html');
     } else {
       // Fallback: Erstelle eigene Benachrichtigung
       showNotification('Produkt wurde zum Warenkorb hinzugefügt');

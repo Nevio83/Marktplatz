@@ -266,16 +266,11 @@
     let wishlist = getWishlist();
     if (isInWishlist(product.id)) {
       wishlist = wishlist.filter(item => Number(item.id) !== Number(product.id));
-      showNotification('Von der Wunschliste entfernt', 'info');
-    } else {
-      wishlist.push({
-        id: product.id,
-        name: product.name,
-        price: product.price,
-        image: product.image,
-        description: product.description
-      });
-      showNotification('Zur Wunschliste hinzugefügt');
+      if (typeof showAlert === 'function') {
+        showAlert('Zur Wunschliste hinzugefügt', '../wishlist.html');
+      } else {
+        showNotification('Zur Wunschliste hinzugefügt');
+      }
     }
     setWishlist(wishlist);
     updateWishlistButton();
@@ -321,7 +316,7 @@
       setCart(cart);
       // Zeige Popup statt Weiterleitung
     if (typeof showAlert === 'function') {
-      showAlert('Produkt wurde zum Warenkorb hinzugefügt');
+      showAlert('Produkt wurde zum Warenkorb hinzugefügt', '../cart.html');
     } else {
       // Fallback: Erstelle eigene Benachrichtigung
       showNotification('Produkt wurde zum Warenkorb hinzugefügt');
@@ -353,7 +348,7 @@
     setCart(cart);
     // Zeige Popup statt Weiterleitung
     if (typeof showAlert === 'function') {
-      showAlert('Produkt wurde zum Warenkorb hinzugefügt');
+      showAlert('Produkt wurde zum Warenkorb hinzugefügt', '../cart.html');
     } else {
       // Fallback: Erstelle eigene Benachrichtigung
       showNotification('Produkt wurde zum Warenkorb hinzugefügt');
