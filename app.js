@@ -40,11 +40,23 @@ window.clearCart = function() {
 // Wishlist-Initialisierung
 let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
 
-// Produktdaten laden
-async function loadProducts() {
+// Make loadProducts globally available
+window.loadProducts = async function() {
   try {
-    const response = await fetch('products.json');
+    // Versuche zuerst den relativen Pfad für Produktseiten
+    let response = await fetch('../products.json');
+    if (!response.ok) {
+      // Falls das nicht funktioniert, versuche den direkten Pfad (für Hauptseite)
+      response = await fetch('products.json');
+    }
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
     const products = await response.json();
+    console.log('Products loaded successfully:', products.length);
+    
     // Füge eine Standardbeschreibung hinzu, falls nicht vorhanden
     return products.map(p => ({
       ...p,
@@ -58,7 +70,8 @@ async function loadProducts() {
 
 // Wishlist-Logik (bereits initialisiert oben)
 
-function getWishlist() {
+// Make wishlist functions globally available
+window.getWishlist = function() {
   try {
     const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
     console.log('getWishlist():', wishlist);
@@ -69,7 +82,7 @@ function getWishlist() {
   }
 }
 
-function setWishlist(wishlist) {
+window.setWishlist = function(wishlist) {
   try {
     localStorage.setItem('wishlist', JSON.stringify(wishlist));
     console.log('setWishlist():', wishlist);
@@ -78,14 +91,15 @@ function setWishlist(wishlist) {
   }
 }
 
-function isInWishlist(productId) {
+window.isInWishlist = function(productId) {
   const wishlist = getWishlist();
   const isIn = wishlist.some(item => Number(item.id) === Number(productId));
   console.log(`isInWishlist(${productId}): ${isIn}, wishlist:`, wishlist);
   return isIn;
 }
 
-function toggleWishlist(productId) {
+// Make toggleWishlist globally available
+window.toggleWishlist = function(productId) {
   console.log('toggleWishlist called with productId:', productId);
   
   // Überprüfe ob die productId gültig ist
@@ -141,23 +155,55 @@ function toggleWishlist(productId) {
   });
 }
 
-function updateWishlistButtonState(productId) {
+window.updateWishlistButtonState = function(productId) {
   console.log('updateWishlistButtonState called for productId:', productId);
+  
+  // Update buttons on main page (product grid)
   const button = document.querySelector(`[data-product-id="${productId}"] .wishlist-btn`);
-  console.log('Found button:', button);
+  console.log('Found main page button:', button);
   
   if (button) {
     if (isInWishlist(productId)) {
       button.classList.add('active');
       button.innerHTML = '<i class="bi bi-heart-fill"></i>';
-      console.log('Button updated to filled heart');
+      console.log('Main page button updated to filled heart');
     } else {
       button.classList.remove('active');
       button.innerHTML = '<i class="bi bi-heart"></i>';
-      console.log('Button updated to empty heart');
+      console.log('Main page button updated to empty heart');
     }
-  } else {
-    console.log('Button not found for productId:', productId);
+  }
+  
+  // Update buttons on product pages
+  const heroBtn = document.getElementById('wishlistBtn');
+  const cardBtn = document.getElementById('cardWishlistBtn');
+  
+  if (heroBtn) {
+    if (isInWishlist(productId)) {
+      heroBtn.classList.add('active');
+      heroBtn.innerHTML = '<i class="bi bi-heart-fill"></i> Entfernen';
+      console.log('Hero button updated to filled heart');
+    } else {
+      heroBtn.classList.remove('active');
+      heroBtn.innerHTML = '<i class="bi bi-heart"></i> Zur Wunschliste';
+      console.log('Hero button updated to empty heart');
+    }
+  }
+  
+  if (cardBtn) {
+    if (isInWishlist(productId)) {
+      cardBtn.classList.add('active');
+      cardBtn.innerHTML = '<i class="bi bi-heart-fill"></i> Entfernen';
+      console.log('Card button updated to filled heart');
+    } else {
+      cardBtn.classList.remove('active');
+      cardBtn.innerHTML = '<i class="bi bi-heart"></i> Zur Wunschliste';
+      console.log('Card button updated to empty heart');
+    }
+  }
+  
+  if (!button && !heroBtn && !cardBtn) {
+    console.log('No buttons found for productId:', productId);
   }
 }
 

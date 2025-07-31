@@ -369,7 +369,7 @@
     }
   }
 
-  function getWishlist() {
+  window.getWishlist = function() {
     return JSON.parse(localStorage.getItem('wishlist')) || [];
   }
   function setWishlist(wishlist) {

@@ -353,7 +353,7 @@
     }
   }
 
-  function getWishlist() {
+  window.getWishlist = function() {
     return JSON.parse(localStorage.getItem('wishlist')) || [];
   }
   function setWishlist(wishlist) {
@@ -362,34 +362,40 @@
   function isInWishlist(id) {
     return getWishlist().some(item => Number(item.id) === Number(id));
   }
+  // Verwende die globale toggleWishlist Funktion aus app.js
   function toggleWishlist(product = window.product) {
-    // Überprüfe ob das Produkt gültig ist
     if (!product || !product.id) {
       console.error('Ungültiges Produkt für Wunschliste:', product);
       showNotification('Produkt konnte nicht zur Wunschliste hinzugefügt werden.', 'error');
       return;
     }
     
-    try {
-      let wishlist = getWishlist();
-      if (isInWishlist(product.id)) {
-        wishlist = wishlist.filter(item => Number(item.id) !== Number(product.id));
-        showNotification('Von der Wunschliste entfernt', 'info');
-      } else {
-        wishlist.push({
-          id: product.id,
-          name: product.name,
-          price: product.price,
-          image: product.image,
-          description: product.description
-        });
-        showNotification('Zur Wunschliste hinzugefügt');
+    // Verwende die globale toggleWishlist Funktion aus app.js
+    if (typeof window.toggleWishlist === 'function') {
+      window.toggleWishlist(product.id);
+    } else {
+      // Fallback zur lokalen Implementierung
+      try {
+        let wishlist = getWishlist();
+        if (isInWishlist(product.id)) {
+          wishlist = wishlist.filter(item => Number(item.id) !== Number(product.id));
+          showNotification('Von der Wunschliste entfernt', 'info');
+        } else {
+          wishlist.push({
+            id: product.id,
+            name: product.name,
+            price: product.price,
+            image: product.image,
+            description: product.description
+          });
+          showNotification('Zur Wunschliste hinzugefügt');
+        }
+        setWishlist(wishlist);
+        updateWishlistButton();
+      } catch (error) {
+        console.error('Fehler beim Hinzufügen zur Wunschliste:', error);
+        showNotification('Produkt konnte nicht zur Wunschliste hinzugefügt werden.', 'error');
       }
-      setWishlist(wishlist);
-      updateWishlistButton();
-    } catch (error) {
-      console.error('Fehler beim Hinzufügen zur Wunschliste:', error);
-      showNotification('Produkt konnte nicht zur Wunschliste hinzugefügt werden.', 'error');
     }
   }
   function updateWishlistButton() {
@@ -400,26 +406,32 @@
       return;
     }
     
-    const heroBtn = document.getElementById('wishlistBtn');
-    const cardBtn = document.getElementById('cardWishlistBtn');
-    
-    if (isInWishlist(product.id)) {
-      if (heroBtn) {
-        heroBtn.classList.add('active');
-        heroBtn.innerHTML = '<i class="bi bi-heart-fill"></i> Entfernen';
-      }
-      if (cardBtn) {
-        cardBtn.classList.add('active');
-        cardBtn.innerHTML = '<i class="bi bi-heart-fill"></i> Entfernen';
-      }
+    // Verwende die globale updateWishlistButtonState Funktion
+    if (typeof window.updateWishlistButtonState === 'function') {
+      window.updateWishlistButtonState(product.id);
     } else {
-      if (heroBtn) {
-        heroBtn.classList.remove('active');
-        heroBtn.innerHTML = '<i class="bi bi-heart"></i> Zur Wunschliste';
-      }
-      if (cardBtn) {
-        cardBtn.classList.remove('active');
-        cardBtn.innerHTML = '<i class="bi bi-heart"></i> Zur Wunschliste';
+      // Fallback zur lokalen Implementierung
+      const heroBtn = document.getElementById('wishlistBtn');
+      const cardBtn = document.getElementById('cardWishlistBtn');
+      
+      if (isInWishlist(product.id)) {
+        if (heroBtn) {
+          heroBtn.classList.add('active');
+          heroBtn.innerHTML = '<i class="bi bi-heart-fill"></i> Entfernen';
+        }
+        if (cardBtn) {
+          cardBtn.classList.add('active');
+          cardBtn.innerHTML = '<i class="bi bi-heart-fill"></i> Entfernen';
+        }
+      } else {
+        if (heroBtn) {
+          heroBtn.classList.remove('active');
+          heroBtn.innerHTML = '<i class="bi bi-heart"></i> Zur Wunschliste';
+        }
+        if (cardBtn) {
+          cardBtn.classList.remove('active');
+          cardBtn.innerHTML = '<i class="bi bi-heart"></i> Zur Wunschliste';
+        }
       }
     }
   }
