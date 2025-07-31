@@ -216,8 +216,8 @@
 
 .bundle-badge {
     position: absolute;
-    top: -10px;
-    right: -10px;
+    top: 5px;
+    right: 5px;
     background: #ff6b6b;
     color: white;
     padding: 0.4em 1em;
@@ -226,6 +226,11 @@
     font-weight: 600;
     box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
     animation: bounce 2s infinite;
+    z-index: 10;
+    max-width: calc(100% - 10px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 @keyframes bounce {
@@ -242,6 +247,8 @@
     align-items: center;
     gap: 1rem;
     margin-top: 1rem;
+    flex-wrap: wrap;
+    overflow: hidden;
 }
 
 .bundle-prices .old {
@@ -391,24 +398,21 @@
 }
 
 .price-section {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    text-align: center;
     padding: 1rem 0;
     border-top: 1px solid #e2e8f0;
     border-bottom: 1px solid #e2e8f0;
 }
 
 .current-price {
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     font-weight: 700;
     color: #2d3748;
+    display: inline-block;
 }
 
 .total-price {
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: #667eea;
+    display: none;
 }
 
 .action-buttons {
@@ -1634,4 +1638,4 @@
 /* Preis-Farbe für Elektronik */
 .product-card .h4 {
     color: #764ba2 !important;
-} 
+}
