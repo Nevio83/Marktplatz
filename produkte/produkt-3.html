@@ -103,7 +103,7 @@
                             </div>
                             
                             <div class="action-buttons">
-                                <button class="buy-now-btn" onclick="addToCartWithQuantity()">
+                                <button class="buy-now-btn" id="buyNowBtn">
                                     <i class="bi bi-cart-plus"></i> Jetzt kaufen
                                 </button>
                                 <button class="wishlist-btn" id="cardWishlistBtn">
@@ -460,44 +460,61 @@ function updateWishlistButton() {
     }
   }
 
+  
   document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM loaded, setting up event listeners...');
+    
     // Card Wishlist-Button
     let cardWishlistBtn = document.getElementById('cardWishlistBtn');
+    console.log('Card wishlist button found:', cardWishlistBtn);
     if (cardWishlistBtn) {
       cardWishlistBtn.addEventListener('click', function(e) {
+        console.log('Card wishlist button clicked');
         e.preventDefault();
+        e.stopPropagation();
         toggleWishlist(product);
+      });
+    }
+    
+    // Hero Wishlist-Button
+    let wishlistBtn = document.getElementById('wishlistBtn');
+    console.log('Hero wishlist button found:', wishlistBtn);
+    if (wishlistBtn) {
+      wishlistBtn.addEventListener('click', function(e) {
+        console.log('Hero wishlist button clicked');
+        e.preventDefault();
+        e.stopPropagation();
+        toggleWishlist(product);
+      });
+    }
+    
+    // Hero Cart-Button
+    let heroCartBtn = document.getElementById('cartBtn');
+    console.log('Hero cart button found:', heroCartBtn);
+    if (heroCartBtn) {
+      heroCartBtn.addEventListener('click', function(e) {
+        console.log('Hero cart button clicked');
+        e.preventDefault();
+        e.stopPropagation();
+        addToCartAndRedirect();
+      });
+    }
+    
+    // Buy Now Button
+    let buyNowBtn = document.getElementById('buyNowBtn');
+    console.log('Buy now button found:', buyNowBtn);
+    if (buyNowBtn) {
+      buyNowBtn.addEventListener('click', function(e) {
+        console.log('Buy now button clicked');
+        e.preventDefault();
+        e.stopPropagation();
+        addToCartWithQuantity();
       });
     }
     
     // Update both wishlist buttons on page load
     updateWishlistButton();
-    // Event-Listener für Hero-Buttons
-    const cartBtn = document.getElementById('cartBtn');
-    const wishlistBtn = document.getElementById('wishlistBtn');
     
-    if (cartBtn) {
-      cartBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        addToCart(product);
-        // Zeige Popup statt Weiterleitung
-    if (typeof showAlert === 'function') {
-      showAlert('Produkt wurde zum Warenkorb hinzugefügt', '../cart.html');
-    } else {
-      // Fallback: Erstelle eigene Benachrichtigung
-      showNotification('Produkt wurde zum Warenkorb hinzugefügt');
-    }
-      });
-    }
-    
-    if (wishlistBtn) {
-      wishlistBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        toggleWishlist(product);
-      });
-      updateWishlistButton();
-    }
-
     // Event-Listener für Quantity-Input
     const quantityInput = document.getElementById('quantity');
     if (quantityInput) {
@@ -505,8 +522,10 @@ function updateWishlistButton() {
       quantityInput.addEventListener('change', updateTotalPrice);
       updateTotalPrice(); // Initialisiere den Preis
     }
+    
+    console.log('All event listeners set up');
   });
-    </script>
+</script>
 <script src="../app.js"></script>
 </body>
 </html>
