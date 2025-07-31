@@ -495,11 +495,7 @@
     border-radius: 50%;
 }
 
-/* ===== NUR MOBILE VERBESSERUNGEN FÜR FITNESS-PRODUKTSEITEN ===== */
-
-/* Desktop-Styles bleiben unverändert - nur mobile Optimierungen */
-
-/* ===== VERBESSERTE MOBILE GESTALTUNG ===== */
+/* ===== URSPRÜNGLICHE DESKTOP-STYLES + MOBILE VERBESSERUNGEN ===== */
 
 @media (max-width: 768px) {
   /* Mobile Navigation Anpassungen */
