@@ -106,7 +106,7 @@
                                 <button class="buy-now-btn" onclick="addToCartWithQuantity()">
                                     <i class="bi bi-cart-plus"></i> Jetzt kaufen
                                 </button>
-                                <button class="wishlist-btn" id="cardWishlistBtn">
+                                <button class="wishlist-btn" onclick="toggleWishlist(product)">
                                     <i class="bi bi-heart"></i> Zur Wunschliste
                                 </button>
                             </div>
@@ -330,13 +330,7 @@
       });
     }
     setCart(cart);
-    // Zeige Popup statt Weiterleitung
-    if (typeof showAlert === 'function') {
-      showAlert('Produkt wurde zum Warenkorb hinzugefügt');
-    } else {
-      // Fallback: Erstelle eigene Benachrichtigung
-      showNotification('Produkt wurde zum Warenkorb hinzugefügt');
-    }
+    window.location.href = '../cart.html';
   }
 
   function getWishlist() {
@@ -349,13 +343,6 @@
     return getWishlist().some(item => Number(item.id) === Number(id));
   }
   function toggleWishlist(product) {
-    // Überprüfe ob das Produkt gültig ist
-    if (!product || !product.id) {
-      console.error('Ungültiges Produkt für Wunschliste:', product);
-      showNotification('Produkt konnte nicht zur Wunschliste hinzugefügt werden.', 'error');
-      return;
-    }
-    
     let wishlist = getWishlist();
     if (isInWishlist(product.id)) {
       wishlist = wishlist.filter(item => Number(item.id) !== Number(product.id));
@@ -374,12 +361,6 @@
     updateWishlistButton();
   }
   function updateWishlistButton() {
-    // Überprüfe ob das Produkt gültig ist
-    if (!product || !product.id) {
-      console.error('Ungültiges Produkt für Wunschliste Button Update:', product);
-      return;
-    }
-    
     const heroBtn = document.getElementById('wishlistBtn');
     
     if (isInWishlist(product.id)) {
@@ -416,52 +397,11 @@
       });
     }
     setCart(cart);
-    // Zeige Popup statt Weiterleitung
-    if (typeof showAlert === 'function') {
-      showAlert('Produkt wurde zum Warenkorb hinzugefügt');
-    } else {
-      // Fallback: Erstelle eigene Benachrichtigung
-      showNotification('Produkt wurde zum Warenkorb hinzugefügt');
-    }
+    window.location.href = '../cart.html';
   }
   function showNotification(message, type = 'success') {
-    // Erstelle eine schöne Benachrichtigung
-    const notification = document.createElement('div');
-    let alertClass = 'alert-success';
-    let iconClass = 'bi-check-circle';
-    
-    if (type === 'info') {
-      alertClass = 'alert-info';
-      iconClass = 'bi-info-circle';
-    } else if (type === 'error') {
-      alertClass = 'alert-danger';
-      iconClass = 'bi-exclamation-triangle';
-    }
-    
-    notification.className = `alert ${alertClass} position-fixed`;
-    notification.style.cssText = `
-      top: 20px;
-      right: 20px;
-      z-index: 9999;
-      min-width: 300px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-      border-radius: 8px;
-    `;
-    notification.innerHTML = `
-      <div class="d-flex align-items-center">
-        <i class="bi ${iconClass} me-2"></i>
-        <span>${message}</span>
-        <button type="button" class="btn-close ms-auto" onclick="this.parentElement.parentElement.remove()"></button>
-      </div>
-    `;
-    document.body.appendChild(notification);
-    
-    // Automatisch nach 3 Sekunden entfernen
-    setTimeout(() => {
-      if (notification.parentElement) {
-        notification.remove();
-      }
-    }, 3000);
+    // Optional: Notification-Logik aus wishlist.html übernehmen
+    alert(message);
   }
 
   // Funktionen für die neue Schnellbestellung
@@ -502,17 +442,6 @@
     addToCart(productToCart);
   }
   document.addEventListener('DOMContentLoaded', function() {
-    // Card Wishlist-Button
-    let cardWishlistBtn = document.getElementById('cardWishlistBtn');
-    if (cardWishlistBtn) {
-      cardWishlistBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        toggleWishlist(product);
-      });
-    }
-    
-    // Update both wishlist buttons on page load
-    updateWishlistButton();
     // Hero Wishlist-Button
     let heroWishlistBtn = document.getElementById('wishlistBtn');
     if (heroWishlistBtn) {
@@ -555,6 +484,5 @@
     }
   });
 </script>
-<script src="../app.js"></script>
 </body>
 </html>

@@ -71,13 +71,6 @@ function isInWishlist(productId) {
 }
 
 function toggleWishlist(productId) {
-  // Überprüfe ob die productId gültig ist
-  if (!productId) {
-    console.error('Ungültige Produkt-ID für Wunschliste:', productId);
-    alert('Produkt konnte nicht zur Wunschliste hinzugefügt werden.');
-    return;
-  }
-
   loadProducts().then(products => {
     const product = products.find(p => Number(p.id) === Number(productId));
     if (!product) {
@@ -106,9 +99,6 @@ function toggleWishlist(productId) {
     
     // Update only the specific wishlist button instead of re-rendering everything
     updateWishlistButtonState(productId);
-  }).catch(error => {
-    console.error('Fehler beim Laden der Produkte für Wunschliste:', error);
-    alert('Produkt konnte nicht zur Wunschliste hinzugefügt werden.');
   });
 }
 

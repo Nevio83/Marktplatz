@@ -356,13 +356,7 @@
       });
     }
     setCart(cart);
-    // Zeige Popup statt Weiterleitung
-    if (typeof showAlert === 'function') {
-      showAlert('Produkt wurde zum Warenkorb hinzugefügt');
-    } else {
-      // Fallback: Erstelle eigene Benachrichtigung
-      showNotification('Produkt wurde zum Warenkorb hinzugefügt');
-    }
+    window.location.href = '../cart.html';
   }
 
   function getWishlist() {
@@ -375,18 +369,11 @@
     return getWishlist().some(item => Number(item.id) === Number(id));
   }
   function toggleWishlist(product) {
-    // Überprüfe ob das Produkt gültig ist
-    if (!product || !product.id) {
-      console.error('Ungültiges Produkt für Wunschliste:', product);
-      showNotification('Produkt konnte nicht zur Wunschliste hinzugefügt werden.', 'error');
-      return;
-    }
-    
     let wishlist = getWishlist();
     if (isInWishlist(product.id)) {
       wishlist = wishlist.filter(item => Number(item.id) !== Number(product.id));
       showNotification('Von der Wunschliste entfernt', 'info');
-    } else {
+            } else {
       wishlist.push({
         id: product.id,
         name: product.name,
@@ -400,12 +387,6 @@
     updateWishlistButton();
   }
   function updateWishlistButton() {
-    // Überprüfe ob das Produkt gültig ist
-    if (!product || !product.id) {
-      console.error('Ungültiges Produkt für Wunschliste Button Update:', product);
-      return;
-    }
-    
     const heroBtn = document.getElementById('wishlistBtn');
     const cardBtn = document.getElementById('cardWishlistBtn');
     
@@ -444,13 +425,7 @@
       cart.push({ ...product, quantity: product.quantity || 1 });
     }
     setCart(cart);
-    // Zeige Popup statt Weiterleitung
-    if (typeof showAlert === 'function') {
-      showAlert('Produkt wurde zum Warenkorb hinzugefügt');
-    } else {
-      // Fallback: Erstelle eigene Benachrichtigung
-      showNotification('Produkt wurde zum Warenkorb hinzugefügt');
-    }
+    window.location.href = '../cart.html';
   }
 
   function showNotification(message, type = 'success') {
@@ -551,6 +526,5 @@
     }
       });
     </script>
-<script src="../app.js"></script>
 </body>
 </html>
