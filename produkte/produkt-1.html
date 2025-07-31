@@ -406,8 +406,13 @@
       quantity: 1
     };
     addToCart(productToAdd);
-    // Sofortige Weiterleitung
-    window.location.href = '../cart.html';
+    // Zeige Popup statt Weiterleitung
+    if (typeof showAlert === 'function') {
+      showAlert('Produkt wurde zum Warenkorb hinzugefügt');
+    } else {
+      // Fallback: Erstelle eigene Benachrichtigung
+      showNotification('Produkt wurde zum Warenkorb hinzugefügt');
+    }
   }
   function showNotification(message, type = 'success') {
     // Erstelle eine schöne Benachrichtigung
@@ -470,7 +475,13 @@
       quantity: quantity
     };
     addToCart(productToCart);
-    window.location.href = '../cart.html';
+    // Zeige Popup statt Weiterleitung
+    if (typeof showAlert === 'function') {
+      showAlert('Produkt wurde zum Warenkorb hinzugefügt');
+    } else {
+      // Fallback: Erstelle eigene Benachrichtigung
+      showNotification('Produkt wurde zum Warenkorb hinzugefügt');
+    }
   }
   document.addEventListener('DOMContentLoaded', function() {
     // Wishlist-Button
@@ -501,5 +512,6 @@
     }
   });
 </script>
+<script src="../app.js"></script>
 </body>
 </html>
