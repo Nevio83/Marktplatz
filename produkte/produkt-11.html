@@ -263,6 +263,13 @@
     return getWishlist().some(item => Number(item.id) === Number(id));
   }
   function toggleWishlist(product) {
+    // Überprüfe ob das Produkt gültig ist
+    if (!product || !product.id) {
+      console.error('Ungültiges Produkt für Wunschliste:', product);
+      showNotification('Produkt konnte nicht zur Wunschliste hinzugefügt werden.', 'error');
+      return;
+    }
+    
     let wishlist = getWishlist();
     if (isInWishlist(product.id)) {
       wishlist = wishlist.filter(item => Number(item.id) !== Number(product.id));
@@ -281,6 +288,12 @@
     updateWishlistButton();
   }
   function updateWishlistButton() {
+    // Überprüfe ob das Produkt gültig ist
+    if (!product || !product.id) {
+      console.error('Ungültiges Produkt für Wunschliste Button Update:', product);
+      return;
+    }
+    
     const heroBtn = document.getElementById('wishlistBtn');
     const cardBtn = document.getElementById('cardWishlistBtn');
     
