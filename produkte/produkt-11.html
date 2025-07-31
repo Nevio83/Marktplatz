@@ -232,7 +232,7 @@
     
     <script>
   // Produktdaten für diese Seite
-  const product = {
+  window.product = {
     id: 11,
     name: "Haushalt Produkt 2",
     price: 42.00,
@@ -244,7 +244,7 @@
   fetch('../products.json')
     .then(res => res.json())
     .then(products => {
-      const prod = products.find(p => p.id === product.id);
+      const prod = products.find(p => p.id === window.product.id);
       if (prod && prod.bundles && prod.bundles.length > 0) {
         renderBundles(prod.bundles);
       } else {
@@ -262,34 +262,34 @@
   function isInWishlist(id) {
     return getWishlist().some(item => Number(item.id) === Number(id));
   }
-  function toggleWishlist(product) {
+  function toggleWishlist(product = window.product) {
     // Überprüfe ob das Produkt gültig ist
-    if (!product || !product.id) {
+    if (!product || !window.product.id) {
       console.error('Ungültiges Produkt für Wunschliste:', product);
       showNotification('Produkt konnte nicht zur Wunschliste hinzugefügt werden.', 'error');
       return;
     }
     
     let wishlist = getWishlist();
-    if (isInWishlist(product.id)) {
-      wishlist = wishlist.filter(item => Number(item.id) !== Number(product.id));
+    if (isInWishlist(window.product.id)) {
+      wishlist = wishlist.filter(item => Number(item.id) !== Number(window.product.id));
       showNotification('Von der Wunschliste entfernt', 'info');
     } else {
       wishlist.push({
-        id: product.id,
-        name: product.name,
-        price: product.price,
-        image: product.image,
-        description: product.description
+        id: window.product.id,
+        name: window.product.name,
+        price: window.product.price,
+        image: window.product.image,
+        description: window.product.description
       });
       showNotification('Zur Wunschliste hinzugefügt');
     }
     setWishlist(wishlist);
     updateWishlistButton();
   }
-  function updateWishlistButton() {
+  function updateWishlistButton() { const product = window.product; {
     // Überprüfe ob das Produkt gültig ist
-    if (!product || !product.id) {
+    if (!product || !window.product.id) {
       console.error('Ungültiges Produkt für Wunschliste Button Update:', product);
       return;
     }
@@ -297,7 +297,7 @@
     const heroBtn = document.getElementById('wishlistBtn');
     const cardBtn = document.getElementById('cardWishlistBtn');
     
-    if (isInWishlist(product.id)) {
+    if (isInWishlist(window.product.id)) {
       if (heroBtn) {
         heroBtn.classList.add('active');
         heroBtn.innerHTML = '<i class="bi bi-heart-fill"></i> Entfernen';
@@ -325,7 +325,7 @@
   }
   function addToCart(product) {
       let cart = getCart();
-      const existing = cart.find(item => Number(item.id) === Number(product.id));
+      const existing = cart.find(item => Number(item.id) === Number(window.product.id));
       if (existing) {
           existing.quantity++;
       } else {
@@ -355,10 +355,10 @@
       existing.quantity = 1;
     } else {
       cart.push({
-        id: product.id,
+        id: window.product.id,
         name: bundle.name,
         price: bundle.price,
-        image: product.image,
+        image: window.product.image,
         description: bundle.description,
         bundleId: bundleId,
         bundleItems: [], // Keine Items für die neue Staffel
@@ -445,12 +445,12 @@
       const idx = Array.from(radios).findIndex(r => r.checked);
       const s = staffel[idx];
       addBundleToCart({
-        id: product.id,
-        name: product.name + ` (${s.qty} Set${s.qty>1?'s':''})`,
+        id: window.product.id,
+        name: window.product.name + ` (${s.qty} Set${s.qty>1?'s':''})`,
         price: s.price * s.qty, // Gesamtpreis für das Bundle
-        image: product.image,
-        description: product.description + ` (Bundle: ${s.qty} Set${s.qty>1?'s':''})`,
-        bundleId: `${product.id}-qty${s.qty}`,
+        image: window.product.image,
+        description: window.product.description + ` (Bundle: ${s.qty} Set${s.qty>1?'s':''})`,
+        bundleId: `${window.product.id}-qty${s.qty}`,
         quantity: s.qty
       });
     });
@@ -466,10 +466,10 @@
       existing.quantity = 1;
     } else {
       cart.push({
-        id: product.id,
+        id: window.product.id,
         name: bundle.name,
         price: bundle.price,
-        image: product.image,
+        image: window.product.image,
         description: bundle.description,
         bundleId: bundleId,
         bundleItems: [], // Keine Items für die neue Staffel
@@ -508,7 +508,7 @@
 
   function updateTotalPrice() {
     const quantity = parseInt(document.getElementById('quantity').value, 10) || 1;
-    const total = (product.price * quantity).toFixed(2);
+    const total = (window.product.price * quantity).toFixed(2);
     document.getElementById('totalPrice').textContent = `€${total}`;
   }
 
@@ -520,7 +520,7 @@
     if (cardWishlistBtn) {
       cardWishlistBtn.addEventListener('click', function(e) {
         e.preventDefault();
-        toggleWishlist(product);
+        toggleWishlist(window.product);
       });
     }
     
@@ -534,11 +534,11 @@
       cartBtn.addEventListener('click', function(e) {
         e.preventDefault();
         addToCart({
-            id: product.id,
-            name: product.name,
-            price: product.price,
-            image: product.image,
-            description: product.description,
+            id: window.product.id,
+            name: window.product.name,
+            price: window.product.price,
+            image: window.product.image,
+            description: window.product.description,
             quantity: 1
         });
     });
@@ -547,7 +547,7 @@
     if (wishlistBtn) {
       wishlistBtn.addEventListener('click', function(e) {
         e.preventDefault();
-        toggleWishlist(product);
+        toggleWishlist(window.product);
       });
       updateWishlistButton();
     }

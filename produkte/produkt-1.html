@@ -209,7 +209,7 @@
     
     <script>
   // Produktdaten für diese Seite
-  const product = {
+  window.product = {
     id: 1,
     name: "Elektronik Produkt 1",
     price: 10.00,
@@ -221,7 +221,7 @@
   fetch('../products.json')
     .then(res => res.json())
     .then(products => {
-      const prod = products.find(p => p.id === product.id);
+      const prod = products.find(p => p.id === window.product.id);
       if (prod && prod.bundles && prod.bundles.length > 0) {
         renderBundles(prod.bundles);
       }
@@ -230,9 +230,9 @@
   function renderBundles() {
     // Preisstaffel: [ {menge, preisProSet, originalProSet} ]
     const staffel = [
-      {qty: 1, price: product.price, original: product.price},
-      {qty: 2, price: product.price * 0.85, original: product.price},
-      {qty: 3, price: product.price * 0.80, original: product.price}
+      {qty: 1, price: window.product.price, original: window.product.price},
+      {qty: 2, price: window.product.price * 0.85, original: window.product.price},
+      {qty: 3, price: window.product.price * 0.80, original: window.product.price}
     ];
     const section = document.getElementById('bundle-section');
     let selected = 1; // Standard: 2 Sets
@@ -306,10 +306,10 @@
       existing.quantity = 1;
     } else {
       cart.push({
-        id: product.id,
+        id: window.product.id,
         name: bundle.name,
         price: bundle.price,
-        image: product.image,
+        image: window.product.image,
         description: bundle.description,
         bundleId: bundleId,
         bundleItems: [], // Keine Items für die neue Staffel
@@ -327,19 +327,19 @@
     
     const idx = parseInt(selectedRadio.value);
     const staffel = [
-      {qty: 1, price: product.price, original: product.price},
-      {qty: 2, price: product.price * 0.85, original: product.price},
-      {qty: 3, price: product.price * 0.80, original: product.price}
+      {qty: 1, price: window.product.price, original: window.product.price},
+      {qty: 2, price: window.product.price * 0.85, original: window.product.price},
+      {qty: 3, price: window.product.price * 0.80, original: window.product.price}
     ];
     const s = staffel[idx];
     
     addBundleToCart({
-      id: product.id,
-      name: product.name + ` (${s.qty} Set${s.qty>1?'s':''})`,
+      id: window.product.id,
+      name: window.product.name + ` (${s.qty} Set${s.qty>1?'s':''})`,
       price: s.price * s.qty, // Gesamtpreis für das Bundle
-      image: product.image,
-      description: product.description + ` (Bundle: ${s.qty} Set${s.qty>1?'s':''})`,
-      bundleId: `${product.id}-qty${s.qty}`,
+      image: window.product.image,
+      description: window.product.description + ` (Bundle: ${s.qty} Set${s.qty>1?'s':''})`,
+      bundleId: `${window.product.id}-qty${s.qty}`,
       quantity: 1
     });
     
@@ -362,7 +362,7 @@
   function isInWishlist(id) {
     return getWishlist().some(item => Number(item.id) === Number(id));
   }
-  function toggleWishlist(product) {
+  function toggleWishlist(product = window.product) {
     // Überprüfe ob das Produkt gültig ist
     if (!product || !product.id) {
       console.error('Ungültiges Produkt für Wunschliste:', product);
@@ -370,24 +370,30 @@
       return;
     }
     
-    let wishlist = getWishlist();
-    if (isInWishlist(product.id)) {
-      wishlist = wishlist.filter(item => Number(item.id) !== Number(product.id));
-      showNotification('Von der Wunschliste entfernt', 'info');
-    } else {
-      wishlist.push({
-        id: product.id,
-        name: product.name,
-        price: product.price,
-        image: product.image,
-        description: product.description
-      });
-      showNotification('Zur Wunschliste hinzugefügt');
+    try {
+      let wishlist = getWishlist();
+      if (isInWishlist(product.id)) {
+        wishlist = wishlist.filter(item => Number(item.id) !== Number(product.id));
+        showNotification('Von der Wunschliste entfernt', 'info');
+      } else {
+        wishlist.push({
+          id: product.id,
+          name: product.name,
+          price: product.price,
+          image: product.image,
+          description: product.description
+        });
+        showNotification('Zur Wunschliste hinzugefügt');
+      }
+      setWishlist(wishlist);
+      updateWishlistButton();
+    } catch (error) {
+      console.error('Fehler beim Hinzufügen zur Wunschliste:', error);
+      showNotification('Produkt konnte nicht zur Wunschliste hinzugefügt werden.', 'error');
     }
-    setWishlist(wishlist);
-    updateWishlistButton();
   }
   function updateWishlistButton() {
+    const product = window.product;
     // Überprüfe ob das Produkt gültig ist
     if (!product || !product.id) {
       console.error('Ungültiges Produkt für Wunschliste Button Update:', product);
@@ -436,7 +442,7 @@
 
   function addToCartAndRedirect() {
     const productToAdd = {
-      ...product,
+      ...window.product,
       quantity: 1
     };
     addToCart(productToAdd);
@@ -509,7 +515,7 @@
 
   function updateTotalPrice() {
     const quantity = parseInt(document.getElementById('quantity').value, 10) || 1;
-    const total = (product.price * quantity).toFixed(2);
+    const total = (window.product.price * quantity).toFixed(2);
     document.getElementById('totalPrice').textContent = total;
   }
 
@@ -534,12 +540,13 @@
     if (cardWishlistBtn) {
       cardWishlistBtn.addEventListener('click', function(e) {
         e.preventDefault();
-        toggleWishlist(product);
+        toggleWishlist(window.product);
       });
     }
     
     // Update both wishlist buttons on page load
     updateWishlistButton();
+    
     // Wishlist-Button
     let wishlistBtn = document.getElementById('wishlistBtn');
     if (!wishlistBtn) {
@@ -555,7 +562,7 @@
     if (wishlistBtn) {
       wishlistBtn.addEventListener('click', function(e) {
         e.preventDefault();
-        toggleWishlist(product);
+        toggleWishlist(window.product);
       });
     }
 
