@@ -379,7 +379,7 @@
     if (isInWishlist(product.id)) {
       wishlist = wishlist.filter(item => Number(item.id) !== Number(product.id));
       showNotification('Von der Wunschliste entfernt', 'info');
-            } else {
+    } else {
       wishlist.push({
         id: product.id,
         name: product.name,

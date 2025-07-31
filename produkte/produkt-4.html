@@ -356,7 +356,7 @@
     if (isInWishlist(product.id)) {
       wishlist = wishlist.filter(item => Number(item.id) !== Number(product.id));
       showNotification('Von der Wunschliste entfernt', 'info');
-            } else {
+    } else {
       wishlist.push({
         id: product.id,
         name: product.name,
@@ -364,7 +364,7 @@
         image: product.image,
         description: product.description
       });
-      ('Zur Wunschliste hinzugefügt');
+      showNotification('Zur Wunschliste hinzugefügt');
     }
     setWishlist(wishlist);
     updateWishlistButton();

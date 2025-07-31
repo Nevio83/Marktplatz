@@ -366,6 +366,7 @@
     let wishlist = getWishlist();
     if (isInWishlist(product.id)) {
       wishlist = wishlist.filter(item => Number(item.id) !== Number(product.id));
+      showNotification('Von der Wunschliste entfernt', 'info');
     } else {
       wishlist.push({
         id: product.id,
@@ -374,6 +375,7 @@
         image: product.image,
         description: product.description
       });
+      showNotification('Zur Wunschliste hinzugefügt');
     }
     setWishlist(wishlist);
     updateWishlistButton();
