@@ -43,10 +43,15 @@ let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
 // Make loadProducts globally available
 window.loadProducts = async function() {
   try {
-    // Versuche zuerst den relativen Pfad für Produktseiten
-    let response = await fetch('../products.json');
-    if (!response.ok) {
-      // Falls das nicht funktioniert, versuche den direkten Pfad (für Hauptseite)
+    // Versuche verschiedene Pfade basierend auf der aktuellen URL
+    const currentPath = window.location.pathname;
+    let response;
+    
+    if (currentPath.includes('/produkte/')) {
+      // Wir sind auf einer Produktseite
+      response = await fetch('../products.json');
+    } else {
+      // Wir sind auf der Hauptseite
       response = await fetch('products.json');
     }
     
@@ -55,7 +60,7 @@ window.loadProducts = async function() {
     }
     
     const products = await response.json();
-    console.log('Products loaded successfully:', products.length);
+    console.log('Products loaded successfully:', products.length, 'from path:', currentPath);
     
     // Füge eine Standardbeschreibung hinzu, falls nicht vorhanden
     return products.map(p => ({

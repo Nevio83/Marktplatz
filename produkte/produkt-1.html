@@ -40,7 +40,7 @@
                     <button class="btn btn-light btn-lg me-3" id="cartBtn" onclick="addToCartAndRedirect()">
                         <i class="bi bi-cart-plus"></i> In den Warenkorb
                     </button>
-                    <button class="btn btn-outline-light btn-lg" id="wishlistBtn">
+                    <button class="btn btn-outline-light btn-lg" id="wishlistBtn" onclick="toggleWishlist(window.product)">
                         <i class="bi bi-heart"></i> Zur Wunschliste
                     </button>
                 </div>
@@ -106,7 +106,7 @@
                                 <button class="buy-now-btn" onclick="addToCartWithQuantity()">
                                     <i class="bi bi-cart-plus"></i> Jetzt kaufen
                                 </button>
-                                <button class="wishlist-btn" id="cardWishlistBtn">
+                                <button class="wishlist-btn" id="cardWishlistBtn" onclick="toggleWishlist(window.product)">
                                     <i class="bi bi-heart"></i> Zur Wunschliste
                                 </button>
                             </div>
@@ -362,76 +362,82 @@
   function isInWishlist(id) {
     return getWishlist().some(item => Number(item.id) === Number(id));
   }
-  // Verwende die globale toggleWishlist Funktion aus app.js
+  // Lokale toggleWishlist Funktion für Produktseiten
   function toggleWishlist(product = window.product) {
+    console.log('Local toggleWishlist called with product:', product);
+    
     if (!product || !product.id) {
       console.error('Ungültiges Produkt für Wunschliste:', product);
       showNotification('Produkt konnte nicht zur Wunschliste hinzugefügt werden.', 'error');
       return;
     }
     
-    // Verwende die globale toggleWishlist Funktion aus app.js
-    if (typeof window.toggleWishlist === 'function') {
-      window.toggleWishlist(product.id);
-    } else {
-      // Fallback zur lokalen Implementierung
-      try {
-        let wishlist = getWishlist();
-        if (isInWishlist(product.id)) {
-          wishlist = wishlist.filter(item => Number(item.id) !== Number(product.id));
-          showNotification('Von der Wunschliste entfernt', 'info');
-        } else {
-          wishlist.push({
-            id: product.id,
-            name: product.name,
-            price: product.price,
-            image: product.image,
-            description: product.description
-          });
-          showNotification('Zur Wunschliste hinzugefügt');
-        }
-        setWishlist(wishlist);
-        updateWishlistButton();
-      } catch (error) {
-        console.error('Fehler beim Hinzufügen zur Wunschliste:', error);
-        showNotification('Produkt konnte nicht zur Wunschliste hinzugefügt werden.', 'error');
+    try {
+      let wishlist = getWishlist();
+      console.log('Current wishlist:', wishlist);
+      
+      if (isInWishlist(product.id)) {
+        wishlist = wishlist.filter(item => Number(item.id) !== Number(product.id));
+        showNotification('Von der Wunschliste entfernt', 'info');
+        console.log('Product removed from wishlist');
+      } else {
+        wishlist.push({
+          id: product.id,
+          name: product.name,
+          price: product.price,
+          image: product.image,
+          description: product.description
+        });
+        showNotification('Zur Wunschliste hinzugefügt');
+        console.log('Product added to wishlist');
       }
+      
+      setWishlist(wishlist);
+      console.log('Updated wishlist:', wishlist);
+      updateWishlistButton();
+    } catch (error) {
+      console.error('Fehler beim Hinzufügen zur Wunschliste:', error);
+      showNotification('Produkt konnte nicht zur Wunschliste hinzugefügt werden.', 'error');
     }
   }
   function updateWishlistButton() {
     const product = window.product;
+    console.log('updateWishlistButton called with product:', product);
+    
     // Überprüfe ob das Produkt gültig ist
     if (!product || !product.id) {
       console.error('Ungültiges Produkt für Wunschliste Button Update:', product);
       return;
     }
     
-    // Verwende die globale updateWishlistButtonState Funktion
-    if (typeof window.updateWishlistButtonState === 'function') {
-      window.updateWishlistButtonState(product.id);
+    // Lokale Implementierung
+    const heroBtn = document.getElementById('wishlistBtn');
+    const cardBtn = document.getElementById('cardWishlistBtn');
+    
+    console.log('Found buttons - heroBtn:', heroBtn, 'cardBtn:', cardBtn);
+    console.log('isInWishlist(product.id):', isInWishlist(product.id));
+    
+    if (isInWishlist(product.id)) {
+      if (heroBtn) {
+        heroBtn.classList.add('active');
+        heroBtn.innerHTML = '<i class="bi bi-heart-fill"></i> Entfernen';
+        console.log('Hero button updated to filled heart');
+      }
+      if (cardBtn) {
+        cardBtn.classList.add('active');
+        cardBtn.innerHTML = '<i class="bi bi-heart-fill"></i> Entfernen';
+        console.log('Card button updated to filled heart');
+      }
     } else {
-      // Fallback zur lokalen Implementierung
-      const heroBtn = document.getElementById('wishlistBtn');
-      const cardBtn = document.getElementById('cardWishlistBtn');
-      
-      if (isInWishlist(product.id)) {
-        if (heroBtn) {
-          heroBtn.classList.add('active');
-          heroBtn.innerHTML = '<i class="bi bi-heart-fill"></i> Entfernen';
-        }
-        if (cardBtn) {
-          cardBtn.classList.add('active');
-          cardBtn.innerHTML = '<i class="bi bi-heart-fill"></i> Entfernen';
-        }
-      } else {
-        if (heroBtn) {
-          heroBtn.classList.remove('active');
-          heroBtn.innerHTML = '<i class="bi bi-heart"></i> Zur Wunschliste';
-        }
-        if (cardBtn) {
-          cardBtn.classList.remove('active');
-          cardBtn.innerHTML = '<i class="bi bi-heart"></i> Zur Wunschliste';
-        }
+      if (heroBtn) {
+        heroBtn.classList.remove('active');
+        heroBtn.innerHTML = '<i class="bi bi-heart"></i> Zur Wunschliste';
+        console.log('Hero button updated to empty heart');
+      }
+      if (cardBtn) {
+        cardBtn.classList.remove('active');
+        cardBtn.innerHTML = '<i class="bi bi-heart"></i> Zur Wunschliste';
+        console.log('Card button updated to empty heart');
       }
     }
   }
@@ -547,36 +553,8 @@
     }
   }
   document.addEventListener('DOMContentLoaded', function() {
-    // Card Wishlist-Button
-    let cardWishlistBtn = document.getElementById('cardWishlistBtn');
-    if (cardWishlistBtn) {
-      cardWishlistBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        toggleWishlist(window.product);
-      });
-    }
-    
     // Update both wishlist buttons on page load
     updateWishlistButton();
-    
-    // Wishlist-Button
-    let wishlistBtn = document.getElementById('wishlistBtn');
-    if (!wishlistBtn) {
-      // Fallback: Erstelle Button, falls nicht vorhanden
-      const hero = document.querySelector('.product-hero .col-lg-6');
-      if (hero) {
-        wishlistBtn = document.createElement('button');
-        wishlistBtn.id = 'wishlistBtn';
-        wishlistBtn.className = 'btn btn-outline-light btn-lg ms-2';
-        hero.appendChild(wishlistBtn);
-      }
-    }
-    if (wishlistBtn) {
-      wishlistBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        toggleWishlist(window.product);
-      });
-    }
 
     // Event-Listener für Quantity-Input
     const quantityInput = document.getElementById('quantity');

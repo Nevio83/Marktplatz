@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wishlist Test</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Wishlist Test</h1>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <h3>Test Produkt</h3>
+                <p>ID: 1, Name: Test Produkt, Preis: €10.00</p>
+                <button class="btn btn-primary" onclick="testWishlist()">Zur Wunschliste hinzufügen</button>
+                <button class="btn btn-secondary" onclick="checkWishlist()">Wunschliste prüfen</button>
+                <button class="btn btn-danger" onclick="clearWishlist()">Wunschliste leeren</button>
+            </div>
+            
+            <div class="col-md-6">
+                <h3>Debug Info</h3>
+                <div id="debug-info"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Test Produkt
+        const testProduct = {
+            id: 1,
+            name: "Test Produkt",
+            price: 10.00,
+            image: "test.jpg",
+            description: "Ein Testprodukt"
+        };
+
+        // Wishlist Funktionen
+        function getWishlist() {
+            try {
+                const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+                console.log('getWishlist():', wishlist);
+                return wishlist;
+            } catch (error) {
+                console.error('Error getting wishlist from localStorage:', error);
+                return [];
+            }
+        }
+
+        function setWishlist(wishlist) {
+            try {
+                localStorage.setItem('wishlist', JSON.stringify(wishlist));
+                console.log('setWishlist():', wishlist);
+            } catch (error) {
+                console.error('Error setting wishlist to localStorage:', error);
+            }
+        }
+
+        function isInWishlist(productId) {
+            const wishlist = getWishlist();
+            const isIn = wishlist.some(item => Number(item.id) === Number(productId));
+            console.log(`isInWishlist(${productId}): ${isIn}, wishlist:`, wishlist);
+            return isIn;
+        }
+
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            let alertClass = 'alert-success';
+            let iconClass = 'bi-check-circle';
+            
+            if (type === 'info') {
+                alertClass = 'alert-info';
+                iconClass = 'bi-info-circle';
+            } else if (type === 'error') {
+                alertClass = 'alert-danger';
+                iconClass = 'bi-exclamation-triangle';
+            }
+            
+            notification.className = `alert ${alertClass} position-fixed`;
+            notification.style.cssText = `
+                top: 20px;
+                right: 20px;
+                z-index: 9999;
+                min-width: 300px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                border-radius: 8px;
+            `;
+            notification.innerHTML = `
+                <div class="d-flex align-items-center">
+                    <i class="bi ${iconClass} me-2"></i>
+                    <span>${message}</span>
+                    <button type="button" class="btn-close ms-auto" onclick="this.parentElement.parentElement.remove()"></button>
+                </div>
+            `;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                if (notification.parentElement) {
+                    notification.remove();
+                }
+            }, 3000);
+        }
+
+        function testWishlist() {
+            console.log('testWishlist called with product:', testProduct);
+            
+            try {
+                let wishlist = getWishlist();
+                console.log('Current wishlist:', wishlist);
+                
+                if (isInWishlist(testProduct.id)) {
+                    wishlist = wishlist.filter(item => Number(item.id) !== Number(testProduct.id));
+                    showNotification('Von der Wunschliste entfernt', 'info');
+                    console.log('Product removed from wishlist');
+                } else {
+                    wishlist.push({
+                        id: testProduct.id,
+                        name: testProduct.name,
+                        price: testProduct.price,
+                        image: testProduct.image,
+                        description: testProduct.description
+                    });
+                    showNotification('Zur Wunschliste hinzugefügt');
+                    console.log('Product added to wishlist');
+                }
+                
+                setWishlist(wishlist);
+                console.log('Updated wishlist:', wishlist);
+                updateDebugInfo();
+            } catch (error) {
+                console.error('Fehler beim Hinzufügen zur Wunschliste:', error);
+                showNotification('Produkt konnte nicht zur Wunschliste hinzugefügt werden.', 'error');
+            }
+        }
+
+        function checkWishlist() {
+            const wishlist = getWishlist();
+            console.log('Current wishlist:', wishlist);
+            updateDebugInfo();
+        }
+
+        function clearWishlist() {
+            localStorage.removeItem('wishlist');
+            console.log('Wishlist cleared');
+            updateDebugInfo();
+        }
+
+        function updateDebugInfo() {
+            const wishlist = getWishlist();
+            const isIn = isInWishlist(testProduct.id);
+            const debugInfo = document.getElementById('debug-info');
+            debugInfo.innerHTML = `
+                <p><strong>Wunschliste:</strong> ${JSON.stringify(wishlist)}</p>
+                <p><strong>Produkt in Wunschliste:</strong> ${isIn}</p>
+                <p><strong>localStorage:</strong> ${localStorage.getItem('wishlist')}</p>
+            `;
+        }
+
+        // Initial debug info
+        updateDebugInfo();
+    </script>
+</body>
+</html>
