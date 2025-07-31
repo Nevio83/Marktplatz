@@ -330,7 +330,13 @@
       });
     }
     setCart(cart);
-    window.location.href = '../cart.html';
+    // Zeige Popup statt Weiterleitung
+    if (typeof showAlert === 'function') {
+      showAlert('Produkt wurde zum Warenkorb hinzugefügt');
+    } else {
+      // Fallback: Erstelle eigene Benachrichtigung
+      showNotification('Produkt wurde zum Warenkorb hinzugefügt');
+    }
   }
 
   function getWishlist() {
