@@ -467,8 +467,10 @@
 
 
   
-  document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM loaded, setting up event listeners...');
+  
+  // Initialize event listeners after app.js is loaded
+  function initializeEventListeners() {
+    console.log('Initializing event listeners after app.js loaded...');
     
     // Card Wishlist-Button
     let cardWishlistBtn = document.getElementById('cardWishlistBtn');
@@ -530,6 +532,12 @@
     }
     
     console.log('All event listeners set up');
+  }
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM loaded, waiting for app.js...');
+    // Wait a bit for app.js to load, then initialize event listeners
+    setTimeout(initializeEventListeners, 100);
   });
 </script>
 <script src="../app.js"></script>
