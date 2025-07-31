@@ -363,6 +363,13 @@
     return getWishlist().some(item => Number(item.id) === Number(id));
   }
   function toggleWishlist(product) {
+    // Überprüfe ob das Produkt gültig ist
+    if (!product || !product.id) {
+      console.error('Ungültiges Produkt für Wunschliste:', product);
+      showNotification('Produkt konnte nicht zur Wunschliste hinzugefügt werden.', 'error');
+      return;
+    }
+    
     let wishlist = getWishlist();
     if (isInWishlist(product.id)) {
       wishlist = wishlist.filter(item => Number(item.id) !== Number(product.id));
@@ -381,6 +388,12 @@
     updateWishlistButton();
   }
   function updateWishlistButton() {
+    // Überprüfe ob das Produkt gültig ist
+    if (!product || !product.id) {
+      console.error('Ungültiges Produkt für Wunschliste Button Update:', product);
+      return;
+    }
+    
     const heroBtn = document.getElementById('wishlistBtn');
     const cardBtn = document.getElementById('cardWishlistBtn');
     
@@ -438,7 +451,18 @@
   function showNotification(message, type = 'success') {
     // Erstelle eine schöne Benachrichtigung
     const notification = document.createElement('div');
-    notification.className = `alert alert-${type === 'success' ? 'success' : 'info'} position-fixed`;
+    let alertClass = 'alert-success';
+    let iconClass = 'bi-check-circle';
+    
+    if (type === 'info') {
+      alertClass = 'alert-info';
+      iconClass = 'bi-info-circle';
+    } else if (type === 'error') {
+      alertClass = 'alert-danger';
+      iconClass = 'bi-exclamation-triangle';
+    }
+    
+    notification.className = `alert ${alertClass} position-fixed`;
     notification.style.cssText = `
       top: 20px;
       right: 20px;
@@ -449,7 +473,7 @@
     `;
     notification.innerHTML = `
       <div class="d-flex align-items-center">
-        <i class="bi bi-${type === 'success' ? 'check-circle' : 'info-circle'} me-2"></i>
+        <i class="bi ${iconClass} me-2"></i>
         <span>${message}</span>
         <button type="button" class="btn-close ms-auto" onclick="this.parentElement.parentElement.remove()"></button>
       </div>
