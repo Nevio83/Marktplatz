@@ -356,7 +356,12 @@
       });
     }
     setCart(cart);
-    window.location.href = '../cart.html';
+    // Popup anzeigen statt direkter Weiterleitung
+    if (typeof showAlert === 'function') {
+      showAlert('Bundle zum Warenkorb hinzugefügt', 'cart.html');
+    } else {
+      showNotification('Bundle zum Warenkorb hinzugefügt');
+    }
   }
 
   function getWishlist() {
