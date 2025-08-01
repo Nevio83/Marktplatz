@@ -330,7 +330,12 @@
       });
     }
     setCart(cart);
-    window.location.href = '../cart.html';
+    // Popup anzeigen statt direkter Weiterleitung
+    if (typeof showAlert === 'function') {
+      showAlert('Bundle zum Warenkorb hinzugefügt', 'cart.html');
+    } else {
+      showNotification('Bundle zum Warenkorb hinzugefügt');
+    }
   }
 
   function getWishlist() {
@@ -394,8 +399,44 @@
       cart.push({ ...product, quantity: product.quantity || 1 });
     }
     setCart(cart);
-    window.location.href = '../cart.html';
+    // Keine direkte Weiterleitung mehr, da wir das Popup verwenden
   }
+  
+  // showAlert function for cart popup
+  function showAlert(message, redirectTo = 'cart.html') {
+    const alert = document.createElement('div');
+    alert.className = 'alert alert-success position-fixed end-0 m-4 shadow-lg fade show';
+    alert.style.zIndex = '20000';
+    alert.style.fontSize = '1rem';
+    alert.style.minWidth = '160px';
+    alert.style.maxWidth = '320px';
+    alert.style.padding = '0.75rem 2rem';
+    alert.style.textAlign = 'center';
+    alert.style.borderRadius = '2rem';
+    alert.style.boxShadow = '0 8px 32px rgba(0,0,0,0.18)';
+    alert.style.background = 'linear-gradient(90deg, #4f8cff 0%, #38c6ff 100%)';
+    alert.style.color = '#fff';
+    alert.style.fontWeight = '500';
+    alert.style.letterSpacing = '0.02em';
+    alert.style.pointerEvents = 'auto';
+    alert.style.position = 'fixed';
+    alert.style.right = '2.5rem';
+    alert.style.top = 'calc(56px + 1.2rem)';
+    alert.style.cursor = 'pointer';
+    alert.textContent = message;
+    alert.addEventListener('click', () => {
+      window.location.href = '../' + redirectTo;
+    });
+    document.body.appendChild(alert);
+    setTimeout(() => {
+      if (document.body.contains(alert)) {
+        alert.classList.remove('show');
+        alert.classList.add('fade');
+        setTimeout(() => alert.remove(), 400);
+      }
+    }, 1700);
+  }
+  
   function showNotification(message, type = 'success') {
     const notification = document.createElement('div');
     notification.className = `alert alert-${type} position-fixed end-0 m-4 shadow-lg fade show`;
@@ -472,7 +513,12 @@
       quantity: quantity
     };
     addToCart(productToCart);
-    window.location.href = '../cart.html';
+    // Popup anzeigen statt direkter Weiterleitung
+    if (typeof showAlert === 'function') {
+      showAlert('Produkt zum Warenkorb hinzugefügt', 'cart.html');
+    } else {
+      showNotification('Zum Warenkorb hinzugefügt');
+    }
   }
 
   document.addEventListener('DOMContentLoaded', function() {
@@ -484,7 +530,12 @@
       cartBtn.addEventListener('click', function(e) {
         e.preventDefault();
         addToCart(product);
-        window.location.href = '../cart.html';
+        // Popup anzeigen statt direkter Weiterleitung
+        if (typeof showAlert === 'function') {
+          showAlert('Produkt zum Warenkorb hinzugefügt', 'cart.html');
+        } else {
+          showNotification('Zum Warenkorb hinzugefügt');
+        }
       });
     }
     
