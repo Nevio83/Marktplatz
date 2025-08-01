@@ -611,7 +611,18 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }, 300);
 
-  if (searchInput) searchInput.addEventListener('input', updateFilters);
+  if (searchInput) {
+    searchInput.addEventListener('input', updateFilters);
+    
+    // Event-Listener für das manuelle Leeren des Suchfelds
+    searchInput.addEventListener('input', function() {
+      if (this.value === '') {
+        localStorage.removeItem('lastSearch');
+      } else {
+        localStorage.setItem('lastSearch', this.value);
+      }
+    });
+  }
   if (categoryFilter) categoryFilter.addEventListener('change', updateFilters);
   if (priceSort) priceSort.addEventListener('change', updateFilters);
 
@@ -625,9 +636,27 @@ document.addEventListener('DOMContentLoaded', () => {
         searchInput.blur(); // Fokus entfernen
       }
     });
-    // Optional: Beim Laden den letzten Suchbegriff wiederherstellen
+    
+    // Event-Listener für das Leeren des Suchfelds beim Verlassen der Seite
+    window.addEventListener('beforeunload', function() {
+      // Leere das Suchfeld und entferne den localStorage-Wert
+      searchInput.value = '';
+      localStorage.removeItem('lastSearch');
+    });
+    
+    // Event-Listener für das Leeren des Suchfelds beim Klicken außerhalb
+    searchInput.addEventListener('blur', function() {
+      // Kurze Verzögerung, um sicherzustellen, dass der Benutzer wirklich weg ist
+      setTimeout(() => {
+        if (searchInput.value === '') {
+          localStorage.removeItem('lastSearch');
+        }
+      }, 100);
+    });
+    
+    // Optional: Beim Laden den letzten Suchbegriff wiederherstellen (nur wenn nicht leer)
     const lastSearch = localStorage.getItem('lastSearch');
-    if (lastSearch) {
+    if (lastSearch && lastSearch.trim() !== '') {
       searchInput.value = lastSearch;
       updateFilters();
     }
@@ -952,6 +981,7 @@ function initializeCategoryTiles() {
       const searchInput = document.getElementById('searchInput');
       if (searchInput) {
         searchInput.value = '';
+        localStorage.removeItem('lastSearch');
       }
     });
   });
@@ -968,6 +998,7 @@ function initializeCategoryTiles() {
       const searchInput = document.getElementById('searchInput');
       if (searchInput) {
         searchInput.value = '';
+        localStorage.removeItem('lastSearch');
       }
     });
   }
@@ -1107,3 +1138,33 @@ window.testClearCartSimple = function() {
     console.error('clearCart function is not available!');
   }
 };
+
+// Hilfsfunktion zum Leeren des Suchfelds
+function clearSearchInput() {
+  const searchInput = document.getElementById('searchInput');
+  if (searchInput) {
+    searchInput.value = '';
+    localStorage.removeItem('lastSearch');
+    // Aktualisiere die Filter, um alle Produkte anzuzeigen
+    const updateFilters = debounce(() => {
+      loadProducts().then(products => {
+        const categoryFilter = document.getElementById('categoryFilter');
+        const priceSort = document.getElementById('priceSort');
+        const filtered = filterProducts(
+          products,
+          '',
+          categoryFilter ? categoryFilter.value : 'Alle Kategorien'
+        );
+        const sorted = sortProducts(
+          filtered,
+          priceSort ? priceSort.value : 'Aufsteigend'
+        );
+        renderProducts(sorted);
+      });
+    }, 300);
+    updateFilters();
+  }
+}
+
+// Funktion global verfügbar machen
+window.clearSearchInput = clearSearchInput;
