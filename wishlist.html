@@ -69,6 +69,15 @@
       notification.style.cursor = 'pointer';
       notification.textContent = message;
       
+      // Klick-Event hinzufügen
+      notification.addEventListener('click', function() {
+        notification.classList.remove('show');
+        notification.classList.add('fade');
+        setTimeout(() => notification.remove(), 400);
+        // Zur Wishlist-Seite weiterleiten
+        window.location.href = 'wishlist.html';
+      });
+      
       document.body.appendChild(notification);
       
       setTimeout(() => {
@@ -300,7 +309,9 @@
 
       // Wunschliste bei Storage-Änderung neu rendern (z.B. bei mehreren Tabs)
       window.addEventListener('storage', function(e) {
-        if (e.key === 'wishlist') renderWishlist();
+        if (e.key === 'wishlist') {
+          renderWishlist();
+        }
       });
     });
   </script>

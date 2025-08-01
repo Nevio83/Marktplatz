@@ -420,32 +420,47 @@
     window.location.href = '../cart.html';
   }
   function showNotification(message, type = 'success') {
-    // Erstelle eine schöne Benachrichtigung
     const notification = document.createElement('div');
-    notification.className = `alert alert-${type === 'success' ? 'success' : 'info'} position-fixed`;
-    notification.style.cssText = `
-      top: 20px;
-      right: 20px;
-      z-index: 9999;
-      min-width: 300px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-      border-radius: 8px;
-    `;
-    notification.innerHTML = `
-      <div class="d-flex align-items-center">
-        <i class="bi bi-${type === 'success' ? 'check-circle' : 'info-circle'} me-2"></i>
-        <span>${message}</span>
-        <button type="button" class="btn-close ms-auto" onclick="this.parentElement.parentElement.remove()"></button>
-      </div>
-    `;
+    notification.className = `alert alert-${type} position-fixed end-0 m-4 shadow-lg fade show`;
+    notification.style.zIndex = '20000';
+    notification.style.fontSize = '1rem';
+    notification.style.minWidth = '160px';
+    notification.style.maxWidth = '320px';
+    notification.style.padding = '0.75rem 2rem';
+    notification.style.textAlign = 'center';
+    notification.style.borderRadius = '2rem';
+    notification.style.boxShadow = '0 8px 32px rgba(0,0,0,0.18)';
+    notification.style.background = type === 'success' 
+      ? 'linear-gradient(90deg, #4f8cff 0%, #38c6ff 100%)' 
+      : 'linear-gradient(90deg, #ff6b6b 0%, #ee5a24 100%)';
+    notification.style.color = '#fff';
+    notification.style.fontWeight = '500';
+    notification.style.letterSpacing = '0.02em';
+    notification.style.pointerEvents = 'auto';
+    notification.style.position = 'fixed';
+    notification.style.right = '2.5rem';
+    notification.style.top = 'calc(56px + 1.2rem)';
+    notification.style.cursor = 'pointer';
+    notification.textContent = message;
+    
+    // Klick-Event hinzufügen
+    notification.addEventListener('click', function() {
+      notification.classList.remove('show');
+      notification.classList.add('fade');
+      setTimeout(() => notification.remove(), 400);
+      // Zur Wishlist-Seite weiterleiten (aus dem produkte/ Ordner)
+      window.location.href = '../wishlist.html';
+    });
+    
     document.body.appendChild(notification);
     
-    // Automatisch nach 3 Sekunden entfernen
     setTimeout(() => {
-      if (notification.parentElement) {
-        notification.remove();
+      if (document.body.contains(notification)) {
+        notification.classList.remove('show');
+        notification.classList.add('fade');
+        setTimeout(() => notification.remove(), 400);
       }
-    }, 3000);
+    }, 2000);
   }
 
   // Funktionen für die neue Schnellbestellung
