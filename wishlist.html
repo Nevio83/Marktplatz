@@ -74,6 +74,8 @@
         notification.classList.remove('show');
         notification.classList.add('fade');
         setTimeout(() => notification.remove(), 400);
+        // Zur Wishlist-Seite weiterleiten
+        window.location.href = 'wishlist.html';
       });
       
       document.body.appendChild(notification);
