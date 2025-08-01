@@ -218,6 +218,13 @@
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+
+.bundle-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
 .bundle-label {
     display: inline-block;
     background: linear-gradient(135deg, #ff6b6b, #ee5a24);
@@ -226,7 +233,6 @@
     border-radius: 20px;
     font-size: 0.9rem;
     font-weight: 600;
-    margin-left: 1rem;
     box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3);
     max-width: 100%;
     overflow: hidden;
@@ -234,9 +240,7 @@
     white-space: nowrap;
 }
 .bundle-badge {
-    position: absolute;
-    top: 5px;
-    right: 5px;
+    position: static;
     background: #667eea;
     color: white;
     padding: 0.4em 1em;
@@ -245,8 +249,7 @@
     font-weight: 600;
     box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
     animation: bounce 2s infinite;
-    z-index: 10;
-    max-width: calc(100% - 10px);
+    max-width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -601,10 +604,15 @@
     padding: 0.3em 0.8em;
   }
   
+  .bundle-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  
   .bundle-badge {
     position: static;
-    margin-bottom: 1rem;
-    align-self: flex-start;
     font-size: 0.95rem;
     padding: 0.4em 1.2em;
     max-width: 100%;
@@ -768,6 +776,13 @@
     padding: 0.25em 0.7em;
   }
   
+  .bundle-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  
   .bundle-badge {
     font-size: 0.9rem;
     padding: 0.3em 1em;
@@ -876,6 +891,13 @@
     padding: 0.2em 0.6em;
   }
   
+  .bundle-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  
   .bundle-badge {
     font-size: 0.85rem;
     padding: 0.25em 0.8em;
@@ -884,7 +906,6 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     position: static;
-    margin-bottom: 0.5rem;
   }
   
   .bundle-prices {
