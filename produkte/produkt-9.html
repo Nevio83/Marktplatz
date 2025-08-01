@@ -446,7 +446,38 @@
   }
 
   function showNotification(message, type = 'success') {
-    alert(message);
+    const notification = document.createElement('div');
+    notification.className = `alert alert-${type} position-fixed end-0 m-4 shadow-lg fade show`;
+    notification.style.zIndex = '20000';
+    notification.style.fontSize = '1rem';
+    notification.style.minWidth = '160px';
+    notification.style.maxWidth = '320px';
+    notification.style.padding = '0.75rem 2rem';
+    notification.style.textAlign = 'center';
+    notification.style.borderRadius = '2rem';
+    notification.style.boxShadow = '0 8px 32px rgba(0,0,0,0.18)';
+    notification.style.background = type === 'success' 
+      ? 'linear-gradient(90deg, #4f8cff 0%, #38c6ff 100%)' 
+      : 'linear-gradient(90deg, #ff6b6b 0%, #ee5a24 100%)';
+    notification.style.color = '#fff';
+    notification.style.fontWeight = '500';
+    notification.style.letterSpacing = '0.02em';
+    notification.style.pointerEvents = 'auto';
+    notification.style.position = 'fixed';
+    notification.style.right = '2.5rem';
+    notification.style.top = 'calc(56px + 1.2rem)';
+    notification.style.cursor = 'pointer';
+    notification.textContent = message;
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+      if (document.body.contains(notification)) {
+        notification.classList.remove('show');
+        notification.classList.add('fade');
+        setTimeout(() => notification.remove(), 400);
+      }
+    }, 2000);
   }
 
   // Mengenfunktionen für Schnellbestellung
