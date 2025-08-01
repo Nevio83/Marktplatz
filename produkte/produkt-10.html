@@ -447,6 +447,13 @@
     notification.style.cursor = 'pointer';
     notification.textContent = message;
     
+    // Klick-Event hinzufügen
+    notification.addEventListener('click', function() {
+      notification.classList.remove('show');
+      notification.classList.add('fade');
+      setTimeout(() => notification.remove(), 400);
+    });
+    
     document.body.appendChild(notification);
     
     setTimeout(() => {
