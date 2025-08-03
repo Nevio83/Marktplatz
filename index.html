@@ -335,6 +335,9 @@ if (searchInput && mobileSearchBtn) {
   </div>
 </div>
 <script>
+  // Debug: Prüfe ob Elemente gefunden werden
+  console.log('Script lädt...');
+  
   const hilfeButton = document.getElementById('hilfeButton');
   const hilfePanel = document.getElementById('hilfePanel');
   const hilfePanelClose = document.getElementById('hilfePanelClose');
@@ -342,6 +345,25 @@ if (searchInput && mobileSearchBtn) {
   const hilfeThemen = document.getElementById('hilfeThemen');
   const chatbotMessages = document.getElementById('chatbotMessages');
   const backButton = document.querySelector('.chatbot-header .bi-arrow-left');
+  
+  console.log('hilfeButton:', hilfeButton);
+  console.log('hilfePanel:', hilfePanel);
+  
+  // Einfacher Test für den Hilfe-Button
+  if (hilfeButton) {
+    hilfeButton.addEventListener('click', () => {
+      console.log('Hilfe-Button geklickt!');
+      if (hilfePanel.classList.contains('offen')) {
+        hilfePanel.classList.remove('offen');
+        console.log('Panel geschlossen');
+      } else {
+        hilfePanel.classList.add('offen');
+        console.log('Panel geöffnet');
+      }
+    });
+  } else {
+    console.error('hilfeButton nicht gefunden!');
+  }
   
   // Vorgefertigte Antworten für verschiedene Themen
   const topicResponses = {
@@ -550,23 +572,19 @@ if (searchInput && mobileSearchBtn) {
   }
   
   // Event Listeners
-  hilfeButton.addEventListener('click', () => {
-    if (hilfePanel.classList.contains('offen')) {
+  if (hilfePanelClose) {
+    hilfePanelClose.addEventListener('click', () => {
       hilfePanel.classList.remove('offen');
-    } else {
-      hilfePanel.classList.add('offen');
-    }
-  });
-  
-  hilfePanelClose.addEventListener('click', () => {
-    hilfePanel.classList.remove('offen');
-    hideChatbot();
-  });
+      hideChatbot();
+    });
+  }
   
   // Back button im Chatbot
-  backButton.addEventListener('click', () => {
-    hideChatbot();
-  });
+  if (backButton) {
+    backButton.addEventListener('click', () => {
+      hideChatbot();
+    });
+  }
   
   // Hilfe-Themen Buttons
   document.querySelectorAll('.hilfe-thema-btn').forEach(btn => {
@@ -598,6 +616,8 @@ if (searchInput && mobileSearchBtn) {
       hideChatbot();
     }
   });
+  
+  console.log('Script geladen!');
 </script>
 <script>
   // Herz-Icon bei Hover füllen
