@@ -291,23 +291,23 @@
     box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4);
 }
 
-/* Schnellbestellung Styles - Elektronik (Orange/Rot wie Mode) */
+/* Schnellbestellung Styles - Elektronik (Layout wie Mode, aber Blau/Lila Farben) */
 .quick-order-card {
     background: #fff;
     border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(230, 126, 34, 0.1);
+    box-shadow: 0 4px 20px rgba(102, 126, 234, 0.1);
     border: 2px solid #f0f0f0;
     overflow: hidden;
     transition: all 0.3s ease;
 }
 
 .quick-order-card:hover {
-    box-shadow: 0 8px 30px rgba(230, 126, 34, 0.15);
+    box-shadow: 0 8px 30px rgba(102, 126, 234, 0.15);
     transform: translateY(-2px);
 }
 
 .quick-order-header {
-    background: linear-gradient(135deg, #e67e22, #d35400);
+    background: linear-gradient(135deg, #667eea, #764ba2);
     color: white;
     padding: 1.5rem;
     text-align: center;
@@ -331,7 +331,7 @@
     height: 0;
     border-left: 10px solid transparent;
     border-right: 10px solid transparent;
-    border-top: 10px solid #d35400;
+    border-top: 10px solid #764ba2;
 }
 
 .quick-order-body {
@@ -360,12 +360,12 @@
 }
 
 .quantity-input-group:focus-within {
-    border-color: #e67e22;
-    box-shadow: 0 0 0 3px rgba(230, 126, 34, 0.1);
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
 .quantity-btn {
-    background: #e67e22;
+    background: #667eea;
     color: white;
     border: none;
     width: 40px;
@@ -381,7 +381,7 @@
 }
 
 .quantity-btn:hover {
-    background: #d35400;
+    background: #764ba2;
     transform: scale(1.05);
 }
 
@@ -409,14 +409,12 @@
 .current-price {
     font-size: 2rem;
     font-weight: 700;
-    color: #e67e22;
-    margin-bottom: 0.5rem;
+    color: #667eea;
+    margin-bottom: 0;
 }
 
 .total-price {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: #333;
+    display: none;
 }
 
 .action-buttons {
@@ -426,7 +424,7 @@
 }
 
 .buy-now-btn {
-    background: linear-gradient(135deg, #e67e22, #d35400);
+    background: linear-gradient(135deg, #667eea, #764ba2);
     color: white;
     border: none;
     padding: 1rem 2rem;
@@ -437,19 +435,19 @@
     transition: all 0.3s ease;
     text-transform: uppercase;
     letter-spacing: 1px;
-    box-shadow: 0 4px 15px rgba(230, 126, 34, 0.3);
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
 }
 
 .buy-now-btn:hover {
-    background: linear-gradient(135deg, #d35400, #e67e22);
+    background: linear-gradient(135deg, #764ba2, #667eea);
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(230, 126, 34, 0.4);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
 }
 
 .wishlist-btn {
     background: transparent;
-    color: #e67e22;
-    border: 2px solid #e67e22;
+    color: #667eea;
+    border: 2px solid #667eea;
     padding: 0.8rem 2rem;
     border-radius: 12px;
     font-size: 1rem;
@@ -463,7 +461,7 @@
 }
 
 .wishlist-btn:hover {
-    background: #e67e22;
+    background: #667eea;
     color: white;
     transform: translateY(-1px);
 }
@@ -493,7 +491,7 @@
 }
 
 .features-list i {
-    color: #e67e22;
+    color: #667eea;
     font-size: 1rem;
 }
 
