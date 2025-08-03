@@ -786,6 +786,7 @@ footer a:hover {
   bottom: 100px;
   right: 0;
   width: 280px;
+  height: 400px;
   background: var(--card-bg);
   border-radius: var(--border-radius) 0 0 var(--border-radius);
   box-shadow: var(--shadow-heavy);
@@ -797,6 +798,8 @@ footer a:hover {
   transition: all 0.3s ease;
   z-index: 999;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Mobile-Hilfe-Panel Anpassungen */
@@ -809,6 +812,7 @@ footer a:hover {
     transform: translate(-50%, -50%) translateY(20px) !important;
     width: 90vw !important;
     max-width: 300px !important;
+    height: 450px !important;
     max-height: 80vh !important;
     overflow-y: auto !important;
     border-radius: var(--border-radius) !important;
@@ -859,12 +863,14 @@ footer a:hover {
 
 .hilfe-themen-modern {
     padding: 16px;
+    flex: 1;
+    overflow-y: auto;
 }
 
 .hilfe-thema-btn {
     width: 100%;
-    padding: 12px 16px;
-    margin-bottom: 8px;
+    padding: 16px 20px;
+    margin-bottom: 12px;
     background: var(--light-bg);
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius-small);
@@ -873,6 +879,10 @@ footer a:hover {
     text-align: left;
     transition: all 0.3s ease;
     cursor: pointer;
+    font-size: 14px;
+    min-height: 50px;
+    display: flex;
+    align-items: center;
 }
 
 .hilfe-thema-btn:hover {
