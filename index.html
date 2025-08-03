@@ -298,11 +298,11 @@ if (searchInput && mobileSearchBtn) {
     <button id="hilfePanelClose" aria-label="Hilfe schließen">&times;</button>
   </div>
   <div class="hilfe-themen-modern">
-    <button class="hilfe-thema-btn">Adresse ändern</button>
-    <button class="hilfe-thema-btn">Bestellung stornieren</button>
-    <button class="hilfe-thema-btn">Versand & Lieferzeiten</button>
-    <button class="hilfe-thema-btn">Mehrere Rabattcodes</button>
-    <button class="hilfe-thema-btn">Was ist Käuferschutz?</button>
+    <button class="hilfe-thema-btn" onclick="openHelpPage('hilfe/adresse-aendern.html')">Adresse ändern</button>
+    <button class="hilfe-thema-btn" onclick="openHelpPage('hilfe/bestellung-stornieren.html')">Bestellung stornieren</button>
+    <button class="hilfe-thema-btn" onclick="openHelpPage('hilfe/versand-lieferzeiten.html')">Versand & Lieferzeiten</button>
+    <button class="hilfe-thema-btn" onclick="openHelpPage('hilfe/mehrere-rabattcodes.html')">Mehrere Rabattcodes</button>
+    <button class="hilfe-thema-btn" onclick="openHelpPage('hilfe/kaeuferschutz.html')">Was ist Käuferschutz?</button>
   </div>
 </div>
 <script>
@@ -333,6 +333,11 @@ if (searchInput && mobileSearchBtn) {
       hilfePanel.classList.remove('offen');
     }
   });
+  
+  // Funktion zum Öffnen der Hilfe-Seiten
+  function openHelpPage(url) {
+    window.open(url, '_blank');
+  }
 </script>
 <script>
   // Herz-Icon bei Hover füllen
