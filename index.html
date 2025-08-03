@@ -292,12 +292,6 @@ if (searchInput && mobileSearchBtn) {
   <i class="bi bi-question-circle"></i>
 </div>
 <div id="hilfePanel" class="hilfe-panel">
-  <div class="hilfe-panel-header">
-    <i class="bi bi-question-circle"></i>
-    <span>Support EU</span>
-    <button id="hilfePanelClose" aria-label="Hilfe schließen">&times;</button>
-  </div>
-  
   <!-- Chatbot Interface -->
   <div id="chatbotInterface" class="chatbot-interface">
     <div class="chatbot-header">
@@ -340,7 +334,6 @@ if (searchInput && mobileSearchBtn) {
   
   const hilfeButton = document.getElementById('hilfeButton');
   const hilfePanel = document.getElementById('hilfePanel');
-  const hilfePanelClose = document.getElementById('hilfePanelClose');
   const chatbotInterface = document.getElementById('chatbotInterface');
   const hilfeThemen = document.getElementById('hilfeThemen');
   const chatbotMessages = document.getElementById('chatbotMessages');
@@ -572,13 +565,6 @@ if (searchInput && mobileSearchBtn) {
   }
   
   // Event Listeners
-  if (hilfePanelClose) {
-    hilfePanelClose.addEventListener('click', () => {
-      hilfePanel.classList.remove('offen');
-      hideChatbot();
-    });
-  }
-  
   // Back button im Chatbot
   if (backButton) {
     backButton.addEventListener('click', () => {

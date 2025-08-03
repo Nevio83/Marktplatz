@@ -751,7 +751,7 @@ footer a:hover {
   font-size: 2rem;
   box-shadow: 0 4px 16px rgba(0,122,255,0.18);
   transition: all 0.3s ease;
-  z-index: 1000;
+  z-index: 9999 !important;
   cursor: pointer;
   display: flex !important;
   align-items: center;
@@ -773,6 +773,7 @@ footer a:hover {
     height: 60px;
     font-size: 2.2rem;
     box-shadow: 0 6px 20px rgba(0,122,255,0.25);
+    z-index: 9999 !important;
   }
   
   #hilfeButton:hover {
@@ -798,53 +799,26 @@ footer a:hover {
   flex-direction: column;
   overflow: hidden;
   border: 1px solid var(--border-color);
+  /* Verhindere Scroll-Propagation */
+  overscroll-behavior: contain;
 }
 
 @media (max-width: 768px) {
   .hilfe-panel {
-    width: 95vw;
-    max-height: 85vh;
-    height: 450px;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    width: 100vw;
+    height: 100vh;
+    max-width: 100vw;
+    max-height: 100vh;
+    top: 0;
+    left: 0;
+    transform: none;
+    border-radius: 0;
+    border: none;
   }
 }
 
 .hilfe-panel.offen {
   display: flex;
-}
-
-.hilfe-panel-header {
-  padding: 16px 20px;
-  background: var(--primary-gradient);
-  color: white;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-weight: 600;
-  flex-shrink: 0;
-}
-
-#hilfePanelClose {
-  margin-left: auto;
-  background: none;
-  border: none;
-  color: white;
-  font-size: 1.5rem;
-  cursor: pointer;
-  padding: 0;
-  width: 24px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  transition: background-color 0.2s ease;
-}
-
-#hilfePanelClose:hover {
-  background: rgba(255, 255, 255, 0.2);
 }
 
 .hilfe-themen-modern {
@@ -882,7 +856,7 @@ footer a:hover {
 @media (max-width: 768px) {
   .hilfe-themen-modern {
     padding: 16px;
-    max-height: calc(85vh - 100px);
+    max-height: calc(100vh - 100px);
   }
   
   .hilfe-thema-btn {
@@ -892,16 +866,6 @@ footer a:hover {
   
   .hilfe-thema-btn:hover {
     transform: translateY(-1px);
-  }
-  
-  .hilfe-panel-header {
-    padding: 14px 16px;
-  }
-  
-  #hilfePanelClose {
-    width: 32px;
-    height: 32px;
-    font-size: 18px;
   }
 }
 
@@ -1984,7 +1948,7 @@ footer a:hover {
 /* Mobile Anpassungen für Chatbot */
 @media (max-width: 768px) {
   .chatbot-messages {
-    max-height: calc(85vh - 180px);
+    max-height: calc(100vh - 180px);
     padding: 16px;
   }
   
