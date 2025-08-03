@@ -1792,7 +1792,7 @@ footer a:hover {
 
 /* ===== MODERNER RECHTS-SEITIGER CHATBOT ===== */
 
-/* Chatbot Interface - Rechts positioniert und schmaler */
+/* Chatbot Interface - Vertikal positioniert und schmaler */
 .chatbot-interface {
   display: none;
   flex-direction: column;
@@ -1810,6 +1810,22 @@ footer a:hover {
   border-left: 1px solid var(--border-color);
   /* Verhindere Scroll-Propagation */
   overscroll-behavior: contain;
+  /* Vertikale Animation */
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+}
+
+.chatbot-interface.show {
+  display: flex;
+  transform: translateX(0);
+}
+
+.chatbot-interface.collapsed {
+  transform: translateX(calc(100% - 4px));
+  width: 4px;
+  background: var(--primary-color);
+  border-left: none;
+  box-shadow: -2px 0 10px rgba(0,0,0,0.1);
 }
 
 .chatbot-interface.show {
@@ -2122,6 +2138,40 @@ footer a:hover {
   padding: 0 !important;
 }
 
+/* Chatbot Collapse Button - Innerhalb des Chatbots */
+#chatbotCollapseBtn {
+  position: absolute !important;
+  top: 50% !important;
+  left: -20px !important;
+  transform: translateY(-50%) !important;
+  width: 20px !important;
+  height: 60px !important;
+  background: var(--primary-color) !important;
+  border: none !important;
+  border-radius: 8px 0 0 8px !important;
+  color: white !important;
+  font-size: 1rem !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.3s ease !important;
+  z-index: 10001 !important;
+  box-shadow: -2px 0 8px rgba(0,0,0,0.1) !important;
+}
+
+#chatbotCollapseBtn:hover {
+  background: var(--primary-color) !important;
+  transform: translateY(-50%) scale(1.1) !important;
+  box-shadow: -4px 0 12px rgba(0,0,0,0.2) !important;
+}
+
+/* Collapsed State für Collapse Button */
+.chatbot-interface.collapsed #chatbotCollapseBtn {
+  left: -20px !important;
+  transform: translateY(-50%) rotate(180deg) !important;
+}
+
 #chatbotToggleBtn:hover {
   background: linear-gradient(135deg, #ff5252 0%, #ff7676 100%) !important;
   transform: scale(1.1) !important;
@@ -2145,6 +2195,13 @@ footer a:hover {
   
   #chatbotToggleBtn:hover {
     transform: scale(1.05) !important;
+  }
+  
+  /* Mobile Collapse Button */
+  #chatbotCollapseBtn {
+    width: 24px !important;
+    height: 80px !important;
+    font-size: 1.2rem !important;
   }
 }
 
