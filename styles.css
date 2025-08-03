@@ -857,59 +857,65 @@ footer a:hover {
 }
 
 .hilfe-themen-modern {
-    padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 20px;
+  overflow-y: auto;
+  max-height: calc(100vh - 120px);
 }
 
 .hilfe-thema-btn {
-    width: 100%;
-    padding: 12px 16px;
-    margin-bottom: 8px;
-    background: var(--light-bg);
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius-small);
-    color: var(--text-primary);
-    font-weight: 500;
-    text-align: left;
-    transition: all 0.3s ease;
-    cursor: pointer;
+  background: var(--light-bg);
+  border: 2px solid var(--border-color);
+  border-radius: var(--border-radius-small);
+  padding: 16px 20px;
+  text-align: left;
+  font-weight: 500;
+  color: var(--text-primary);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1.4;
 }
 
 .hilfe-thema-btn:hover {
-    background: var(--primary-color);
-    color: white;
-    border-color: var(--primary-color);
-    transform: translateX(4px);
+  background: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-medium);
 }
 
 /* Mobile-Hilfe-Themen Anpassungen */
 @media (max-width: 768px) {
   .hilfe-themen-modern {
-    padding: 20px;
+    padding: 16px;
+    max-height: calc(100vh - 100px);
   }
   
   .hilfe-thema-btn {
-    padding: 16px 20px;
-    margin-bottom: 12px;
-    font-size: 1.1rem;
-    border-radius: 12px;
-    min-height: 56px;
+    padding: 14px 16px;
+    font-size: 13px;
+    border-radius: 8px;
+    min-height: 48px;
     display: flex;
     align-items: center;
   }
   
   .hilfe-thema-btn:hover {
-    transform: translateX(2px);
+    transform: translateY(-1px);
   }
   
   .hilfe-panel-header {
-    padding: 24px 20px;
-    font-size: 1.2rem;
+    padding: 16px 20px;
+    font-size: 1.1rem;
   }
   
   #hilfePanelClose {
-    width: 32px;
-    height: 32px;
-    font-size: 1.8rem;
+    width: 28px;
+    height: 28px;
+    font-size: 1.5rem;
   }
 }
 
