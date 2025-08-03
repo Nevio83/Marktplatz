@@ -294,24 +294,181 @@ if (searchInput && mobileSearchBtn) {
 <div id="hilfePanel" class="hilfe-panel">
   <div class="hilfe-panel-header">
     <i class="bi bi-question-circle"></i>
-    <span>Hilfe & Support</span>
+    <span>Comfort Consultant Support EU</span>
     <button id="hilfePanelClose" aria-label="Hilfe schließen">&times;</button>
   </div>
-  <div class="hilfe-themen-modern">
-    <button class="hilfe-thema-btn">Adresse ändern</button>
-    <button class="hilfe-thema-btn">Bestellung stornieren</button>
-    <button class="hilfe-thema-btn">Versand & Lieferzeiten</button>
-    <button class="hilfe-thema-btn">Mehrere Rabattcodes</button>
-    <button class="hilfe-thema-btn">Was ist Käuferschutz?</button>
+  
+  <!-- Chatbot Interface -->
+  <div id="chatbotInterface" class="chatbot-interface">
+    <div class="chatbot-header">
+      <i class="bi bi-arrow-left"></i>
+      <span>Comfort Consultant Support EU</span>
+    </div>
+    
+    <div class="chatbot-messages" id="chatbotMessages">
+      <!-- Messages will be added here dynamically -->
+    </div>
+    
+    <div class="chatbot-input">
+      <input type="text" id="chatbotInput" placeholder="Wie kann ich Ihnen helfen?" />
+      <button id="sendMessageBtn">
+        <i class="bi bi-send"></i>
+      </button>
+    </div>
+  </div>
+  
+  <!-- Hilfe-Themen (wird ausgeblendet wenn Chatbot aktiv ist) -->
+  <div id="hilfeThemen" class="hilfe-themen-modern">
+    <button class="hilfe-thema-btn" data-topic="adresse">Adresse ändern</button>
+    <button class="hilfe-thema-btn" data-topic="bestellung">Bestellung stornieren</button>
+    <button class="hilfe-thema-btn" data-topic="versand">Versand & Lieferzeiten</button>
+    <button class="hilfe-thema-btn" data-topic="rabattcodes">Mehrere Rabattcodes</button>
+    <button class="hilfe-thema-btn" data-topic="kaeuferschutz">Was ist Käuferschutz?</button>
+    <button class="hilfe-thema-btn" data-topic="rueckgabe">Rückgabe & Umtausch</button>
+    <button class="hilfe-thema-btn" data-topic="zahlung">Zahlungsmethoden</button>
+    <button class="hilfe-thema-btn" data-topic="konto">Konto & Profil</button>
   </div>
 </div>
 <script>
   const hilfeButton = document.getElementById('hilfeButton');
   const hilfePanel = document.getElementById('hilfePanel');
   const hilfePanelClose = document.getElementById('hilfePanelClose');
+  const chatbotInterface = document.getElementById('chatbotInterface');
+  const hilfeThemen = document.getElementById('hilfeThemen');
+  const chatbotMessages = document.getElementById('chatbotMessages');
+  const chatbotInput = document.getElementById('chatbotInput');
+  const sendMessageBtn = document.getElementById('sendMessageBtn');
+  const backButton = document.querySelector('.chatbot-header .bi-arrow-left');
   
+  // Vorgefertigte Antworten für verschiedene Themen
+  const topicResponses = {
+    adresse: {
+      question: "Adresse ändern",
+      answer: "Wenn Ihre Bestellung weniger als 90 Minuten alt ist, können Sie Ihre Lieferadresse, E-Mail oder andere persönliche Daten aktualisieren. Klicken Sie einfach auf diesen Link und geben Sie Ihre Adresse und Bestellnummer ein, um diese Änderungen vorzunehmen.",
+      link: "#",
+      linkText: "Adresse ändern"
+    },
+    bestellung: {
+      question: "Bestellung stornieren",
+      answer: "Sie können Ihre Bestellung innerhalb von 2 Stunden nach der Bestellung stornieren. Gehen Sie zu Ihren Bestellungen und klicken Sie auf 'Stornieren'. Nach 2 Stunden können Bestellungen nur noch über unseren Kundenservice storniert werden.",
+      link: "#",
+      linkText: "Bestellung stornieren"
+    },
+    versand: {
+      question: "Versand & Lieferzeiten",
+      answer: "Standardversand: 3-5 Werktage. Expressversand: 1-2 Werktage. Kostenloser Versand ab 50€ Bestellwert. Tracking-Informationen erhalten Sie per E-Mail sobald Ihre Bestellung versendet wird.",
+      link: "#",
+      linkText: "Versand verfolgen"
+    },
+    rabattcodes: {
+      question: "Mehrere Rabattcodes",
+      answer: "Sie können nur einen Rabattcode pro Bestellung verwenden. Der Code mit dem höchsten Rabatt wird automatisch angewendet. Kombinieren Sie Rabattcodes nicht mit anderen Aktionen.",
+      link: "#",
+      linkText: "Rabattcodes einlösen"
+    },
+    kaeuferschutz: {
+      question: "Was ist Käuferschutz?",
+      answer: "Unser Käuferschutz garantiert Ihnen: 30 Tage Rückgaberecht, sichere Zahlung, Käuferschutz durch PayPal/Stripe, und 24/7 Kundenservice. Ihre Daten sind durch SSL-Verschlüsselung geschützt.",
+      link: "#",
+      linkText: "Mehr zum Käuferschutz"
+    },
+    rueckgabe: {
+      question: "Rückgabe & Umtausch",
+      answer: "Sie haben 30 Tage Zeit, um Ihre Bestellung zurückzusenden. Artikel müssen unbenutzt und in der Originalverpackung sein. Rücksendekosten werden von uns übernommen.",
+      link: "#",
+      linkText: "Rücksendung starten"
+    },
+    zahlung: {
+      question: "Zahlungsmethoden",
+      answer: "Wir akzeptieren: Kreditkarte, PayPal, SEPA-Lastschrift, Klarna (Kauf auf Rechnung), und Apple Pay/Google Pay. Alle Zahlungen sind sicher und verschlüsselt.",
+      link: "#",
+      linkText: "Zahlungsmethoden"
+    },
+    konto: {
+      question: "Konto & Profil",
+      answer: "In Ihrem Konto können Sie: Bestellungen verfolgen, Adressen verwalten, Zahlungsmethoden speichern, Wunschlisten erstellen und E-Mail-Benachrichtigungen verwalten.",
+      link: "#",
+      linkText: "Konto verwalten"
+    }
+  };
+  
+  // Chatbot-Funktionen
+  function showChatbot() {
+    chatbotInterface.style.display = 'block';
+    hilfeThemen.style.display = 'none';
+    addWelcomeMessage();
+  }
+  
+  function hideChatbot() {
+    chatbotInterface.style.display = 'none';
+    hilfeThemen.style.display = 'flex';
+    chatbotMessages.innerHTML = '';
+  }
+  
+  function addWelcomeMessage() {
+    const welcomeMessage = `
+      <div class="chatbot-message bot-message">
+        <div class="message-content">
+          <div class="bot-avatar">
+            <i class="bi bi-headset"></i>
+          </div>
+          <div class="message-text">
+            <p>Hallo! Ich bin Ihr Comfort Consultant Support EU. Wie kann ich Ihnen heute helfen?</p>
+            <div class="quick-topics">
+              <button class="quick-topic-btn" data-topic="adresse">Adresse ändern</button>
+              <button class="quick-topic-btn" data-topic="bestellung">Bestellung stornieren</button>
+              <button class="quick-topic-btn" data-topic="versand">Versand & Lieferzeiten</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+    chatbotMessages.innerHTML = welcomeMessage;
+  }
+  
+  function addUserMessage(message) {
+    const userMessage = `
+      <div class="chatbot-message user-message">
+        <div class="message-content">
+          <div class="message-text">
+            <p>${message}</p>
+          </div>
+        </div>
+      </div>
+    `;
+    chatbotMessages.insertAdjacentHTML('beforeend', userMessage);
+  }
+  
+  function addBotMessage(response) {
+    const botMessage = `
+      <div class="chatbot-message bot-message">
+        <div class="message-content">
+          <div class="bot-avatar">
+            <i class="bi bi-headset"></i>
+          </div>
+          <div class="message-text">
+            <p>${response.answer}</p>
+            ${response.link ? `<a href="${response.link}" class="chatbot-link">${response.linkText}</a>` : ''}
+          </div>
+        </div>
+      </div>
+    `;
+    chatbotMessages.insertAdjacentHTML('beforeend', botMessage);
+  }
+  
+  function handleTopicClick(topic) {
+    const response = topicResponses[topic];
+    if (response) {
+      addUserMessage(response.question);
+      setTimeout(() => {
+        addBotMessage(response);
+        chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+      }, 500);
+    }
+  }
+  
+  // Event Listeners
   hilfeButton.addEventListener('click', () => {
-    // Toggle: Wenn Panel offen ist, schließe es; wenn geschlossen, öffne es
     if (hilfePanel.classList.contains('offen')) {
       hilfePanel.classList.remove('offen');
     } else {
@@ -321,6 +478,78 @@ if (searchInput && mobileSearchBtn) {
   
   hilfePanelClose.addEventListener('click', () => {
     hilfePanel.classList.remove('offen');
+    hideChatbot();
+  });
+  
+  // Back button im Chatbot
+  backButton.addEventListener('click', () => {
+    hideChatbot();
+  });
+  
+  // Hilfe-Themen Buttons
+  document.querySelectorAll('.hilfe-thema-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const topic = btn.getAttribute('data-topic');
+      showChatbot();
+      setTimeout(() => {
+        handleTopicClick(topic);
+      }, 300);
+    });
+  });
+  
+  // Quick topic buttons (werden dynamisch erstellt)
+  document.addEventListener('click', (e) => {
+    if (e.target.classList.contains('quick-topic-btn')) {
+      const topic = e.target.getAttribute('data-topic');
+      handleTopicClick(topic);
+    }
+  });
+  
+  // Send message button
+  sendMessageBtn.addEventListener('click', () => {
+    const message = chatbotInput.value.trim();
+    if (message) {
+      addUserMessage(message);
+      chatbotInput.value = '';
+      
+      // Simuliere Bot-Antwort basierend auf Schlüsselwörtern
+      setTimeout(() => {
+        let response = {
+          answer: "Vielen Dank für Ihre Nachricht. Ein Mitglied unseres Support-Teams wird sich innerhalb von 24 Stunden bei Ihnen melden.",
+          link: null
+        };
+        
+        // Einfache Schlüsselwort-Erkennung
+        const lowerMessage = message.toLowerCase();
+        if (lowerMessage.includes('adresse') || lowerMessage.includes('adress')) {
+          response = topicResponses.adresse;
+        } else if (lowerMessage.includes('stornier') || lowerMessage.includes('cancel')) {
+          response = topicResponses.bestellung;
+        } else if (lowerMessage.includes('versand') || lowerMessage.includes('lieferung')) {
+          response = topicResponses.versand;
+        } else if (lowerMessage.includes('rabatt') || lowerMessage.includes('code')) {
+          response = topicResponses.rabattcodes;
+        } else if (lowerMessage.includes('schutz') || lowerMessage.includes('sicher')) {
+          response = topicResponses.kaeuferschutz;
+        } else if (lowerMessage.includes('rückgabe') || lowerMessage.includes('umtausch')) {
+          response = topicResponses.rueckgabe;
+        } else if (lowerMessage.includes('zahlung') || lowerMessage.includes('pay')) {
+          response = topicResponses.zahlung;
+        } else if (lowerMessage.includes('konto') || lowerMessage.includes('profil')) {
+          response = topicResponses.konto;
+        }
+        
+        addBotMessage(response);
+        chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+      }, 1000);
+    }
+  });
+  
+  // Enter key im Input
+  chatbotInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+      sendMessageBtn.click();
+    }
   });
   
   // Schließe das Panel beim Klick außerhalb
@@ -331,6 +560,7 @@ if (searchInput && mobileSearchBtn) {
       !hilfeButton.contains(event.target)
     ) {
       hilfePanel.classList.remove('offen');
+      hideChatbot();
     }
   });
 </script>
