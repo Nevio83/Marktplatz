@@ -1354,13 +1354,11 @@
     font-size: 2rem;
     font-weight: 700;
     color: #e74c3c;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0;
 }
 
 .total-price {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: #333;
+    display: none;
 }
 
 .action-buttons {
