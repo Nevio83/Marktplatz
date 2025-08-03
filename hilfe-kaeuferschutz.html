@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Was ist Käuferschutz? - Hilfe & Support</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .hilfe-page {
+            min-height: 100vh;
+            background: var(--light-bg);
+            padding: 20px;
+        }
+        
+        .hilfe-content {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-heavy);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+        
+        .hilfe-header {
+            padding: 30px;
+            background: var(--primary-gradient);
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-weight: 600;
+        }
+        
+        .hilfe-back-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: background-color 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .hilfe-back-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        
+        .hilfe-body {
+            padding: 30px;
+            line-height: 1.6;
+        }
+        
+        .hilfe-body h2 {
+            color: var(--text-primary);
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        
+        .hilfe-body p {
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+        }
+        
+        .hilfe-body ul {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+        
+        .hilfe-body li {
+            margin-bottom: 8px;
+        }
+        
+        @media (max-width: 768px) {
+            .hilfe-page {
+                padding: 10px;
+            }
+            
+            .hilfe-header {
+                padding: 20px;
+            }
+            
+            .hilfe-body {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hilfe-page">
+        <div class="hilfe-content">
+            <div class="hilfe-header">
+                <button class="hilfe-back-btn" onclick="goBack()">
+                    <i class="bi bi-arrow-left"></i>
+                </button>
+                <i class="bi bi-question-circle"></i>
+                <span>Was ist Käuferschutz?</span>
+            </div>
+            <div class="hilfe-body">
+                <h2>Was ist Käuferschutz?</h2>
+                
+                <p>Der Käuferschutz ist ein Service, der Ihre Online-Käufe absichert und Ihnen zusätzliche Sicherheit beim Einkaufen bietet.</p>
+                
+                <h3>Was bietet der Käuferschutz?</h3>
+                <ul>
+                    <li><strong>Geld-zurück-Garantie:</strong> Bei Problemen mit Ihrer Bestellung erhalten Sie Ihr Geld zurück</li>
+                    <li><strong>Lieferungsschutz:</strong> Versicherung gegen verlorene oder beschädigte Pakete</li>
+                    <li><strong>Falschlieferungsschutz:</strong> Schutz bei falschen oder fehlerhaften Lieferungen</li>
+                    <li><strong>Kundenservice:</strong> Persönliche Betreuung bei Problemen</li>
+                </ul>
+                
+                <h3>Wann greift der Käuferschutz?</h3>
+                <ul>
+                    <li>Das Produkt kommt nicht an oder ist beschädigt</li>
+                    <li>Sie erhalten ein falsches Produkt</li>
+                    <li>Das Produkt entspricht nicht der Beschreibung</li>
+                    <li>Technische Probleme bei der Bestellung</li>
+                    <li>Unberechtigte Abbuchungen</li>
+                </ul>
+                
+                <h3>So nutzen Sie den Käuferschutz:</h3>
+                <ul>
+                    <li>Kontaktieren Sie unseren Kundenservice innerhalb von 30 Tagen</li>
+                    <li>Beschreiben Sie das Problem detailliert</li>
+                    <li>Fügen Sie Fotos oder Belege bei</li>
+                    <li>Wir bearbeiten Ihre Anfrage innerhalb von 48 Stunden</li>
+                </ul>
+                
+                <h3>Wichtige Hinweise:</h3>
+                <ul>
+                    <li>Der Käuferschutz ist automatisch bei allen Bestellungen inklusive</li>
+                    <li>Keine zusätzlichen Kosten für Sie</li>
+                    <li>Gilt für alle Produkte in unserem Shop</li>
+                    <li>Keine Selbstbeteiligung erforderlich</li>
+                </ul>
+                
+                <p><strong>Kontakt:</strong> Bei Fragen zum Käuferschutz erreichen Sie uns unter support@example.com oder 0800-123456</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+</body>
+</html>

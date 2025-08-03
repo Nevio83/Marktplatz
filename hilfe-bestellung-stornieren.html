@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bestellung stornieren - Hilfe & Support</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .hilfe-page {
+            min-height: 100vh;
+            background: var(--light-bg);
+            padding: 20px;
+        }
+        
+        .hilfe-content {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-heavy);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+        
+        .hilfe-header {
+            padding: 30px;
+            background: var(--primary-gradient);
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-weight: 600;
+        }
+        
+        .hilfe-back-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: background-color 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .hilfe-back-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        
+        .hilfe-body {
+            padding: 30px;
+            line-height: 1.6;
+        }
+        
+        .hilfe-body h2 {
+            color: var(--text-primary);
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        
+        .hilfe-body p {
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+        }
+        
+        .hilfe-body ul {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+        
+        .hilfe-body li {
+            margin-bottom: 8px;
+        }
+        
+        @media (max-width: 768px) {
+            .hilfe-page {
+                padding: 10px;
+            }
+            
+            .hilfe-header {
+                padding: 20px;
+            }
+            
+            .hilfe-body {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hilfe-page">
+        <div class="hilfe-content">
+            <div class="hilfe-header">
+                <button class="hilfe-back-btn" onclick="goBack()">
+                    <i class="bi bi-arrow-left"></i>
+                </button>
+                <i class="bi bi-question-circle"></i>
+                <span>Bestellung stornieren</span>
+            </div>
+            <div class="hilfe-body">
+                <h2>Wie kann ich meine Bestellung stornieren?</h2>
+                
+                <p>Sie können Ihre Bestellung unter bestimmten Bedingungen stornieren:</p>
+                
+                <h3>Online-Stornierung:</h3>
+                <ul>
+                    <li>Loggen Sie sich in Ihr Kundenkonto ein</li>
+                    <li>Gehen Sie zu "Meine Bestellungen"</li>
+                    <li>Wählen Sie die zu stornierende Bestellung</li>
+                    <li>Klicken Sie auf "Bestellung stornieren"</li>
+                    <li>Bestätigen Sie die Stornierung</li>
+                </ul>
+                
+                <h3>Per E-Mail oder Telefon:</h3>
+                <ul>
+                    <li>Kontaktieren Sie unseren Kundenservice</li>
+                    <li>Geben Sie Ihre Bestellnummer an</li>
+                    <li>Nennen Sie den Grund für die Stornierung</li>
+                    <li>Wir bearbeiten Ihre Anfrage umgehend</li>
+                </ul>
+                
+                <h3>Wichtige Hinweise:</h3>
+                <ul>
+                    <li>Stornierungen sind nur möglich, bevor die Bestellung versendet wird</li>
+                    <li>Bei bereits versendeten Bestellungen können Sie diese zurücksenden</li>
+                    <li>Die Rückerstattung erfolgt innerhalb von 3-5 Werktagen</li>
+                    <li>Versandkosten werden nur bei fehlerhaften Lieferungen erstattet</li>
+                </ul>
+                
+                <p><strong>Kontakt:</strong> Für weitere Fragen erreichen Sie uns unter support@example.com oder 0800-123456</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+</body>
+</html>
