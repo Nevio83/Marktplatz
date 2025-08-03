@@ -739,9 +739,9 @@ footer a:hover {
 
 /* Moderne Hilfe-Button */
 #hilfeButton {
-  position: fixed;
-  bottom: 30px;
-  right: 20px;
+  position: fixed !important;
+  bottom: 30px !important;
+  right: 20px !important;
   width: 56px;
   height: 56px;
   background: #007AFF;
@@ -753,7 +753,7 @@ footer a:hover {
   transition: all 0.3s ease;
   z-index: 1000;
   cursor: pointer;
-  display: flex;
+  display: flex !important;
   align-items: center;
   justify-content: center;
 }
@@ -767,8 +767,8 @@ footer a:hover {
 /* Mobile-Hilfe-Button Anpassungen */
 @media (max-width: 768px) {
   #hilfeButton {
-    bottom: 20px;
-    right: 20px;
+    bottom: 20px !important;
+    right: 20px !important;
     width: 60px;
     height: 60px;
     font-size: 2.2rem;
@@ -790,8 +790,8 @@ footer a:hover {
   border-radius: var(--border-radius);
   box-shadow: var(--shadow-heavy);
   z-index: 1001;
-  max-width: 90vw;
-  width: 400px;
+  max-width: 95vw;
+  width: 600px;
   max-height: 80vh;
   height: 500px;
   display: none;
@@ -816,34 +816,35 @@ footer a:hover {
 }
 
 .hilfe-panel-header {
-    padding: 20px;
-    background: var(--primary-gradient);
-    color: white;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-weight: 600;
+  padding: 16px 20px;
+  background: var(--primary-gradient);
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 600;
+  flex-shrink: 0;
 }
 
 #hilfePanelClose {
-    margin-left: auto;
-    background: none;
-    border: none;
-    color: white;
-    font-size: 1.5rem;
-    cursor: pointer;
-    padding: 0;
-    width: 24px;
-    height: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    transition: background-color 0.3s ease;
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
 }
 
 #hilfePanelClose:hover {
-    background: rgba(255,255,255,0.2);
+  background: rgba(255, 255, 255, 0.2);
 }
 
 .hilfe-themen-modern {
@@ -1393,20 +1394,14 @@ footer a:hover {
         padding-top: 0 !important;
     }
     
-    /* Verstecke alle Knöpfe wenn Warenkorb offen ist */
-    .cart-dropdown.show ~ #hilfeButton,
+    /* Verstecke nur Scroll-to-Top Button wenn Warenkorb offen ist */
     .cart-dropdown.show ~ #scrollToTopBtn,
-    .cart-dropdown.show + #hilfeButton,
     .cart-dropdown.show + #scrollToTopBtn,
-    .cart-dropdown.show ~ * #hilfeButton,
     .cart-dropdown.show ~ * #scrollToTopBtn,
-    #hilfeButton[style*="display: none"],
     #scrollToTopBtn[style*="display: none"],
     /* Direkte Selektoren für bessere Kompatibilität */
-    .cart-dropdown.show ~ * #hilfeButton,
     .cart-dropdown.show ~ * #scrollToTopBtn,
     /* Zusätzliche Selektoren für mobile */
-    body:has(.cart-dropdown.show) #hilfeButton,
     body:has(.cart-dropdown.show) #scrollToTopBtn {
         display: none !important;
         visibility: hidden !important;
@@ -1426,18 +1421,13 @@ footer a:hover {
         height: 100% !important;
     }
     
-    /* Zusätzliche mobile-spezifische Regeln für Knöpfe */
+    /* Zusätzliche mobile-spezifische Regeln für Scroll-to-Top Button */
     @media (max-width: 768px) {
-        .cart-dropdown.show ~ #hilfeButton,
         .cart-dropdown.show ~ #scrollToTopBtn,
-        .cart-dropdown.show + #hilfeButton,
         .cart-dropdown.show + #scrollToTopBtn,
-        .cart-dropdown.show ~ * #hilfeButton,
         .cart-dropdown.show ~ * #scrollToTopBtn,
-        body:has(.cart-dropdown.show) #hilfeButton,
         body:has(.cart-dropdown.show) #scrollToTopBtn,
         /* Fallback für ältere Browser */
-        .cart-open #hilfeButton,
         .cart-open #scrollToTopBtn {
             display: none !important;
             visibility: hidden !important;
@@ -1790,6 +1780,8 @@ footer a:hover {
   height: 100%;
   background: #fff;
   overflow: hidden;
+  /* Verhindere Scroll-Propagation */
+  overscroll-behavior: contain;
 }
 
 .chatbot-header {
@@ -1823,6 +1815,8 @@ footer a:hover {
   flex-direction: column;
   gap: 16px;
   min-height: 0;
+  /* Verhindere Scroll-Propagation */
+  overscroll-behavior: contain;
 }
 
 .chatbot-message {
