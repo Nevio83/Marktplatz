@@ -292,35 +292,299 @@ if (searchInput && mobileSearchBtn) {
   <i class="bi bi-question-circle"></i>
 </div>
 <div id="hilfePanel" class="hilfe-panel">
-  <div class="hilfe-panel-header">
+  <!-- Lila Header für Hauptseite -->
+  <div class="hilfe-panel-header" id="hilfePanelHeader">
     <i class="bi bi-question-circle"></i>
     <span>Hilfe & Support</span>
     <button id="hilfePanelClose" aria-label="Hilfe schließen">&times;</button>
   </div>
-  <div class="hilfe-themen-modern">
-    <button class="hilfe-thema-btn">Adresse ändern</button>
-    <button class="hilfe-thema-btn">Bestellung stornieren</button>
-    <button class="hilfe-thema-btn">Versand & Lieferzeiten</button>
-    <button class="hilfe-thema-btn">Mehrere Rabattcodes</button>
-    <button class="hilfe-thema-btn">Was ist Käuferschutz?</button>
+  
+  <!-- Chatbot Interface -->
+  <div id="chatbotInterface" class="chatbot-interface">
+    <div class="chatbot-header">
+      <i class="bi bi-arrow-left"></i>
+      <span>Support </span>
+    </div>
+    
+    <div class="chatbot-messages" id="chatbotMessages">
+      <!-- Messages will be added here dynamically -->
+    </div>
+    
+    <!-- Feedback Buttons (werden dynamisch hinzugefügt) -->
+    <div id="feedbackButtons" class="feedback-buttons" style="display: none;">
+      <button class="feedback-btn helpful-btn">
+        <i class="bi bi-hand-thumbs-up"></i>
+        Ja, das war hilfreich
+      </button>
+      <button class="feedback-btn not-helpful-btn">
+        <i class="bi bi-hand-thumbs-down"></i>
+        Nein, das war nicht hilfreich
+      </button>
+    </div>
+  </div>
+  
+  <!-- Hilfe-Themen (wird ausgeblendet wenn Chatbot aktiv ist) -->
+  <div id="hilfeThemen" class="hilfe-themen-modern">
+
+    <button class="hilfe-thema-btn" data-topic="bestellung">Bestellung stornieren</button>
+    <button class="hilfe-thema-btn" data-topic="versand">Versand & Lieferzeiten</button>
+    <button class="hilfe-thema-btn" data-topic="rabattcodes">Mehrere Rabattcodes</button>
+    <button class="hilfe-thema-btn" data-topic="kaeuferschutz">Was ist Käuferschutz?</button>
+    <button class="hilfe-thema-btn" data-topic="adresse">Adresse ändern</button>
+    <button class="hilfe-thema-btn" data-topic="zahlung">Zahlungsmethoden</button>
+    <button class="hilfe-thema-btn" data-topic="konto">Konto & Profil</button>
   </div>
 </div>
 <script>
+  // Debug: Prüfe ob Elemente gefunden werden
+  console.log('Script lädt...');
+  
   const hilfeButton = document.getElementById('hilfeButton');
   const hilfePanel = document.getElementById('hilfePanel');
   const hilfePanelClose = document.getElementById('hilfePanelClose');
+  const hilfePanelHeader = document.getElementById('hilfePanelHeader');
+  const chatbotInterface = document.getElementById('chatbotInterface');
+  const hilfeThemen = document.getElementById('hilfeThemen');
+  const chatbotMessages = document.getElementById('chatbotMessages');
+  const backButton = document.querySelector('.chatbot-header .bi-arrow-left');
   
-  hilfeButton.addEventListener('click', () => {
-    // Toggle: Wenn Panel offen ist, schließe es; wenn geschlossen, öffne es
-    if (hilfePanel.classList.contains('offen')) {
-      hilfePanel.classList.remove('offen');
-    } else {
-      hilfePanel.classList.add('offen');
+  console.log('hilfeButton:', hilfeButton);
+  console.log('hilfePanel:', hilfePanel);
+  
+  // Einfacher Test für den Hilfe-Button
+  if (hilfeButton) {
+    hilfeButton.addEventListener('click', () => {
+      console.log('Hilfe-Button geklickt!');
+      if (hilfePanel.classList.contains('offen')) {
+        hilfePanel.classList.remove('offen');
+        console.log('Panel geschlossen');
+      } else {
+        hilfePanel.classList.add('offen');
+        console.log('Panel geöffnet');
+      }
+    });
+  } else {
+    console.error('hilfeButton nicht gefunden!');
+  }
+  
+  // Vorgefertigte Antworten für verschiedene Themen
+  const topicResponses = {
+
+    bestellung: {
+      question: "Bestellung stornieren",
+      answer: "Sie können Ihre Bestellung innerhalb von 2 Stunden nach der Bestellung stornieren. Gehen Sie zu Ihren Bestellungen und klicken Sie auf 'Stornieren'. Nach 2 Stunden können Bestellungen nur noch über unseren Kundenservice storniert werden.",
+      additionalInfo: "Für Stornierungen nach 2 Stunden kontaktieren Sie uns bitte telefonisch unter 0800-123456 oder per E-Mail an stornierung@marktplatz.de. Bitte haben Sie Ihre Bestellnummer bereit."
+    },
+    versand: {
+      question: "Versand & Lieferzeiten",
+      answer: "Standardversand: 3-5 Werktage. Expressversand: 1-2 Werktage. Kostenloser Versand ab 50€ Bestellwert. Tracking-Informationen erhalten Sie per E-Mail sobald Ihre Bestellung versendet wird.",
+      additionalInfo: "Bei Verzögerungen kontaktieren Sie uns unter 0800-123456 oder versand@marktplatz.de. Wir können Ihnen dann den aktuellen Status Ihrer Bestellung mitteilen und bei Problemen helfen."
+    },
+    rabattcodes: {
+      question: "Mehrere Rabattcodes",
+      answer: "Sie können nur einen Rabattcode pro Bestellung verwenden. Der Code mit dem höchsten Rabatt wird automatisch angewendet. Kombinieren Sie Rabattcodes nicht mit anderen Aktionen.",
+      additionalInfo: "Falls Ihr Rabattcode nicht funktioniert, prüfen Sie bitte das Ablaufdatum und die Bedingungen. Bei Problemen kontaktieren Sie uns unter rabatt@marktplatz.de oder 0800-123456."
+    },
+    kaeuferschutz: {
+      question: "Was ist Käuferschutz?",
+      answer: "Unser Käuferschutz garantiert Ihnen: 30 Tage Rückgaberecht, sichere Zahlung, Käuferschutz durch PayPal/Stripe, und 24/7 Kundenservice. Ihre Daten sind durch SSL-Verschlüsselung geschützt.",
+      additionalInfo: "Bei Problemen mit dem Käuferschutz kontaktieren Sie uns unter sicherheit@marktplatz.de oder 0800-123456. Wir helfen Ihnen gerne weiter und können bei Bedarf auch eine Rückerstattung veranlassen."
+    },
+    adresse: {
+      question: "Adresse ändern",
+      answer: "Wenn Ihre Bestellung weniger als 90 Minuten alt ist, können Sie Ihre Lieferadresse, E-Mail oder andere persönliche Daten aktualisieren.",
+      additionalInfo: "Bei Problemen mit der Adressänderung kontaktieren Sie uns unter adresse@marktplatz.de oder 0800-123456. Wir helfen Ihnen gerne weiter."
+    },
+    zahlung: {
+      question: "Zahlungsmethoden",
+      answer: "Wir akzeptieren: Kreditkarte, PayPal, SEPA-Lastschrift, Klarna (Kauf auf Rechnung), und Apple Pay/Google Pay. Alle Zahlungen sind sicher und verschlüsselt.",
+      additionalInfo: "Bei Zahlungsproblemen kontaktieren Sie uns unter zahlung@marktplatz.de oder 0800-123456. Wir können Ihnen alternative Zahlungsmethoden vorschlagen oder bei technischen Problemen helfen."
+    },
+    konto: {
+      question: "Konto & Profil",
+      answer: "In Ihrem Konto können Sie: Bestellungen verfolgen, Adressen verwalten, Zahlungsmethoden speichern, Wunschlisten erstellen und E-Mail-Benachrichtigungen verwalten.",
+      additionalInfo: "Bei Problemen mit Ihrem Konto oder wenn Sie Ihr Passwort vergessen haben, kontaktieren Sie uns unter konto@marktplatz.de oder 0800-123456. Wir helfen Ihnen gerne weiter."
     }
+  };
+  
+  // Chatbot-Funktionen
+  function showChatbot() {
+    chatbotInterface.style.display = 'block';
+    hilfeThemen.style.display = 'none';
+    hilfePanelHeader.style.display = 'none'; // Verstecke lila Header
+    addWelcomeMessage();
+  }
+  
+  function hideChatbot() {
+    chatbotInterface.style.display = 'none';
+    hilfeThemen.style.display = 'flex';
+    hilfePanelHeader.style.display = 'flex'; // Zeige lila Header wieder
+    chatbotMessages.innerHTML = '';
+  }
+  
+  function addWelcomeMessage() {
+    const welcomeMessage = `
+      <div class="chatbot-message bot-message">
+        <div class="message-content">
+          <div class="bot-avatar">
+            <i class="bi bi-headset"></i>
+          </div>
+          <div class="message-text">
+            <p>Hallo! Ich bin Ihr Comfort Consultant Support EU. Wie kann ich Ihnen heute helfen?</p>
+            <div class="quick-topics">
+              <button class="quick-topic-btn" data-topic="adresse">Adresse ändern</button>
+              <button class="quick-topic-btn" data-topic="bestellung">Bestellung stornieren</button>
+              <button class="quick-topic-btn" data-topic="versand">Versand & Lieferzeiten</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+    chatbotMessages.innerHTML = welcomeMessage;
+  }
+  
+  function addUserMessage(message) {
+    const userMessage = `
+      <div class="chatbot-message user-message">
+        <div class="message-content">
+          <div class="message-text">
+            <p>${message}</p>
+          </div>
+        </div>
+      </div>
+    `;
+    chatbotMessages.insertAdjacentHTML('beforeend', userMessage);
+  }
+  
+  function addBotMessage(response, showFeedback = true) {
+    const botMessage = `
+      <div class="chatbot-message bot-message">
+        <div class="message-content">
+          <div class="bot-avatar">
+            <i class="bi bi-headset"></i>
+          </div>
+          <div class="message-text">
+            <p>${response.answer}</p>
+          </div>
+        </div>
+      </div>
+    `;
+    chatbotMessages.insertAdjacentHTML('beforeend', botMessage);
+    
+    if (showFeedback) {
+      showFeedbackButtons(response);
+    }
+  }
+  
+  function addAdditionalInfo(additionalInfo) {
+    const additionalMessage = `
+      <div class="chatbot-message bot-message additional-info">
+        <div class="message-content">
+          <div class="bot-avatar">
+            <i class="bi bi-info-circle"></i>
+          </div>
+          <div class="message-text">
+            <p><strong>Zusätzliche Informationen:</strong></p>
+            <p>${additionalInfo}</p>
+          </div>
+        </div>
+      </div>
+    `;
+    chatbotMessages.insertAdjacentHTML('beforeend', additionalMessage);
+  }
+  
+  function showFeedbackButtons(response) {
+    const feedbackButtons = document.getElementById('feedbackButtons');
+    feedbackButtons.style.display = 'flex';
+    
+    // Event listeners für Feedback-Buttons
+    const helpfulBtn = feedbackButtons.querySelector('.helpful-btn');
+    const notHelpfulBtn = feedbackButtons.querySelector('.not-helpful-btn');
+    
+    // Entferne alte Event Listeners
+    helpfulBtn.replaceWith(helpfulBtn.cloneNode(true));
+    notHelpfulBtn.replaceWith(notHelpfulBtn.cloneNode(true));
+    
+    // Neue Event Listeners
+    const newHelpfulBtn = feedbackButtons.querySelector('.helpful-btn');
+    const newNotHelpfulBtn = feedbackButtons.querySelector('.not-helpful-btn');
+    
+    newHelpfulBtn.addEventListener('click', () => {
+      addFeedbackMessage('Vielen Dank für Ihr Feedback! 👍 Das freut uns zu hören.');
+      hideFeedbackButtons();
+    });
+    
+    newNotHelpfulBtn.addEventListener('click', () => {
+      addFeedbackMessage('Entschuldigung, dass die Antwort nicht hilfreich war. Hier sind weitere Informationen:');
+      addAdditionalInfo(response.additionalInfo);
+      hideFeedbackButtons();
+    });
+  }
+  
+  function hideFeedbackButtons() {
+    const feedbackButtons = document.getElementById('feedbackButtons');
+    feedbackButtons.style.display = 'none';
+  }
+  
+  function addFeedbackMessage(message) {
+    const feedbackMessage = `
+      <div class="chatbot-message bot-message feedback-message">
+        <div class="message-content">
+          <div class="bot-avatar">
+            <i class="bi bi-headset"></i>
+          </div>
+          <div class="message-text">
+            <p>${message}</p>
+          </div>
+        </div>
+      </div>
+    `;
+    chatbotMessages.insertAdjacentHTML('beforeend', feedbackMessage);
+  }
+  
+  function handleTopicClick(topic) {
+    const response = topicResponses[topic];
+    if (response) {
+      addUserMessage(response.question);
+      setTimeout(() => {
+        addBotMessage(response);
+        chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+      }, 500);
+    }
+  }
+  
+  // Event Listeners
+  if (hilfePanelClose) {
+    hilfePanelClose.addEventListener('click', () => {
+      hilfePanel.classList.remove('offen');
+      hideChatbot();
+    });
+  }
+  
+  // Back button im Chatbot
+  if (backButton) {
+    backButton.addEventListener('click', () => {
+      hideChatbot();
+    });
+  }
+  
+  // Hilfe-Themen Buttons
+  document.querySelectorAll('.hilfe-thema-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const topic = btn.getAttribute('data-topic');
+      showChatbot();
+      setTimeout(() => {
+        handleTopicClick(topic);
+      }, 300);
+    });
   });
   
-  hilfePanelClose.addEventListener('click', () => {
-    hilfePanel.classList.remove('offen');
+  // Quick topic buttons (werden dynamisch erstellt)
+  document.addEventListener('click', (e) => {
+    if (e.target.classList.contains('quick-topic-btn')) {
+      const topic = e.target.getAttribute('data-topic');
+      handleTopicClick(topic);
+    }
   });
   
   // Schließe das Panel beim Klick außerhalb
@@ -331,8 +595,11 @@ if (searchInput && mobileSearchBtn) {
       !hilfeButton.contains(event.target)
     ) {
       hilfePanel.classList.remove('offen');
+      hideChatbot();
     }
   });
+  
+  console.log('Script geladen!');
 </script>
 <script>
   // Herz-Icon bei Hover füllen

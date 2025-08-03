@@ -737,177 +737,180 @@ footer a:hover {
   font-size: 1.5rem;
 }
 
-/* Moderne Hilfe-Button */
+/* Moderne Hilfe-Button - Höchste Priorität */
 #hilfeButton {
-  position: fixed;
-  bottom: 30px;
-  right: 20px;
-  width: 56px;
-  height: 56px;
-  background: #007AFF;
-  border: none;
-  border-radius: 50%;
-  color: white;
-  font-size: 2rem;
-  box-shadow: 0 4px 16px rgba(0,122,255,0.18);
-  transition: all 0.3s ease;
-  z-index: 1000;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  position: fixed !important;
+  bottom: 30px !important;
+  right: 20px !important;
+  left: auto !important;
+  top: auto !important;
+  width: 56px !important;
+  height: 56px !important;
+  background: #007AFF !important;
+  border: none !important;
+  border-radius: 50% !important;
+  color: white !important;
+  font-size: 2rem !important;
+  box-shadow: 0 4px 16px rgba(0,122,255,0.18) !important;
+  transition: all 0.3s ease !important;
+  z-index: 9999 !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transform: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 #hilfeButton:hover {
-  background: #0056CC;
-  transform: scale(1.1);
-  box-shadow: 0 8px 32px rgba(0,122,255,0.4);
+  background: #0056CC !important;
+  transform: scale(1.1) !important;
+  box-shadow: 0 8px 32px rgba(0,122,255,0.4) !important;
 }
 
 /* Mobile-Hilfe-Button Anpassungen */
 @media (max-width: 768px) {
   #hilfeButton {
-    bottom: 20px;
-    right: 20px;
-    width: 60px;
-    height: 60px;
-    font-size: 2.2rem;
-    box-shadow: 0 6px 20px rgba(0,122,255,0.25);
+    bottom: 20px !important;
+    right: 20px !important;
+    left: auto !important;
+    top: auto !important;
+    width: 60px !important;
+    height: 60px !important;
+    font-size: 2.2rem !important;
+    box-shadow: 0 6px 20px rgba(0,122,255,0.25) !important;
+    z-index: 9999 !important;
+    transform: none !important;
   }
   
   #hilfeButton:hover {
-    transform: scale(1.05);
+    transform: scale(1.05) !important;
   }
 }
 
 /* Moderne Hilfe-Panel */
 .hilfe-panel {
   position: fixed;
-  bottom: 100px;
-  right: 100px;
-  width: 280px;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
   background: var(--card-bg);
   border-radius: var(--border-radius);
   box-shadow: var(--shadow-heavy);
-  border: 1px solid var(--border-color);
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(20px);
-  transition: all 0.3s ease;
-  z-index: 999;
+  z-index: 1001;
+  max-width: 95vw;
+  width: 400px;
+  max-height: 90vh;
+  height: 600px;
+  display: none;
+  flex-direction: column;
   overflow: hidden;
+  border: 1px solid var(--border-color);
+  /* Verhindere Scroll-Propagation */
+  overscroll-behavior: contain;
 }
 
-/* Mobile-Hilfe-Panel Anpassungen */
+.hilfe-themen-modern .hilfe-thema-btn:nth-child(n+6) {
+  display: none;
+}
+
 @media (max-width: 768px) {
   .hilfe-panel {
-    top: 50% !important;
-    left: 50% !important;
-    bottom: auto !important;
-    right: auto !important;
-    transform: translate(-50%, -50%) translateY(20px) !important;
-    width: 90vw !important;
-    max-width: 320px !important;
-    max-height: 80vh !important;
-    overflow-y: auto !important;
-  }
-  
-  .hilfe-panel.offen {
-    transform: translate(-50%, -50%) translateY(0) !important;
+    width: 100vw;
+    height: 100vh;
+    max-width: 100vw;
+    max-height: 100vh;
+    top: 0;
+    left: 0;
+    transform: none;
+    border-radius: 0;
+    border: none;
   }
 }
 
 .hilfe-panel.offen {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
+  display: flex;
 }
 
+/* Lila Header für Hauptseite */
 .hilfe-panel-header {
-    padding: 20px;
-    background: var(--primary-gradient);
-    color: white;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-weight: 600;
+  padding: 16px 20px;
+  background: var(--primary-gradient);
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 600;
+  flex-shrink: 0;
 }
 
 #hilfePanelClose {
-    margin-left: auto;
-    background: none;
-    border: none;
-    color: white;
-    font-size: 1.5rem;
-    cursor: pointer;
-    padding: 0;
-    width: 24px;
-    height: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    transition: background-color 0.3s ease;
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
 }
 
 #hilfePanelClose:hover {
-    background: rgba(255,255,255,0.2);
+  background: rgba(255, 255, 255, 0.2);
 }
 
 .hilfe-themen-modern {
-    padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 20px;
+  overflow-y: auto;
+  max-height: calc(100vh - 120px);
 }
 
 .hilfe-thema-btn {
-    width: 100%;
-    padding: 12px 16px;
-    margin-bottom: 8px;
-    background: var(--light-bg);
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius-small);
-    color: var(--text-primary);
-    font-weight: 500;
-    text-align: left;
-    transition: all 0.3s ease;
-    cursor: pointer;
+  background: var(--light-bg);
+  border: 2px solid var(--border-color);
+  border-radius: var(--border-radius-small);
+  padding: 16px 20px;
+  text-align: left;
+  font-weight: 500;
+  color: var(--text-primary);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1.4;
 }
 
 .hilfe-thema-btn:hover {
-    background: var(--primary-color);
-    color: white;
-    border-color: var(--primary-color);
-    transform: translateX(4px);
+  background: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-medium);
 }
 
 /* Mobile-Hilfe-Themen Anpassungen */
 @media (max-width: 768px) {
   .hilfe-themen-modern {
-    padding: 20px;
+    padding: 16px;
+    max-height: calc(100vh - 100px);
   }
   
   .hilfe-thema-btn {
-    padding: 16px 20px;
-    margin-bottom: 12px;
-    font-size: 1.1rem;
-    border-radius: 12px;
-    min-height: 56px;
-    display: flex;
-    align-items: center;
+    padding: 14px 16px;
+    font-size: 13px;
   }
   
   .hilfe-thema-btn:hover {
-    transform: translateX(2px);
-  }
-  
-  .hilfe-panel-header {
-    padding: 24px 20px;
-    font-size: 1.2rem;
-  }
-  
-  #hilfePanelClose {
-    width: 32px;
-    height: 32px;
-    font-size: 1.8rem;
+    transform: translateY(-1px);
   }
 }
 
@@ -1400,20 +1403,14 @@ footer a:hover {
         padding-top: 0 !important;
     }
     
-    /* Verstecke alle Knöpfe wenn Warenkorb offen ist */
-    .cart-dropdown.show ~ #hilfeButton,
+    /* Verstecke nur Scroll-to-Top Button wenn Warenkorb offen ist */
     .cart-dropdown.show ~ #scrollToTopBtn,
-    .cart-dropdown.show + #hilfeButton,
     .cart-dropdown.show + #scrollToTopBtn,
-    .cart-dropdown.show ~ * #hilfeButton,
     .cart-dropdown.show ~ * #scrollToTopBtn,
-    #hilfeButton[style*="display: none"],
     #scrollToTopBtn[style*="display: none"],
     /* Direkte Selektoren für bessere Kompatibilität */
-    .cart-dropdown.show ~ * #hilfeButton,
     .cart-dropdown.show ~ * #scrollToTopBtn,
     /* Zusätzliche Selektoren für mobile */
-    body:has(.cart-dropdown.show) #hilfeButton,
     body:has(.cart-dropdown.show) #scrollToTopBtn {
         display: none !important;
         visibility: hidden !important;
@@ -1433,18 +1430,13 @@ footer a:hover {
         height: 100% !important;
     }
     
-    /* Zusätzliche mobile-spezifische Regeln für Knöpfe */
+    /* Zusätzliche mobile-spezifische Regeln für Scroll-to-Top Button */
     @media (max-width: 768px) {
-        .cart-dropdown.show ~ #hilfeButton,
         .cart-dropdown.show ~ #scrollToTopBtn,
-        .cart-dropdown.show + #hilfeButton,
         .cart-dropdown.show + #scrollToTopBtn,
-        .cart-dropdown.show ~ * #hilfeButton,
         .cart-dropdown.show ~ * #scrollToTopBtn,
-        body:has(.cart-dropdown.show) #hilfeButton,
         body:has(.cart-dropdown.show) #scrollToTopBtn,
         /* Fallback für ältere Browser */
-        .cart-open #hilfeButton,
         .cart-open #scrollToTopBtn {
             display: none !important;
             visibility: hidden !important;
@@ -1788,4 +1780,266 @@ footer a:hover {
         padding: 0.5rem 0.75rem;
         font-size: 0.9rem;
     }
+}
+
+/* Chatbot Interface Styles */
+.chatbot-interface {
+  display: none;
+  flex-direction: column;
+  height: 100%;
+  background: #fff;
+  overflow: hidden;
+  /* Verhindere Scroll-Propagation */
+  overscroll-behavior: contain;
+}
+
+.chatbot-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  background: linear-gradient(135deg, #ff6b6b 0%, #ff8e8e 100%);
+  color: white;
+  font-weight: 600;
+  border-radius: 12px 12px 0 0;
+  flex-shrink: 0;
+}
+
+.chatbot-header .bi-arrow-left {
+  cursor: pointer;
+  font-size: 18px;
+  transition: transform 0.2s ease;
+}
+
+.chatbot-header .bi-arrow-left:hover {
+  transform: translateX(-2px);
+}
+
+.chatbot-messages {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  max-height: calc(100vh - 200px);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-height: 0;
+  /* Verhindere Scroll-Propagation */
+  overscroll-behavior: contain;
+}
+
+.chatbot-message {
+  display: flex;
+  margin-bottom: 16px;
+}
+
+.chatbot-message.user-message {
+  justify-content: flex-end;
+}
+
+.chatbot-message.bot-message {
+  justify-content: flex-start;
+}
+
+.message-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  max-width: 80%;
+}
+
+.user-message .message-content {
+  flex-direction: row-reverse;
+}
+
+.message-text {
+  background: #f8f9fa;
+  padding: 12px 16px;
+  border-radius: 18px;
+  position: relative;
+}
+
+.user-message .message-text {
+  background: #6c757d;
+  color: white;
+}
+
+.bot-avatar {
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, #ff6b6b 0%, #ff8e8e 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.quick-topics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.quick-topic-btn {
+  background: #e9ecef;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 16px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #495057;
+}
+
+.quick-topic-btn:hover {
+  background: #6c757d;
+  color: white;
+  transform: translateY(-1px);
+}
+
+
+/* Feedback Buttons */
+.feedback-buttons {
+  display: none;
+  gap: 12px;
+  padding: 16px 20px;
+  border-top: 1px solid #e9ecef;
+  background: #fff;
+  flex-shrink: 0;
+  position: sticky;
+  bottom: 0;
+  width: 100%;
+  z-index: 10;
+}
+
+.feedback-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border: 2px solid #e9ecef;
+  border-radius: 12px;
+  background: #fff;
+  color: #495057;
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.feedback-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.helpful-btn {
+  border-color: #28a745;
+  color: #28a745;
+}
+
+.helpful-btn:hover {
+  background: #28a745;
+  color: white;
+}
+
+.not-helpful-btn {
+  border-color: #dc3545;
+  color: #dc3545;
+}
+
+.not-helpful-btn:hover {
+  background: #dc3545;
+  color: white;
+}
+
+/* Additional Info Message */
+.additional-info .message-text {
+  background: #fff3cd;
+  border-left: 4px solid #ffc107;
+}
+
+.additional-info .bot-avatar {
+  background: linear-gradient(135deg, #ffc107 0%, #ffdb4d 100%);
+}
+
+/* Feedback Message */
+.feedback-message .message-text {
+  background: #d1ecf1;
+  border-left: 4px solid #17a2b8;
+}
+
+.feedback-message .bot-avatar {
+  background: linear-gradient(135deg, #17a2b8 0%, #5bc0de 100%);
+}
+
+/* Mobile Anpassungen für Chatbot */
+@media (max-width: 768px) {
+  .chatbot-messages {
+    max-height: calc(100vh - 180px);
+    padding: 16px;
+  }
+  
+  .message-content {
+    max-width: 90%;
+  }
+  
+  .quick-topics {
+    flex-direction: column;
+  }
+  
+  .quick-topic-btn {
+    width: 100%;
+    text-align: center;
+  }
+  
+  .feedback-buttons {
+    padding: 12px 16px;
+    flex-direction: column;
+  }
+  
+  .feedback-btn {
+    font-size: 13px;
+    padding: 10px 14px;
+  }
+}
+
+/* Animationen für Chatbot */
+@keyframes messageSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.chatbot-message {
+  animation: messageSlideIn 0.3s ease;
+}
+
+/* Scrollbar für Chatbot */
+.chatbot-messages::-webkit-scrollbar {
+  width: 4px;
+}
+
+.chatbot-messages::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 2px;
+}
+
+.chatbot-messages::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 2px;
+}
+
+.chatbot-messages::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
 }
