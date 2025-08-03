@@ -874,6 +874,10 @@ footer a:hover {
   cursor: pointer;
   font-size: 14px;
   line-height: 1.4;
+  min-height: 56px;
+  display: flex;
+  align-items: center;
+  border-radius: 12px;
 }
 
 .hilfe-thema-btn:hover {
@@ -892,27 +896,28 @@ footer a:hover {
   }
   
   .hilfe-thema-btn {
-    padding: 14px 16px;
-    font-size: 13px;
-    border-radius: 8px;
-    min-height: 48px;
+    padding: 16px 20px;
+    margin-bottom: 12px;
+    font-size: 1.1rem;
+    border-radius: 12px;
+    min-height: 56px;
     display: flex;
     align-items: center;
   }
   
   .hilfe-thema-btn:hover {
-    transform: translateY(-1px);
+    transform: translateX(2px);
   }
   
   .hilfe-panel-header {
-    padding: 16px 20px;
-    font-size: 1.1rem;
+    padding: 24px 20px;
+    font-size: 1.2rem;
   }
   
   #hilfePanelClose {
-    width: 28px;
-    height: 28px;
-    font-size: 1.5rem;
+    width: 32px;
+    height: 32px;
+    font-size: 1.8rem;
   }
 }
 
