@@ -785,8 +785,7 @@ footer a:hover {
   position: fixed;
   bottom: 100px;
   right: 20px;
-  width: 280px;
-  max-width: calc(100vw - 40px);
+  width: 320px;
   background: var(--card-bg);
   border-radius: var(--border-radius);
   box-shadow: var(--shadow-heavy);
@@ -808,10 +807,9 @@ footer a:hover {
     right: auto !important;
     transform: translate(-50%, -50%) translateY(20px) !important;
     width: 90vw !important;
-    max-width: 320px !important;
+    max-width: 400px !important;
     max-height: 80vh !important;
     overflow-y: auto !important;
-    margin: 0 20px !important;
   }
   
   .hilfe-panel.offen {
@@ -920,11 +918,14 @@ footer a:hover {
     max-width: calc(100vw - 40px) !important;
     left: 20px !important;
     right: 20px !important;
-    transform: translateY(20px) !important;
+    top: 20px !important;
+    bottom: 20px !important;
+    transform: none !important;
+    max-height: calc(100vh - 40px) !important;
   }
   
   .hilfe-panel.offen {
-    transform: translateY(0) !important;
+    transform: none !important;
   }
 }
 
