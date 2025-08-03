@@ -783,77 +783,74 @@ footer a:hover {
 /* Moderne Hilfe-Panel */
 .hilfe-panel {
   position: fixed;
-  bottom: 100px;
-  right: 100px;
-  width: 240px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   background: var(--card-bg);
   border-radius: var(--border-radius);
   box-shadow: var(--shadow-heavy);
-  border: 1px solid var(--border-color);
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(20px);
-  transition: all 0.3s ease;
-  z-index: 999;
+  z-index: 1001;
+  max-width: 95vw;
+  width: 600px;
+  max-height: 80vh;
+  height: 500px;
+  display: none;
+  flex-direction: column;
   overflow: hidden;
-  pointer-events: none;
+  border: 1px solid var(--border-color);
+  /* Verhindere Scroll-Propagation */
+  overscroll-behavior: contain;
 }
 
-/* Mobile-Hilfe-Panel Anpassungen */
 @media (max-width: 768px) {
   .hilfe-panel {
-    bottom: 20px !important;
-    right: 20px !important;
-    left: auto !important;
-    top: auto !important;
-    transform: translateY(20px) !important;
-    width: 260px !important;
-    max-width: 260px !important;
-    max-height: 60vh !important;
-    overflow-y: auto !important;
-  }
-  
-  .hilfe-panel.offen {
-    transform: translateY(0) !important;
+    width: 100vw;
+    height: 100vh;
+    max-width: 100vw;
+    max-height: 100vh;
+    top: 0;
+    left: 0;
+    transform: none;
+    border-radius: 0;
+    border: none;
   }
 }
 
 .hilfe-panel.offen {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-    pointer-events: auto;
+  display: flex;
 }
 
+/* Lila Header für Hauptseite */
 .hilfe-panel-header {
-    padding: 20px;
-    background: var(--primary-gradient);
-    color: white;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-weight: 600;
+  padding: 16px 20px;
+  background: var(--primary-gradient);
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 600;
+  flex-shrink: 0;
 }
 
 #hilfePanelClose {
-    margin-left: auto;
-    background: none;
-    border: none;
-    color: white;
-    font-size: 1.5rem;
-    cursor: pointer;
-    padding: 0;
-    width: 24px;
-    height: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    transition: background-color 0.3s ease;
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
 }
 
 #hilfePanelClose:hover {
-    background: rgba(255,255,255,0.2);
+  background: rgba(255, 255, 255, 0.2);
 }
 
 .hilfe-themen-modern {
