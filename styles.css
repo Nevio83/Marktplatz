@@ -1940,6 +1940,11 @@ footer a:hover {
   width: 100%;
 }
 
+/* Nur die ersten 5 Optionen anzeigen */
+.quick-topic-btn:nth-child(n+6) {
+  display: none !important;
+}
+
 .quick-topic-btn:hover {
   background: var(--primary-color);
   color: white;
