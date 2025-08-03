@@ -1940,9 +1940,18 @@ footer a:hover {
   width: 100%;
 }
 
-/* Nur die ersten 5 Optionen anzeigen */
-.quick-topic-btn:nth-child(n+6) {
+/* Nur die ersten 5 Optionen anzeigen - Stärkere Regeln */
+.quick-topic-btn:nth-child(n+6),
+.quick-topics .quick-topic-btn:nth-child(n+6),
+.chatbot-interface .quick-topic-btn:nth-child(n+6),
+.quick-topics > *:nth-child(n+6) {
   display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
 }
 
 .quick-topic-btn:hover {
