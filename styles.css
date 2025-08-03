@@ -881,8 +881,6 @@ footer a:hover {
     cursor: pointer;
     font-size: 14px;
     min-height: 50px;
-    display: flex;
-    align-items: center;
 }
 
 .hilfe-thema-btn:hover {
@@ -904,8 +902,6 @@ footer a:hover {
     font-size: 1.1rem;
     border-radius: 12px;
     min-height: 56px;
-    display: flex;
-    align-items: center;
   }
   
   .hilfe-thema-btn:hover {
