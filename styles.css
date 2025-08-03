@@ -785,7 +785,7 @@ footer a:hover {
   position: fixed;
   bottom: 100px;
   right: 100px;
-  width: 220px;
+  width: 240px;
   background: var(--card-bg);
   border-radius: var(--border-radius);
   box-shadow: var(--shadow-heavy);
@@ -806,8 +806,8 @@ footer a:hover {
     bottom: auto !important;
     right: auto !important;
     transform: translate(-50%, -50%) translateY(20px) !important;
-    width: 85vw !important;
-    max-width: 260px !important;
+    width: 88vw !important;
+    max-width: 280px !important;
     max-height: 80vh !important;
     overflow-y: auto !important;
   }
