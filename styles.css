@@ -737,31 +737,36 @@ footer a:hover {
   font-size: 1.5rem;
 }
 
-/* Moderne Hilfe-Button */
+/* Moderne Hilfe-Button - Höchste Priorität */
 #hilfeButton {
   position: fixed !important;
   bottom: 30px !important;
   right: 20px !important;
-  width: 56px;
-  height: 56px;
-  background: #007AFF;
-  border: none;
-  border-radius: 50%;
-  color: white;
-  font-size: 2rem;
-  box-shadow: 0 4px 16px rgba(0,122,255,0.18);
-  transition: all 0.3s ease;
+  left: auto !important;
+  top: auto !important;
+  width: 56px !important;
+  height: 56px !important;
+  background: #007AFF !important;
+  border: none !important;
+  border-radius: 50% !important;
+  color: white !important;
+  font-size: 2rem !important;
+  box-shadow: 0 4px 16px rgba(0,122,255,0.18) !important;
+  transition: all 0.3s ease !important;
   z-index: 9999 !important;
-  cursor: pointer;
+  cursor: pointer !important;
   display: flex !important;
-  align-items: center;
-  justify-content: center;
+  align-items: center !important;
+  justify-content: center !important;
+  transform: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 #hilfeButton:hover {
-  background: #0056CC;
-  transform: scale(1.1);
-  box-shadow: 0 8px 32px rgba(0,122,255,0.4);
+  background: #0056CC !important;
+  transform: scale(1.1) !important;
+  box-shadow: 0 8px 32px rgba(0,122,255,0.4) !important;
 }
 
 /* Mobile-Hilfe-Button Anpassungen */
@@ -769,15 +774,18 @@ footer a:hover {
   #hilfeButton {
     bottom: 20px !important;
     right: 20px !important;
-    width: 60px;
-    height: 60px;
-    font-size: 2.2rem;
-    box-shadow: 0 6px 20px rgba(0,122,255,0.25);
+    left: auto !important;
+    top: auto !important;
+    width: 60px !important;
+    height: 60px !important;
+    font-size: 2.2rem !important;
+    box-shadow: 0 6px 20px rgba(0,122,255,0.25) !important;
     z-index: 9999 !important;
+    transform: none !important;
   }
   
   #hilfeButton:hover {
-    transform: scale(1.05);
+    transform: scale(1.05) !important;
   }
 }
 
@@ -819,6 +827,39 @@ footer a:hover {
 
 .hilfe-panel.offen {
   display: flex;
+}
+
+/* Lila Header für Hauptseite */
+.hilfe-panel-header {
+  padding: 16px 20px;
+  background: var(--primary-gradient);
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+#hilfePanelClose {
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+}
+
+#hilfePanelClose:hover {
+  background: rgba(255, 255, 255, 0.2);
 }
 
 .hilfe-themen-modern {
