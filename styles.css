@@ -796,6 +796,7 @@ footer a:hover {
   transition: all 0.3s ease;
   z-index: 999;
   overflow: hidden;
+  pointer-events: none;
 }
 
 /* Mobile-Hilfe-Panel Anpassungen */
@@ -821,6 +822,7 @@ footer a:hover {
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
+    pointer-events: auto;
 }
 
 .hilfe-panel-header {
