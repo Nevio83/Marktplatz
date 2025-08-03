@@ -309,10 +309,15 @@ if (searchInput && mobileSearchBtn) {
       <!-- Messages will be added here dynamically -->
     </div>
     
-    <div class="chatbot-input">
-      <input type="text" id="chatbotInput" placeholder="Wie kann ich Ihnen helfen?" />
-      <button id="sendMessageBtn">
-        <i class="bi bi-send"></i>
+    <!-- Feedback Buttons (werden dynamisch hinzugefügt) -->
+    <div id="feedbackButtons" class="feedback-buttons" style="display: none;">
+      <button class="feedback-btn helpful-btn">
+        <i class="bi bi-hand-thumbs-up"></i>
+        War das hilfreich?
+      </button>
+      <button class="feedback-btn not-helpful-btn">
+        <i class="bi bi-hand-thumbs-down"></i>
+        War das nicht hilfreich?
       </button>
     </div>
   </div>
@@ -346,49 +351,57 @@ if (searchInput && mobileSearchBtn) {
       question: "Adresse ändern",
       answer: "Wenn Ihre Bestellung weniger als 90 Minuten alt ist, können Sie Ihre Lieferadresse, E-Mail oder andere persönliche Daten aktualisieren. Klicken Sie einfach auf diesen Link und geben Sie Ihre Adresse und Bestellnummer ein, um diese Änderungen vorzunehmen.",
       link: "#",
-      linkText: "Adresse ändern"
+      linkText: "Adresse ändern",
+      additionalInfo: "Falls Ihre Bestellung älter als 90 Minuten ist, kontaktieren Sie unseren Kundenservice unter support@marktplatz.de oder rufen Sie uns an: 0800-123456. Wir können Ihnen dann bei der Adressänderung helfen."
     },
     bestellung: {
       question: "Bestellung stornieren",
       answer: "Sie können Ihre Bestellung innerhalb von 2 Stunden nach der Bestellung stornieren. Gehen Sie zu Ihren Bestellungen und klicken Sie auf 'Stornieren'. Nach 2 Stunden können Bestellungen nur noch über unseren Kundenservice storniert werden.",
       link: "#",
-      linkText: "Bestellung stornieren"
+      linkText: "Bestellung stornieren",
+      additionalInfo: "Für Stornierungen nach 2 Stunden kontaktieren Sie uns bitte telefonisch unter 0800-123456 oder per E-Mail an stornierung@marktplatz.de. Bitte haben Sie Ihre Bestellnummer bereit."
     },
     versand: {
       question: "Versand & Lieferzeiten",
       answer: "Standardversand: 3-5 Werktage. Expressversand: 1-2 Werktage. Kostenloser Versand ab 50€ Bestellwert. Tracking-Informationen erhalten Sie per E-Mail sobald Ihre Bestellung versendet wird.",
       link: "#",
-      linkText: "Versand verfolgen"
+      linkText: "Versand verfolgen",
+      additionalInfo: "Bei Verzögerungen kontaktieren Sie uns unter 0800-123456 oder versand@marktplatz.de. Wir können Ihnen dann den aktuellen Status Ihrer Bestellung mitteilen und bei Problemen helfen."
     },
     rabattcodes: {
       question: "Mehrere Rabattcodes",
       answer: "Sie können nur einen Rabattcode pro Bestellung verwenden. Der Code mit dem höchsten Rabatt wird automatisch angewendet. Kombinieren Sie Rabattcodes nicht mit anderen Aktionen.",
       link: "#",
-      linkText: "Rabattcodes einlösen"
+      linkText: "Rabattcodes einlösen",
+      additionalInfo: "Falls Ihr Rabattcode nicht funktioniert, prüfen Sie bitte das Ablaufdatum und die Bedingungen. Bei Problemen kontaktieren Sie uns unter rabatt@marktplatz.de oder 0800-123456."
     },
     kaeuferschutz: {
       question: "Was ist Käuferschutz?",
       answer: "Unser Käuferschutz garantiert Ihnen: 30 Tage Rückgaberecht, sichere Zahlung, Käuferschutz durch PayPal/Stripe, und 24/7 Kundenservice. Ihre Daten sind durch SSL-Verschlüsselung geschützt.",
       link: "#",
-      linkText: "Mehr zum Käuferschutz"
+      linkText: "Mehr zum Käuferschutz",
+      additionalInfo: "Bei Problemen mit dem Käuferschutz kontaktieren Sie uns unter sicherheit@marktplatz.de oder 0800-123456. Wir helfen Ihnen gerne weiter und können bei Bedarf auch eine Rückerstattung veranlassen."
     },
     rueckgabe: {
       question: "Rückgabe & Umtausch",
       answer: "Sie haben 30 Tage Zeit, um Ihre Bestellung zurückzusenden. Artikel müssen unbenutzt und in der Originalverpackung sein. Rücksendekosten werden von uns übernommen.",
       link: "#",
-      linkText: "Rücksendung starten"
+      linkText: "Rücksendung starten",
+      additionalInfo: "Falls Sie Probleme bei der Rückgabe haben oder der Artikel beschädigt ist, kontaktieren Sie uns unter rueckgabe@marktplatz.de oder 0800-123456. Wir finden eine Lösung für Sie."
     },
     zahlung: {
       question: "Zahlungsmethoden",
       answer: "Wir akzeptieren: Kreditkarte, PayPal, SEPA-Lastschrift, Klarna (Kauf auf Rechnung), und Apple Pay/Google Pay. Alle Zahlungen sind sicher und verschlüsselt.",
       link: "#",
-      linkText: "Zahlungsmethoden"
+      linkText: "Zahlungsmethoden",
+      additionalInfo: "Bei Zahlungsproblemen kontaktieren Sie uns unter zahlung@marktplatz.de oder 0800-123456. Wir können Ihnen alternative Zahlungsmethoden vorschlagen oder bei technischen Problemen helfen."
     },
     konto: {
       question: "Konto & Profil",
       answer: "In Ihrem Konto können Sie: Bestellungen verfolgen, Adressen verwalten, Zahlungsmethoden speichern, Wunschlisten erstellen und E-Mail-Benachrichtigungen verwalten.",
       link: "#",
-      linkText: "Konto verwalten"
+      linkText: "Konto verwalten",
+      additionalInfo: "Bei Problemen mit Ihrem Konto oder wenn Sie Ihr Passwort vergessen haben, kontaktieren Sie uns unter konto@marktplatz.de oder 0800-123456. Wir helfen Ihnen gerne weiter."
     }
   };
   
@@ -403,6 +416,7 @@ if (searchInput && mobileSearchBtn) {
     chatbotInterface.style.display = 'none';
     hilfeThemen.style.display = 'flex';
     chatbotMessages.innerHTML = '';
+    hideFeedbackButtons();
   }
   
   function addWelcomeMessage() {
@@ -439,7 +453,7 @@ if (searchInput && mobileSearchBtn) {
     chatbotMessages.insertAdjacentHTML('beforeend', userMessage);
   }
   
-  function addBotMessage(response) {
+  function addBotMessage(response, showFeedback = true) {
     const botMessage = `
       <div class="chatbot-message bot-message">
         <div class="message-content">
@@ -454,6 +468,76 @@ if (searchInput && mobileSearchBtn) {
       </div>
     `;
     chatbotMessages.insertAdjacentHTML('beforeend', botMessage);
+    
+    if (showFeedback) {
+      showFeedbackButtons(response);
+    }
+  }
+  
+  function addAdditionalInfo(additionalInfo) {
+    const additionalMessage = `
+      <div class="chatbot-message bot-message additional-info">
+        <div class="message-content">
+          <div class="bot-avatar">
+            <i class="bi bi-info-circle"></i>
+          </div>
+          <div class="message-text">
+            <p><strong>Zusätzliche Informationen:</strong></p>
+            <p>${additionalInfo}</p>
+          </div>
+        </div>
+      </div>
+    `;
+    chatbotMessages.insertAdjacentHTML('beforeend', additionalMessage);
+  }
+  
+  function showFeedbackButtons(response) {
+    const feedbackButtons = document.getElementById('feedbackButtons');
+    feedbackButtons.style.display = 'flex';
+    
+    // Event listeners für Feedback-Buttons
+    const helpfulBtn = feedbackButtons.querySelector('.helpful-btn');
+    const notHelpfulBtn = feedbackButtons.querySelector('.not-helpful-btn');
+    
+    // Entferne alte Event Listeners
+    helpfulBtn.replaceWith(helpfulBtn.cloneNode(true));
+    notHelpfulBtn.replaceWith(notHelpfulBtn.cloneNode(true));
+    
+    // Neue Event Listeners
+    const newHelpfulBtn = feedbackButtons.querySelector('.helpful-btn');
+    const newNotHelpfulBtn = feedbackButtons.querySelector('.not-helpful-btn');
+    
+    newHelpfulBtn.addEventListener('click', () => {
+      addFeedbackMessage('Vielen Dank für Ihr Feedback! 👍');
+      hideFeedbackButtons();
+    });
+    
+    newNotHelpfulBtn.addEventListener('click', () => {
+      addFeedbackMessage('Entschuldigung, dass die Antwort nicht hilfreich war. Hier sind weitere Informationen:');
+      addAdditionalInfo(response.additionalInfo);
+      hideFeedbackButtons();
+    });
+  }
+  
+  function hideFeedbackButtons() {
+    const feedbackButtons = document.getElementById('feedbackButtons');
+    feedbackButtons.style.display = 'none';
+  }
+  
+  function addFeedbackMessage(message) {
+    const feedbackMessage = `
+      <div class="chatbot-message bot-message feedback-message">
+        <div class="message-content">
+          <div class="bot-avatar">
+            <i class="bi bi-headset"></i>
+          </div>
+          <div class="message-text">
+            <p>${message}</p>
+          </div>
+        </div>
+      </div>
+    `;
+    chatbotMessages.insertAdjacentHTML('beforeend', feedbackMessage);
   }
   
   function handleTopicClick(topic) {
@@ -502,53 +586,6 @@ if (searchInput && mobileSearchBtn) {
     if (e.target.classList.contains('quick-topic-btn')) {
       const topic = e.target.getAttribute('data-topic');
       handleTopicClick(topic);
-    }
-  });
-  
-  // Send message button
-  sendMessageBtn.addEventListener('click', () => {
-    const message = chatbotInput.value.trim();
-    if (message) {
-      addUserMessage(message);
-      chatbotInput.value = '';
-      
-      // Simuliere Bot-Antwort basierend auf Schlüsselwörtern
-      setTimeout(() => {
-        let response = {
-          answer: "Vielen Dank für Ihre Nachricht. Ein Mitglied unseres Support-Teams wird sich innerhalb von 24 Stunden bei Ihnen melden.",
-          link: null
-        };
-        
-        // Einfache Schlüsselwort-Erkennung
-        const lowerMessage = message.toLowerCase();
-        if (lowerMessage.includes('adresse') || lowerMessage.includes('adress')) {
-          response = topicResponses.adresse;
-        } else if (lowerMessage.includes('stornier') || lowerMessage.includes('cancel')) {
-          response = topicResponses.bestellung;
-        } else if (lowerMessage.includes('versand') || lowerMessage.includes('lieferung')) {
-          response = topicResponses.versand;
-        } else if (lowerMessage.includes('rabatt') || lowerMessage.includes('code')) {
-          response = topicResponses.rabattcodes;
-        } else if (lowerMessage.includes('schutz') || lowerMessage.includes('sicher')) {
-          response = topicResponses.kaeuferschutz;
-        } else if (lowerMessage.includes('rückgabe') || lowerMessage.includes('umtausch')) {
-          response = topicResponses.rueckgabe;
-        } else if (lowerMessage.includes('zahlung') || lowerMessage.includes('pay')) {
-          response = topicResponses.zahlung;
-        } else if (lowerMessage.includes('konto') || lowerMessage.includes('profil')) {
-          response = topicResponses.konto;
-        }
-        
-        addBotMessage(response);
-        chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
-      }, 1000);
-    }
-  });
-  
-  // Enter key im Input
-  chatbotInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-      sendMessageBtn.click();
     }
   });
   
