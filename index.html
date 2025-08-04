@@ -413,6 +413,12 @@ if (searchInput && mobileSearchBtn) {
     hilfeThemen.style.display = 'none';
     hilfePanelHeader.style.display = 'none'; // Verstecke lila Header
     addWelcomeMessage();
+    
+    // Aktiviere orange Farben für den Chatbot-Header sofort
+    const chatbotHeader = document.querySelector('.chatbot-header');
+    if (chatbotHeader) {
+      chatbotHeader.classList.add('orange-support');
+    }
   }
   
   function hideChatbot() {
@@ -460,13 +466,14 @@ if (searchInput && mobileSearchBtn) {
   }
   
   function addBotMessage(response, showFeedback = true) {
+    const orangeClass = window.orangeSupportActive ? 'orange-support' : '';
     const botMessage = `
       <div class="chatbot-message bot-message">
         <div class="message-content">
-          <div class="bot-avatar orange-support">
+          <div class="bot-avatar ${orangeClass}">
             <i class="bi bi-headset"></i>
           </div>
-          <div class="message-text orange-support">
+          <div class="message-text ${orangeClass}">
             <p>${response.answer}</p>
           </div>
         </div>
@@ -480,13 +487,14 @@ if (searchInput && mobileSearchBtn) {
   }
   
   function addAdditionalInfo(additionalInfo) {
+    const orangeClass = window.orangeSupportActive ? 'orange-support' : '';
     const additionalMessage = `
       <div class="chatbot-message bot-message additional-info">
         <div class="message-content">
-          <div class="bot-avatar">
+          <div class="bot-avatar ${orangeClass}">
             <i class="bi bi-info-circle"></i>
           </div>
-          <div class="message-text">
+          <div class="message-text ${orangeClass}">
             <p><strong>Zusätzliche Informationen:</strong></p>
             <p>${additionalInfo}</p>
           </div>
@@ -530,13 +538,14 @@ if (searchInput && mobileSearchBtn) {
   }
   
   function addFeedbackMessage(message) {
+    const orangeClass = window.orangeSupportActive ? 'orange-support' : '';
     const feedbackMessage = `
       <div class="chatbot-message bot-message feedback-message">
         <div class="message-content">
-          <div class="bot-avatar">
+          <div class="bot-avatar ${orangeClass}">
             <i class="bi bi-headset"></i>
           </div>
-          <div class="message-text">
+          <div class="message-text ${orangeClass}">
             <p>${message}</p>
           </div>
         </div>
@@ -548,9 +557,6 @@ if (searchInput && mobileSearchBtn) {
   function handleTopicClick(topic) {
     const response = topicResponses[topic];
     if (response) {
-      // Aktiviere orange Support-Farben
-      activateOrangeSupport();
-      
       addUserMessage(response.question);
       setTimeout(() => {
         addBotMessage(response);
@@ -589,6 +595,9 @@ if (searchInput && mobileSearchBtn) {
     quickTopicBtns.forEach(btn => {
       btn.classList.add('orange-support');
     });
+    
+    // Setze einen Flag, damit neue Nachrichten automatisch orange werden
+    window.orangeSupportActive = true;
   }
   
   function deactivateOrangeSupport() {
@@ -617,6 +626,9 @@ if (searchInput && mobileSearchBtn) {
     quickTopicBtns.forEach(btn => {
       btn.classList.remove('orange-support');
     });
+    
+    // Entferne den Flag
+    window.orangeSupportActive = false;
   }
   
   // Event Listeners
@@ -638,6 +650,8 @@ if (searchInput && mobileSearchBtn) {
   document.querySelectorAll('.hilfe-thema-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const topic = btn.getAttribute('data-topic');
+      // Aktiviere orange Farben sofort beim Klick
+      activateOrangeSupport();
       showChatbot();
       setTimeout(() => {
         handleTopicClick(topic);

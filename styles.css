@@ -2050,27 +2050,27 @@ footer a:hover {
 }
 
 /* Additional Info Message */
-.additional-info .message-text {
+.additional-info .message-text:not(.orange-support) {
   background: var(--warning-color);
   color: var(--text-primary);
   border: none;
   box-shadow: var(--shadow-medium);
 }
 
-.additional-info .bot-avatar {
+.additional-info .bot-avatar:not(.orange-support) {
   background: var(--warning-color);
   border: 2px solid rgba(0,0,0,0.1);
 }
 
 /* Feedback Message */
-.feedback-message .message-text {
+.feedback-message .message-text:not(.orange-support) {
   background: var(--accent-color);
   color: white;
   border: none;
   box-shadow: var(--shadow-medium);
 }
 
-.feedback-message .bot-avatar {
+.feedback-message .bot-avatar:not(.orange-support) {
   background: var(--accent-color);
   border: 2px solid rgba(255,255,255,0.2);
 }
