@@ -420,6 +420,9 @@ if (searchInput && mobileSearchBtn) {
     hilfeThemen.style.display = 'flex';
     hilfePanelHeader.style.display = 'flex'; // Zeige lila Header wieder
     chatbotMessages.innerHTML = '';
+    
+    // Deaktiviere orange Support-Farben
+    deactivateOrangeSupport();
   }
   
   function addWelcomeMessage() {
@@ -460,10 +463,10 @@ if (searchInput && mobileSearchBtn) {
     const botMessage = `
       <div class="chatbot-message bot-message">
         <div class="message-content">
-          <div class="bot-avatar">
+          <div class="bot-avatar orange-support">
             <i class="bi bi-headset"></i>
           </div>
-          <div class="message-text">
+          <div class="message-text orange-support">
             <p>${response.answer}</p>
           </div>
         </div>
@@ -545,12 +548,75 @@ if (searchInput && mobileSearchBtn) {
   function handleTopicClick(topic) {
     const response = topicResponses[topic];
     if (response) {
+      // Aktiviere orange Support-Farben
+      activateOrangeSupport();
+      
       addUserMessage(response.question);
       setTimeout(() => {
         addBotMessage(response);
         chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
       }, 500);
     }
+  }
+  
+  function activateOrangeSupport() {
+    // Füge orange Klassen zu den relevanten Elementen hinzu
+    const hilfePanelHeader = document.getElementById('hilfePanelHeader');
+    const chatbotHeader = document.querySelector('.chatbot-header');
+    const messageTexts = document.querySelectorAll('.message-text');
+    const botAvatars = document.querySelectorAll('.bot-avatar');
+    const quickTopicBtns = document.querySelectorAll('.quick-topic-btn');
+    
+    if (hilfePanelHeader) {
+      hilfePanelHeader.classList.add('orange-support');
+    }
+    if (chatbotHeader) {
+      chatbotHeader.classList.add('orange-support');
+    }
+    
+    // Füge orange Klassen zu allen Nachrichten und Avataren hinzu
+    messageTexts.forEach(text => {
+      if (!text.closest('.user-message')) { // Nur Bot-Nachrichten
+        text.classList.add('orange-support');
+      }
+    });
+    
+    botAvatars.forEach(avatar => {
+      avatar.classList.add('orange-support');
+    });
+    
+    // Füge orange Klassen zu Quick Topic Buttons hinzu
+    quickTopicBtns.forEach(btn => {
+      btn.classList.add('orange-support');
+    });
+  }
+  
+  function deactivateOrangeSupport() {
+    // Entferne orange Klassen von den relevanten Elementen
+    const hilfePanelHeader = document.getElementById('hilfePanelHeader');
+    const chatbotHeader = document.querySelector('.chatbot-header');
+    const messageTexts = document.querySelectorAll('.message-text');
+    const botAvatars = document.querySelectorAll('.bot-avatar');
+    const quickTopicBtns = document.querySelectorAll('.quick-topic-btn');
+    
+    if (hilfePanelHeader) {
+      hilfePanelHeader.classList.remove('orange-support');
+    }
+    if (chatbotHeader) {
+      chatbotHeader.classList.remove('orange-support');
+    }
+    
+    messageTexts.forEach(text => {
+      text.classList.remove('orange-support');
+    });
+    
+    botAvatars.forEach(avatar => {
+      avatar.classList.remove('orange-support');
+    });
+    
+    quickTopicBtns.forEach(btn => {
+      btn.classList.remove('orange-support');
+    });
   }
   
   // Event Listeners
@@ -583,6 +649,8 @@ if (searchInput && mobileSearchBtn) {
   document.addEventListener('click', (e) => {
     if (e.target.classList.contains('quick-topic-btn')) {
       const topic = e.target.getAttribute('data-topic');
+      // Aktiviere orange Support-Farben für Quick Topic Buttons
+      activateOrangeSupport();
       handleTopicClick(topic);
     }
   });

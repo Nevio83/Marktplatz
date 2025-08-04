@@ -39,6 +39,12 @@ html, body {
   --border-radius: 16px;
   --border-radius-small: 8px;
   --border-radius-large: 24px;
+  
+  /* Orange Farben für Support-Optionen */
+  --orange-primary: #ff8c00;
+  --orange-gradient: linear-gradient(135deg, #ff8c00 0%, #ff6b35 100%);
+  --orange-light: #ffa726;
+  --orange-dark: #e65100;
 }
 
 /* Verbesserte Basis-Styles */
@@ -2067,6 +2073,30 @@ footer a:hover {
 .feedback-message .bot-avatar {
   background: var(--accent-color);
   border: 2px solid rgba(255,255,255,0.2);
+}
+
+/* Orange Support-Optionen Styles */
+.hilfe-panel-header.orange-support {
+  background: var(--orange-gradient) !important;
+}
+
+.chatbot-header.orange-support {
+  background: var(--orange-gradient) !important;
+}
+
+.message-text.orange-support {
+  background: var(--orange-gradient) !important;
+  color: white !important;
+}
+
+.bot-avatar.orange-support {
+  background: var(--orange-gradient) !important;
+}
+
+.quick-topic-btn.orange-support:hover {
+  background: var(--orange-gradient) !important;
+  color: white !important;
+  border-color: transparent !important;
 }
 
 /* Mobile Anpassungen für Chatbot */
