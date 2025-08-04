@@ -824,22 +824,25 @@ footer a:hover {
   font-size: 1.5rem;
 }
 
-/* Moderne Hilfe-Button - Höchste Priorität */
+/* Ultra-Moderne Hilfe-Button - Premium Design */
 #hilfeButton {
   position: fixed !important;
   bottom: 30px !important;
   right: 20px !important;
   left: auto !important;
   top: auto !important;
-  width: 56px !important;
-  height: 56px !important;
-  background: #007AFF !important;
+  width: 68px !important;
+  height: 68px !important;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%) !important;
   border: none !important;
-  border-radius: 50% !important;
+  border-radius: 24px !important;
   color: white !important;
-  font-size: 2rem !important;
-  box-shadow: 0 4px 16px rgba(0,122,255,0.18) !important;
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+  font-size: 1.8rem !important;
+  box-shadow: 
+    0 8px 32px rgba(102, 126, 234, 0.4),
+    0 4px 16px rgba(118, 75, 162, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
   z-index: 9999 !important;
   cursor: pointer !important;
   display: flex !important;
@@ -848,50 +851,113 @@ footer a:hover {
   transform: none !important;
   margin: 0 !important;
   padding: 0 !important;
-  animation: helpButtonFloat 3s ease-in-out infinite, helpButtonPulse 2s ease-in-out infinite alternate !important;
+  animation: 
+    helpButtonFloat 4s ease-in-out infinite,
+    helpButtonGlow 3s ease-in-out infinite alternate,
+    helpButtonRotate 8s linear infinite !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  position: relative !important;
+  overflow: hidden !important;
 }
 
 #hilfeButton:hover {
-  background: #0056CC !important;
-  transform: scale(1.15) rotate(5deg) !important;
-  box-shadow: 0 12px 40px rgba(0,122,255,0.5) !important;
-  animation: helpButtonBounce 0.6s ease-in-out !important;
+  background: linear-gradient(135deg, #764ba2 0%, #667eea 50%, #f093fb 100%) !important;
+  transform: scale(1.2) rotate(10deg) translateY(-8px) !important;
+  box-shadow: 
+    0 16px 48px rgba(102, 126, 234, 0.6),
+    0 8px 24px rgba(118, 75, 162, 0.4),
+    0 0 0 8px rgba(102, 126, 234, 0.1),
+    inset 0 2px 0 rgba(255, 255, 255, 0.3) !important;
+  animation: helpButtonMegaBounce 0.8s ease-in-out, helpButtonSparkle 1s ease-in-out !important;
+  border-radius: 28px !important;
 }
 
 #hilfeButton:active {
-  transform: scale(0.95) !important;
-  transition: all 0.1s ease !important;
+  transform: scale(1.05) rotate(5deg) translateY(-4px) !important;
+  transition: all 0.15s ease !important;
 }
 
-/* Hilfe-Button Animationen */
+/* Glassmorphism Effect für Button */
+#hilfeButton::before {
+  content: '' !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  background: linear-gradient(45deg, rgba(255,255,255,0.1) 0%, transparent 50%, rgba(255,255,255,0.05) 100%) !important;
+  border-radius: inherit !important;
+  pointer-events: none !important;
+}
+
+/* Animated Icon Container */
+#hilfeButton::after {
+  content: '💬' !important;
+  position: absolute !important;
+  font-size: 1.6rem !important;
+  animation: iconBounce 2s ease-in-out infinite !important;
+}
+
+/* Ultra-Moderne Hilfe-Button Animationen */
 @keyframes helpButtonFloat {
   0%, 100% {
-    transform: translateY(0px);
+    transform: translateY(0px) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-6px) rotate(1deg);
   }
   50% {
-    transform: translateY(-8px);
+    transform: translateY(-12px) rotate(0deg);
+  }
+  75% {
+    transform: translateY(-6px) rotate(-1deg);
   }
 }
 
-@keyframes helpButtonPulse {
+@keyframes helpButtonGlow {
   0% {
-    box-shadow: 0 4px 16px rgba(0,122,255,0.18), 0 0 0 0 rgba(0,122,255,0.4);
+    box-shadow: 
+      0 8px 32px rgba(102, 126, 234, 0.4),
+      0 4px 16px rgba(118, 75, 162, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2);
   }
   100% {
-    box-shadow: 0 4px 16px rgba(0,122,255,0.18), 0 0 0 20px rgba(0,122,255,0);
+    box-shadow: 
+      0 12px 48px rgba(102, 126, 234, 0.6),
+      0 6px 24px rgba(118, 75, 162, 0.5),
+      0 0 0 12px rgba(102, 126, 234, 0.1),
+      inset 0 2px 0 rgba(255, 255, 255, 0.3);
   }
 }
 
-@keyframes helpButtonBounce {
+@keyframes helpButtonRotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes helpButtonMegaBounce {
   0%, 20%, 50%, 80%, 100% {
-    transform: scale(1.15) rotate(5deg) translateY(0);
+    transform: scale(1.2) rotate(10deg) translateY(-8px);
   }
   40% {
-    transform: scale(1.2) rotate(5deg) translateY(-10px);
+    transform: scale(1.3) rotate(15deg) translateY(-16px);
   }
   60% {
-    transform: scale(1.18) rotate(5deg) translateY(-5px);
+    transform: scale(1.25) rotate(12deg) translateY(-12px);
   }
+}
+
+@keyframes helpButtonSparkle {
+  0%, 100% { filter: brightness(1) saturate(1); }
+  50% { filter: brightness(1.3) saturate(1.5) hue-rotate(15deg); }
+}
+
+@keyframes iconBounce {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  25% { transform: scale(1.1) rotate(-5deg); }
+  50% { transform: scale(1.2) rotate(0deg); }
+  75% { transform: scale(1.1) rotate(5deg); }
 }
 
 /* Mobile-Hilfe-Button Anpassungen */
@@ -901,44 +967,65 @@ footer a:hover {
     right: 20px !important;
     left: auto !important;
     top: auto !important;
-    width: 60px !important;
-    height: 60px !important;
-    font-size: 2.2rem !important;
-    box-shadow: 0 6px 20px rgba(0,122,255,0.25) !important;
+    width: 64px !important;
+    height: 64px !important;
+    font-size: 1.6rem !important;
+    border-radius: 22px !important;
+    box-shadow: 
+      0 6px 28px rgba(102, 126, 234, 0.5),
+      0 3px 14px rgba(118, 75, 162, 0.4),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
     z-index: 9999 !important;
     transform: none !important;
-    animation: helpButtonFloat 3s ease-in-out infinite, helpButtonPulse 2s ease-in-out infinite alternate !important;
+    animation: 
+      helpButtonFloat 4s ease-in-out infinite,
+      helpButtonGlow 3s ease-in-out infinite alternate !important;
   }
   
   #hilfeButton:hover {
-    transform: scale(1.1) rotate(3deg) !important;
-    animation: helpButtonBounce 0.6s ease-in-out !important;
+    transform: scale(1.15) rotate(8deg) translateY(-6px) !important;
+    animation: helpButtonMegaBounce 0.8s ease-in-out !important;
+    border-radius: 26px !important;
+  }
+  
+  #hilfeButton::after {
+    font-size: 1.4rem !important;
   }
 }
 
-/* Moderne Hilfe-Panel */
+/* Ultra-Moderne Hilfe-Panel */
 .hilfe-panel {
   position: fixed;
   top: 50%;
   right: 20px;
   transform: translateY(-50%) scale(0.8);
-  background: var(--card-bg);
-  border-radius: var(--border-radius-large);
-  box-shadow: var(--shadow-heavy);
+  background: 
+    linear-gradient(145deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.9) 100%),
+    radial-gradient(circle at top right, rgba(102, 126, 234, 0.1), transparent 50%),
+    radial-gradient(circle at bottom left, rgba(118, 75, 162, 0.1), transparent 50%);
+  border-radius: 28px;
+  box-shadow: 
+    0 24px 64px rgba(0, 0, 0, 0.15),
+    0 12px 32px rgba(102, 126, 234, 0.2),
+    0 6px 16px rgba(118, 75, 162, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.05);
   z-index: 1001;
   max-width: 95vw;
-  width: 420px;
+  width: 440px;
   max-height: 90vh;
-  height: 650px;
+  height: 680px;
   display: none;
   flex-direction: column;
   overflow: hidden;
-  border: 1px solid var(--border-color);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  backdrop-filter: blur(20px) saturate(1.5);
+  -webkit-backdrop-filter: blur(20px) saturate(1.5);
   overscroll-behavior: contain;
   opacity: 0;
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
 }
 
 .hilfe-themen-modern .hilfe-thema-btn:nth-child(n+6) {
@@ -957,26 +1044,46 @@ footer a:hover {
     transform: none;
     border-radius: 0;
     border: none;
-    animation: slideUpPanel 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    background: 
+      linear-gradient(145deg, rgba(255,255,255,0.98) 0%, rgba(255,255,255,0.95) 100%),
+      radial-gradient(circle at top center, rgba(102, 126, 234, 0.08), transparent 60%),
+      radial-gradient(circle at bottom center, rgba(118, 75, 162, 0.08), transparent 60%);
+    animation: slideUpPanelMega 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
 
-  @keyframes slideUpPanel {
+  @keyframes slideUpPanelMega {
     0% {
-      transform: translateY(100%);
+      transform: translateY(100%) scale(0.9);
       opacity: 0;
+      filter: blur(8px);
     }
-    50% {
-      opacity: 0.8;
+    30% {
+      transform: translateY(50%) scale(0.95);
+      opacity: 0.5;
+      filter: blur(4px);
+    }
+    70% {
+      transform: translateY(10%) scale(1.02);
+      opacity: 0.9;
+      filter: blur(1px);
     }
     100% {
-      transform: translateY(0);
+      transform: translateY(0) scale(1);
       opacity: 1;
+      filter: blur(0px);
     }
   }
   
   .hilfe-panel.offen {
-    animation: slideUpPanel 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    animation: slideUpPanelMega 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
+  
+  .hilfe-panel-header {
+    border-radius: 0;
+    padding: 28px 24px;
+    font-size: 1.4rem;
+  }
+}
 
   .chatbot-interface {
     border-radius: 0;
@@ -1018,18 +1125,64 @@ footer a:hover {
   display: flex;
   opacity: 1;
   transform: translateY(-50%) scale(1);
-  animation: helpPanelSlideIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  animation: helpPanelMegaSlideIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-/* Hilfe-Panel Animationen */
-@keyframes helpPanelSlideIn {
+/* Glassmorphism Border Effect */
+.hilfe-panel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 28px;
+  padding: 2px;
+  background: linear-gradient(135deg, 
+    rgba(102, 126, 234, 0.6) 0%, 
+    rgba(118, 75, 162, 0.4) 25%,
+    rgba(240, 147, 251, 0.6) 50%,
+    rgba(102, 126, 234, 0.4) 75%,
+    rgba(118, 75, 162, 0.6) 100%);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: xor;
+  -webkit-mask-composite: xor;
+  pointer-events: none;
+  animation: borderGlow 3s ease-in-out infinite alternate;
+}
+
+/* Ultra-Moderne Hilfe-Panel Animationen */
+@keyframes helpPanelMegaSlideIn {
   0% {
     opacity: 0;
-    transform: translateY(-50%) scale(0.8) translateX(50px);
+    transform: translateY(-50%) scale(0.7) translateX(80px) rotateY(15deg);
+    filter: blur(10px);
+  }
+  30% {
+    opacity: 0.6;
+    transform: translateY(-50%) scale(0.9) translateX(20px) rotateY(5deg);
+    filter: blur(3px);
+  }
+  70% {
+    opacity: 0.9;
+    transform: translateY(-50%) scale(1.05) translateX(-10px) rotateY(-2deg);
+    filter: blur(1px);
   }
   100% {
     opacity: 1;
-    transform: translateY(-50%) scale(1) translateX(0);
+    transform: translateY(-50%) scale(1) translateX(0) rotateY(0deg);
+    filter: blur(0px);
+  }
+}
+
+@keyframes borderGlow {
+  0% {
+    opacity: 0.6;
+    filter: brightness(1) saturate(1);
+  }
+  100% {
+    opacity: 1;
+    filter: brightness(1.3) saturate(1.5);
   }
 }
 
@@ -1066,49 +1219,113 @@ footer a:hover {
   }
 }
 
-/* Lila Header für Hauptseite */
+/* Ultra-Moderne Header für Hauptseite */
 .hilfe-panel-header {
-  padding: 20px 24px;
-  background: var(--primary-gradient);
+  padding: 24px 28px;
+  background: 
+    linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%),
+    radial-gradient(circle at top left, rgba(255,255,255,0.2), transparent 50%);
   color: white;
   display: flex;
   align-items: center;
-  gap: 15px;
-  font-weight: 700;
-  font-size: 1.2rem;
+  gap: 18px;
+  font-weight: 800;
+  font-size: 1.3rem;
   flex-shrink: 0;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
+  border-bottom: none;
+  border-radius: 28px 28px 0 0;
+  position: relative;
+  overflow: hidden;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  box-shadow: 
+    inset 0 1px 0 rgba(255,255,255,0.3),
+    0 4px 20px rgba(102, 126, 234, 0.3);
 }
 
 #hilfePanelClose {
   margin-left: auto;
-  background: none;
-  border: none;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.2);
   color: white;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   cursor: pointer;
   padding: 0;
-  width: 24px;
-  height: 24px;
+  width: 36px;
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
-  transition: background-color 0.2s ease;
+  border-radius: 12px;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
 }
 
 #hilfePanelClose:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: scale(1.1) rotate(90deg);
+  box-shadow: 
+    0 4px 16px rgba(0,0,0,0.2),
+    inset 0 1px 0 rgba(255,255,255,0.3);
+}
+
+#hilfePanelClose:active {
+  transform: scale(0.95) rotate(90deg);
+  transition: all 0.1s ease;
+}
+
+/* Header Glow Effect */
+.hilfe-panel-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  animation: headerShimmer 3s ease-in-out infinite;
+}
+
+@keyframes headerShimmer {
+  0% { left: -100%; }
+  50% { left: 100%; }
+  100% { left: 100%; }
 }
 
 .hilfe-themen-modern {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding: 24px;
+  gap: 18px;
+  padding: 28px;
   overflow-y: auto;
   max-height: calc(100vh - 120px);
-  background: linear-gradient(to bottom, rgba(255,255,255,0.05), transparent);
+  background: 
+    linear-gradient(to bottom, rgba(255,255,255,0.1), transparent),
+    radial-gradient(circle at center top, rgba(102, 126, 234, 0.03), transparent 70%);
+  position: relative;
+}
+
+/* Scrollbar Styling für moderne Optik */
+.hilfe-themen-modern::-webkit-scrollbar {
+  width: 6px;
+}
+
+.hilfe-themen-modern::-webkit-scrollbar-track {
+  background: rgba(102, 126, 234, 0.05);
+  border-radius: 10px;
+}
+
+.hilfe-themen-modern::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+.hilfe-themen-modern::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #764ba2, #f093fb);
 }
 
 /* Staggered Animation für Hilfe-Themen-Buttons */
@@ -1136,31 +1353,45 @@ footer a:hover {
 }
 
 .hilfe-thema-btn {
-  background: var(--card-bg);
-  border: 2px solid var(--border-color);
-  border-radius: var(--border-radius);
-  padding: 18px 24px;
+  background: 
+    linear-gradient(145deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.7) 100%),
+    radial-gradient(circle at top left, rgba(102, 126, 234, 0.05), transparent 60%);
+  border: 2px solid rgba(102, 126, 234, 0.1);
+  border-radius: 18px;
+  padding: 20px 26px;
   text-align: left;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--text-primary);
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   cursor: pointer;
-  font-size: 15px;
-  line-height: 1.5;
+  font-size: 15.5px;
+  line-height: 1.4;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  box-shadow: var(--shadow-light);
+  box-shadow: 
+    0 8px 24px rgba(0, 0, 0, 0.08),
+    0 4px 12px rgba(102, 126, 234, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
   position: relative;
   overflow: hidden;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 .hilfe-thema-btn:hover {
-  background: var(--primary-gradient);
+  background: 
+    linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%),
+    radial-gradient(circle at center, rgba(255,255,255,0.2), transparent 70%);
   color: white;
-  border-color: transparent;
-  transform: translateY(-5px) scale(1.02);
-  box-shadow: var(--shadow-medium), 0 8px 25px rgba(0,122,255,0.2);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-8px) scale(1.05) rotateX(5deg);
+  box-shadow: 
+    0 16px 40px rgba(102, 126, 234, 0.4),
+    0 8px 20px rgba(118, 75, 162, 0.3),
+    0 4px 10px rgba(240, 147, 251, 0.2),
+    inset 0 2px 0 rgba(255, 255, 255, 0.4);
+  text-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
 .hilfe-thema-btn:active {
@@ -1175,27 +1406,49 @@ footer a:hover {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-  transition: left 0.6s ease;
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(255,255,255,0.4), 
+    rgba(102, 126, 234, 0.2),
+    rgba(255,255,255,0.4), 
+    transparent);
+  transition: left 0.8s ease;
+  z-index: 1;
 }
 
 .hilfe-thema-btn:hover::before {
   left: 100%;
+  animation: buttonShimmer 0.8s ease-in-out;
+}
+
+@keyframes buttonShimmer {
+  0% { left: -100%; opacity: 0; }
+  50% { opacity: 1; }
+  100% { left: 100%; opacity: 0; }
 }
 
 .hilfe-thema-btn::after {
-  content: '→';
-  font-size: 20px;
+  content: '✨';
+  font-size: 18px;
   opacity: 0;
-  transform: translateX(-15px) scale(0.8);
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  z-index: 1;
+  transform: translateX(-20px) scale(0.6) rotate(-45deg);
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  z-index: 2;
   position: relative;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
 }
 
 .hilfe-thema-btn:hover::after {
   opacity: 1;
-  transform: translateX(0) scale(1.1);
+  transform: translateX(0) scale(1.2) rotate(0deg);
+  animation: sparkleRotate 1s ease-in-out infinite;
+}
+
+@keyframes sparkleRotate {
+  0%, 100% { transform: translateX(0) scale(1.2) rotate(0deg); }
+  25% { transform: translateX(2px) scale(1.3) rotate(90deg); }
+  50% { transform: translateX(0) scale(1.2) rotate(180deg); }
+  75% { transform: translateX(-2px) scale(1.3) rotate(270deg); }
 }
 
 /* Mobile-Hilfe-Themen Anpassungen */
