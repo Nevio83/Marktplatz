@@ -363,11 +363,13 @@ if (searchInput && mobileSearchBtn) {
         setTimeout(() => {
           hilfePanel.classList.remove('offen');
           hilfePanel.classList.remove('closing');
+          document.body.classList.remove('help-panel-open');
           hideChatbot();
         }, 400); // Match the animation duration
         console.log('Panel geschlossen');
       } else {
         hilfePanel.classList.add('offen');
+        document.body.classList.add('help-panel-open');
         console.log('Panel geöffnet');
       }
     });
@@ -659,11 +661,12 @@ if (searchInput && mobileSearchBtn) {
       hilfePanel.classList.add('closing');
       
       // Remove the panel after animation completes
-      setTimeout(() => {
-        hilfePanel.classList.remove('offen');
-        hilfePanel.classList.remove('closing');
-        hideChatbot();
-      }, 400); // Match the animation duration
+              setTimeout(() => {
+          hilfePanel.classList.remove('offen');
+          hilfePanel.classList.remove('closing');
+          document.body.classList.remove('help-panel-open');
+          hideChatbot();
+        }, 400); // Match the animation duration
     });
   }
   
