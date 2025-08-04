@@ -772,6 +772,8 @@ footer a:hover {
   backdrop-filter: blur(20px) !important;
   -webkit-backdrop-filter: blur(20px) !important;
   border: 2px solid rgba(255,255,255,0.2) !important;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
 #hilfeButton::before {
@@ -822,13 +824,18 @@ footer a:hover {
     width: 60px !important;
     height: 60px !important;
     font-size: 2.2rem !important;
-    box-shadow: 0 6px 20px rgba(0,122,255,0.25) !important;
+    box-shadow: 0 8px 32px rgba(102,126,234,0.3), 0 4px 16px rgba(102,126,234,0.2) !important;
     z-index: 9999 !important;
     transform: none !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    display: flex !important;
   }
   
   #hilfeButton:hover {
-    transform: scale(1.05) !important;
+    transform: scale(1.15) rotate(5deg) !important;
+    background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%) !important;
+    box-shadow: 0 16px 48px rgba(102,126,234,0.4), 0 8px 24px rgba(102,126,234,0.3) !important;
   }
 }
 
