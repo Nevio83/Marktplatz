@@ -1943,6 +1943,12 @@ footer a:hover {
   color: white;
 }
 
+/* Orange Hintergrund für Benutzer-Nachrichten */
+.user-message .message-text.orange-support {
+  background: var(--orange-gradient) !important;
+  color: white !important;
+}
+
 .bot-avatar {
   width: 40px;
   height: 40px;

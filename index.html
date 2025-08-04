@@ -456,10 +456,11 @@ if (searchInput && mobileSearchBtn) {
   }
   
   function addUserMessage(message) {
+    const orangeClass = window.orangeSupportActive ? 'orange-support' : '';
     const userMessage = `
       <div class="chatbot-message user-message">
         <div class="message-content">
-          <div class="message-text">
+          <div class="message-text ${orangeClass}">
             <p>${message}</p>
           </div>
         </div>
@@ -586,9 +587,7 @@ if (searchInput && mobileSearchBtn) {
     
     // Füge orange Klassen zu allen Nachrichten und Avataren hinzu
     messageTexts.forEach(text => {
-      if (!text.closest('.user-message')) { // Nur Bot-Nachrichten
-        text.classList.add('orange-support');
-      }
+      text.classList.add('orange-support'); // Alle Nachrichten (Bot und Benutzer)
     });
     
     botAvatars.forEach(avatar => {
