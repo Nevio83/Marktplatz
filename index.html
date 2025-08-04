@@ -412,6 +412,14 @@ if (searchInput && mobileSearchBtn) {
     chatbotInterface.style.display = 'block';
     hilfeThemen.style.display = 'none';
     hilfePanelHeader.style.display = 'none'; // Verstecke lila Header
+    
+    // Aktiviere orange Farben für den Chatbot-Header sofort
+    const chatbotHeader = document.querySelector('.chatbot-header');
+    if (chatbotHeader) {
+      chatbotHeader.classList.add('orange-support');
+    }
+    
+    // Füge Willkommensnachricht hinzu (mit orange Klassen wenn aktiv)
     addWelcomeMessage();
   }
   
@@ -420,21 +428,25 @@ if (searchInput && mobileSearchBtn) {
     hilfeThemen.style.display = 'flex';
     hilfePanelHeader.style.display = 'flex'; // Zeige lila Header wieder
     chatbotMessages.innerHTML = '';
+    
+    // Deaktiviere orange Support-Farben
+    deactivateOrangeSupport();
   }
   
   function addWelcomeMessage() {
+    const orangeClass = window.orangeSupportActive ? 'orange-support' : '';
     const welcomeMessage = `
       <div class="chatbot-message bot-message">
         <div class="message-content">
-          <div class="bot-avatar">
+          <div class="bot-avatar ${orangeClass}">
             <i class="bi bi-headset"></i>
           </div>
-          <div class="message-text">
+          <div class="message-text ${orangeClass}">
             <p>Hallo! Ich bin Ihr Comfort Consultant Support EU. Wie kann ich Ihnen heute helfen?</p>
             <div class="quick-topics">
-              <button class="quick-topic-btn" data-topic="adresse">Adresse ändern</button>
-              <button class="quick-topic-btn" data-topic="bestellung">Bestellung stornieren</button>
-              <button class="quick-topic-btn" data-topic="versand">Versand & Lieferzeiten</button>
+              <button class="quick-topic-btn ${orangeClass}" data-topic="adresse">Adresse ändern</button>
+              <button class="quick-topic-btn ${orangeClass}" data-topic="bestellung">Bestellung stornieren</button>
+              <button class="quick-topic-btn ${orangeClass}" data-topic="versand">Versand & Lieferzeiten</button>
             </div>
           </div>
         </div>
@@ -444,10 +456,11 @@ if (searchInput && mobileSearchBtn) {
   }
   
   function addUserMessage(message) {
+    const orangeClass = window.orangeSupportActive ? 'orange-support' : '';
     const userMessage = `
       <div class="chatbot-message user-message">
         <div class="message-content">
-          <div class="message-text">
+          <div class="message-text ${orangeClass}">
             <p>${message}</p>
           </div>
         </div>
@@ -457,13 +470,14 @@ if (searchInput && mobileSearchBtn) {
   }
   
   function addBotMessage(response, showFeedback = true) {
+    const orangeClass = window.orangeSupportActive ? 'orange-support' : '';
     const botMessage = `
       <div class="chatbot-message bot-message">
         <div class="message-content">
-          <div class="bot-avatar">
+          <div class="bot-avatar ${orangeClass}">
             <i class="bi bi-headset"></i>
           </div>
-          <div class="message-text">
+          <div class="message-text ${orangeClass}">
             <p>${response.answer}</p>
           </div>
         </div>
@@ -477,13 +491,14 @@ if (searchInput && mobileSearchBtn) {
   }
   
   function addAdditionalInfo(additionalInfo) {
+    const orangeClass = window.orangeSupportActive ? 'orange-support' : '';
     const additionalMessage = `
       <div class="chatbot-message bot-message additional-info">
         <div class="message-content">
-          <div class="bot-avatar">
+          <div class="bot-avatar ${orangeClass}">
             <i class="bi bi-info-circle"></i>
           </div>
-          <div class="message-text">
+          <div class="message-text ${orangeClass}">
             <p><strong>Zusätzliche Informationen:</strong></p>
             <p>${additionalInfo}</p>
           </div>
@@ -527,13 +542,14 @@ if (searchInput && mobileSearchBtn) {
   }
   
   function addFeedbackMessage(message) {
+    const orangeClass = window.orangeSupportActive ? 'orange-support' : '';
     const feedbackMessage = `
       <div class="chatbot-message bot-message feedback-message">
         <div class="message-content">
-          <div class="bot-avatar">
+          <div class="bot-avatar ${orangeClass}">
             <i class="bi bi-headset"></i>
           </div>
-          <div class="message-text">
+          <div class="message-text ${orangeClass}">
             <p>${message}</p>
           </div>
         </div>
@@ -551,6 +567,81 @@ if (searchInput && mobileSearchBtn) {
         chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
       }, 500);
     }
+  }
+  
+  function activateOrangeSupport() {
+    // Füge orange Klassen zu den relevanten Elementen hinzu
+    const hilfePanelHeader = document.getElementById('hilfePanelHeader');
+    const chatbotHeader = document.querySelector('.chatbot-header');
+    const messageTexts = document.querySelectorAll('.message-text');
+    const botAvatars = document.querySelectorAll('.bot-avatar');
+    const quickTopicBtns = document.querySelectorAll('.quick-topic-btn');
+    const hilfeThemaBtns = document.querySelectorAll('.hilfe-thema-btn');
+    
+    if (hilfePanelHeader) {
+      hilfePanelHeader.classList.add('orange-support');
+    }
+    if (chatbotHeader) {
+      chatbotHeader.classList.add('orange-support');
+    }
+    
+    // Füge orange Klassen zu allen Nachrichten und Avataren hinzu
+    messageTexts.forEach(text => {
+      text.classList.add('orange-support'); // Alle Nachrichten (Bot und Benutzer)
+    });
+    
+    botAvatars.forEach(avatar => {
+      avatar.classList.add('orange-support');
+    });
+    
+    // Füge orange Klassen zu Quick Topic Buttons hinzu
+    quickTopicBtns.forEach(btn => {
+      btn.classList.add('orange-support');
+    });
+    
+    // Füge orange Klassen zu Hilfe-Themen-Buttons hinzu
+    hilfeThemaBtns.forEach(btn => {
+      btn.classList.add('orange-support');
+    });
+    
+    // Setze einen Flag, damit neue Nachrichten automatisch orange werden
+    window.orangeSupportActive = true;
+  }
+  
+  function deactivateOrangeSupport() {
+    // Entferne orange Klassen von den relevanten Elementen
+    const hilfePanelHeader = document.getElementById('hilfePanelHeader');
+    const chatbotHeader = document.querySelector('.chatbot-header');
+    const messageTexts = document.querySelectorAll('.message-text');
+    const botAvatars = document.querySelectorAll('.bot-avatar');
+    const quickTopicBtns = document.querySelectorAll('.quick-topic-btn');
+    const hilfeThemaBtns = document.querySelectorAll('.hilfe-thema-btn');
+    
+    if (hilfePanelHeader) {
+      hilfePanelHeader.classList.remove('orange-support');
+    }
+    if (chatbotHeader) {
+      chatbotHeader.classList.remove('orange-support');
+    }
+    
+    messageTexts.forEach(text => {
+      text.classList.remove('orange-support');
+    });
+    
+    botAvatars.forEach(avatar => {
+      avatar.classList.remove('orange-support');
+    });
+    
+    quickTopicBtns.forEach(btn => {
+      btn.classList.remove('orange-support');
+    });
+    
+    hilfeThemaBtns.forEach(btn => {
+      btn.classList.remove('orange-support');
+    });
+    
+    // Entferne den Flag
+    window.orangeSupportActive = false;
   }
   
   // Event Listeners
@@ -572,6 +663,8 @@ if (searchInput && mobileSearchBtn) {
   document.querySelectorAll('.hilfe-thema-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const topic = btn.getAttribute('data-topic');
+      // Aktiviere orange Farben sofort beim Klick
+      activateOrangeSupport();
       showChatbot();
       setTimeout(() => {
         handleTopicClick(topic);
@@ -583,6 +676,8 @@ if (searchInput && mobileSearchBtn) {
   document.addEventListener('click', (e) => {
     if (e.target.classList.contains('quick-topic-btn')) {
       const topic = e.target.getAttribute('data-topic');
+      // Aktiviere orange Support-Farben für Quick Topic Buttons
+      activateOrangeSupport();
       handleTopicClick(topic);
     }
   });
