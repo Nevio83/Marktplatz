@@ -893,10 +893,13 @@ footer a:hover {
 
 /* Animated Icon Container */
 #hilfeButton::after {
-  content: '💬' !important;
+  content: '?' !important;
   position: absolute !important;
-  font-size: 1.6rem !important;
+  font-size: 2.2rem !important;
+  font-weight: 900 !important;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
   animation: iconBounce 2s ease-in-out infinite !important;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3) !important;
 }
 
 /* Ultra-Moderne Hilfe-Button Animationen */
@@ -989,7 +992,7 @@ footer a:hover {
   }
   
   #hilfeButton::after {
-    font-size: 1.4rem !important;
+    font-size: 1.8rem !important;
   }
 }
 
