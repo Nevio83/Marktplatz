@@ -824,13 +824,14 @@ footer a:hover {
   font-size: 1.5rem;
 }
 
-/* Ultra-Moderne Hilfe-Button - Premium Design */
+/* Ultra-Moderne Hilfe-Button - Premium Design - FORCE RIGHT POSITION */
+div#hilfeButton,
 #hilfeButton {
   position: fixed !important;
   bottom: 90px !important;
   right: 30px !important;
-  left: auto !important;
-  top: auto !important;
+  left: unset !important;
+  top: unset !important;
   width: 68px !important;
   height: 68px !important;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%) !important;
@@ -968,8 +969,8 @@ footer a:hover {
   #hilfeButton {
     bottom: 90px !important;
     right: 20px !important;
-    left: auto !important;
-    top: auto !important;
+    left: unset !important;
+    top: unset !important;
     width: 64px !important;
     height: 64px !important;
     font-size: 1.6rem !important;
@@ -994,6 +995,15 @@ footer a:hover {
   #hilfeButton::after {
     font-size: 1.8rem !important;
   }
+  
+  /* MOBILE FORCE POSITIONING */
+  [id="hilfeButton"] {
+    position: fixed !important;
+    bottom: 90px !important;
+    right: 20px !important;
+    left: unset !important;
+    top: unset !important;
+  }
 }
 
 /* Ultra-Moderne Hilfe-Panel */
@@ -1002,6 +1012,7 @@ footer a:hover {
   top: 50%;
   right: 20px;
   transform: translateY(-50%) scale(0.8);
+  left: auto;
   background: 
     linear-gradient(145deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.9) 100%),
     radial-gradient(circle at top right, rgba(102, 126, 234, 0.1), transparent 50%),
@@ -1132,11 +1143,13 @@ footer a:hover {
   }
 }
 
-.hilfe-panel.offen {
-  display: flex;
-  opacity: 1;
-  transform: translateY(-50%) scale(1);
-  animation: helpPanelMegaSlideIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+.hilfe-panel.offen,
+div.hilfe-panel.offen {
+  display: flex !important;
+  opacity: 1 !important;
+  transform: translateY(-50%) scale(1) !important;
+  animation: helpPanelMegaSlideIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+  visibility: visible !important;
 }
 
 /* Verhindere Body-Scroll wenn Panel offen ist */
@@ -1149,6 +1162,25 @@ body:has(.hilfe-panel.offen) {
 .help-panel-open {
   overflow: hidden !important;
   height: 100vh !important;
+}
+
+/* FORCE CORRECT POSITIONING - OVERRIDE ALL OTHER STYLES */
+[id="hilfeButton"] {
+  position: fixed !important;
+  bottom: 90px !important;
+  right: 30px !important;
+  left: unset !important;
+  top: unset !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  transform: none !important;
+}
+
+/* FORCE PANEL VISIBILITY */
+[id="hilfePanel"].offen {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
 /* Glassmorphism Border Effect */
