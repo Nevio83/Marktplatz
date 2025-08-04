@@ -575,6 +575,7 @@ if (searchInput && mobileSearchBtn) {
     const messageTexts = document.querySelectorAll('.message-text');
     const botAvatars = document.querySelectorAll('.bot-avatar');
     const quickTopicBtns = document.querySelectorAll('.quick-topic-btn');
+    const hilfeThemaBtns = document.querySelectorAll('.hilfe-thema-btn');
     
     if (hilfePanelHeader) {
       hilfePanelHeader.classList.add('orange-support');
@@ -599,6 +600,11 @@ if (searchInput && mobileSearchBtn) {
       btn.classList.add('orange-support');
     });
     
+    // Füge orange Klassen zu Hilfe-Themen-Buttons hinzu
+    hilfeThemaBtns.forEach(btn => {
+      btn.classList.add('orange-support');
+    });
+    
     // Setze einen Flag, damit neue Nachrichten automatisch orange werden
     window.orangeSupportActive = true;
   }
@@ -610,6 +616,7 @@ if (searchInput && mobileSearchBtn) {
     const messageTexts = document.querySelectorAll('.message-text');
     const botAvatars = document.querySelectorAll('.bot-avatar');
     const quickTopicBtns = document.querySelectorAll('.quick-topic-btn');
+    const hilfeThemaBtns = document.querySelectorAll('.hilfe-thema-btn');
     
     if (hilfePanelHeader) {
       hilfePanelHeader.classList.remove('orange-support');
@@ -627,6 +634,10 @@ if (searchInput && mobileSearchBtn) {
     });
     
     quickTopicBtns.forEach(btn => {
+      btn.classList.remove('orange-support');
+    });
+    
+    hilfeThemaBtns.forEach(btn => {
       btn.classList.remove('orange-support');
     });
     

@@ -2099,6 +2099,23 @@ footer a:hover {
   border-color: transparent !important;
 }
 
+/* Orange Hintergrund für Hilfe-Themen-Buttons */
+.hilfe-thema-btn.orange-support {
+  background: var(--orange-gradient) !important;
+  color: white !important;
+  border-color: transparent !important;
+  transform: translateY(-3px) !important;
+  box-shadow: var(--shadow-medium) !important;
+}
+
+.hilfe-thema-btn.orange-support:hover {
+  background: var(--orange-gradient) !important;
+  color: white !important;
+  border-color: transparent !important;
+  transform: translateY(-3px) !important;
+  box-shadow: var(--shadow-medium) !important;
+}
+
 /* Mobile Anpassungen für Chatbot */
 @media (max-width: 768px) {
   .chatbot-messages {
