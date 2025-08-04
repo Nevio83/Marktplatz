@@ -801,21 +801,33 @@ footer a:hover {
   top: 50%;
   right: 20px;
   transform: translateY(-50%);
-  background: var(--card-bg);
-  border-radius: var(--border-radius-large);
-  box-shadow: var(--shadow-heavy);
+  background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,250,252,0.95) 100%);
+  border-radius: 28px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.15), 0 8px 32px rgba(0,0,0,0.1);
   z-index: 1001;
   max-width: 95vw;
-  width: 420px;
+  width: 440px;
   max-height: 90vh;
-  height: 650px;
+  height: 680px;
   display: none;
   flex-direction: column;
   overflow: hidden;
-  border: 1px solid var(--border-color);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.2);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   overscroll-behavior: contain;
+  animation: panelSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes panelSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-50%) translateX(100px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
+  }
 }
 
 .hilfe-themen-modern .hilfe-thema-btn:nth-child(n+6) {
@@ -888,16 +900,29 @@ footer a:hover {
 
 /* Lila Header für Hauptseite */
 .hilfe-panel-header {
-  padding: 20px 24px;
-  background: var(--primary-gradient);
+  padding: 24px 28px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 16px;
   font-weight: 700;
-  font-size: 1.2rem;
+  font-size: 1.25rem;
   flex-shrink: 0;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+  position: relative;
+  overflow: hidden;
+}
+
+.hilfe-panel-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, rgba(255,255,255,0.1) 0%, transparent 50%, rgba(255,255,255,0.05) 100%);
+  pointer-events: none;
 }
 
 #hilfePanelClose {
@@ -924,37 +949,67 @@ footer a:hover {
 .hilfe-themen-modern {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding: 24px;
+  gap: 18px;
+  padding: 28px;
   overflow-y: auto;
   max-height: calc(100vh - 120px);
-  background: linear-gradient(to bottom, rgba(255,255,255,0.05), transparent);
+  background: linear-gradient(180deg, rgba(255,255,255,0.8) 0%, rgba(248,250,252,0.6) 100%);
+  position: relative;
+}
+
+.hilfe-themen-modern::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(102,126,234,0.1) 50%, transparent 100%);
 }
 
 .hilfe-thema-btn {
-  background: var(--card-bg);
-  border: 2px solid var(--border-color);
-  border-radius: var(--border-radius);
-  padding: 18px 24px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(248,250,252,0.9) 100%);
+  border: 2px solid rgba(226,232,240,0.8);
+  border-radius: 20px;
+  padding: 20px 26px;
   text-align: left;
   font-weight: 600;
   color: var(--text-primary);
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   font-size: 15px;
   line-height: 1.5;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  box-shadow: var(--shadow-light);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04);
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.hilfe-thema-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  transition: left 0.6s ease;
+}
+
+.hilfe-thema-btn:hover::before {
+  left: 100%;
 }
 
 .hilfe-thema-btn:hover {
-  background: var(--primary-gradient);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   border-color: transparent;
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-medium);
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 12px 40px rgba(102,126,234,0.3), 0 6px 20px rgba(102,126,234,0.2);
 }
 
 .hilfe-thema-btn::after {
@@ -1860,25 +1915,41 @@ footer a:hover {
   display: none;
   flex-direction: column;
   height: 100%;
-  background: var(--card-bg);
+  background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,250,252,0.95) 100%);
   overflow: hidden;
-  border-radius: var(--border-radius-large);
-  box-shadow: var(--shadow-medium);
+  border-radius: 28px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.15), 0 8px 32px rgba(0,0,0,0.1);
   overscroll-behavior: contain;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.2);
 }
 
 .chatbot-header {
   display: flex;
   align-items: center;
-  gap: 15px;
-  padding: 20px 24px;
-  background: var(--primary-gradient);
+  gap: 16px;
+  padding: 24px 28px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   font-weight: 700;
-  font-size: 1.2rem;
-  border-radius: var(--border-radius-large) var(--border-radius-large) 0 0;
+  font-size: 1.25rem;
+  border-radius: 28px 28px 0 0;
   flex-shrink: 0;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+  position: relative;
+  overflow: hidden;
+}
+
+.chatbot-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, rgba(255,255,255,0.1) 0%, transparent 50%, rgba(255,255,255,0.05) 100%);
+  pointer-events: none;
 }
 
 .chatbot-header .bi-arrow-left {
@@ -1893,15 +1964,16 @@ footer a:hover {
 
 .chatbot-messages {
   flex: 1;
-  padding: 20px;
+  padding: 24px 28px;
   overflow-y: auto;
   max-height: calc(100vh - 200px);
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 20px;
   min-height: 0;
   /* Verhindere Scroll-Propagation */
   overscroll-behavior: contain;
+  background: linear-gradient(180deg, rgba(255,255,255,0.6) 0%, rgba(248,250,252,0.4) 100%);
 }
 
 .chatbot-message {
@@ -1929,13 +2001,17 @@ footer a:hover {
 }
 
 .message-text {
-  background: var(--light-bg);
-  padding: 16px 20px;
-  border-radius: var(--border-radius);
+  background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(248,250,252,0.9) 100%);
+  padding: 18px 22px;
+  border-radius: 20px;
   position: relative;
   font-size: 15px;
-  line-height: 1.5;
-  box-shadow: var(--shadow-light);
+  line-height: 1.6;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04);
+  border: 1px solid rgba(226,232,240,0.6);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
 }
 
 .user-message .message-text {
@@ -1950,18 +2026,32 @@ footer a:hover {
 }
 
 .bot-avatar {
-  width: 40px;
-  height: 40px;
-  background: var(--primary-gradient);
+  width: 44px;
+  height: 44px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
-  font-size: 16px;
+  font-size: 18px;
   flex-shrink: 0;
-  box-shadow: var(--shadow-medium);
-  border: 2px solid rgba(255,255,255,0.2);
+  box-shadow: 0 6px 24px rgba(102,126,234,0.3), 0 2px 8px rgba(102,126,234,0.2);
+  border: 3px solid rgba(255,255,255,0.3);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.bot-avatar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, rgba(255,255,255,0.2) 0%, transparent 50%, rgba(255,255,255,0.1) 100%);
+  border-radius: 50%;
 }
 
 .quick-topics {
@@ -1972,40 +2062,61 @@ footer a:hover {
 }
 
 .quick-topic-btn {
-  background: var(--light-bg);
-  border: 2px solid var(--border-color);
-  padding: 12px 18px;
-  border-radius: var(--border-radius);
+  background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(248,250,252,0.9) 100%);
+  border: 2px solid rgba(226,232,240,0.8);
+  padding: 14px 20px;
+  border-radius: 16px;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   color: var(--text-primary);
-  box-shadow: var(--shadow-light);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+}
+
+.quick-topic-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  transition: left 0.6s ease;
+}
+
+.quick-topic-btn:hover::before {
+  left: 100%;
 }
 
 .quick-topic-btn:hover {
-  background: var(--primary-gradient);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   border-color: transparent;
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-medium);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 8px 32px rgba(102,126,234,0.3), 0 4px 16px rgba(102,126,234,0.2);
 }
 
 
 /* Feedback Buttons */
 .feedback-buttons {
   display: none;
-  gap: 16px;
-  padding: 20px 24px;
-  border-top: 1px solid var(--border-color);
-  background: var(--card-bg);
+  gap: 18px;
+  padding: 24px 28px;
+  border-top: 1px solid rgba(226,232,240,0.6);
+  background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,250,252,0.95) 100%);
   flex-shrink: 0;
   position: sticky;
   bottom: 0;
   width: 100%;
   z-index: 10;
-  box-shadow: 0 -4px 12px rgba(0,0,0,0.05);
+  box-shadow: 0 -8px 32px rgba(0,0,0,0.1), 0 -4px 16px rgba(0,0,0,0.05);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
 }
 
 .feedback-btn {
@@ -2013,17 +2124,36 @@ footer a:hover {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  padding: 14px 20px;
-  border: 2px solid var(--border-color);
-  border-radius: var(--border-radius);
-  background: var(--card-bg);
+  gap: 12px;
+  padding: 16px 22px;
+  border: 2px solid rgba(226,232,240,0.8);
+  border-radius: 18px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(248,250,252,0.9) 100%);
   color: var(--text-primary);
   font-weight: 600;
   font-size: 15px;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: var(--shadow-light);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+}
+
+.feedback-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  transition: left 0.6s ease;
+}
+
+.feedback-btn:hover::before {
+  left: 100%;
 }
 
 .feedback-btn:hover {
