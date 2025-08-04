@@ -412,13 +412,15 @@ if (searchInput && mobileSearchBtn) {
     chatbotInterface.style.display = 'block';
     hilfeThemen.style.display = 'none';
     hilfePanelHeader.style.display = 'none'; // Verstecke lila Header
-    addWelcomeMessage();
     
     // Aktiviere orange Farben für den Chatbot-Header sofort
     const chatbotHeader = document.querySelector('.chatbot-header');
     if (chatbotHeader) {
       chatbotHeader.classList.add('orange-support');
     }
+    
+    // Füge Willkommensnachricht hinzu (mit orange Klassen wenn aktiv)
+    addWelcomeMessage();
   }
   
   function hideChatbot() {
@@ -432,18 +434,19 @@ if (searchInput && mobileSearchBtn) {
   }
   
   function addWelcomeMessage() {
+    const orangeClass = window.orangeSupportActive ? 'orange-support' : '';
     const welcomeMessage = `
       <div class="chatbot-message bot-message">
         <div class="message-content">
-          <div class="bot-avatar">
+          <div class="bot-avatar ${orangeClass}">
             <i class="bi bi-headset"></i>
           </div>
-          <div class="message-text">
+          <div class="message-text ${orangeClass}">
             <p>Hallo! Ich bin Ihr Comfort Consultant Support EU. Wie kann ich Ihnen heute helfen?</p>
             <div class="quick-topics">
-              <button class="quick-topic-btn" data-topic="adresse">Adresse ändern</button>
-              <button class="quick-topic-btn" data-topic="bestellung">Bestellung stornieren</button>
-              <button class="quick-topic-btn" data-topic="versand">Versand & Lieferzeiten</button>
+              <button class="quick-topic-btn ${orangeClass}" data-topic="adresse">Adresse ändern</button>
+              <button class="quick-topic-btn ${orangeClass}" data-topic="bestellung">Bestellung stornieren</button>
+              <button class="quick-topic-btn ${orangeClass}" data-topic="versand">Versand & Lieferzeiten</button>
             </div>
           </div>
         </div>
