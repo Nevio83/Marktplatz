@@ -356,7 +356,15 @@ if (searchInput && mobileSearchBtn) {
     hilfeButton.addEventListener('click', () => {
       console.log('Hilfe-Button geklickt!');
       if (hilfePanel.classList.contains('offen')) {
-        hilfePanel.classList.remove('offen');
+        // Add closing animation
+        hilfePanel.classList.add('closing');
+        
+        // Remove the panel after animation completes
+        setTimeout(() => {
+          hilfePanel.classList.remove('offen');
+          hilfePanel.classList.remove('closing');
+          hideChatbot();
+        }, 400); // Match the animation duration
         console.log('Panel geschlossen');
       } else {
         hilfePanel.classList.add('offen');
@@ -647,8 +655,15 @@ if (searchInput && mobileSearchBtn) {
   // Event Listeners
   if (hilfePanelClose) {
     hilfePanelClose.addEventListener('click', () => {
-      hilfePanel.classList.remove('offen');
-      hideChatbot();
+      // Add closing animation
+      hilfePanel.classList.add('closing');
+      
+      // Remove the panel after animation completes
+      setTimeout(() => {
+        hilfePanel.classList.remove('offen');
+        hilfePanel.classList.remove('closing');
+        hideChatbot();
+      }, 400); // Match the animation duration
     });
   }
   

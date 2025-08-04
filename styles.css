@@ -451,8 +451,8 @@ body {
     border: 1px solid var(--border-color);
     opacity: 0;
     visibility: hidden;
-    transform: translateY(-10px);
-    transition: all 0.3s ease;
+    transform: translateY(-20px) scale(0.95);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     z-index: 1000;
     overflow: hidden;
 }
@@ -460,7 +460,80 @@ body {
 .cart-dropdown.show {
     opacity: 1;
     visibility: visible;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
+    animation: cartDropdownSlideIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Warenkorb-Dropdown Animationen */
+@keyframes cartDropdownSlideIn {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.95);
+    }
+    50% {
+        transform: translateY(5px) scale(1.02);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Cart Item Animations */
+.cart-item {
+    animation: cartItemFadeIn 0.5s ease-out;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.cart-item:hover {
+    transform: translateX(5px);
+    background: rgba(var(--primary-rgb), 0.02);
+}
+
+@keyframes cartItemFadeIn {
+    0% {
+        opacity: 0;
+        transform: translateX(-20px) scale(0.95);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+    }
+}
+
+/* Enhanced quantity button animations */
+.quantity-btn {
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
+}
+
+.quantity-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.quantity-btn:active {
+    transform: scale(0.95);
+    transition: all 0.1s ease;
+}
+
+.quantity-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.3s ease, height 0.3s ease;
+}
+
+.quantity-btn:hover::before {
+    width: 100px;
+    height: 100px;
 }
 
 .cart-dropdown-header {
@@ -492,12 +565,20 @@ body {
     align-items: center;
     justify-content: center;
     border-radius: var(--radius-full);
-    transition: all 0.2s ease;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
 }
 
 .cart-dropdown .btn-close:hover {
     background: var(--danger-red);
     color: white;
+    transform: scale(1.1) rotate(90deg);
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+}
+
+.cart-dropdown .btn-close:active {
+    transform: scale(0.95) rotate(90deg);
 }
 
 .cart-dropdown-body {
@@ -758,7 +839,7 @@ footer a:hover {
   color: white !important;
   font-size: 2rem !important;
   box-shadow: 0 4px 16px rgba(0,122,255,0.18) !important;
-  transition: all 0.3s ease !important;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
   z-index: 9999 !important;
   cursor: pointer !important;
   display: flex !important;
@@ -767,12 +848,50 @@ footer a:hover {
   transform: none !important;
   margin: 0 !important;
   padding: 0 !important;
+  animation: helpButtonFloat 3s ease-in-out infinite, helpButtonPulse 2s ease-in-out infinite alternate !important;
 }
 
 #hilfeButton:hover {
   background: #0056CC !important;
-  transform: scale(1.1) !important;
-  box-shadow: 0 8px 32px rgba(0,122,255,0.4) !important;
+  transform: scale(1.15) rotate(5deg) !important;
+  box-shadow: 0 12px 40px rgba(0,122,255,0.5) !important;
+  animation: helpButtonBounce 0.6s ease-in-out !important;
+}
+
+#hilfeButton:active {
+  transform: scale(0.95) !important;
+  transition: all 0.1s ease !important;
+}
+
+/* Hilfe-Button Animationen */
+@keyframes helpButtonFloat {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes helpButtonPulse {
+  0% {
+    box-shadow: 0 4px 16px rgba(0,122,255,0.18), 0 0 0 0 rgba(0,122,255,0.4);
+  }
+  100% {
+    box-shadow: 0 4px 16px rgba(0,122,255,0.18), 0 0 0 20px rgba(0,122,255,0);
+  }
+}
+
+@keyframes helpButtonBounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: scale(1.15) rotate(5deg) translateY(0);
+  }
+  40% {
+    transform: scale(1.2) rotate(5deg) translateY(-10px);
+  }
+  60% {
+    transform: scale(1.18) rotate(5deg) translateY(-5px);
+  }
 }
 
 /* Mobile-Hilfe-Button Anpassungen */
@@ -788,10 +907,12 @@ footer a:hover {
     box-shadow: 0 6px 20px rgba(0,122,255,0.25) !important;
     z-index: 9999 !important;
     transform: none !important;
+    animation: helpButtonFloat 3s ease-in-out infinite, helpButtonPulse 2s ease-in-out infinite alternate !important;
   }
   
   #hilfeButton:hover {
-    transform: scale(1.05) !important;
+    transform: scale(1.1) rotate(3deg) !important;
+    animation: helpButtonBounce 0.6s ease-in-out !important;
   }
 }
 
@@ -800,7 +921,7 @@ footer a:hover {
   position: fixed;
   top: 50%;
   right: 20px;
-  transform: translateY(-50%);
+  transform: translateY(-50%) scale(0.8);
   background: var(--card-bg);
   border-radius: var(--border-radius-large);
   box-shadow: var(--shadow-heavy);
@@ -816,6 +937,8 @@ footer a:hover {
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   overscroll-behavior: contain;
+  opacity: 0;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .hilfe-themen-modern .hilfe-thema-btn:nth-child(n+6) {
@@ -834,16 +957,25 @@ footer a:hover {
     transform: none;
     border-radius: 0;
     border: none;
-    animation: slideUpPanel 0.3s ease-out;
+    animation: slideUpPanel 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
 
   @keyframes slideUpPanel {
-    from {
+    0% {
       transform: translateY(100%);
+      opacity: 0;
     }
-    to {
+    50% {
+      opacity: 0.8;
+    }
+    100% {
       transform: translateY(0);
+      opacity: 1;
     }
+  }
+  
+  .hilfe-panel.offen {
+    animation: slideUpPanel 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
 
   .chatbot-interface {
@@ -884,6 +1016,54 @@ footer a:hover {
 
 .hilfe-panel.offen {
   display: flex;
+  opacity: 1;
+  transform: translateY(-50%) scale(1);
+  animation: helpPanelSlideIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Hilfe-Panel Animationen */
+@keyframes helpPanelSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-50%) scale(0.8) translateX(50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(-50%) scale(1) translateX(0);
+  }
+}
+
+.hilfe-panel.closing {
+  animation: helpPanelSlideOut 0.4s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards;
+}
+
+@keyframes helpPanelSlideOut {
+  0% {
+    opacity: 1;
+    transform: translateY(-50%) scale(1) translateX(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-50%) scale(0.8) translateX(50px);
+  }
+}
+
+/* Mobile closing animation */
+@media (max-width: 768px) {
+  .hilfe-panel.closing {
+    animation: slideDownPanel 0.4s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards;
+  }
+  
+  @keyframes slideDownPanel {
+    0% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+  }
 }
 
 /* Lila Header für Hauptseite */
@@ -931,6 +1111,30 @@ footer a:hover {
   background: linear-gradient(to bottom, rgba(255,255,255,0.05), transparent);
 }
 
+/* Staggered Animation für Hilfe-Themen-Buttons */
+.hilfe-panel.offen .hilfe-thema-btn {
+  animation: staggerFadeInUp 0.6s ease-out both;
+}
+
+.hilfe-panel.offen .hilfe-thema-btn:nth-child(1) { animation-delay: 0.1s; }
+.hilfe-panel.offen .hilfe-thema-btn:nth-child(2) { animation-delay: 0.2s; }
+.hilfe-panel.offen .hilfe-thema-btn:nth-child(3) { animation-delay: 0.3s; }
+.hilfe-panel.offen .hilfe-thema-btn:nth-child(4) { animation-delay: 0.4s; }
+.hilfe-panel.offen .hilfe-thema-btn:nth-child(5) { animation-delay: 0.5s; }
+.hilfe-panel.offen .hilfe-thema-btn:nth-child(6) { animation-delay: 0.6s; }
+.hilfe-panel.offen .hilfe-thema-btn:nth-child(7) { animation-delay: 0.7s; }
+
+@keyframes staggerFadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
 .hilfe-thema-btn {
   background: var(--card-bg);
   border: 2px solid var(--border-color);
@@ -939,7 +1143,7 @@ footer a:hover {
   text-align: left;
   font-weight: 600;
   color: var(--text-primary);
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   cursor: pointer;
   font-size: 15px;
   line-height: 1.5;
@@ -947,27 +1151,51 @@ footer a:hover {
   align-items: center;
   justify-content: space-between;
   box-shadow: var(--shadow-light);
+  position: relative;
+  overflow: hidden;
 }
 
 .hilfe-thema-btn:hover {
   background: var(--primary-gradient);
   color: white;
   border-color: transparent;
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-medium);
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: var(--shadow-medium), 0 8px 25px rgba(0,122,255,0.2);
+}
+
+.hilfe-thema-btn:active {
+  transform: translateY(-2px) scale(0.98);
+  transition: all 0.1s ease;
+}
+
+.hilfe-thema-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.6s ease;
+}
+
+.hilfe-thema-btn:hover::before {
+  left: 100%;
 }
 
 .hilfe-thema-btn::after {
   content: '→';
   font-size: 20px;
   opacity: 0;
-  transform: translateX(-10px);
-  transition: all 0.3s ease;
+  transform: translateX(-15px) scale(0.8);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  z-index: 1;
+  position: relative;
 }
 
 .hilfe-thema-btn:hover::after {
   opacity: 1;
-  transform: translateX(0);
+  transform: translateX(0) scale(1.1);
 }
 
 /* Mobile-Hilfe-Themen Anpassungen */
@@ -983,7 +1211,16 @@ footer a:hover {
   }
   
   .hilfe-thema-btn:hover {
-    transform: translateY(-1px);
+    transform: translateY(-2px) scale(1.01);
+  }
+  
+  .feedback-btn {
+    padding: 12px 16px;
+    font-size: 14px;
+  }
+  
+  .feedback-btn:hover {
+    transform: translateY(-2px) scale(1.01);
   }
 }
 
@@ -2022,13 +2259,38 @@ footer a:hover {
   font-weight: 600;
   font-size: 15px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   box-shadow: var(--shadow-light);
+  position: relative;
+  overflow: hidden;
 }
 
 .feedback-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.feedback-btn:active {
+  transform: translateY(-1px) scale(0.98);
+  transition: all 0.1s ease;
+}
+
+.feedback-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.4s ease, height 0.4s ease;
+}
+
+.feedback-btn:hover::before {
+  width: 300px;
+  height: 300px;
 }
 
 .helpful-btn {
@@ -2039,8 +2301,14 @@ footer a:hover {
 .helpful-btn:hover {
   background: var(--success-color);
   color: white;
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-medium);
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: var(--shadow-medium), 0 8px 25px rgba(34, 197, 94, 0.3);
+  animation: successPulse 0.6s ease-in-out;
+}
+
+@keyframes successPulse {
+  0%, 100% { transform: translateY(-4px) scale(1.05); }
+  50% { transform: translateY(-6px) scale(1.08); }
 }
 
 .not-helpful-btn {
@@ -2051,8 +2319,15 @@ footer a:hover {
 .not-helpful-btn:hover {
   background: var(--danger-color);
   color: white;
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-medium);
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: var(--shadow-medium), 0 8px 25px rgba(239, 68, 68, 0.3);
+  animation: errorShake 0.6s ease-in-out;
+}
+
+@keyframes errorShake {
+  0%, 100% { transform: translateY(-4px) scale(1.05) translateX(0); }
+  25% { transform: translateY(-4px) scale(1.05) translateX(-2px); }
+  75% { transform: translateY(-4px) scale(1.05) translateX(2px); }
 }
 
 /* Additional Info Message */
