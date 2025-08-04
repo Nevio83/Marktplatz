@@ -287,9 +287,9 @@ if (searchInput && mobileSearchBtn) {
       });
     </script>
 
-<!-- Hilfe-Button und Panel (modernes Design) -->
+<!-- Hilfe-Button und Panel (ultra-modernes Design) -->
 <div id="hilfeButton" aria-label="Hilfe öffnen">
-  <i class="bi bi-question-circle"></i>
+  <!-- Icon wird jetzt über CSS ::after pseudo-element angezeigt -->
 </div>
 <div id="hilfePanel" class="hilfe-panel">
   <!-- Lila Header für Hauptseite -->
@@ -356,10 +356,20 @@ if (searchInput && mobileSearchBtn) {
     hilfeButton.addEventListener('click', () => {
       console.log('Hilfe-Button geklickt!');
       if (hilfePanel.classList.contains('offen')) {
-        hilfePanel.classList.remove('offen');
+        // Add closing animation
+        hilfePanel.classList.add('closing');
+        
+        // Remove the panel after animation completes
+        setTimeout(() => {
+          hilfePanel.classList.remove('offen');
+          hilfePanel.classList.remove('closing');
+          document.body.classList.remove('help-panel-open');
+          hideChatbot();
+        }, 400); // Match the animation duration
         console.log('Panel geschlossen');
       } else {
         hilfePanel.classList.add('offen');
+        document.body.classList.add('help-panel-open');
         console.log('Panel geöffnet');
       }
     });
@@ -647,8 +657,16 @@ if (searchInput && mobileSearchBtn) {
   // Event Listeners
   if (hilfePanelClose) {
     hilfePanelClose.addEventListener('click', () => {
-      hilfePanel.classList.remove('offen');
-      hideChatbot();
+      // Add closing animation
+      hilfePanel.classList.add('closing');
+      
+      // Remove the panel after animation completes
+              setTimeout(() => {
+          hilfePanel.classList.remove('offen');
+          hilfePanel.classList.remove('closing');
+          document.body.classList.remove('help-panel-open');
+          hideChatbot();
+        }, 400); // Match the animation duration
     });
   }
   
