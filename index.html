@@ -288,7 +288,7 @@ if (searchInput && mobileSearchBtn) {
     </script>
 
 <!-- Hilfe-Button und Panel (modernes Design) -->
-<div id="hilfeButton" aria-label="Hilfe öffnen">
+<div id="hilfeButton" aria-label="Hilfe öffnen" style="position: fixed; bottom: 30px; right: 20px; width: 64px; height: 64px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; border-radius: 50%; color: white; font-size: 2.2rem; box-shadow: 0 8px 32px rgba(102,126,234,0.3); z-index: 99999; cursor: pointer; display: flex; align-items: center; justify-content: center; visibility: visible; opacity: 1;">
   <i class="bi bi-question-circle"></i>
 </div>
 <div id="hilfePanel" class="hilfe-panel">
@@ -695,6 +695,39 @@ if (searchInput && mobileSearchBtn) {
   });
   
   console.log('Script geladen!');
+  
+  // Stelle sicher, dass der Hilfe-Button beim Laden sichtbar ist
+  const hilfeButtonOnLoad = document.getElementById('hilfeButton');
+  if (hilfeButtonOnLoad) {
+    hilfeButtonOnLoad.style.display = 'flex';
+    hilfeButtonOnLoad.style.visibility = 'visible';
+    hilfeButtonOnLoad.style.opacity = '1';
+    hilfeButtonOnLoad.style.zIndex = '99999';
+    hilfeButtonOnLoad.style.position = 'fixed';
+    hilfeButtonOnLoad.style.left = 'auto';
+    hilfeButtonOnLoad.style.top = 'auto';
+    hilfeButtonOnLoad.style.transform = 'none';
+    hilfeButtonOnLoad.style.bottom = '30px';
+    hilfeButtonOnLoad.style.right = '20px';
+    console.log('Hilfe-Button sichtbar gemacht');
+  } else {
+    console.error('Hilfe-Button nicht gefunden beim Laden!');
+  }
+  
+  // Zusätzliche Sicherheitsmaßnahme nach kurzer Verzögerung
+  setTimeout(() => {
+    const hilfeButtonDelayed = document.getElementById('hilfeButton');
+    if (hilfeButtonDelayed) {
+      hilfeButtonDelayed.style.display = 'flex';
+      hilfeButtonDelayed.style.visibility = 'visible';
+      hilfeButtonDelayed.style.opacity = '1';
+      hilfeButtonDelayed.style.zIndex = '99999';
+      hilfeButtonDelayed.style.position = 'fixed';
+      hilfeButtonDelayed.style.bottom = '30px';
+      hilfeButtonDelayed.style.right = '20px';
+      console.log('Hilfe-Button nach Verzögerung sichtbar gemacht');
+    }
+  }, 1000);
 </script>
 <script>
   // Herz-Icon bei Hover füllen
@@ -748,7 +781,7 @@ if (searchInput && mobileSearchBtn) {
   document.getElementById('cartButton').addEventListener('click', () => {
     setTimeout(() => {
       if (cartDropdown.classList.contains('show')) {
-        // Verstecke Knöpfe komplett
+        // Verstecke Knöpfe nur wenn Warenkorb wirklich geöffnet ist
         if (hilfeBtnCart) {
           hilfeBtnCart.style.display = 'none';
           hilfeBtnCart.style.visibility = 'hidden';
@@ -771,6 +804,28 @@ if (searchInput && mobileSearchBtn) {
         }
         // Verhindere Scrollen auf dem Body
         document.body.classList.add('cart-open');
+      } else {
+        // Zeige Knöpfe wieder an wenn Warenkorb geschlossen ist
+        if (hilfeBtnCart) {
+          hilfeBtnCart.style.display = 'flex';
+          hilfeBtnCart.style.visibility = 'visible';
+          hilfeBtnCart.style.opacity = '1';
+          hilfeBtnCart.style.zIndex = '9999';
+          hilfeBtnCart.style.position = 'fixed';
+          hilfeBtnCart.style.left = '';
+          hilfeBtnCart.style.top = '';
+          hilfeBtnCart.style.transform = '';
+        }
+        if (scrollBtnCart) {
+          scrollBtnCart.style.display = 'flex';
+          scrollBtnCart.style.visibility = 'visible';
+          scrollBtnCart.style.opacity = '1';
+          scrollBtnCart.style.zIndex = '1000';
+          scrollBtnCart.style.position = 'fixed';
+          scrollBtnCart.style.left = '';
+          scrollBtnCart.style.top = '';
+          scrollBtnCart.style.transform = '';
+        }
       }
     }, 100);
   });
