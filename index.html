@@ -695,6 +695,20 @@ if (searchInput && mobileSearchBtn) {
   });
   
   console.log('Script geladen!');
+  
+  // Stelle sicher, dass der Hilfe-Button beim Laden sichtbar ist
+  const hilfeButtonOnLoad = document.getElementById('hilfeButton');
+  if (hilfeButtonOnLoad) {
+    hilfeButtonOnLoad.style.display = 'flex';
+    hilfeButtonOnLoad.style.visibility = 'visible';
+    hilfeButtonOnLoad.style.opacity = '1';
+    hilfeButtonOnLoad.style.zIndex = '9999';
+    hilfeButtonOnLoad.style.position = 'fixed';
+    hilfeButtonOnLoad.style.left = '';
+    hilfeButtonOnLoad.style.top = '';
+    hilfeButtonOnLoad.style.transform = '';
+    console.log('Hilfe-Button sichtbar gemacht');
+  }
 </script>
 <script>
   // Herz-Icon bei Hover füllen
@@ -748,7 +762,7 @@ if (searchInput && mobileSearchBtn) {
   document.getElementById('cartButton').addEventListener('click', () => {
     setTimeout(() => {
       if (cartDropdown.classList.contains('show')) {
-        // Verstecke Knöpfe komplett
+        // Verstecke Knöpfe nur wenn Warenkorb wirklich geöffnet ist
         if (hilfeBtnCart) {
           hilfeBtnCart.style.display = 'none';
           hilfeBtnCart.style.visibility = 'hidden';
@@ -771,6 +785,28 @@ if (searchInput && mobileSearchBtn) {
         }
         // Verhindere Scrollen auf dem Body
         document.body.classList.add('cart-open');
+      } else {
+        // Zeige Knöpfe wieder an wenn Warenkorb geschlossen ist
+        if (hilfeBtnCart) {
+          hilfeBtnCart.style.display = 'flex';
+          hilfeBtnCart.style.visibility = 'visible';
+          hilfeBtnCart.style.opacity = '1';
+          hilfeBtnCart.style.zIndex = '9999';
+          hilfeBtnCart.style.position = 'fixed';
+          hilfeBtnCart.style.left = '';
+          hilfeBtnCart.style.top = '';
+          hilfeBtnCart.style.transform = '';
+        }
+        if (scrollBtnCart) {
+          scrollBtnCart.style.display = 'flex';
+          scrollBtnCart.style.visibility = 'visible';
+          scrollBtnCart.style.opacity = '1';
+          scrollBtnCart.style.zIndex = '1000';
+          scrollBtnCart.style.position = 'fixed';
+          scrollBtnCart.style.left = '';
+          scrollBtnCart.style.top = '';
+          scrollBtnCart.style.transform = '';
+        }
       }
     }, 100);
   });
