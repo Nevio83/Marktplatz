@@ -51,6 +51,22 @@
         </div>
     </section>
 
+    <!-- Bundle Schnellbestellung Section - VOR allen anderen Inhalten -->
+    <section class="py-4 bg-light">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="bundle-quick-order-header text-center mb-4">
+                        <h2 class="mb-2"><i class="bi bi-lightning-charge text-warning"></i> Schnellbestellung - Bundle Angebote</h2>
+                        <p class="text-muted">Sparen Sie mit unseren Bundle-Paketen und bestellen Sie mit einem Klick!</p>
+                    </div>
+                    <!-- Bundle-Box -->
+                    <div id="bundle-section" class="bundle-quick-section"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Produktdetails -->
     <section class="py-5">
         <div class="container">
@@ -77,9 +93,6 @@
                             <p><strong>Lieferumfang:</strong> Produkt, Anleitung, Garantiekarte</p>
                         </div>
                     </div>
-
-                    <!-- Bundle-Box -->
-                    <div id="bundle-section" class="mt-5"></div>
                 </div>
                 
                 <div class="col-lg-4">
@@ -224,76 +237,85 @@
       const prod = products.find(p => p.id === product.id);
       if (prod && prod.bundles && prod.bundles.length > 0) {
         renderBundles(prod.bundles);
+      } else {
+        // Verstecke die Bundle-Section wenn keine Bundles vorhanden sind
+        const bundleSection = document.querySelector('.py-4.bg-light');
+        if (bundleSection) bundleSection.style.display = 'none';
       }
     });
 
-  function renderBundles() {
-    // Preisstaffel: [ {menge, preisProSet, originalProSet} ]
-    const staffel = [
-      {qty: 1, price: product.price, original: product.price},
-      {qty: 2, price: product.price * 0.85, original: product.price},
-      {qty: 3, price: product.price * 0.80, original: product.price}
-    ];
+  function renderBundles(bundles) {
     const section = document.getElementById('bundle-section');
-    let selected = 1; // Standard: 2 Sets
     section.innerHTML = `
-      <div class="bundle-box">
-        <div class="bundle-header">BUNDLE & SPARE</div>
-        <form id="bundleForm">
-          ${staffel.map((s, i) => `
-            <div class="bundle-card${i===selected?' selected':''}" data-index="${i}">
-              <input type="radio" name="bundle" class="bundle-radio" id="bundleRadio${i}" value="${i}" ${i===selected?'checked':''}>
-              <div class="bundle-info">
-                <div class="bundle-title">
-                  ${s.qty} Set${s.qty>1?'s':''} kaufen
-                  ${i===1 ? '<span class="bundle-badge popular">Am beliebtesten</span>' : ''}
-                  ${i===2 ? '<span class="bundle-badge savings">Meiste Ersparnis</span>' : ''}
-                  ${i>0 ? `<span class="bundle-label">EXTRA ${i===1?'15':i===2?'20':'0'}% RABATT</span>` : ''}
+      <div class="row g-3">
+        ${bundles.map((bundle, index) => `
+          <div class="col-md-6 col-lg-4">
+            <div class="quick-bundle-card ${index === 0 ? 'featured' : ''}">
+              <div class="bundle-header">
+                <h4 class="bundle-name">${bundle.name}</h4>
+                ${index === 0 ? '<span class="bundle-badge featured">Beliebt</span>' : ''}
+                ${index === 1 ? '<span class="bundle-badge premium">Premium</span>' : ''}
+              </div>
+              <div class="bundle-content">
+                <div class="bundle-description">
+                  ${bundle.description}
                 </div>
-                <div class="bundle-prices">
-                  €${s.price.toFixed(2)} pro Set
-                  <span class="old">€${s.original.toFixed(2)}</span>
-                  <span class="savings">Spare €${((s.original-s.price)*s.qty).toFixed(2)}</span>
+                <div class="bundle-items">
+                  <strong>Enthalten:</strong>
+                  <ul class="mb-2">
+                    ${bundle.items.map(item => `<li>${item}</li>`).join('')}
+                  </ul>
                 </div>
-                ${s.qty>1?`<div style='margin-top:.7em;font-size:.97rem;'>Gesamt: <b>€${(s.price*s.qty).toFixed(2)}</b> <span class='old'>€${(s.original*s.qty).toFixed(2)}</span></div>`:''}
+                <div class="bundle-pricing">
+                  <div class="price-comparison">
+                    <span class="original-price">€${bundle.originalPrice.toFixed(2)}</span>
+                    <span class="bundle-price">€${bundle.bundlePrice.toFixed(2)}</span>
+                  </div>
+                  <div class="savings-highlight">
+                    Sparen Sie €${bundle.savings.toFixed(2)}
+                  </div>
+                </div>
+                <button class="quick-order-bundle-btn" 
+                        onclick="addBundleToCartQuick(${product.id}, '${bundle.id}', '${bundle.name}', ${bundle.bundlePrice}, ${bundle.savings})">
+                  <i class="bi bi-lightning-fill"></i> Jetzt schnell bestellen
+                </button>
               </div>
             </div>
-          `).join('')}
-          <button type="submit" class="btn bundle-add-btn" onclick="addBundleAndRedirect(event)">In den Warenkorb</button>
-        </form>
+          </div>
+        `).join('')}
       </div>
     `;
-    // Interaktive Auswahl
-    const cards = section.querySelectorAll('.bundle-card');
-    const radios = section.querySelectorAll('.bundle-radio');
+  }
+
+  // Neue Bundle-Schnellbestellung Funktion
+  function addBundleToCartQuick(productId, bundleId, bundleName, bundlePrice, savings) {
+    // Bundle-Objekt erstellen
+    const bundleItem = {
+      id: `${productId}_${bundleId}`,
+      originalProductId: productId,
+      bundleId: bundleId,
+      name: `${product.name} - ${bundleName}`,
+      price: bundlePrice,
+      savings: savings,
+      image: product.image,
+      quantity: 1,
+      isBundle: true
+    };
+
+    // Zum Warenkorb hinzufügen
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const existingBundle = cart.find(item => item.id === bundleItem.id);
     
-    // Event-Listener für Radio-Buttons
-    radios.forEach((radio, i) => {
-      radio.addEventListener('change', () => {
-        cards.forEach(c => c.classList.remove('selected'));
-        cards[i].classList.add('selected');
-      });
-    });
-
-    // Event-Listener für Bundle-Cards
-    cards.forEach((card, i) => {
-      card.addEventListener('click', (e) => {
-        // Verhindere Bubbling wenn auf Radio geklickt wurde
-        if (e.target === radios[i]) return;
-        
-        // Wähle Radio-Button aus
-        radios[i].checked = true;
-        
-        // Aktualisiere Selected-Status
-        cards.forEach(c => c.classList.remove('selected'));
-        card.classList.add('selected');
-        
-        // Trigger change Event auf Radio
-        radios[i].dispatchEvent(new Event('change'));
-      });
-    });
-
-    // Der Bundle-Button verwendet jetzt onclick="addBundleAndRedirect(event)"
+    if (existingBundle) {
+      existingBundle.quantity++;
+    } else {
+      cart.push(bundleItem);
+    }
+    
+    localStorage.setItem('cart', JSON.stringify(cart));
+    
+    // Notification anzeigen
+    showAlert(`${bundleName} Bundle wurde zum Warenkorb hinzugefügt! (Ersparnis: €${savings.toFixed(2)})`, 'cart.html');
   }
 
   function addBundleToCart(bundle) {

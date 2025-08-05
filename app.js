@@ -126,6 +126,30 @@ function renderProducts(products) {
   
   grid.innerHTML = products.map(product => {
     console.log('Rendering product:', product.id, product.name);
+    
+    // Generate bundle quick order buttons
+    const bundleButtons = product.bundles && product.bundles.length > 0 ? 
+      product.bundles.map(bundle => `
+        <div class="quick-order-bundle-item" data-bundle-id="${bundle.id}">
+          <div class="bundle-info">
+            <div class="bundle-name">${bundle.name}</div>
+            <div class="bundle-savings">Spare €${bundle.savings.toFixed(2)}</div>
+            <div class="bundle-price">
+              <span class="original-price">€${bundle.originalPrice.toFixed(2)}</span>
+              <span class="bundle-price-value">€${bundle.bundlePrice.toFixed(2)}</span>
+            </div>
+          </div>
+          <button class="btn btn-success btn-sm quick-order-btn"
+                  data-product-id="${product.id}"
+                  data-bundle-id="${bundle.id}"
+                  data-bundle-name="${bundle.name}"
+                  data-bundle-price="${bundle.bundlePrice}"
+                  onclick="addBundleToCart(${product.id}, '${bundle.id}'); return false;">
+            <i class="bi bi-lightning"></i> Schnell
+          </button>
+        </div>
+      `).join('') : '';
+    
     return `
     <div class="col">
       <div class="card h-100 border-0 shadow-hover position-relative product-card" data-product-id="${product.id}">
@@ -139,6 +163,19 @@ function renderProducts(products) {
         <div class="card-body">
           <h5 class="card-title">${product.name}</h5>
           <p class="card-text">${product.description || ''}</p>
+          
+          <!-- Bundle Quick Order Section -->
+          ${product.bundles && product.bundles.length > 0 ? `
+            <div class="quick-order-bundles-section mb-3">
+              <div class="bundles-header">
+                <h6 class="mb-2"><i class="bi bi-box-seam"></i> Schnellbestellung - Bundles</h6>
+              </div>
+              <div class="quick-order-bundles">
+                ${bundleButtons}
+              </div>
+            </div>
+          ` : ''}
+          
           <div class="d-flex justify-content-between align-items-center">
             <div>
               <span class="h4 text-primary">€${product.price.toFixed(2)}</span>
@@ -162,6 +199,7 @@ function renderProducts(products) {
   initializeAddToCartButtons();
   initializeWishlistButtons();
   initializeProductCardClicks();
+  initializeBundleButtons();
   observeProductCards();
   optimizeImages(); // Bilder nach dem Rendern optimieren
 }
@@ -295,6 +333,107 @@ function addProductToCart(products, productId) {
   
   // Show alert
   showAlert('Produkt wurde zum Warenkorb hinzugefügt');
+
+  // --- NEU: Wenn der User auf cart.html ist, direkt die Seite aktualisieren ---
+  if (window.location.pathname.endsWith('cart.html')) {
+    if (typeof updateCartPage === 'function') {
+      updateCartPage();
+    } else if (typeof window.location.reload === 'function') {
+      window.location.reload();
+    }
+  }
+}
+
+// Neue Funktion: Bundle zum Warenkorb hinzufügen
+function addBundleToCart(productId, bundleId) {
+  console.log('addBundleToCart called with productId:', productId, 'bundleId:', bundleId);
+  
+  if (!productId || isNaN(productId) || !bundleId) {
+    console.error('Invalid product ID or bundle ID:', productId, bundleId);
+    return;
+  }
+  
+  // Versuche zuerst, das Produkt aus dem localStorage zu laden (falls verfügbar)
+  let products = JSON.parse(localStorage.getItem('allProducts') || '[]');
+  
+  if (products.length === 0) {
+    // Wenn keine Produkte im localStorage sind, lade sie von der Datei
+    loadProducts().then(loadedProducts => {
+      console.log('Products loaded from file for bundle:', loadedProducts.length);
+      // Speichere die Produkte im localStorage für zukünftige Verwendung
+      localStorage.setItem('allProducts', JSON.stringify(loadedProducts));
+      addBundleProductToCart(loadedProducts, productId, bundleId);
+    }).catch(error => {
+      console.error('Error loading products for bundle:', error);
+      alert('Fehler beim Laden der Produkte.');
+    });
+  } else {
+    console.log('Products loaded from localStorage for bundle:', products.length);
+    addBundleProductToCart(products, productId, bundleId);
+  }
+}
+
+function addBundleProductToCart(products, productId, bundleId) {
+  console.log('Looking for product ID:', productId, 'and bundle ID:', bundleId);
+  
+  const product = products.find(p => Number(p.id) === Number(productId));
+  
+  if (!product) {
+    console.error('Product not found for bundle ID:', productId);
+    alert('Produkt konnte nicht gefunden werden.');
+    return;
+  }
+  
+  const bundle = product.bundles ? product.bundles.find(b => b.id === bundleId) : null;
+  
+  if (!bundle) {
+    console.error('Bundle not found for product:', productId, 'bundle:', bundleId);
+    alert('Bundle konnte nicht gefunden werden.');
+    return;
+  }
+  
+  console.log('Found product and bundle:', product.name, bundle.name);
+  
+  // Always read from localStorage to ensure we have the latest data
+  cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+  
+  // Create bundle item for cart
+  const bundleItem = {
+    id: `${productId}_${bundleId}`, // Unique ID for bundle
+    originalProductId: productId,
+    bundleId: bundleId,
+    name: `${product.name} - ${bundle.name}`,
+    price: bundle.bundlePrice,
+    originalPrice: bundle.originalPrice,
+    savings: bundle.savings,
+    image: product.image,
+    description: bundle.description,
+    bundleItems: bundle.items,
+    quantity: 1,
+    isBundle: true
+  };
+  
+  // Check if this exact bundle is already in cart
+  const existingBundleItem = cartItems.find(item => 
+    item.originalProductId === productId && item.bundleId === bundleId && item.isBundle
+  );
+
+  if (existingBundleItem) {
+    existingBundleItem.quantity++;
+    console.log('Updated existing bundle item quantity:', existingBundleItem.quantity);
+  } else {
+    cartItems.push(bundleItem);
+    console.log('Added new bundle item to cart');
+  }
+
+  // Speichere den aktuellen Warenkorb immer im localStorage
+  localStorage.setItem('cart', JSON.stringify(cartItems));
+  
+  // Update counter and dropdown immediately
+  updateCartCounter();
+  
+  // Show alert with bundle info
+  showAlert(`${bundle.name} Bundle wurde zum Warenkorb hinzugefügt (Ersparnis: €${bundle.savings.toFixed(2)})`);
 
   // --- NEU: Wenn der User auf cart.html ist, direkt die Seite aktualisieren ---
   if (window.location.pathname.endsWith('cart.html')) {
@@ -522,29 +661,39 @@ function renderCartDropdown() {
   console.log('Cart total calculated:', total);
   
   body.innerHTML = cartItems.map(item => `
-    <div class="cart-item">
+    <div class="cart-item ${item.isBundle ? 'bundle-cart-item' : ''}">
       <img src="${item.image}" class="cart-item-image" alt="${item.name}">
       <div class="cart-item-details">
-        <div class="cart-item-name">${item.name}</div>
+        <div class="cart-item-name">
+          ${item.isBundle ? '<i class="bi bi-box-seam text-success"></i> ' : ''}${item.name}
+        </div>
+        ${item.isBundle && item.savings ? `
+          <div class="bundle-savings-info">
+            <small class="text-success">Ersparnis: €${item.savings.toFixed(2)}</small>
+          </div>
+        ` : ''}
         <div class="cart-item-price">
+          ${item.isBundle && item.originalPrice ? `
+            <span class="original-price-small">€${item.originalPrice.toFixed(2)}</span>
+          ` : ''}
           €${(typeof item.price === 'number' ? item.price.toFixed(2) : '0.00')} x 
           <span class="quantity-display">${item.quantity}</span> = 
           <strong>€${(typeof item.price === 'number' ? (item.price * item.quantity).toFixed(2) : '0.00')}</strong>
         </div>
       </div>
       <div class="cart-item-controls">
-        ${item.bundleId ? `
+        ${item.isBundle ? `
           <div class="quantity-controls disabled">
-            <span class="quantity-display">1</span>
+            <span class="quantity-display">${item.quantity}</span>
           </div>
         ` : `
           <div class="quantity-controls" style="display: flex; align-items: center; gap: 4px;">
-            <button class="quantity-btn" onclick="changeQuantity(${Number(item.id)}, -1)" style="cursor: pointer; pointer-events: auto;">-</button>
+            <button class="quantity-btn" onclick="changeQuantity(${Number(item.originalProductId || item.id)}, -1)" style="cursor: pointer; pointer-events: auto;">-</button>
             <span class="quantity-display">${item.quantity}</span>
-            <button class="quantity-btn" onclick="changeQuantity(${Number(item.id)}, 1)" style="cursor: pointer; pointer-events: auto;">+</button>
+            <button class="quantity-btn" onclick="changeQuantity(${Number(item.originalProductId || item.id)}, 1)" style="cursor: pointer; pointer-events: auto;">+</button>
           </div>
         `}
-        <button class="remove-item" onclick="removeFromCart(${Number(item.id)})" style="cursor: pointer; pointer-events: auto;">&times;</button>
+        <button class="remove-item" onclick="removeFromCart('${item.id}')" style="cursor: pointer; pointer-events: auto;">&times;</button>
       </div>
     </div>
   `).join('');
@@ -582,6 +731,38 @@ function initializeWishlistButtons() {
       toggleWishlist(productId);
     });
   });
+}
+
+// Bundle Quick Order Buttons initialisieren
+function initializeBundleButtons() {
+  setTimeout(() => {
+    const bundleButtons = document.querySelectorAll('.quick-order-btn');
+    console.log('Found', bundleButtons.length, 'bundle quick order buttons');
+    
+    bundleButtons.forEach((button, index) => {
+      const productId = button.dataset.productId;
+      const bundleId = button.dataset.bundleId;
+      console.log(`Initializing bundle button ${index} for product ${productId}, bundle ${bundleId}`);
+      
+      // Entferne alle bestehenden Event Listener
+      const newButton = button.cloneNode(true);
+      button.parentNode.replaceChild(newButton, button);
+      
+      // Füge den Event Listener zum neuen Button hinzu
+      newButton.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log('Bundle button clicked for product:', productId, 'bundle:', bundleId);
+        
+        const productIdNum = parseInt(productId);
+        if (productIdNum && !isNaN(productIdNum) && bundleId) {
+          addBundleToCart(productIdNum, bundleId);
+        } else {
+          console.error('Invalid product ID or bundle ID:', productId, bundleId);
+        }
+      });
+    });
+  }, 100);
 }
 
 // Filter- und Sortier-Event-Listener
@@ -953,6 +1134,7 @@ window.removeFromCart = removeFromCart;
 window.clearCart = clearCart;
 window.addToCart = addToCart;
 window.addProductToCart = addProductToCart;
+window.addBundleToCart = addBundleToCart;
 window.initializeAddToCartButtons = initializeAddToCartButtons;
 window.renderProducts = renderProducts;
 window.loadProducts = loadProducts;

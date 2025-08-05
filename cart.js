@@ -655,7 +655,16 @@ function changeQuantity(productId, change) {
 
 function removeFromCart(productId) {
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
-    cart = cart.filter(item => Number(item.id) !== Number(productId));
+    
+    // Handle both bundle items (string IDs) and regular items (numeric IDs)
+    if (typeof productId === 'string' && productId.includes('_')) {
+        // Bundle item with format "productId_bundleId"
+        cart = cart.filter(item => item.id !== productId);
+    } else {
+        // Regular product item
+        cart = cart.filter(item => Number(item.id) !== Number(productId));
+    }
+    
     localStorage.setItem('cart', JSON.stringify(cart));
     if (typeof updateCartCounter === 'function') {
         updateCartCounter();

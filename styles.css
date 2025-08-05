@@ -2793,3 +2793,223 @@ div#hilfePanel.offen,
 .chatbot-messages::-webkit-scrollbar-thumb:hover {
   background: #a8a8a8;
 }
+
+/* Bundle Quick Order Styles */
+.quick-order-bundles-section {
+  border-top: 1px solid #e9ecef;
+  padding-top: 1rem;
+  margin-top: 1rem;
+}
+
+.bundles-header h6 {
+  color: #495057;
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: 0.75rem;
+}
+
+.bundles-header i {
+  color: #007bff;
+  margin-right: 0.5rem;
+}
+
+.quick-order-bundles {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.quick-order-bundle-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 0.5rem;
+  border: 1px solid #dee2e6;
+  transition: all 0.2s ease;
+}
+
+.quick-order-bundle-item:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border-color: #007bff;
+}
+
+.bundle-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.bundle-name {
+  font-weight: 600;
+  color: #495057;
+  font-size: 0.85rem;
+  margin-bottom: 0.25rem;
+}
+
+.bundle-savings {
+  color: #28a745;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.bundle-price {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.original-price {
+  color: #6c757d;
+  text-decoration: line-through;
+  font-size: 0.75rem;
+}
+
+.bundle-price-value {
+  color: #007bff;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.quick-order-btn {
+  padding: 0.4rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 0.375rem;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.quick-order-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
+}
+
+.quick-order-btn i {
+  margin-right: 0.25rem;
+}
+
+/* Mobile Optimizations */
+@media (max-width: 768px) {
+  .quick-order-bundles-section {
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+  }
+  
+  .bundles-header h6 {
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .quick-order-bundles {
+    gap: 0.5rem;
+  }
+  
+  .quick-order-bundle-item {
+    padding: 0.6rem;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+  
+  .bundle-info {
+    text-align: center;
+  }
+  
+  .bundle-name {
+    font-size: 0.8rem;
+  }
+  
+  .bundle-savings {
+    font-size: 0.7rem;
+  }
+  
+  .bundle-price {
+    justify-content: center;
+  }
+  
+  .original-price {
+    font-size: 0.7rem;
+  }
+  
+  .bundle-price-value {
+    font-size: 0.8rem;
+  }
+  
+  .quick-order-btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .quick-order-bundle-item {
+    padding: 0.5rem;
+  }
+  
+  .bundle-name {
+    font-size: 0.75rem;
+  }
+  
+  .bundle-savings {
+    font-size: 0.65rem;
+  }
+  
+  .original-price {
+    font-size: 0.65rem;
+  }
+  
+  .bundle-price-value {
+    font-size: 0.75rem;
+  }
+  
+  .quick-order-btn {
+    padding: 0.45rem 0.8rem;
+    font-size: 0.75rem;
+  }
+}
+
+/* Extra emphasis for mobile quick order */
+@media (max-width: 600px) {
+  .quick-order-btn {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    border: none;
+    color: white;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.025rem;
+    box-shadow: 0 2px 8px rgba(40, 167, 69, 0.25);
+  }
+  
+  .quick-order-btn:hover {
+    background: linear-gradient(135deg, #218838 0%, #1ea387 100%);
+    transform: scale(1.02);
+    box-shadow: 0 4px 12px rgba(40, 167, 69, 0.35);
+  }
+  
+  .quick-order-btn:active {
+    transform: scale(0.98);
+  }
+}
+
+/* Bundle Cart Item Styles */
+.bundle-cart-item {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border: 1px solid #28a745;
+  border-radius: 0.5rem;
+}
+
+.bundle-savings-info {
+  margin: 0.25rem 0;
+}
+
+.original-price-small {
+  color: #6c757d;
+  text-decoration: line-through;
+  font-size: 0.75rem;
+  margin-right: 0.5rem;
+}
