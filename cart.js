@@ -384,8 +384,14 @@ function updateCartPage() {
                 </div>
                 <!-- Add-ons Bereich -->
                 ${addonProducts.length > 0 ? `
-                <div class="mt-5">
-                    <h4 class="mb-3"><i class="bi bi-plus-circle"></i>Add-ons </h4>
+                <div class="addon-section-divider"></div>
+                <div class="addon-section">
+                    <div class="addon-section-header">
+                        <h4 class="addon-section-title">
+                            <i class="bi bi-plus-circle"></i>Add-ons
+                        </h4>
+                        <p class="addon-section-subtitle">Ergänzen Sie Ihre Bestellung mit passenden Produkten</p>
+                    </div>
                     <div class="addon-list">
                         ${addonProducts.map(addon => `
                             <div class="addon-card">
