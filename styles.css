@@ -1209,7 +1209,7 @@ div#hilfePanel.offen,
   right: 20px !important;
 }
 
-/* Glassmorphism Border Effect */
+/* Light Black Border Effect */
 .hilfe-panel::before {
   content: '';
   position: absolute;
@@ -1218,18 +1218,12 @@ div#hilfePanel.offen,
   right: 0;
   bottom: 0;
   border-radius: 28px;
-  padding: 2px;
-  background: linear-gradient(135deg, 
-    rgba(102, 126, 234, 0.6) 0%, 
-    rgba(118, 75, 162, 0.4) 25%,
-    rgba(240, 147, 251, 0.6) 50%,
-    rgba(102, 126, 234, 0.4) 75%,
-    rgba(118, 75, 162, 0.6) 100%);
+  padding: 1px;
+  background: rgba(0, 0, 0, 0.2);
   mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   mask-composite: xor;
   -webkit-mask-composite: xor;
   pointer-events: none;
-  animation: borderGlow 3s ease-in-out infinite alternate;
 }
 
 /* Ultra-Moderne Hilfe-Panel Animationen */
