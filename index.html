@@ -368,6 +368,11 @@ if (searchInput && mobileSearchBtn) {
     console.log('Initial hilfePanel opacity:', window.getComputedStyle(hilfePanel).opacity);
   }
   
+  // Function to check if device is mobile
+  function isMobileDevice() {
+    return window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  }
+
   // Event Listener für Hilfe-Button
   if (hilfeButton) {
     hilfeButton.addEventListener('click', (e) => {
@@ -384,6 +389,11 @@ if (searchInput && mobileSearchBtn) {
         hilfePanel.classList.remove('offen');
         document.body.classList.remove('help-panel-open');
         hilfePanel.style.display = 'none';
+        
+        // Restore body styles (especially important for mobile)
+        document.body.style.overflow = '';
+        document.body.style.height = '';
+        
         hideChatbot();
         console.log('Panel geschlossen');
       } else {
@@ -398,14 +408,39 @@ if (searchInput && mobileSearchBtn) {
         hilfePanel.style.opacity = '1';
         hilfePanel.style.zIndex = '10001';
         hilfePanel.style.position = 'fixed';
-        hilfePanel.style.top = '50%';
-        hilfePanel.style.right = '20px';
-        hilfePanel.style.transform = 'translateY(-50%) scale(1)';
-        hilfePanel.style.width = '440px';
-        hilfePanel.style.maxWidth = '95vw';
-        hilfePanel.style.height = 'auto';
-        hilfePanel.style.minHeight = '500px';
-        hilfePanel.style.maxHeight = '650px';
+        
+        // Check if mobile device for fullscreen behavior
+        if (isMobileDevice()) {
+          // Mobile: Fullscreen styling
+          hilfePanel.style.top = '0';
+          hilfePanel.style.left = '0';
+          hilfePanel.style.right = '0';
+          hilfePanel.style.bottom = '0';
+          hilfePanel.style.transform = 'none';
+          hilfePanel.style.width = '100vw';
+          hilfePanel.style.height = '100vh';
+          hilfePanel.style.maxWidth = '100vw';
+          hilfePanel.style.maxHeight = '100vh';
+          hilfePanel.style.minHeight = '100vh';
+          hilfePanel.style.borderRadius = '0';
+          hilfePanel.style.border = 'none';
+          // Prevent scrolling on body
+          document.body.style.overflow = 'hidden';
+          document.body.style.height = '100vh';
+        } else {
+          // Desktop: Normal panel styling
+          hilfePanel.style.top = '50%';
+          hilfePanel.style.right = '20px';
+          hilfePanel.style.left = 'auto';
+          hilfePanel.style.bottom = 'auto';
+          hilfePanel.style.transform = 'translateY(-50%) scale(1)';
+          hilfePanel.style.width = '440px';
+          hilfePanel.style.maxWidth = '95vw';
+          hilfePanel.style.height = 'auto';
+          hilfePanel.style.minHeight = '500px';
+          hilfePanel.style.maxHeight = '650px';
+          hilfePanel.style.borderRadius = '28px';
+        }
       }
     });
   } else {
@@ -701,6 +736,11 @@ if (searchInput && mobileSearchBtn) {
       hilfePanel.classList.remove('offen');
       document.body.classList.remove('help-panel-open');
       hilfePanel.style.display = 'none';
+      
+      // Restore body styles (especially important for mobile)
+      document.body.style.overflow = '';
+      document.body.style.height = '';
+      
       hideChatbot();
       console.log('Panel sofort geschlossen');
     });

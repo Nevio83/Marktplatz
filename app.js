@@ -1231,7 +1231,7 @@ function addRecommendationToCart(productId, buttonElement) {
   }
   
   // Optionally show a subtle notification
-  showAddToCartNotification();
+  // showAddToCartNotification(); // Disabled: No notification for recommendations
 }
 
 // Show subtle notification when item is added
