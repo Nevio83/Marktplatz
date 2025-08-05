@@ -276,12 +276,10 @@ body {
 }
 
 .product-card .btn.add-to-cart:hover {
-    transform: translateY(-2px);
     box-shadow: var(--shadow-medium);
 }
 
 .product-card .btn.add-to-cart:active {
-    transform: translateY(0);
 }
 
 /* Responsive Anpassungen für Produktkarten */
@@ -336,7 +334,6 @@ body {
 }
 
 .product-card .btn.add-to-cart:hover {
-    transform: translateY(-2px);
     box-shadow: var(--shadow-medium);
 }
 
@@ -397,7 +394,6 @@ body {
 }
 
 #cartButton:hover {
-    transform: scale(1.1);
     box-shadow: var(--shadow-medium);
 }
 
@@ -522,7 +518,6 @@ body {
 }
 
 .quantity-btn:hover {
-    transform: scale(1.1);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
@@ -2944,13 +2939,11 @@ div#hilfePanel.offen,
 }
 
 .recommendation-add-btn:hover {
-  transform: scale(1.15) rotate(90deg);
   box-shadow: 0 4px 16px rgba(102, 126, 234, 0.4);
   background: linear-gradient(135deg, #764ba2, #f093fb);
 }
 
 .recommendation-add-btn:active {
-  transform: scale(1.05) rotate(90deg);
 }
 
 .recommendation-add-btn i {
@@ -3101,7 +3094,6 @@ div#hilfePanel.offen,
   }
   
   .recommendation-add-btn:hover {
-    transform: scale(1.1);
     background: var(--primary-gradient);
   }
 }
