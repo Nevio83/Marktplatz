@@ -584,7 +584,7 @@ body {
 }
 
 .cart-dropdown .btn-close:hover {
-    background: var(--danger-red);
+    background: var(--danger-color);
     color: white;
     transform: scale(1.1) rotate(90deg);
     box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
