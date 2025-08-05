@@ -348,6 +348,9 @@ if (searchInput && mobileSearchBtn) {
   const chatbotMessages = document.getElementById('chatbotMessages');
   const backButton = document.querySelector('.chatbot-header .bi-arrow-left');
   
+  // Flag um zu verhindern, dass Panel sofort wieder öffnet
+  let isClosing = false;
+  
   console.log('hilfeButton:', hilfeButton);
   console.log('hilfePanel:', hilfePanel);
   
@@ -372,6 +375,14 @@ if (searchInput && mobileSearchBtn) {
       e.preventDefault();
       e.stopPropagation();
       console.log('Hilfe-Button geklickt!');
+      console.log('isClosing:', isClosing);
+      
+      // Verhindere Öffnen wenn gerade geschlossen wird
+      if (isClosing) {
+        console.log('Panel wird gerade geschlossen - Aktion ignoriert');
+        return;
+      }
+      
       console.log('hilfePanel Element:', hilfePanel);
       console.log('hilfePanel Klassen vor Änderung:', hilfePanel.className);
       
@@ -699,6 +710,9 @@ if (searchInput && mobileSearchBtn) {
       e.stopImmediatePropagation();
       console.log('X-Button geklickt - Panel wird geschlossen');
       
+      // Flag setzen um weitere Klicks zu verhindern
+      isClosing = true;
+      
       // Add closing animation
       hilfePanel.classList.add('closing');
       
@@ -709,6 +723,12 @@ if (searchInput && mobileSearchBtn) {
         document.body.classList.remove('help-panel-open');
         hideChatbot();
         console.log('Panel geschlossen');
+        
+        // Flag nach Verzögerung zurücksetzen
+        setTimeout(() => {
+          isClosing = false;
+          console.log('isClosing zurückgesetzt');
+        }, 500);
       }, 400); // Match the animation duration
     });
   }
@@ -749,9 +769,11 @@ if (searchInput && mobileSearchBtn) {
       hilfePanel.classList.contains('offen') &&
       !hilfePanel.contains(event.target) &&
       !hilfeButton.contains(event.target) &&
-      !event.target.closest('#hilfePanelClose')
+      !event.target.closest('#hilfePanelClose') &&
+      !isClosing
     ) {
       console.log('Klick außerhalb - Panel wird geschlossen');
+      isClosing = true;
       hilfePanel.classList.add('closing');
       
       setTimeout(() => {
@@ -759,6 +781,11 @@ if (searchInput && mobileSearchBtn) {
         hilfePanel.classList.remove('closing');
         document.body.classList.remove('help-panel-open');
         hideChatbot();
+        
+        // Flag zurücksetzen
+        setTimeout(() => {
+          isClosing = false;
+        }, 500);
       }, 400);
     }
   });
