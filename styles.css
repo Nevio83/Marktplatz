@@ -787,7 +787,7 @@ footer a:hover {
 /* Moderne Scroll-to-Top Button */
 #scrollToTopBtn {
   position: fixed;
-  bottom: 90px;
+  bottom: 100px;
   left: 30px;
   width: 56px;
   height: 56px;
@@ -798,6 +798,7 @@ footer a:hover {
   font-size: 2rem;
   box-shadow: 0 4px 16px rgba(102,126,234,0.18);
   opacity: 0;
+  z-index: 9998;
   visibility: hidden;
   transform: translateY(20px);
   transition: all 0.3s ease;
@@ -828,7 +829,7 @@ footer a:hover {
 div#hilfeButton,
 #hilfeButton {
   position: fixed !important;
-  bottom: 90px !important;
+  bottom: 30px !important;
   right: 30px !important;
   left: unset !important;
   top: unset !important;
@@ -858,8 +859,9 @@ div#hilfeButton,
     helpButtonRotate 8s linear infinite !important;
   backdrop-filter: blur(10px) !important;
   -webkit-backdrop-filter: blur(10px) !important;
-  position: relative !important;
   overflow: hidden !important;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
 #hilfeButton:hover {
@@ -967,7 +969,7 @@ div#hilfeButton,
 /* Mobile-Hilfe-Button Anpassungen */
 @media (max-width: 768px) {
   #hilfeButton {
-    bottom: 90px !important;
+    bottom: 30px !important;
     right: 20px !important;
     left: unset !important;
     top: unset !important;
@@ -984,6 +986,9 @@ div#hilfeButton,
     animation: 
       helpButtonFloat 4s ease-in-out infinite,
       helpButtonGlow 3s ease-in-out infinite alternate !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    display: flex !important;
   }
   
   #hilfeButton:hover {
@@ -999,10 +1004,13 @@ div#hilfeButton,
   /* MOBILE FORCE POSITIONING */
   [id="hilfeButton"] {
     position: fixed !important;
-    bottom: 90px !important;
+    bottom: 30px !important;
     right: 20px !important;
     left: unset !important;
     top: unset !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    display: flex !important;
   }
 }
 
@@ -1167,13 +1175,16 @@ body:has(.hilfe-panel.offen) {
 /* FORCE CORRECT POSITIONING - OVERRIDE ALL OTHER STYLES */
 [id="hilfeButton"] {
   position: fixed !important;
-  bottom: 90px !important;
+  bottom: 30px !important;
   right: 30px !important;
   left: unset !important;
   top: unset !important;
   margin-left: 0 !important;
   margin-right: 0 !important;
   transform: none !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  display: flex !important;
 }
 
 /* FORCE PANEL VISIBILITY */
@@ -1181,6 +1192,21 @@ body:has(.hilfe-panel.offen) {
   display: flex !important;
   visibility: visible !important;
   opacity: 1 !important;
+  transform: translateY(-50%) scale(1) !important;
+  z-index: 10001 !important;
+}
+
+/* Additional force rule for panel visibility */
+div#hilfePanel.offen,
+#hilfePanel.offen {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  transform: translateY(-50%) scale(1) !important;
+  z-index: 10001 !important;
+  position: fixed !important;
+  top: 50% !important;
+  right: 20px !important;
 }
 
 /* Glassmorphism Border Effect */
@@ -1316,6 +1342,7 @@ body:has(.hilfe-panel.offen) {
   -webkit-backdrop-filter: blur(10px);
   position: relative;
   overflow: hidden;
+  z-index: 10002;
 }
 
 #hilfePanelClose:hover {
@@ -1484,20 +1511,12 @@ body:has(.hilfe-panel.offen) {
 }
 
 .hilfe-thema-btn::after {
-  content: '✨';
-  font-size: 18px;
-  opacity: 0;
-  transform: translateX(-20px) scale(0.6) rotate(-45deg);
-  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  z-index: 2;
-  position: relative;
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+  content: '';
+  display: none;
 }
 
 .hilfe-thema-btn:hover::after {
-  opacity: 1;
-  transform: translateX(0) scale(1.2) rotate(0deg);
-  animation: sparkleRotate 1s ease-in-out infinite;
+  display: none;
 }
 
 @keyframes sparkleRotate {

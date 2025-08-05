@@ -207,7 +207,7 @@ if (searchInput && mobileSearchBtn) {
 </main>
 
     <!-- Footer -->
-    <footer class="bg-dark text-white mt-5 pt-5 border-top">
+    <footer class="bg-dark text-white mt-5 pt-5">
         <div class="container">
             <div class="row g-4">
                 <div class="col-md-4">
@@ -270,7 +270,7 @@ if (searchInput && mobileSearchBtn) {
       }
     </script>
     <!-- Nach oben Button -->
-    <button id="scrollToTopBtn" aria-label="Nach oben" style="display:none; position:fixed; bottom:96px; left:32px; z-index:11000; width:56px; height:56px; border-radius:50%; background:linear-gradient(135deg,#667eea,#764ba2); color:#fff; border:none; box-shadow:0 4px 16px rgba(102,126,234,0.18); font-size:2rem; display:flex; align-items:center; justify-content:center; transition:background 0.2s, box-shadow 0.2s; cursor:pointer;">
+    <button id="scrollToTopBtn" aria-label="Nach oben" style="display:none; position:fixed; bottom:100px; left:30px; z-index:9998; width:56px; height:56px; border-radius:50%; background:linear-gradient(135deg,#667eea,#764ba2); color:#fff; border:none; box-shadow:0 4px 16px rgba(102,126,234,0.18); font-size:2rem; display:flex; align-items:center; justify-content:center; transition:background 0.2s, box-shadow 0.2s; cursor:pointer;">
       <span style="display:flex; align-items:center; justify-content:center; width:100%; height:100%;"><i class="bi bi-arrow-up"></i></span>
     </button>
     <script>
@@ -288,7 +288,7 @@ if (searchInput && mobileSearchBtn) {
     </script>
 
 <!-- Hilfe-Button und Panel (ultra-modernes Design) -->
-<div id="hilfeButton" aria-label="Hilfe öffnen">
+<div id="hilfeButton" aria-label="Hilfe öffnen" style="display: flex !important; visibility: visible !important; opacity: 1 !important;">
   <!-- Icon wird jetzt über CSS ::after pseudo-element angezeigt -->
 </div>
 <div id="hilfePanel" class="hilfe-panel">
@@ -348,29 +348,64 @@ if (searchInput && mobileSearchBtn) {
   const chatbotMessages = document.getElementById('chatbotMessages');
   const backButton = document.querySelector('.chatbot-header .bi-arrow-left');
   
+
+  
   console.log('hilfeButton:', hilfeButton);
   console.log('hilfePanel:', hilfePanel);
   
-  // Einfacher Test für den Hilfe-Button
+  // Hilfe-Button sofort sichtbar machen
   if (hilfeButton) {
-    hilfeButton.addEventListener('click', () => {
+    hilfeButton.style.display = 'flex';
+    hilfeButton.style.visibility = 'visible';
+    hilfeButton.style.opacity = '1';
+    console.log('Hilfe-Button wurde sichtbar gemacht');
+  }
+  
+  // Debug: Teste Panel-Sichtbarkeit
+  if (hilfePanel) {
+    console.log('Initial hilfePanel display:', window.getComputedStyle(hilfePanel).display);
+    console.log('Initial hilfePanel visibility:', window.getComputedStyle(hilfePanel).visibility);
+    console.log('Initial hilfePanel opacity:', window.getComputedStyle(hilfePanel).opacity);
+  }
+  
+  // Event Listener für Hilfe-Button
+  if (hilfeButton) {
+    hilfeButton.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
       console.log('Hilfe-Button geklickt!');
-      if (hilfePanel.classList.contains('offen')) {
-        // Add closing animation
-        hilfePanel.classList.add('closing');
-        
-        // Remove the panel after animation completes
-        setTimeout(() => {
-          hilfePanel.classList.remove('offen');
-          hilfePanel.classList.remove('closing');
-          document.body.classList.remove('help-panel-open');
-          hideChatbot();
-        }, 400); // Match the animation duration
+      
+      // Prüfe aktuellen Zustand
+      const isOpen = hilfePanel.classList.contains('offen');
+      console.log('Panel ist offen:', isOpen);
+      
+      if (isOpen) {
+        // Panel schließen
+        hilfePanel.classList.remove('offen');
+        document.body.classList.remove('help-panel-open');
+        hilfePanel.style.display = 'none';
+        hideChatbot();
         console.log('Panel geschlossen');
       } else {
+        // Panel öffnen
         hilfePanel.classList.add('offen');
         document.body.classList.add('help-panel-open');
         console.log('Panel geöffnet');
+        
+        // Force visibility
+        hilfePanel.style.display = 'flex';
+        hilfePanel.style.visibility = 'visible';
+        hilfePanel.style.opacity = '1';
+        hilfePanel.style.zIndex = '10001';
+        hilfePanel.style.position = 'fixed';
+        hilfePanel.style.top = '50%';
+        hilfePanel.style.right = '20px';
+        hilfePanel.style.transform = 'translateY(-50%) scale(1)';
+        hilfePanel.style.width = '440px';
+        hilfePanel.style.maxWidth = '95vw';
+        hilfePanel.style.height = 'auto';
+        hilfePanel.style.minHeight = '500px';
+        hilfePanel.style.maxHeight = '650px';
       }
     });
   } else {
@@ -654,19 +689,20 @@ if (searchInput && mobileSearchBtn) {
     window.orangeSupportActive = false;
   }
   
-  // Event Listeners
+  // Event Listeners für X-Button
   if (hilfePanelClose) {
-    hilfePanelClose.addEventListener('click', () => {
-      // Add closing animation
-      hilfePanel.classList.add('closing');
+    hilfePanelClose.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+      console.log('X-Button geklickt - Panel wird geschlossen');
       
-      // Remove the panel after animation completes
-              setTimeout(() => {
-          hilfePanel.classList.remove('offen');
-          hilfePanel.classList.remove('closing');
-          document.body.classList.remove('help-panel-open');
-          hideChatbot();
-        }, 400); // Match the animation duration
+      // Sofort schließen ohne Animation
+      hilfePanel.classList.remove('offen');
+      document.body.classList.remove('help-panel-open');
+      hilfePanel.style.display = 'none';
+      hideChatbot();
+      console.log('Panel sofort geschlossen');
     });
   }
   
@@ -705,9 +741,13 @@ if (searchInput && mobileSearchBtn) {
     if (
       hilfePanel.classList.contains('offen') &&
       !hilfePanel.contains(event.target) &&
-      !hilfeButton.contains(event.target)
+      !hilfeButton.contains(event.target) &&
+      !event.target.closest('#hilfePanelClose')
     ) {
+      console.log('Klick außerhalb - Panel wird geschlossen');
       hilfePanel.classList.remove('offen');
+      document.body.classList.remove('help-panel-open');
+      hilfePanel.style.display = 'none';
       hideChatbot();
     }
   });
