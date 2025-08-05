@@ -1342,6 +1342,7 @@ div#hilfePanel.offen,
   -webkit-backdrop-filter: blur(10px);
   position: relative;
   overflow: hidden;
+  z-index: 10002;
 }
 
 #hilfePanelClose:hover {

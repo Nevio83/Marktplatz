@@ -693,17 +693,23 @@ if (searchInput && mobileSearchBtn) {
   
   // Event Listeners
   if (hilfePanelClose) {
-    hilfePanelClose.addEventListener('click', () => {
+    hilfePanelClose.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+      console.log('X-Button geklickt - Panel wird geschlossen');
+      
       // Add closing animation
       hilfePanel.classList.add('closing');
       
       // Remove the panel after animation completes
-              setTimeout(() => {
-          hilfePanel.classList.remove('offen');
-          hilfePanel.classList.remove('closing');
-          document.body.classList.remove('help-panel-open');
-          hideChatbot();
-        }, 400); // Match the animation duration
+      setTimeout(() => {
+        hilfePanel.classList.remove('offen');
+        hilfePanel.classList.remove('closing');
+        document.body.classList.remove('help-panel-open');
+        hideChatbot();
+        console.log('Panel geschlossen');
+      }, 400); // Match the animation duration
     });
   }
   
@@ -742,10 +748,18 @@ if (searchInput && mobileSearchBtn) {
     if (
       hilfePanel.classList.contains('offen') &&
       !hilfePanel.contains(event.target) &&
-      !hilfeButton.contains(event.target)
+      !hilfeButton.contains(event.target) &&
+      !event.target.closest('#hilfePanelClose')
     ) {
-      hilfePanel.classList.remove('offen');
-      hideChatbot();
+      console.log('Klick außerhalb - Panel wird geschlossen');
+      hilfePanel.classList.add('closing');
+      
+      setTimeout(() => {
+        hilfePanel.classList.remove('offen');
+        hilfePanel.classList.remove('closing');
+        document.body.classList.remove('help-panel-open');
+        hideChatbot();
+      }, 400);
     }
   });
   
