@@ -348,8 +348,7 @@ if (searchInput && mobileSearchBtn) {
   const chatbotMessages = document.getElementById('chatbotMessages');
   const backButton = document.querySelector('.chatbot-header .bi-arrow-left');
   
-  // Flag um zu verhindern, dass Panel sofort wieder öffnet
-  let isClosing = false;
+
   
   console.log('hilfeButton:', hilfeButton);
   console.log('hilfePanel:', hilfePanel);
@@ -369,43 +368,31 @@ if (searchInput && mobileSearchBtn) {
     console.log('Initial hilfePanel opacity:', window.getComputedStyle(hilfePanel).opacity);
   }
   
-  // Einfacher Test für den Hilfe-Button
+  // Event Listener für Hilfe-Button
   if (hilfeButton) {
     hilfeButton.addEventListener('click', (e) => {
       e.preventDefault();
       e.stopPropagation();
       console.log('Hilfe-Button geklickt!');
-      console.log('isClosing:', isClosing);
       
-      // Verhindere Öffnen wenn gerade geschlossen wird
-      if (isClosing) {
-        console.log('Panel wird gerade geschlossen - Aktion ignoriert');
-        return;
-      }
+      // Prüfe aktuellen Zustand
+      const isOpen = hilfePanel.classList.contains('offen');
+      console.log('Panel ist offen:', isOpen);
       
-      console.log('hilfePanel Element:', hilfePanel);
-      console.log('hilfePanel Klassen vor Änderung:', hilfePanel.className);
-      
-      if (hilfePanel.classList.contains('offen')) {
-        // Add closing animation
-        hilfePanel.classList.add('closing');
-        
-        // Remove the panel after animation completes
-        setTimeout(() => {
-          hilfePanel.classList.remove('offen');
-          hilfePanel.classList.remove('closing');
-          document.body.classList.remove('help-panel-open');
-          hideChatbot();
-        }, 400); // Match the animation duration
+      if (isOpen) {
+        // Panel schließen
+        hilfePanel.classList.remove('offen');
+        document.body.classList.remove('help-panel-open');
+        hilfePanel.style.display = 'none';
+        hideChatbot();
         console.log('Panel geschlossen');
       } else {
+        // Panel öffnen
         hilfePanel.classList.add('offen');
         document.body.classList.add('help-panel-open');
         console.log('Panel geöffnet');
-        console.log('hilfePanel Klassen nach Änderung:', hilfePanel.className);
-        console.log('hilfePanel Style:', window.getComputedStyle(hilfePanel).display);
         
-        // Force visibility as backup
+        // Force visibility
         hilfePanel.style.display = 'flex';
         hilfePanel.style.visibility = 'visible';
         hilfePanel.style.opacity = '1';
@@ -702,7 +689,7 @@ if (searchInput && mobileSearchBtn) {
     window.orangeSupportActive = false;
   }
   
-  // Event Listeners
+  // Event Listeners für X-Button
   if (hilfePanelClose) {
     hilfePanelClose.addEventListener('click', (e) => {
       e.preventDefault();
@@ -710,26 +697,12 @@ if (searchInput && mobileSearchBtn) {
       e.stopImmediatePropagation();
       console.log('X-Button geklickt - Panel wird geschlossen');
       
-      // Flag setzen um weitere Klicks zu verhindern
-      isClosing = true;
-      
-      // Add closing animation
-      hilfePanel.classList.add('closing');
-      
-      // Remove the panel after animation completes
-      setTimeout(() => {
-        hilfePanel.classList.remove('offen');
-        hilfePanel.classList.remove('closing');
-        document.body.classList.remove('help-panel-open');
-        hideChatbot();
-        console.log('Panel geschlossen');
-        
-        // Flag nach Verzögerung zurücksetzen
-        setTimeout(() => {
-          isClosing = false;
-          console.log('isClosing zurückgesetzt');
-        }, 500);
-      }, 400); // Match the animation duration
+      // Sofort schließen ohne Animation
+      hilfePanel.classList.remove('offen');
+      document.body.classList.remove('help-panel-open');
+      hilfePanel.style.display = 'none';
+      hideChatbot();
+      console.log('Panel sofort geschlossen');
     });
   }
   
@@ -769,24 +742,13 @@ if (searchInput && mobileSearchBtn) {
       hilfePanel.classList.contains('offen') &&
       !hilfePanel.contains(event.target) &&
       !hilfeButton.contains(event.target) &&
-      !event.target.closest('#hilfePanelClose') &&
-      !isClosing
+      !event.target.closest('#hilfePanelClose')
     ) {
       console.log('Klick außerhalb - Panel wird geschlossen');
-      isClosing = true;
-      hilfePanel.classList.add('closing');
-      
-      setTimeout(() => {
-        hilfePanel.classList.remove('offen');
-        hilfePanel.classList.remove('closing');
-        document.body.classList.remove('help-panel-open');
-        hideChatbot();
-        
-        // Flag zurücksetzen
-        setTimeout(() => {
-          isClosing = false;
-        }, 500);
-      }, 400);
+      hilfePanel.classList.remove('offen');
+      document.body.classList.remove('help-panel-open');
+      hilfePanel.style.display = 'none';
+      hideChatbot();
     }
   });
   
