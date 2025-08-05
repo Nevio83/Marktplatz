@@ -106,6 +106,19 @@ body {
     font-weight: 600;
 }
 
+/* Abstand zwischen Suchfeld und Lupen-Button */
+.search-form .input-group {
+    gap: 8px;
+}
+
+.search-form .input-group .form-control {
+    margin-right: 0;
+}
+
+.search-form .input-group .btn {
+    margin-left: 0;
+}
+
 /* Moderne Kategorie-Karten - inspiriert von "Shop By Category" */
 .category-tile {
     position: relative;
