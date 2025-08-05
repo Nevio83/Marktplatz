@@ -490,23 +490,23 @@ function renderCartDropdown() {
           <i class="bi bi-cart-x fs-1 text-muted"></i>
           <p class="text-muted mt-2 mb-3">Ihr Warenkorb ist leer</p>
           
-          <!-- Zufällige Produktvorschläge -->
-          <div class="mt-3">
-            <h6 class="mb-2" style="color: #6c757d; font-weight: 600;"><i class="bi bi-lightbulb" style="color: #ffc107;"></i> Das könnte Ihnen gefallen</h6>
-            ${randomProducts.map(product => `
-              <div class="cart-item" style="margin-bottom: 0.5rem;">
-                <img src="${product.image}" class="cart-item-image" alt="${product.name}">
-                <div class="cart-item-details">
-                  <div class="cart-item-name">${product.name}</div>
-                  <div class="cart-item-price">€${product.price.toFixed(2)}</div>
-                </div>
-                <div class="cart-item-controls">
-                  <button class="quantity-btn" onclick="addToCart(${product.id})" style="background: #007AFF; color: white; border: none; font-weight: 700; box-shadow: 0 2px 8px rgba(0, 122, 255, 0.2);">
+          <!-- Enhanced Produktvorschläge -->
+          <div class="cart-recommendations">
+            <h6><i class="bi bi-lightbulb"></i> Das könnte Ihnen gefallen</h6>
+            <div class="recommendations-grid">
+              ${randomProducts.map((product, index) => `
+                <div class="recommendation-card" style="animation-delay: ${(index + 1) * 0.1}s;">
+                  <img src="${product.image}" class="recommendation-image" alt="${product.name}">
+                  <div class="recommendation-details">
+                    <div class="recommendation-name">${product.name}</div>
+                    <div class="recommendation-price">€${product.price.toFixed(2)}</div>
+                  </div>
+                  <button class="recommendation-add-btn" onclick="addRecommendationToCart(${product.id}, this)" title="Zum Warenkorb hinzufügen">
                     <i class="bi bi-cart-plus"></i>
                   </button>
                 </div>
-              </div>
-            `).join('')}
+              `).join('')}
+            </div>
           </div>
         </div>
       `;
@@ -521,7 +521,8 @@ function renderCartDropdown() {
   const total = cartItems.reduce((sum, item) => sum + (typeof item.price === 'number' ? item.price * item.quantity : 0), 0);
   console.log('Cart total calculated:', total);
   
-  body.innerHTML = cartItems.map(item => `
+  // Render cart items and add recommendations
+  const cartItemsHTML = cartItems.map(item => `
     <div class="cart-item">
       <img src="${item.image}" class="cart-item-image" alt="${item.name}">
       <div class="cart-item-details">
@@ -548,6 +549,42 @@ function renderCartDropdown() {
       </div>
     </div>
   `).join('');
+
+  // Add recommendations when cart has items
+  loadProducts().then(products => {
+    const cartProductIds = cartItems.map(item => item.id);
+    const availableProducts = products.filter(product => !cartProductIds.includes(product.id));
+    const shuffled = [...availableProducts].sort(() => 0.5 - Math.random());
+    const randomProducts = shuffled.slice(0, 2); // Show 2 recommendations when cart has items
+    
+    let recommendationsHTML = '';
+    if (randomProducts.length > 0) {
+      recommendationsHTML = `
+        <div class="cart-recommendations">
+          <h6><i class="bi bi-lightbulb"></i> Das könnte Ihnen gefallen</h6>
+          <div class="recommendations-grid">
+            ${randomProducts.map((product, index) => `
+              <div class="recommendation-card" style="animation-delay: ${(index + 1) * 0.1}s;">
+                <img src="${product.image}" class="recommendation-image" alt="${product.name}">
+                <div class="recommendation-details">
+                  <div class="recommendation-name">${product.name}</div>
+                  <div class="recommendation-price">€${product.price.toFixed(2)}</div>
+                </div>
+                <button class="recommendation-add-btn" onclick="addRecommendationToCart(${product.id}, this)" title="Zum Warenkorb hinzufügen">
+                  <i class="bi bi-cart-plus"></i>
+                </button>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+    
+    body.innerHTML = cartItemsHTML + recommendationsHTML;
+  });
+  
+  // Set initial content without recommendations for immediate rendering
+  body.innerHTML = cartItemsHTML;
   
   // Update total immediately
   totalElement.textContent = total.toFixed(2);
@@ -1168,3 +1205,89 @@ function clearSearchInput() {
 
 // Funktion global verfügbar machen
 window.clearSearchInput = clearSearchInput;
+
+// Enhanced function to add recommendations to cart with animation
+function addRecommendationToCart(productId, buttonElement) {
+  // Add product to cart using existing function
+  addToCart(productId);
+  
+  // Add visual feedback animation
+  const card = buttonElement.closest('.recommendation-card');
+  if (card) {
+    // Add success animation class
+    card.classList.add('added');
+    
+    // Show brief success feedback
+    const originalIcon = buttonElement.innerHTML;
+    buttonElement.innerHTML = '<i class="bi bi-check"></i>';
+    buttonElement.style.background = 'var(--success-color)';
+    
+    // Reset after animation
+    setTimeout(() => {
+      card.classList.remove('added');
+      buttonElement.innerHTML = originalIcon;
+      buttonElement.style.background = '';
+    }, 600);
+  }
+  
+  // Optionally show a subtle notification
+  showAddToCartNotification();
+}
+
+// Show subtle notification when item is added
+function showAddToCartNotification() {
+  // Check if notification already exists
+  let notification = document.querySelector('.cart-notification');
+  if (notification) {
+    notification.remove();
+  }
+  
+  // Create notification element
+  notification = document.createElement('div');
+  notification.className = 'cart-notification';
+  notification.innerHTML = `
+    <i class="bi bi-check-circle-fill"></i>
+    <span>Artikel hinzugefügt!</span>
+  `;
+  
+  // Add styles inline for immediate effect
+  Object.assign(notification.style, {
+    position: 'fixed',
+    top: '80px',
+    right: '20px',
+    background: 'var(--success-color)',
+    color: 'white',
+    padding: '12px 20px',
+    borderRadius: 'var(--border-radius)',
+    boxShadow: 'var(--shadow-medium)',
+    zIndex: '10000',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
+    fontSize: '0.9rem',
+    fontWeight: '600',
+    transform: 'translateX(100%)',
+    transition: 'all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+  });
+  
+  document.body.appendChild(notification);
+  
+  // Animate in
+  setTimeout(() => {
+    notification.style.transform = 'translateX(0)';
+  }, 10);
+  
+  // Animate out and remove
+  setTimeout(() => {
+    notification.style.transform = 'translateX(100%)';
+    setTimeout(() => {
+      if (notification.parentNode) {
+        notification.parentNode.removeChild(notification);
+      }
+    }, 300);
+  }, 2000);
+}
+
+// Make functions globally available
+window.addRecommendationToCart = addRecommendationToCart;
+window.showAddToCartNotification = showAddToCartNotification;

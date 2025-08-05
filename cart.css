@@ -801,15 +801,90 @@ body {
 }
 
 /* --- Add-on Bereich moderner und hochwertiger --- */
+
+/* Visueller Trenner zwischen Warenkorb und Add-ons */
+.addon-section-divider {
+    margin: 3rem 0 2rem 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, #e3e8f0 20%, #667eea 50%, #e3e8f0 80%, transparent 100%);
+    position: relative;
+}
+
+.addon-section-divider::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 16px;
+    height: 16px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 50%;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+/* Add-ons Sektion Container */
+.addon-section {
+    margin-top: 2rem;
+    padding: 2rem;
+    background: linear-gradient(145deg, #f8fafc 0%, #ffffff 100%);
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(102,126,234,0.08);
+    border: 2px solid #e3e8f0;
+    position: relative;
+}
+
+.addon-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    border-radius: 20px 20px 0 0;
+}
+
+/* Add-ons Sektion Header */
+.addon-section-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 2px dashed #e3e8f0;
+}
+
+.addon-section-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+}
+
+.addon-section-title i {
+    color: #667eea;
+    font-size: 1.5rem;
+}
+
+.addon-section-subtitle {
+    font-size: 1rem;
+    color: #6c757d;
+    margin: 0;
+    font-weight: 500;
+}
+
 .addon-list {
     display: flex;
     flex-direction: column;
     gap: 1.3rem;
-    background: #f8fafc;
-    border-radius: 18px;
-    padding: 1.2rem 1.2rem 1.2rem 1.2rem;
-    box-shadow: 0 2px 16px rgba(102,126,234,0.07);
-    border: 1.5px solid #e3e8f0;
+    background: transparent;
+    border-radius: 0;
+    padding: 0;
+    box-shadow: none;
+    border: none;
 }
 .addon-card {
     display: flex;
@@ -1146,6 +1221,32 @@ body {
     max-width: 100% !important;
     box-sizing: border-box !important;
   }
+  /* Add-ons Sektion mobile Anpassungen */
+  .addon-section {
+    margin-top: 1.5rem !important;
+    padding: 1.5rem 1rem !important;
+    border-radius: 16px !important;
+  }
+  
+  .addon-section-header {
+    margin-bottom: 1.5rem !important;
+    padding-bottom: 1rem !important;
+  }
+  
+  .addon-section-title {
+    font-size: 1.2rem !important;
+    flex-direction: column !important;
+    gap: 0.4rem !important;
+  }
+  
+  .addon-section-subtitle {
+    font-size: 0.9rem !important;
+  }
+  
+  .addon-section-divider {
+    margin: 2rem 0 1.5rem 0 !important;
+  }
+
   .addon-card {
     flex-wrap: wrap !important;
     gap: 0.7rem !important;
