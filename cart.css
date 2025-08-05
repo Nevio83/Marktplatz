@@ -974,6 +974,14 @@ body {
     top: 16px;
     right: 16px;
     z-index: 3;
+    transition: all 0.3s ease;
+  }
+  
+  #cartDropdown .btn-close:hover {
+    background: #764ba2 !important;
+    color: #fff !important;
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(118, 75, 162, 0.3);
   }
   #cartDropdown .cart-dropdown-body {
     flex: 1 1 auto;
