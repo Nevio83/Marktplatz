@@ -1192,6 +1192,21 @@ body:has(.hilfe-panel.offen) {
   display: flex !important;
   visibility: visible !important;
   opacity: 1 !important;
+  transform: translateY(-50%) scale(1) !important;
+  z-index: 10001 !important;
+}
+
+/* Additional force rule for panel visibility */
+div#hilfePanel.offen,
+#hilfePanel.offen {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  transform: translateY(-50%) scale(1) !important;
+  z-index: 10001 !important;
+  position: fixed !important;
+  top: 50% !important;
+  right: 20px !important;
 }
 
 /* Glassmorphism Border Effect */

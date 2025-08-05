@@ -359,12 +359,22 @@ if (searchInput && mobileSearchBtn) {
     console.log('Hilfe-Button wurde sichtbar gemacht');
   }
   
+  // Debug: Teste Panel-Sichtbarkeit
+  if (hilfePanel) {
+    console.log('Initial hilfePanel display:', window.getComputedStyle(hilfePanel).display);
+    console.log('Initial hilfePanel visibility:', window.getComputedStyle(hilfePanel).visibility);
+    console.log('Initial hilfePanel opacity:', window.getComputedStyle(hilfePanel).opacity);
+  }
+  
   // Einfacher Test für den Hilfe-Button
   if (hilfeButton) {
     hilfeButton.addEventListener('click', (e) => {
       e.preventDefault();
       e.stopPropagation();
       console.log('Hilfe-Button geklickt!');
+      console.log('hilfePanel Element:', hilfePanel);
+      console.log('hilfePanel Klassen vor Änderung:', hilfePanel.className);
+      
       if (hilfePanel.classList.contains('offen')) {
         // Add closing animation
         hilfePanel.classList.add('closing');
@@ -381,6 +391,23 @@ if (searchInput && mobileSearchBtn) {
         hilfePanel.classList.add('offen');
         document.body.classList.add('help-panel-open');
         console.log('Panel geöffnet');
+        console.log('hilfePanel Klassen nach Änderung:', hilfePanel.className);
+        console.log('hilfePanel Style:', window.getComputedStyle(hilfePanel).display);
+        
+        // Force visibility as backup
+        hilfePanel.style.display = 'flex';
+        hilfePanel.style.visibility = 'visible';
+        hilfePanel.style.opacity = '1';
+        hilfePanel.style.zIndex = '10001';
+        hilfePanel.style.position = 'fixed';
+        hilfePanel.style.top = '50%';
+        hilfePanel.style.right = '20px';
+        hilfePanel.style.transform = 'translateY(-50%) scale(1)';
+        hilfePanel.style.width = '440px';
+        hilfePanel.style.maxWidth = '95vw';
+        hilfePanel.style.height = 'auto';
+        hilfePanel.style.minHeight = '500px';
+        hilfePanel.style.maxHeight = '650px';
       }
     });
   } else {
@@ -723,6 +750,23 @@ if (searchInput && mobileSearchBtn) {
   });
   
   console.log('Script geladen!');
+  
+  // TEST: Panel nach 3 Sekunden automatisch öffnen (zum Testen)
+  setTimeout(() => {
+    console.log('TEST: Öffne Panel automatisch...');
+    if (hilfePanel) {
+      hilfePanel.classList.add('offen');
+      hilfePanel.style.display = 'flex';
+      hilfePanel.style.visibility = 'visible';
+      hilfePanel.style.opacity = '1';
+      hilfePanel.style.zIndex = '10001';
+      hilfePanel.style.position = 'fixed';
+      hilfePanel.style.top = '50%';
+      hilfePanel.style.right = '20px';
+      hilfePanel.style.transform = 'translateY(-50%) scale(1)';
+      console.log('TEST: Panel sollte jetzt sichtbar sein');
+    }
+  }, 3000);
 </script>
 <script>
   // Herz-Icon bei Hover füllen
