@@ -2939,13 +2939,11 @@ div#hilfePanel.offen,
 }
 
 .recommendation-add-btn:hover {
-  transform: scale(1.15) rotate(90deg);
   box-shadow: 0 4px 16px rgba(102, 126, 234, 0.4);
   background: linear-gradient(135deg, #764ba2, #f093fb);
 }
 
 .recommendation-add-btn:active {
-  transform: scale(1.05) rotate(90deg);
 }
 
 .recommendation-add-btn i {
@@ -3096,7 +3094,6 @@ div#hilfePanel.offen,
   }
   
   .recommendation-add-btn:hover {
-    transform: scale(1.1);
     background: var(--primary-gradient);
   }
 }
