@@ -78,12 +78,8 @@
                         </div>
                     </div>
 
-                    <!-- Bundle-Box -->
-                    <div id="bundle-section" class="mt-5"></div>
-                </div>
-                
-                <div class="col-lg-4">
-                    <div class="quick-order-card">
+                    <!-- Schnellbestellung (Mobile only) -->
+                    <div class="quick-order-card mt-5 d-lg-none">
                         <div class="quick-order-header">
                             <h4>Schnellbestellung</h4>
                         </div>
@@ -100,6 +96,50 @@
                             <div class="price-section">
                                 <div class="current-price">€14.00</div>
                                 <div class="total-price">Gesamt: <span id="totalPrice">€14.00</span></div>
+                            </div>
+                            
+                            <div class="action-buttons">
+                                <button class="buy-now-btn" onclick="addToCartWithQuantity()">
+                                    <i class="bi bi-cart-plus"></i> Jetzt kaufen
+                                </button>
+                                <button class="wishlist-btn" onclick="toggleWishlist(product)">
+                                    <i class="bi bi-heart"></i> Zur Wunschliste
+                                </button>
+                            </div>
+                            
+                            <div class="features-section">
+                                <ul class="features-list">
+                                    <li><i class="bi bi-truck"></i> Kostenloser Versand in Europa</li>
+                                    <li><i class="bi bi-shield-check"></i> Garantie inklusive</li>
+                                    <li><i class="bi bi-arrow-return-left"></i> 30 Tage Rückgaberecht</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bundle-Box -->
+                    <div id="bundle-section" class="mt-5"></div>
+                </div>
+                
+                <div class="col-lg-4">
+                    <!-- Schnellbestellung (Desktop only) -->
+                    <div class="quick-order-card d-none d-lg-block">
+                        <div class="quick-order-header">
+                            <h4>Schnellbestellung</h4>
+                        </div>
+                        <div class="quick-order-body">
+                            <div class="quantity-section">
+                                <label class="quantity-label">Menge:</label>
+                                <div class="quantity-input-group">
+                                    <button class="quantity-btn" onclick="decreaseQuantity()">-</button>
+                                    <input type="number" class="quantity-input" id="quantity-desktop" value="1" min="1" max="10">
+                                    <button class="quantity-btn" onclick="increaseQuantity()">+</button>
+                                </div>
+                            </div>
+                            
+                            <div class="price-section">
+                                <div class="current-price">€14.00</div>
+                                <div class="total-price">Gesamt: <span id="totalPriceDesktop">€14.00</span></div>
                             </div>
                             
                             <div class="action-buttons">
