@@ -1183,8 +1183,8 @@ body:has(.hilfe-panel.offen) {
   opacity: 1 !important;
 }
 
-/* Glassmorphism Border Effect */
-.hilfe-panel::before {
+/* Glassmorphism Border Effect - REMOVED */
+/* .hilfe-panel::before {
   content: '';
   position: absolute;
   top: 0;
@@ -1204,7 +1204,7 @@ body:has(.hilfe-panel.offen) {
   -webkit-mask-composite: xor;
   pointer-events: none;
   animation: borderGlow 3s ease-in-out infinite alternate;
-}
+} */
 
 /* Ultra-Moderne Hilfe-Panel Animationen */
 @keyframes helpPanelMegaSlideIn {
@@ -1230,7 +1230,7 @@ body:has(.hilfe-panel.offen) {
   }
 }
 
-@keyframes borderGlow {
+/* @keyframes borderGlow {
   0% {
     opacity: 0.6;
     filter: brightness(1) saturate(1);
@@ -1239,7 +1239,7 @@ body:has(.hilfe-panel.offen) {
     opacity: 1;
     filter: brightness(1.3) saturate(1.5);
   }
-}
+} */
 
 .hilfe-panel.closing {
   animation: helpPanelSlideOut 0.4s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards;
