@@ -1,0 +1,3 @@
+/* Kontakt Seite */
+.contact-form .form-control { border-radius: 12px; }
+#contactStatus { min-height: 1.5rem; display: inline-flex; align-items: center; }

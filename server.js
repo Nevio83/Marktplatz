@@ -135,6 +135,56 @@ app.post('/api/create-payment-intent', async (req, res) => {
   }
 });
 
+// Kontaktformular-Endpunkt
+app.post('/api/contact', async (req, res) => {
+  try {
+    const { name, email, message } = req.body || {};
+    if (!name || !email || !message) {
+      return res.status(400).json({ error: 'Bitte Name, E-Mail und Nachricht angeben.' });
+    }
+    const msg = {
+      to: process.env.SUPPORT_EMAIL,
+      from: process.env.SENDER_EMAIL,
+      reply_to: email,
+      subject: 'Kontaktanfrage – Marktplatz',
+      text: `Von: ${name} <${email}>
+Nachricht:\n${message}`,
+      html: `<p><strong>Von:</strong> ${name} &lt;${email}&gt;</p><p>${message.replace(/\n/g, '<br>')}</p>`
+    };
+    await sgMail.send(msg);
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Kontakt-Fehler:', error);
+    res.status(500).json({ error: 'Senden fehlgeschlagen' });
+  }
+});
+
+// Retoure-Anfrage Endpunkt
+app.post('/api/return-request', async (req, res) => {
+  try {
+    const { orderId, email, reason, items } = req.body || {};
+    if (!orderId || !email) {
+      return res.status(400).json({ error: 'Bitte Bestellnummer und E-Mail angeben.' });
+    }
+    const msg = {
+      to: process.env.SUPPORT_EMAIL,
+      from: process.env.SENDER_EMAIL,
+      reply_to: email,
+      subject: `Retoure-Anfrage #${orderId}`,
+      text: `Retoure angefragt für Bestellung ${orderId}\nE-Mail: ${email}\nGrund: ${reason || '—'}\nArtikel: ${(items && items.join(', ')) || '—'}`,
+      html: `<p><strong>Retoure angefragt</strong> für Bestellung <strong>#${orderId}</strong></p>
+            <p><strong>E-Mail:</strong> ${email}</p>
+            <p><strong>Grund:</strong> ${reason || '—'}</p>
+            <p><strong>Artikel:</strong> ${(items && items.join(', ')) || '—'}</p>`
+    };
+    await sgMail.send(msg);
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Retoure-Fehler:', error);
+    res.status(500).json({ error: 'Senden fehlgeschlagen' });
+  }
+});
+
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

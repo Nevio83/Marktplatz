@@ -7,6 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link href="../styles.css" rel="stylesheet" />
   <link href="./info.css" rel="stylesheet" />
+  <link href="./angebote.css" rel="stylesheet" />
 </head>
 <body>
   <header class="header-bar py-3">
@@ -29,9 +30,97 @@
       </ul>
     </div>
 
-    <a class="back-btn" href="../index.html#productGrid"><i class="bi bi-lightning-charge"></i> Jetzt Angebote entdecken</a>
+    <section class="deals-section">
+      <div class="deals-header d-flex flex-wrap gap-3 align-items-center mb-3">
+        <h2 class="section-title h4 mb-0">Heißeste Deals</h2>
+        <div class="ms-auto d-flex gap-2">
+          <select id="dealsCategory" class="form-select form-select-sm rounded-pill">
+            <option value="Alle">Alle Kategorien</option>
+            <option>Elektronik</option>
+            <option>Mode</option>
+            <option>Fitness</option>
+            <option>Haushalt</option>
+          </select>
+          <select id="dealsSort" class="form-select form-select-sm rounded-pill">
+            <option value="desc">Rabatt: Absteigend</option>
+            <option value="asc">Rabatt: Aufsteigend</option>
+          </select>
+        </div>
+      </div>
+      <div id="dealsGrid" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4"></div>
+      <template id="dealTemplate">
+        <div class="col">
+          <div class="deal-card h-100" style="position: relative;">
+            <div class="deal-badge">-20%</div>
+            <img class="deal-image" alt="Deal">
+            <div class="deal-body">
+              <h3 class="deal-title h6 mb-1"></h3>
+              <div class="d-flex align-items-center gap-2 mb-2">
+                <span class="deal-price h5 mb-0"></span>
+                <span class="deal-old text-muted text-decoration-line-through"></span>
+              </div>
+              <div class="d-flex gap-2">
+                <a class="btn btn-primary btn-sm rounded-pill px-3" target="_self">Ansehen</a>
+                <a class="btn btn-outline-secondary btn-sm rounded-pill px-3" target="_self">In Kategorie</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </template>
+    </section>
+
+    <a class="back-btn mt-4 d-inline-flex" href="../index.html#productGrid"><i class="bi bi-lightning-charge"></i> Jetzt Angebote entdecken</a>
 
     <div class="footer-spacer"></div>
   </main>
+  <script>
+  (function() {
+    async function loadProducts() {
+      try { const res = await fetch('../products.json'); return await res.json(); } catch { return []; }
+    }
+    function computeDiscount(product) {
+      // Dummy: 10% Rabatt für jede 3. ID, 20% für jede 5. ID
+      const id = Number(product.id);
+      if (id % 5 === 0) return 0.20;
+      if (id % 3 === 0) return 0.10;
+      return 0.05;
+    }
+    function formatPrice(value) { return '€' + value.toFixed(2); }
+
+    function renderDeals(products) {
+      const grid = document.getElementById('dealsGrid');
+      const category = document.getElementById('dealsCategory').value;
+      const sortDir = document.getElementById('dealsSort').value;
+      const deals = products.map(p => {
+        const discount = computeDiscount(p);
+        const newPrice = Math.max(0.5, p.price * (1 - discount));
+        return { ...p, discount, newPrice };
+      }).filter(p => category === 'Alle' || p.category === category)
+        .sort((a,b) => sortDir === 'asc' ? a.discount - b.discount : b.discount - a.discount)
+        .slice(0, 12);
+
+      const tpl = document.getElementById('dealTemplate');
+      grid.innerHTML = deals.map(d => {
+        const node = tpl.content.cloneNode(true);
+        node.querySelector('.deal-badge').textContent = `-${Math.round(d.discount*100)}%`;
+        const img = node.querySelector('.deal-image');
+        img.src = d.image; img.alt = d.name;
+        node.querySelector('.deal-title').textContent = d.name;
+        node.querySelector('.deal-price').textContent = formatPrice(d.newPrice);
+        node.querySelector('.deal-old').textContent = formatPrice(d.price);
+        const viewBtn = node.querySelector('.btn.btn-primary');
+        viewBtn.href = `../produkte/produkt-${d.id}.html`;
+        const catBtn = node.querySelector('.btn.btn-outline-secondary');
+        catBtn.href = `../index.html?category=${encodeURIComponent(d.category)}#productGrid`;
+        return node.firstElementChild.outerHTML;
+      }).join('');
+    }
+
+    let productsCache = [];
+    loadProducts().then(p => { productsCache = p; renderDeals(productsCache); });
+    document.getElementById('dealsCategory').addEventListener('change', () => renderDeals(productsCache));
+    document.getElementById('dealsSort').addEventListener('change', () => renderDeals(productsCache));
+  })();
+  </script>
 </body>
 </html>
