@@ -65,6 +65,7 @@
   <script>
   (function() {
     async function loadProducts() { try { const r = await fetch('../products.json'); return await r.json(); } catch { return []; } }
+    function normalizeImagePath(src){ if(!src) return ''; if(src.startsWith('http')||src.startsWith('/')) return src; return '../'+src; }
     function render(products) {
       const grid = document.getElementById('newGrid');
       const category = document.getElementById('newCategory').value;
@@ -76,7 +77,9 @@
         const node = tpl.content.cloneNode(true);
         const link = node.querySelector('.new-card');
         link.href = `../produkte/produkt-${p.id}.html`;
-        const img = node.querySelector('.new-image'); img.src = p.image; img.alt = p.name;
+        const img = node.querySelector('.new-image');
+        img.src = normalizeImagePath(p.image); img.alt = p.name;
+        img.onerror = function(){ this.style.background = '#f8fafc'; this.style.objectFit = 'contain'; this.removeAttribute('src'); };
         node.querySelector('.new-title').textContent = p.name;
         node.querySelector('.small').textContent = `${p.category} · €${p.price.toFixed(2)}`;
         return node.firstElementChild.outerHTML;
