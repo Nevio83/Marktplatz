@@ -128,7 +128,7 @@ function renderProducts(products) {
     console.log('Rendering product:', product.id, product.name);
     const d = getDiscountInfo(product);
     const badgeHtml = d.isDeal
-      ? `<span class="badge bg-danger position-absolute" style="top:8px; left:8px; z-index:2;">-${Math.round(d.discount*100)}%</span>`
+      ? `<span class="badge bg-danger position-absolute" style="top:8px; left:8px; z-index:2;">${Math.round(d.discount*100)}</span>`
       : '';
     const priceBlockHtml = `
       <div>
