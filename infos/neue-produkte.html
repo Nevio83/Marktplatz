@@ -7,6 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link href="../styles.css" rel="stylesheet" />
   <link href="./info.css" rel="stylesheet" />
+  <link href="./neue-produkte.css" rel="stylesheet" />
 </head>
 <body>
   <header class="header-bar py-3">
@@ -29,9 +30,62 @@
       </ul>
     </div>
 
-    <a class="back-btn" href="../index.html#productGrid"><i class="bi bi-stars"></i> Neuheiten ansehen</a>
+    <section class="new-grid">
+      <div class="d-flex flex-wrap gap-3 align-items-center mb-3">
+        <h2 class="section-title h4 mb-0">Frisch eingetroffen</h2>
+        <div class="ms-auto d-flex gap-2">
+          <select id="newCategory" class="form-select form-select-sm rounded-pill">
+            <option value="Alle">Alle Kategorien</option>
+            <option>Elektronik</option>
+            <option>Mode</option>
+            <option>Fitness</option>
+            <option>Haushalt</option>
+          </select>
+        </div>
+      </div>
+      <div id="newGrid" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4"></div>
+      <template id="newTemplate">
+        <div class="col">
+          <a class="new-card h-100" target="_self">
+            <img class="new-image" alt="Neu">
+            <div class="new-body">
+              <span class="badge bg-primary-subtle text-primary mb-2">Neu</span>
+              <h3 class="new-title h6 mb-1"></h3>
+              <div class="text-muted small"></div>
+            </div>
+          </a>
+        </div>
+      </template>
+    </section>
+
+    <a class="back-btn mt-4 d-inline-flex" href="../index.html#productGrid"><i class="bi bi-stars"></i> Neuheiten ansehen</a>
 
     <div class="footer-spacer"></div>
   </main>
+  <script>
+  (function() {
+    async function loadProducts() { try { const r = await fetch('../products.json'); return await r.json(); } catch { return []; } }
+    function render(products) {
+      const grid = document.getElementById('newGrid');
+      const category = document.getElementById('newCategory').value;
+      const sorted = [...products].sort((a,b) => b.id - a.id)
+        .filter(p => category === 'Alle' || p.category === category)
+        .slice(0, 12);
+      const tpl = document.getElementById('newTemplate');
+      grid.innerHTML = sorted.map(p => {
+        const node = tpl.content.cloneNode(true);
+        const link = node.querySelector('.new-card');
+        link.href = `../produkte/produkt-${p.id}.html`;
+        const img = node.querySelector('.new-image'); img.src = p.image; img.alt = p.name;
+        node.querySelector('.new-title').textContent = p.name;
+        node.querySelector('.small').textContent = `${p.category} · €${p.price.toFixed(2)}`;
+        return node.firstElementChild.outerHTML;
+      }).join('');
+    }
+    let cache = [];
+    loadProducts().then(p => { cache = p; render(cache); });
+    document.getElementById('newCategory').addEventListener('change', () => render(cache));
+  })();
+  </script>
 </body>
 </html>

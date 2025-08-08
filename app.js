@@ -633,6 +633,17 @@ document.addEventListener('DOMContentLoaded', () => {
   const categoryFilter = document.getElementById('categoryFilter');
   const priceSort = document.getElementById('priceSort');
 
+  // URL-Parameter (z.B. ?category=Elektronik) auslesen und Filter setzen
+  try {
+    const urlParams = new URLSearchParams(window.location.search);
+    const categoryParam = urlParams.get('category');
+    if (categoryParam && categoryFilter) {
+      categoryFilter.value = categoryParam;
+    }
+  } catch (e) {
+    console.warn('Konnte URL-Parameter nicht lesen:', e);
+  }
+
   const updateFilters = debounce(() => {
     loadProducts().then(products => {
       const filtered = filterProducts(
