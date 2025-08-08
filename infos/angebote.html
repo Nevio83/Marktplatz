@@ -78,33 +78,61 @@
     async function loadProducts() {
       try { const res = await fetch('../products.json'); return await res.json(); } catch { return []; }
     }
-    function computeDiscount(product) {
-      // Dummy: 10% Rabatt für jede 3. ID, 20% für jede 5. ID
-      const id = Number(product.id);
-      if (id % 5 === 0) return 0.20;
-      if (id % 3 === 0) return 0.10;
-      return 0.05;
+
+    function normalizeImagePath(src) {
+      if (!src) return '';
+      if (src.startsWith('http') || src.startsWith('/')) return src;
+      return '../' + src; // von infos/ nach Root relativ machen
     }
+
+    function getDiscountInfo(p) {
+      const hasSalePrice = typeof p.salePrice === 'number' && p.salePrice < p.price;
+      const hasDiscountPercent = typeof p.discountPercent === 'number' && p.discountPercent > 0 && p.discountPercent < 1;
+      if (hasSalePrice) {
+        const discount = Math.max(0, 1 - (p.salePrice / p.price));
+        return { isDeal: true, discount, newPrice: p.salePrice };
+      }
+      if (hasDiscountPercent) {
+        const newPrice = Math.max(0, p.price * (1 - p.discountPercent));
+        return { isDeal: true, discount: p.discountPercent, newPrice };
+      }
+      return { isDeal: false, discount: 0, newPrice: p.price };
+    }
+
     function formatPrice(value) { return '€' + value.toFixed(2); }
 
     function renderDeals(products) {
       const grid = document.getElementById('dealsGrid');
       const category = document.getElementById('dealsCategory').value;
       const sortDir = document.getElementById('dealsSort').value;
-      const deals = products.map(p => {
-        const discount = computeDiscount(p);
-        const newPrice = Math.max(0.5, p.price * (1 - discount));
-        return { ...p, discount, newPrice };
-      }).filter(p => category === 'Alle' || p.category === category)
+
+      const withDiscount = products.map(p => ({ ...p, ...getDiscountInfo(p) }))
+        .filter(p => p.isDeal)
+        .filter(p => category === 'Alle' || p.category === category)
         .sort((a,b) => sortDir === 'asc' ? a.discount - b.discount : b.discount - a.discount)
         .slice(0, 12);
 
+      if (withDiscount.length === 0) {
+        grid.innerHTML = `
+          <div class="col-12">
+            <div class="info-card p-4 p-md-5 text-center">
+              <div class="mb-2" style="font-size:2rem;">🛍️</div>
+              <h3 class="h5 mb-2">Es gibt gerade keine Angebote</h3>
+              <p class="text-muted mb-3">Schau später wieder vorbei – wir aktualisieren regelmäßig.</p>
+              <a href="../index.html#productGrid" class="btn btn-primary rounded-pill px-4">Alle Produkte ansehen</a>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
       const tpl = document.getElementById('dealTemplate');
-      grid.innerHTML = deals.map(d => {
+      grid.innerHTML = withDiscount.map(d => {
         const node = tpl.content.cloneNode(true);
         node.querySelector('.deal-badge').textContent = `-${Math.round(d.discount*100)}%`;
         const img = node.querySelector('.deal-image');
-        img.src = d.image; img.alt = d.name;
+        img.src = normalizeImagePath(d.image); img.alt = d.name;
+        img.onerror = function() { this.style.background = '#f8fafc'; this.style.objectFit = 'contain'; this.removeAttribute('src'); };
         node.querySelector('.deal-title').textContent = d.name;
         node.querySelector('.deal-price').textContent = formatPrice(d.newPrice);
         node.querySelector('.deal-old').textContent = formatPrice(d.price);

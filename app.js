@@ -126,6 +126,17 @@ function renderProducts(products) {
   
   grid.innerHTML = products.map(product => {
     console.log('Rendering product:', product.id, product.name);
+    const d = getDiscountInfo(product);
+    const badgeHtml = d.isDeal
+      ? `<span class="badge bg-danger position-absolute" style="top:8px; left:8px; z-index:2;">-${Math.round(d.discount*100)}%</span>`
+      : '';
+    const priceBlockHtml = `
+      <div>
+        <span class="h4 text-primary">€${(d.isDeal ? d.newPrice : product.price).toFixed(2)}</span>
+        ${d.isDeal ? `<small class="text-muted text-decoration-line-through ms-2">€${product.price.toFixed(2)}</small>` : ''}
+        <small class="text-muted d-block">inkl. MwSt.</small>
+      </div>`;
+
     return `
     <div class="col">
       <div class="card h-100 border-0 shadow-hover position-relative product-card" data-product-id="${product.id}">
@@ -133,6 +144,7 @@ function renderProducts(products) {
           <i class="bi ${isInWishlist(product.id) ? 'bi-heart-fill' : 'bi-heart'}"></i>
         </button>
         <div class="ratio ratio-4x3 product-image-container">
+          ${badgeHtml}
           <img src="${product.image}" class="card-img-top object-fit-cover" alt="${product.name}" 
                style="opacity: 0.8; transform: scale(0.98); transition: opacity 0.3s ease, transform 0.3s ease, filter 0.3s ease; image-rendering: -webkit-optimize-contrast; image-rendering: crisp-edges; filter: brightness(1.02) contrast(1.05) saturate(1.1);">
         </div>
@@ -140,10 +152,7 @@ function renderProducts(products) {
           <h5 class="card-title">${product.name}</h5>
           <p class="card-text">${product.description || ''}</p>
           <div class="d-flex justify-content-between align-items-center">
-            <div>
-              <span class="h4 text-primary">€${product.price.toFixed(2)}</span>
-              <small class="text-muted d-block">inkl. MwSt.</small>
-            </div>
+            ${priceBlockHtml}
             <button class="btn btn-primary rounded-pill px-3 py-2 add-to-cart"
                     data-product-id="${product.id}"
                     data-name="${product.name}"
@@ -632,6 +641,24 @@ document.addEventListener('DOMContentLoaded', () => {
   const searchInput = document.getElementById('searchInput');
   const categoryFilter = document.getElementById('categoryFilter');
   const priceSort = document.getElementById('priceSort');
+  const dealsNotice = document.getElementById('dealsNotice');
+
+  function updateDealsNotice(products) {
+    if (!dealsNotice) return;
+    const hasDeals = products.some(p => getDiscountInfo(p).isDeal);
+    if (!hasDeals) {
+      dealsNotice.innerHTML = `
+        <div class="alert alert-light border rounded-4 d-flex align-items-center" role="alert" style="box-shadow: 0 4px 14px rgba(0,0,0,.04);">
+          <span class="me-2">🛍️</span>
+          <div>
+            <strong>Es gibt gerade keine Angebote.</strong>
+            <a class="ms-2" href="infos/angebote.html">Zur Angebotsseite</a>
+          </div>
+        </div>`;
+    } else {
+      dealsNotice.innerHTML = '';
+    }
+  }
 
   // URL-Parameter (z.B. ?category=Elektronik) auslesen und Filter setzen
   try {
@@ -646,6 +673,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const updateFilters = debounce(() => {
     loadProducts().then(products => {
+      updateDealsNotice(products);
       const filtered = filterProducts(
         products,
         searchInput ? searchInput.value : '',
@@ -715,6 +743,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Speichere die Produkte im localStorage für bessere Verfügbarkeit
     localStorage.setItem('allProducts', JSON.stringify(products));
     console.log('Products saved to localStorage:', products.length);
+    
+    updateDealsNotice(products);
     
     const filtered = filterProducts(
       products,
@@ -1302,3 +1332,18 @@ function showAddToCartNotification() {
 // Make functions globally available
 window.addRecommendationToCart = addRecommendationToCart;
 window.showAddToCartNotification = showAddToCartNotification;
+
+// Rabatt-/Angebotsinfo ermitteln (kompatibel zur Angebotsseite)
+function getDiscountInfo(product) {
+  const hasSalePrice = typeof product.salePrice === 'number' && product.salePrice < product.price;
+  const hasDiscountPercent = typeof product.discountPercent === 'number' && product.discountPercent > 0 && product.discountPercent < 1;
+  if (hasSalePrice) {
+    const discount = Math.max(0, 1 - (product.salePrice / product.price));
+    return { isDeal: true, discount, newPrice: product.salePrice };
+  }
+  if (hasDiscountPercent) {
+    const newPrice = Math.max(0, product.price * (1 - product.discountPercent));
+    return { isDeal: true, discount: product.discountPercent, newPrice };
+  }
+  return { isDeal: false, discount: 0, newPrice: product.price };
+}
