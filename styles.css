@@ -1090,22 +1090,28 @@ div#hilfeButton,
       radial-gradient(circle at bottom center, rgba(118, 75, 162, 0.08), transparent 60%);
     animation: slideUpPanelMega 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     overflow: hidden;
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
   }
   
+  .hilfe-panel-header {
+    padding-top: calc(28px + env(safe-area-inset-top));
+  }
+
   .hilfe-themen-modern {
-    max-height: calc(100vh - 180px);
+    max-height: calc(100vh - 180px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
     padding: 20px;
     overflow-y: auto;
   }
   
   /* Ensure chatbot interface is also fullscreen on mobile */
   .chatbot-interface {
-    height: 100vh !important;
-    max-height: 100vh !important;
+    height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
+    max-height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
   }
   
   .chatbot-messages {
-    max-height: calc(100vh - 200px) !important;
+    max-height: calc(100vh - 200px - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
     overflow-y: auto;
   }
 
@@ -1139,6 +1145,7 @@ div#hilfeButton,
   .hilfe-panel-header {
     border-radius: 0;
     padding: 28px 24px;
+    padding-top: calc(28px + env(safe-area-inset-top));
     font-size: 1.4rem;
   }
 }
@@ -1149,7 +1156,7 @@ div#hilfeButton,
 
   .chatbot-header {
     border-radius: 0;
-    padding: 16px 20px;
+    padding: calc(16px + env(safe-area-inset-top)) 20px 16px 20px;
   }
 
   .message-text {

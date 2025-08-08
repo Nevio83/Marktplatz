@@ -3,7 +3,7 @@
 <head>
   <!-- Start cookieyes banner --> <script id="cookieyes" type="text/javascript" src="https://cdn-cookieyes.com/client_data/8e12f1f6a93c31ea65a1052f/script.js"></script> <!-- End cookieyes banner -->
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0">
     <title>Marktplatz - Startseite</title>
     <meta name="description" content="Online-Marktplatz mit besten Angeboten">
     <meta name="keywords" content="ecommerce, online shopping, elektronik, mode">
@@ -412,21 +412,21 @@ if (searchInput && mobileSearchBtn) {
         // Check if mobile device for fullscreen behavior
         if (isMobileDevice()) {
           // Mobile: Fullscreen styling
-          hilfePanel.style.top = '0';
-          hilfePanel.style.left = '0';
-          hilfePanel.style.right = '0';
-          hilfePanel.style.bottom = '0';
-          hilfePanel.style.transform = 'none';
-          hilfePanel.style.width = '100vw';
-          hilfePanel.style.height = '100vh';
-          hilfePanel.style.maxWidth = '100vw';
-          hilfePanel.style.maxHeight = '100vh';
-          hilfePanel.style.minHeight = '100vh';
-          hilfePanel.style.borderRadius = '0';
-          hilfePanel.style.border = 'none';
-          // Prevent scrolling on body
-          document.body.style.overflow = 'hidden';
-          document.body.style.height = '100vh';
+                     hilfePanel.style.top = 'env(safe-area-inset-top)';
+           hilfePanel.style.left = '0';
+           hilfePanel.style.right = '0';
+           hilfePanel.style.bottom = 'env(safe-area-inset-bottom)';
+           hilfePanel.style.transform = 'none';
+           hilfePanel.style.width = '100vw';
+           hilfePanel.style.height = 'calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom))';
+           hilfePanel.style.maxWidth = '100vw';
+           hilfePanel.style.maxHeight = 'calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom))';
+           hilfePanel.style.minHeight = 'calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom))';
+           hilfePanel.style.borderRadius = '0';
+           hilfePanel.style.border = 'none';
+           // Prevent scrolling on body
+           document.body.style.overflow = 'hidden';
+           document.body.style.height = '100vh';
         } else {
           // Desktop: Normal panel styling
           hilfePanel.style.top = '50%';
