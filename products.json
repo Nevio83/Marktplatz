@@ -5,8 +5,8 @@
     "price": 10.00, 
     "category": "Elektronik", 
     "image": "produkt bilder/ware.png", 
-    "description": "Innovative Technologie für Ihren Alltag.",
-    "bundles": [
+"description": "Innovative Technologie für Ihren Alltag.",
+"bundles": [
       {
         "id": "bundle1",
         "name": "Starter Bundle",
@@ -89,8 +89,8 @@
     "price": 20.00, 
     "category": "Mode", 
     "image": "produkt bilder/ware.png", 
-    "description": "Modisch und hochwertig für jeden Anlass.",
-    "bundles": [
+"description": "Modisch und hochwertig für jeden Anlass.",
+"bundles": [
       {
         "id": "bundle1",
         "name": "Style Bundle",
@@ -173,8 +173,8 @@
     "price": 30.00, 
     "category": "Fitness", 
     "image": "produkt bilder/ware.png", 
-    "description": "Für ein aktives und gesundes Leben.",
-    "bundles": [
+"description": "Für ein aktives und gesundes Leben.",
+"bundles": [
       {
         "id": "bundle1",
         "name": "Fitness Starter",
