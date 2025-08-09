@@ -1040,7 +1040,7 @@ div#hilfeButton,
     0 6px 16px rgba(118, 75, 162, 0.15),
     inset 0 1px 0 rgba(255, 255, 255, 0.8),
     inset 0 -1px 0 rgba(0, 0, 0, 0.05);
-  z-index: 10001;
+  z-index: 2147483647;
   max-width: 95vw;
   width: 440px;
   max-height: 85vh;
@@ -1090,12 +1090,15 @@ div#hilfeButton,
       radial-gradient(circle at bottom center, rgba(118, 75, 162, 0.08), transparent 60%);
     animation: slideUpPanelMega 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     overflow: hidden;
-    padding-top: env(safe-area-inset-top);
-    padding-bottom: env(safe-area-inset-bottom);
+    padding-top: calc(constant(safe-area-inset-top) + 12px);
+    padding-top: calc(env(safe-area-inset-top, 0px) + 12px);
+    padding-bottom: calc(constant(safe-area-inset-bottom) + 12px);
+    padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 12px);
   }
   
   .hilfe-panel-header {
-    padding-top: calc(28px + env(safe-area-inset-top));
+    padding-top: calc(28px + constant(safe-area-inset-top));
+    padding-top: calc(28px + env(safe-area-inset-top, 0px));
   }
 
   .hilfe-themen-modern {
@@ -1145,7 +1148,8 @@ div#hilfeButton,
   .hilfe-panel-header {
     border-radius: 0;
     padding: 28px 24px;
-    padding-top: calc(28px + env(safe-area-inset-top));
+    padding-top: calc(28px + constant(safe-area-inset-top));
+    padding-top: calc(28px + env(safe-area-inset-top, 0px));
     font-size: 1.4rem;
   }
 }
@@ -1156,7 +1160,8 @@ div#hilfeButton,
 
   .chatbot-header {
     border-radius: 0;
-    padding: calc(16px + env(safe-area-inset-top)) 20px 16px 20px;
+    padding: calc(16px + constant(safe-area-inset-top)) 20px 16px 20px;
+    padding: calc(16px + env(safe-area-inset-top, 0px)) 20px 16px 20px;
   }
 
   .message-text {
@@ -1239,7 +1244,7 @@ body:has(.hilfe-panel.offen) {
   visibility: visible !important;
   opacity: 1 !important;
   transform: translateY(-50%) scale(1) !important;
-  z-index: 10001 !important;
+  z-index: 2147483647 !important;
 }
 
 /* Additional force rule for panel visibility */
@@ -1249,7 +1254,7 @@ div#hilfePanel.offen,
   visibility: visible !important;
   opacity: 1 !important;
   transform: translateY(-50%) scale(1) !important;
-  z-index: 10001 !important;
+  z-index: 2147483647 !important;
   position: fixed !important;
   top: 50% !important;
   right: 20px !important;
