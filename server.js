@@ -238,6 +238,8 @@ async function loadProductsFromStripeSession(session) {
 }
 
 // CJDropshipping API Endpunkte
+
+// CJDropshipping Produkte laden
 app.get('/api/cj/products', async (req, res) => {
   try {
     const response = await fetch(`${CJ_API_BASE}/product/list`, {
@@ -252,6 +254,59 @@ app.get('/api/cj/products', async (req, res) => {
   } catch (error) {
     console.error('CJ Products Error:', error);
     res.status(500).json({ error: 'Fehler beim Laden der CJ-Produkte' });
+  }
+});
+
+// CJDropshipping Produkte in lokale products.json importieren
+app.post('/api/cj/import-products', async (req, res) => {
+  try {
+    // 1. CJDropshipping Produkte laden
+    const response = await fetch(`${CJ_API_BASE}/product/list`, {
+      method: 'GET',
+      headers: {
+        'CJ-Access-Token': CJ_ACCESS_TOKEN,
+        'Content-Type': 'application/json'
+      }
+    });
+    
+    const cjData = await response.json();
+    
+    if (!cjData.result || !cjData.data) {
+      return res.status(400).json({ error: 'Keine Produkte von CJDropshipping erhalten' });
+    }
+
+    // 2. CJ Produkte in unser Format umwandeln
+    const fs = require('fs');
+    const currentProducts = JSON.parse(fs.readFileSync('./products.json', 'utf8'));
+    let nextId = Math.max(...currentProducts.map(p => p.id)) + 1;
+
+    const newProducts = cjData.data.map(cjProduct => ({
+      id: nextId++,
+      name: cjProduct.productName,
+      price: parseFloat(cjProduct.sellPrice || cjProduct.price || 10.00),
+      category: cjProduct.categoryName || "Elektronik",
+      image: cjProduct.productImage || "produkt bilder/ware.png",
+      description: cjProduct.description || "Importiert von CJDropshipping",
+      cjProductId: cjProduct.pid, // CJDropshipping Produkt-ID
+      cjSku: cjProduct.productSku,
+      cjVariants: cjProduct.variants || []
+    }));
+
+    // 3. Produkte zu bestehenden hinzufügen
+    const allProducts = [...currentProducts, ...newProducts];
+    
+    // 4. products.json überschreiben
+    fs.writeFileSync('./products.json', JSON.stringify(allProducts, null, 2));
+    
+    res.json({ 
+      success: true, 
+      imported: newProducts.length,
+      message: `${newProducts.length} Produkte erfolgreich importiert!` 
+    });
+    
+  } catch (error) {
+    console.error('Import Error:', error);
+    res.status(500).json({ error: 'Fehler beim Importieren der Produkte' });
   }
 });
 
