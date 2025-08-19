@@ -9,6 +9,10 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 const app = express();
 app.use(express.json());
 
+// CJDropshipping API Configuration
+const CJ_API_BASE = 'https://developers.cjdropshipping.com/api2.0/v1';
+const CJ_ACCESS_TOKEN = process.env.CJ_DROPSHIPPING_KEY;
+
 // Statische Dateien (HTML, CSS, JS, Bilder) ausliefern
 app.use(express.static(path.join(__dirname)));
 
@@ -62,15 +66,27 @@ app.post('/stripe-webhook', express.raw({type: 'application/json'}), async (req,
 
     if (event.type === 'checkout.session.completed') {
       const session = event.data.object;
+      
+      // 1. E-Mail senden
       const msg = {
         to: session.customer_details.email,
         from: process.env.SENDER_EMAIL,
         reply_to: process.env.SUPPORT_EMAIL,
         subject: 'Zahlungsbestätigung - Marktplatz',
-        text: `Vielen Dank für Ihre Bestellung #${session.id}!\n\nIhre Zahlung wurde erfolgreich verarbeitet.`,        html: `<strong>Bestellbestätigung #${session.id}</strong>
+        text: `Vielen Dank für Ihre Bestellung #${session.id}!\n\nIhre Zahlung wurde erfolgreich verarbeitet.`,
+        html: `<strong>Bestellbestätigung #${session.id}</strong>
           <p>Ihre Zahlung wurde erfolgreich verarbeitet und wir bereiten den Versand vor.</p>`
       };
       await sgMail.send(msg);
+      
+      // 2. NEU: Bestellung an CJDropshipping weiterleiten
+      try {
+        await createCJOrder(session);
+        console.log('CJDropshipping Bestellung erfolgreich erstellt');
+      } catch (cjError) {
+        console.error('CJDropshipping Fehler:', cjError);
+        // Hier könnten Sie eine Benachrichtigung an sich selbst senden
+      }
     }
     res.status(200).end();
   } catch (err) {
@@ -182,6 +198,121 @@ app.post('/api/return-request', async (req, res) => {
   } catch (error) {
     console.error('Retoure-Fehler:', error);
     res.status(500).json({ error: 'Senden fehlgeschlagen' });
+  }
+});
+
+// Funktion zum Erstellen einer CJDropshipping Bestellung
+async function createCJOrder(stripeSession) {
+  // Hier müssten Sie die Produktdaten aus der Stripe Session extrahieren
+  // und mit Ihren lokalen Produktdaten abgleichen
+  const products = await loadProductsFromStripeSession(stripeSession);
+  
+  const orderData = {
+    orderId: stripeSession.id,
+    products: products,
+    shippingAddress: stripeSession.shipping || stripeSession.customer_details,
+    customerEmail: stripeSession.customer_details.email
+  };
+
+  const response = await fetch(`${CJ_API_BASE}/shopping/order/createOrder`, {
+    method: 'POST',
+    headers: {
+      'CJ-Access-Token': CJ_ACCESS_TOKEN,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(orderData)
+  });
+
+  if (!response.ok) {
+    throw new Error(`CJ API Error: ${response.status}`);
+  }
+
+  return response.json();
+}
+
+async function loadProductsFromStripeSession(session) {
+  // Diese Funktion müsste die Produkte aus der Stripe Session 
+  // mit Ihren lokalen Produktdaten (products.json) abgleichen
+  // und die entsprechenden CJDropshipping IDs zurückgeben
+  return [];
+}
+
+// CJDropshipping API Endpunkte
+app.get('/api/cj/products', async (req, res) => {
+  try {
+    const response = await fetch(`${CJ_API_BASE}/product/list`, {
+      method: 'GET',
+      headers: {
+        'CJ-Access-Token': CJ_ACCESS_TOKEN,
+        'Content-Type': 'application/json'
+      }
+    });
+    const data = await response.json();
+    res.json(data);
+  } catch (error) {
+    console.error('CJ Products Error:', error);
+    res.status(500).json({ error: 'Fehler beim Laden der CJ-Produkte' });
+  }
+});
+
+// Bestellung an CJDropshipping weiterleiten
+app.post('/api/cj/create-order', async (req, res) => {
+  try {
+    const { orderId, products, shippingAddress, customerEmail } = req.body;
+    
+    const orderData = {
+      orderId: orderId,
+      products: products.map(item => ({
+        productId: item.cjProductId, // CJDropshipping Produkt-ID
+        quantity: item.quantity,
+        variant: item.variant || ''
+      })),
+      shippingAddress: {
+        firstName: shippingAddress.firstName,
+        lastName: shippingAddress.lastName,
+        address: shippingAddress.address,
+        city: shippingAddress.city,
+        zip: shippingAddress.zip,
+        country: shippingAddress.country
+      },
+      customerEmail: customerEmail
+    };
+
+    const response = await fetch(`${CJ_API_BASE}/shopping/order/createOrder`, {
+      method: 'POST',
+      headers: {
+        'CJ-Access-Token': CJ_ACCESS_TOKEN,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(orderData)
+    });
+
+    const result = await response.json();
+    res.json(result);
+  } catch (error) {
+    console.error('CJ Order Error:', error);
+    res.status(500).json({ error: 'Fehler beim Erstellen der CJ-Bestellung' });
+  }
+});
+
+// Bestellung löschen
+app.delete('/api/cj/order/:orderId', async (req, res) => {
+  try {
+    const { orderId } = req.params;
+    
+    const response = await fetch(`${CJ_API_BASE}/shopping/order/deleteOrder?orderId=${orderId}`, {
+      method: 'DELETE',
+      headers: {
+        'CJ-Access-Token': CJ_ACCESS_TOKEN,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    const result = await response.json();
+    res.json(result);
+  } catch (error) {
+    console.error('CJ Delete Order Error:', error);
+    res.status(500).json({ error: 'Fehler beim Löschen der CJ-Bestellung' });
   }
 });
 
