@@ -310,6 +310,62 @@ app.post('/api/cj/import-products', async (req, res) => {
   }
 });
 
+// Sendungsverfolgung abrufen
+app.get('/api/cj/tracking/:orderId', async (req, res) => {
+  try {
+    const { orderId } = req.params;
+    const response = await fetch(`${CJ_API_BASE}/logistic/getTrackInfo?orderId=${orderId}`, {
+      method: 'GET',
+      headers: {
+        'CJ-Access-Token': CJ_ACCESS_TOKEN,
+        'Content-Type': 'application/json'
+      }
+    });
+    const data = await response.json();
+    res.json(data);
+  } catch (error) {
+    console.error('CJ Tracking Error:', error);
+    res.status(500).json({ error: 'Fehler beim Abrufen der Sendungsverfolgung' });
+  }
+});
+
+// Alle Bestellungen anzeigen
+app.get('/api/cj/orders', async (req, res) => {
+  try {
+    const response = await fetch(`${CJ_API_BASE}/shopping/order/list`, {
+      method: 'GET', 
+      headers: {
+        'CJ-Access-Token': CJ_ACCESS_TOKEN,
+        'Content-Type': 'application/json'
+      }
+    });
+    const data = await response.json();
+    res.json(data);
+  } catch (error) {
+    console.error('CJ Orders Error:', error);
+    res.status(500).json({ error: 'Fehler beim Laden der Bestellungen' });
+  }
+});
+
+// Lagerbestand prüfen
+app.get('/api/cj/stock/:productId', async (req, res) => {
+  try {
+    const { productId } = req.params;
+    const response = await fetch(`${CJ_API_BASE}/product/stock/queryByVid?vid=${productId}`, {
+      method: 'GET',
+      headers: {
+        'CJ-Access-Token': CJ_ACCESS_TOKEN,
+        'Content-Type': 'application/json'
+      }
+    });
+    const data = await response.json();
+    res.json(data);
+  } catch (error) {
+    console.error('CJ Stock Error:', error);
+    res.status(500).json({ error: 'Fehler beim Prüfen des Lagerbestands' });
+  }
+});
+
 // Bestellung an CJDropshipping weiterleiten
 app.post('/api/cj/create-order', async (req, res) => {
   try {
