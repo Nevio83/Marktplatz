@@ -103,7 +103,7 @@ app.post('/api/send-confirmation', async (req, res) => {
 });
 
 app.post('/api/create-payment-intent', async (req, res) => {
-  const { cart, email, country } = req.body;
+  const { cart, email, country, city, firstname, lastname } = req.body;
   let amount = 0;
   for (const item of cart) {
     if (item.id === 1) {
@@ -127,7 +127,13 @@ app.post('/api/create-payment-intent', async (req, res) => {
       currency: 'eur',
       receipt_email: email,
       description: 'Marktplatz Bestellung',
-      payment_method_types: ['card']
+      payment_method_types: ['card'],
+      metadata: {
+        customer_name: `${firstname || ''} ${lastname || ''}`.trim(),
+        customer_city: city || '',
+        customer_country: country || '',
+        order_source: 'web'
+      }
     });
     res.json({ clientSecret: paymentIntent.client_secret });
   } catch (err) {
