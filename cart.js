@@ -112,6 +112,19 @@ window.showAddressSuggestions = showAddressSuggestions;
 function selectAddress(address) {
     document.getElementById('address').value = address;
     document.getElementById('address-suggestions').style.display = 'none';
+    
+    // Stadt aus Adresse extrahieren (normalerweise vor dem letzten Komma)
+    const addressParts = address.split(',');
+    if (addressParts.length >= 2) {
+        const cityPart = addressParts[addressParts.length - 2].trim();
+        const cityInput = document.getElementById('city');
+        if (cityInput && cityPart) {
+            // Entferne Postleitzahlen aus dem Stadtname falls vorhanden
+            const cleanCity = cityPart.replace(/^\d{4,5}\s*/, '');
+            cityInput.value = cleanCity;
+        }
+    }
+    
     // Land aus Adresse extrahieren und automatisch im Dropdown setzen
     const countryMatch = address.match(/,\s*([A-Za-z\s]+)$/);
     if (countryMatch) {
@@ -517,6 +530,13 @@ function updateCartPage() {
                         </div>
                     </div>
                     
+                    <div class="form-group">
+                        <label for="city" class="form-label">
+                            <i class="bi bi-building"></i> Stadt
+                        </label>
+                        <input type="text" id="city" class="form-control" required placeholder="Stadt eingeben">
+                    </div>
+                    
                     <div class="form-group position-relative">
                         <label for="address" class="form-label">
                             <i class="bi bi-geo-alt"></i> Adresse
@@ -824,6 +844,7 @@ async function handleStripeSubmit(event) {
         const firstname = document.getElementById('firstname').value;
         const lastname = document.getElementById('lastname').value;
         const country = document.getElementById('country').value;
+        const city = document.getElementById('city').value;
 
         if (cart.length === 0) {
             throw new Error("Ihr Warenkorb ist leer.");
@@ -833,7 +854,7 @@ async function handleStripeSubmit(event) {
         const response = await fetch('/api/create-payment-intent', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ cart, email, country })
+            body: JSON.stringify({ cart, email, country, city, firstname, lastname })
         });
 
         const { clientSecret, error: backendError } = await response.json();
@@ -968,6 +989,17 @@ function setupPostcodeAutocomplete() {
         const el = e.target.closest('.address-suggestion');
         if (el) {
             postcodeInput.value = el.getAttribute('data-plz') || el.textContent;
+            
+            // Stadt aus dem Vorschlagstext extrahieren und setzen
+            const suggestionText = el.textContent;
+            const cityMatch = suggestionText.match(/^\d*\s*([^,]+)/);
+            if (cityMatch) {
+                const cityInput = document.getElementById('city');
+                if (cityInput) {
+                    cityInput.value = cityMatch[1].trim();
+                }
+            }
+            
             // Land setzen, falls noch nicht gewählt
             const countrySelect = document.getElementById('country');
             const countryCode = el.getAttribute('data-country');
