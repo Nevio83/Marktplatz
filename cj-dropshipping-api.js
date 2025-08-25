@@ -9,14 +9,17 @@ const fetch = require('node-fetch');
 
 class CJDropshippingAPI {
   constructor(config = {}) {
-    this.baseURL = 'https://developers.cjdropshipping.com';
+    this.baseURL = config.baseURL || process.env.CJ_BASE_URL || 'https://developers.cjdropshipping.com';
     this.apiKey = config.apiKey || process.env.CJ_API_KEY;
     this.accessToken = config.accessToken || process.env.CJ_ACCESS_TOKEN;
     this.email = config.email || process.env.CJ_EMAIL;
     this.password = config.password || process.env.CJ_PASSWORD;
     
-    if (!this.apiKey) {
-      console.warn('CJ API Key not found. Please set CJ_API_KEY in your environment variables.');
+    if (!this.apiKey && !this.accessToken) {
+      console.warn('⚠️  CJ API credentials not found. Please configure CJ_API_KEY and CJ_ACCESS_TOKEN in your .env file.');
+      console.warn('📖 Get your credentials from: https://cjdropshipping.com/my.html#/apikey');
+    } else {
+      console.log('✅ CJ Dropshipping API initialized successfully');
     }
   }
 
