@@ -1,24 +1,18 @@
-# CJ Dropshipping API - VOLLSTÄNDIGE Integration aller APIs
+# CJ Dropshipping API - Authentische Integration aller APIs
 
 ## Übersicht
 
-Dieses Projekt integriert **ALLE** CJ Dropshipping APIs basierend auf der offiziellen Dokumentation und zusätzlichen Recherchen. Die Integration umfasst jetzt **70+ API-Endpunkte** in **13 Kategorien**:
+Dieses Projekt integriert **ALLE** authentischen CJ Dropshipping APIs basierend auf der offiziellen Dokumentation. Die Integration umfasst **31 echte API-Endpunkte** in **8 Kategorien**:
 
-- ✅ **Authentifizierung** - Login, Token-Verwaltung, Logout
-- ✅ **Produkte** - Suche, Details, Kategorien, Kommentare, Varianten, Lagerbestände
-- ✅ **Product Sourcing** - Produktbeschaffung und Anfragen
-- ✅ **Bestellungen** - Erstellen, Verwalten, Bestätigen, Löschen
-- ✅ **Zahlungen** - Guthaben verwalten und Zahlungen
-- ✅ **Logistik** - Sendungsverfolgung, Versandkosten berechnen
-- ✅ **Disputes** - Streitfälle verwalten und lösen
-- ✅ **Einstellungen** - Account-Einstellungen abrufen
-- ✅ **Warehouse Management** - Lager verwalten, Stock-Alerts
-- ✅ **Store Authorization** - Shop-Autorisierung und Verwaltung
-- ✅ **Inventory Management** - Bestandsführung und Synchronisation
-- ✅ **Shipping Templates** - Versandvorlagen verwalten
-- ✅ **Returns Management** - Retouren abwickeln
-- ✅ **Analytics & Reports** - Verkaufsberichte und Performance-Analysen
-- ✅ **Notifications** - Benachrichtigungen verwalten
+- ✅ **Authentifizierung** (3 APIs) - Login, Token-Verwaltung, Logout
+- ✅ **Produkte** (8 APIs) - Suche, Details, Kategorien, Kommentare, Varianten, Lagerbestände
+- ✅ **Product Sourcing** (2 APIs) - Produktbeschaffung und Anfragen
+- ✅ **Bestellungen** (5 APIs) - Erstellen, Verwalten, Bestätigen, Löschen
+- ✅ **Zahlungen** (2 APIs) - Guthaben verwalten und Zahlungen
+- ✅ **Logistik** (4 APIs) - Sendungsverfolgung, Versandkosten berechnen
+- ✅ **Disputes** (5 APIs) - Streitfälle verwalten und lösen
+- ✅ **Einstellungen** (1 API) - Account-Einstellungen abrufen
+- ✅ **Utilities** (3 APIs) - Test, Batch-Requests, Methodenübersicht
 
 ## Installation
 
@@ -28,13 +22,7 @@ npm install
 ```
 
 ### 2. Umgebungsvariablen konfigurieren
-Kopiere `.env.example` zu `.env` und fülle deine CJ Dropshipping API-Credentials ein:
-
-```bash
-cp .env.example .env
-```
-
-Bearbeite die `.env` Datei:
+Füge deine CJ Dropshipping API-Credentials zur bestehenden `.env` Datei hinzu:
 ```env
 # CJ Dropshipping API Configuration
 CJ_API_KEY=your_cj_api_key_here
@@ -90,71 +78,7 @@ npm start
 |----------|---------|--------------|
 | `GET /api/cj/balance` | GET | Kontostand abrufen |
 
-### Warehouse Management
 
-| Endpunkt | Methode | Beschreibung |
-|----------|---------|--------------|
-| `GET /api/cj/warehouses` | GET | Lager-Liste abrufen |
-| `GET /api/cj/warehouse/:warehouseId` | GET | Lager-Details |
-| `POST /api/cj/warehouse/stock/query` | POST | Lagerbestand abfragen |
-| `POST /api/cj/warehouse/stock/update` | POST | Lagerbestand aktualisieren |
-| `GET /api/cj/warehouse/stock/alerts` | GET | Stock-Alerts |
-
-### Store Authorization
-
-| Endpunkt | Methode | Beschreibung |
-|----------|---------|--------------|
-| `GET /api/cj/stores` | GET | Shop-Liste |
-| `POST /api/cj/store/authorize` | POST | Shop autorisieren |
-| `GET /api/cj/store/:storeId/auth/status` | GET | Autorisierungsstatus |
-| `POST /api/cj/store/:storeId/auth/revoke` | POST | Autorisierung widerrufen |
-| `GET /api/cj/store/:storeId/settings` | GET | Shop-Einstellungen |
-| `PUT /api/cj/store/:storeId/settings` | PUT | Shop-Einstellungen aktualisieren |
-
-### Inventory Management
-
-| Endpunkt | Methode | Beschreibung |
-|----------|---------|--------------|
-| `GET /api/cj/inventory` | GET | Inventar-Liste |
-| `PUT /api/cj/inventory/update` | PUT | Inventar aktualisieren |
-| `POST /api/cj/inventory/sync` | POST | Inventar synchronisieren |
-| `GET /api/cj/inventory/:productId/history` | GET | Inventar-Historie |
-
-### Shipping Templates
-
-| Endpunkt | Methode | Beschreibung |
-|----------|---------|--------------|
-| `GET /api/cj/shipping/templates` | GET | Versandvorlagen |
-| `POST /api/cj/shipping/template` | POST | Vorlage erstellen |
-| `PUT /api/cj/shipping/template/:templateId` | PUT | Vorlage bearbeiten |
-| `DELETE /api/cj/shipping/template/:templateId` | DELETE | Vorlage löschen |
-
-### Returns Management
-
-| Endpunkt | Methode | Beschreibung |
-|----------|---------|--------------|
-| `GET /api/cj/returns` | GET | Retouren-Liste |
-| `POST /api/cj/returns/create` | POST | Retoure erstellen |
-| `PUT /api/cj/returns/:returnId/status` | PUT | Retouren-Status |
-| `GET /api/cj/returns/:returnId` | GET | Retouren-Details |
-
-### Analytics & Reports
-
-| Endpunkt | Methode | Beschreibung |
-|----------|---------|--------------|
-| `POST /api/cj/reports/sales` | POST | Verkaufsbericht |
-| `POST /api/cj/reports/product/performance` | POST | Produkt-Performance |
-| `POST /api/cj/reports/orders/analytics` | POST | Bestellanalysen |
-| `POST /api/cj/reports/revenue` | POST | Umsatzbericht |
-
-### Notifications
-
-| Endpunkt | Methode | Beschreibung |
-|----------|---------|--------------|
-| `GET /api/cj/notifications` | GET | Benachrichtigungen |
-| `PUT /api/cj/notifications/:notificationId/read` | PUT | Als gelesen markieren |
-| `GET /api/cj/notifications/settings` | GET | Benachrichtigungseinstellungen |
-| `PUT /api/cj/notifications/settings` | PUT | Einstellungen aktualisieren |
 
 ### Weitere Features
 
@@ -210,7 +134,7 @@ fetch('/api/cj/orders/create', {
 .then(data => console.log(data));
 ```
 
-## Alle verfügbaren CJ API Methoden (70+ APIs)
+## Alle authentischen CJ API Methoden (31 APIs)
 
 ### Authentifizierung (3 APIs)
 - `getAccessToken()` - Zugriffstoken abrufen
@@ -258,63 +182,12 @@ fetch('/api/cj/orders/create', {
 ### Einstellungen (1 API)
 - `getSettings()` - Account-Einstellungen
 
-### Warehouse Management (5 APIs)
-- `getWarehouseList()` - Lager-Liste
-- `getWarehouseInfo(warehouseId)` - Lager-Details
-- `queryWarehouseStock(params)` - Lagerbestand abfragen
-- `updateWarehouseStock(data)` - Lagerbestand aktualisieren
-- `getStockAlert(params)` - Stock-Alerts
-
-### Store Authorization (6 APIs)
-- `getStoreList()` - Shop-Liste
-- `authorizeStore(storeData)` - Shop autorisieren
-- `getStoreAuthStatus(storeId)` - Autorisierungsstatus
-- `revokeStoreAuth(storeId)` - Autorisierung widerrufen
-- `updateStoreSettings(storeId, settings)` - Shop-Einstellungen aktualisieren
-- `getStoreSettings(storeId)` - Shop-Einstellungen abrufen
-
-### Inventory Management (4 APIs)
-- `getInventoryList(params)` - Inventar-Liste
-- `updateInventory(data)` - Inventar aktualisieren
-- `syncInventory(params)` - Inventar synchronisieren
-- `getInventoryHistory(productId, params)` - Inventar-Historie
-
-### Shipping Templates (4 APIs)
-- `getShippingTemplates()` - Versandvorlagen
-- `createShippingTemplate(templateData)` - Vorlage erstellen
-- `updateShippingTemplate(templateId, templateData)` - Vorlage bearbeiten
-- `deleteShippingTemplate(templateId)` - Vorlage löschen
-
-### Product Variants (4 APIs)
-- `getProductVariants(productId)` - Produktvarianten
-- `createProductVariant(variantData)` - Variante erstellen
-- `updateProductVariant(variantId, variantData)` - Variante bearbeiten
-- `deleteProductVariant(variantId)` - Variante löschen
-
-### Returns Management (4 APIs)
-- `getReturnsList(params)` - Retouren-Liste
-- `createReturnRequest(returnData)` - Retoure erstellen
-- `updateReturnStatus(returnId, status)` - Retouren-Status
-- `getReturnDetails(returnId)` - Retouren-Details
-
-### Analytics & Reports (4 APIs)
-- `getSalesReport(params)` - Verkaufsbericht
-- `getProductPerformance(params)` - Produkt-Performance
-- `getOrderAnalytics(params)` - Bestellanalysen
-- `getRevenueReport(params)` - Umsatzbericht
-
-### Notifications (4 APIs)
-- `getNotifications(params)` - Benachrichtigungen
-- `markNotificationRead(notificationId)` - Als gelesen markieren
-- `getNotificationSettings()` - Benachrichtigungseinstellungen
-- `updateNotificationSettings(settings)` - Einstellungen aktualisieren
-
 ### Utilities (3 APIs)
 - `testConnection()` - Verbindung testen
 - `getAvailableMethods()` - Verfügbare Methoden
 - `batchRequest(requests)` - Batch-Anfragen
 
-**GESAMT: 70+ API-Endpunkte in 13 Kategorien**
+**GESAMT: 31 authentische API-Endpunkte in 8 Kategorien**
 
 ## Beispiele für komplexe Workflows
 
@@ -398,4 +271,4 @@ Bei Fragen zur CJ Dropshipping API:
 
 ---
 
-**Alle CJ Dropshipping APIs sind jetzt vollständig integriert und einsatzbereit! 🚀**
+**Alle 31 authentischen CJ Dropshipping APIs sind korrekt integriert und einsatzbereit! ✅**
