@@ -399,6 +399,406 @@ app.get('/api/cj/methods', (req, res) => {
   }
 });
 
+// ==========================================
+// WAREHOUSE MANAGEMENT ROUTES
+// ==========================================
+
+// Get Warehouse List
+app.get('/api/cj/warehouses', async (req, res) => {
+  try {
+    const warehouses = await cjAPI.getWarehouseList();
+    res.json(warehouses);
+  } catch (error) {
+    console.error('CJ Warehouses Error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Get Warehouse Info
+app.get('/api/cj/warehouse/:warehouseId', async (req, res) => {
+  try {
+    const { warehouseId } = req.params;
+    const warehouse = await cjAPI.getWarehouseInfo(warehouseId);
+    res.json(warehouse);
+  } catch (error) {
+    console.error('CJ Warehouse Info Error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Query Warehouse Stock
+app.post('/api/cj/warehouse/stock/query', async (req, res) => {
+  try {
+    const params = req.body;
+    const stock = await cjAPI.queryWarehouseStock(params);
+    res.json(stock);
+  } catch (error) {
+    console.error('CJ Warehouse Stock Query Error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Update Warehouse Stock
+app.post('/api/cj/warehouse/stock/update', async (req, res) => {
+  try {
+    const data = req.body;
+    const result = await cjAPI.updateWarehouseStock(data);
+    res.json(result);
+  } catch (error) {
+    console.error('CJ Warehouse Stock Update Error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Get Stock Alerts
+app.get('/api/cj/warehouse/stock/alerts', async (req, res) => {
+  try {
+    const params = req.query;
+    const alerts = await cjAPI.getStockAlert(params);
+    res.json(alerts);
+  } catch (error) {
+    console.error('CJ Stock Alerts Error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// ==========================================
+// STORE AUTHORIZATION ROUTES
+// ==========================================
+
+// Get Store List
+app.get('/api/cj/stores', async (req, res) => {
+  try {
+    const stores = await cjAPI.getStoreList();
+    res.json(stores);
+  } catch (error) {
+    console.error('CJ Stores Error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Authorize Store
+app.post('/api/cj/store/authorize', async (req, res) => {
+  try {
+    const storeData = req.body;
+    const result = await cjAPI.authorizeStore(storeData);
+    res.json(result);
+  } catch (error) {
+    console.error('CJ Store Authorization Error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Get Store Authorization Status
+app.get('/api/cj/store/:storeId/auth/status', async (req, res) => {
+  try {
+    const { storeId } = req.params;
+    const status = await cjAPI.getStoreAuthStatus(storeId);
+    res.json(status);
+  } catch (error) {
+    console.error('CJ Store Auth Status Error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Revoke Store Authorization
+app.post('/api/cj/store/:storeId/auth/revoke', async (req, res) => {
+  try {
+    const { storeId } = req.params;
+    const result = await cjAPI.revokeStoreAuth(storeId);
+    res.json(result);
+  } catch (error) {
+    console.error('CJ Store Auth Revoke Error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Get Store Settings
+app.get('/api/cj/store/:storeId/settings', async (req, res) => {
+  try {
+    const { storeId } = req.params;
+    const settings = await cjAPI.getStoreSettings(storeId);
+    res.json(settings);
+  } catch (error) {
+    console.error('CJ Store Settings Error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Update Store Settings
+app.put('/api/cj/store/:storeId/settings', async (req, res) => {
+  try {
+    const { storeId } = req.params;
+    const settings = req.body;
+    const result = await cjAPI.updateStoreSettings(storeId, settings);
+    res.json(result);
+  } catch (error) {
+    console.error('CJ Store Settings Update Error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// ==========================================
+// INVENTORY MANAGEMENT ROUTES
+// ==========================================
+
+// Get Inventory List
+app.get('/api/cj/inventory', async (req, res) => {
+  try {
+    const params = req.query;
+    const inventory = await cjAPI.getInventoryList(params);
+    res.json(inventory);
+  } catch (error) {
+    console.error('CJ Inventory Error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Update Inventory
+app.put('/api/cj/inventory/update', async (req, res) => {
+  try {
+    const data = req.body;
+    const result = await cjAPI.updateInventory(data);
+    res.json(result);
+  } catch (error) {
+    console.error('CJ Inventory Update Error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Sync Inventory
+app.post('/api/cj/inventory/sync', async (req, res) => {
+  try {
+    const params = req.body;
+    const result = await cjAPI.syncInventory(params);
+    res.json(result);
+  } catch (error) {
+    console.error('CJ Inventory Sync Error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Get Inventory History
+app.get('/api/cj/inventory/:productId/history', async (req, res) => {
+  try {
+    const { productId } = req.params;
+    const params = req.query;
+    const history = await cjAPI.getInventoryHistory(productId, params);
+    res.json(history);
+  } catch (error) {
+    console.error('CJ Inventory History Error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// ==========================================
+// SHIPPING TEMPLATES ROUTES
+// ==========================================
+
+// Get Shipping Templates
+app.get('/api/cj/shipping/templates', async (req, res) => {
+  try {
+    const templates = await cjAPI.getShippingTemplates();
+    res.json(templates);
+  } catch (error) {
+    console.error('CJ Shipping Templates Error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Create Shipping Template
+app.post('/api/cj/shipping/template', async (req, res) => {
+  try {
+    const templateData = req.body;
+    const result = await cjAPI.createShippingTemplate(templateData);
+    res.json(result);
+  } catch (error) {
+    console.error('CJ Create Shipping Template Error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Update Shipping Template
+app.put('/api/cj/shipping/template/:templateId', async (req, res) => {
+  try {
+    const { templateId } = req.params;
+    const templateData = req.body;
+    const result = await cjAPI.updateShippingTemplate(templateId, templateData);
+    res.json(result);
+  } catch (error) {
+    console.error('CJ Update Shipping Template Error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Delete Shipping Template
+app.delete('/api/cj/shipping/template/:templateId', async (req, res) => {
+  try {
+    const { templateId } = req.params;
+    const result = await cjAPI.deleteShippingTemplate(templateId);
+    res.json(result);
+  } catch (error) {
+    console.error('CJ Delete Shipping Template Error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// ==========================================
+// RETURNS MANAGEMENT ROUTES
+// ==========================================
+
+// Get Returns List
+app.get('/api/cj/returns', async (req, res) => {
+  try {
+    const params = req.query;
+    const returns = await cjAPI.getReturnsList(params);
+    res.json(returns);
+  } catch (error) {
+    console.error('CJ Returns Error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Create Return Request
+app.post('/api/cj/returns/create', async (req, res) => {
+  try {
+    const returnData = req.body;
+    const result = await cjAPI.createReturnRequest(returnData);
+    res.json(result);
+  } catch (error) {
+    console.error('CJ Create Return Error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Update Return Status
+app.put('/api/cj/returns/:returnId/status', async (req, res) => {
+  try {
+    const { returnId } = req.params;
+    const { status } = req.body;
+    const result = await cjAPI.updateReturnStatus(returnId, status);
+    res.json(result);
+  } catch (error) {
+    console.error('CJ Update Return Status Error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Get Return Details
+app.get('/api/cj/returns/:returnId', async (req, res) => {
+  try {
+    const { returnId } = req.params;
+    const returnDetails = await cjAPI.getReturnDetails(returnId);
+    res.json(returnDetails);
+  } catch (error) {
+    console.error('CJ Return Details Error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// ==========================================
+// ANALYTICS & REPORTS ROUTES
+// ==========================================
+
+// Get Sales Report
+app.post('/api/cj/reports/sales', async (req, res) => {
+  try {
+    const params = req.body;
+    const report = await cjAPI.getSalesReport(params);
+    res.json(report);
+  } catch (error) {
+    console.error('CJ Sales Report Error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Get Product Performance
+app.post('/api/cj/reports/product/performance', async (req, res) => {
+  try {
+    const params = req.body;
+    const report = await cjAPI.getProductPerformance(params);
+    res.json(report);
+  } catch (error) {
+    console.error('CJ Product Performance Error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Get Order Analytics
+app.post('/api/cj/reports/orders/analytics', async (req, res) => {
+  try {
+    const params = req.body;
+    const analytics = await cjAPI.getOrderAnalytics(params);
+    res.json(analytics);
+  } catch (error) {
+    console.error('CJ Order Analytics Error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Get Revenue Report
+app.post('/api/cj/reports/revenue', async (req, res) => {
+  try {
+    const params = req.body;
+    const report = await cjAPI.getRevenueReport(params);
+    res.json(report);
+  } catch (error) {
+    console.error('CJ Revenue Report Error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// ==========================================
+// NOTIFICATIONS ROUTES
+// ==========================================
+
+// Get Notifications
+app.get('/api/cj/notifications', async (req, res) => {
+  try {
+    const params = req.query;
+    const notifications = await cjAPI.getNotifications(params);
+    res.json(notifications);
+  } catch (error) {
+    console.error('CJ Notifications Error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Mark Notification as Read
+app.put('/api/cj/notifications/:notificationId/read', async (req, res) => {
+  try {
+    const { notificationId } = req.params;
+    const result = await cjAPI.markNotificationRead(notificationId);
+    res.json(result);
+  } catch (error) {
+    console.error('CJ Mark Notification Read Error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Get Notification Settings
+app.get('/api/cj/notifications/settings', async (req, res) => {
+  try {
+    const settings = await cjAPI.getNotificationSettings();
+    res.json(settings);
+  } catch (error) {
+    console.error('CJ Notification Settings Error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Update Notification Settings
+app.put('/api/cj/notifications/settings', async (req, res) => {
+  try {
+    const settings = req.body;
+    const result = await cjAPI.updateNotificationSettings(settings);
+    res.json(result);
+  } catch (error) {
+    console.error('CJ Update Notification Settings Error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

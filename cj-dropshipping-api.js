@@ -12,6 +12,8 @@ class CJDropshippingAPI {
     this.baseURL = 'https://developers.cjdropshipping.com';
     this.apiKey = config.apiKey || process.env.CJ_API_KEY;
     this.accessToken = config.accessToken || process.env.CJ_ACCESS_TOKEN;
+    this.email = config.email || process.env.CJ_EMAIL;
+    this.password = config.password || process.env.CJ_PASSWORD;
     
     if (!this.apiKey) {
       console.warn('CJ API Key not found. Please set CJ_API_KEY in your environment variables.');
@@ -25,8 +27,17 @@ class CJDropshippingAPI {
     const url = `${this.baseURL}${endpoint}`;
     const headers = {
       'Content-Type': 'application/json',
-      'CJ-Access-Token': this.accessToken
+      'Accept': 'application/json',
+      'User-Agent': 'CJ-API-Client/1.0'
     };
+
+    // Add authentication headers based on available credentials
+    if (this.accessToken) {
+      headers['CJ-Access-Token'] = this.accessToken;
+    }
+    if (this.apiKey) {
+      headers['Authorization'] = `Bearer ${this.apiKey}`;
+    }
 
     const config = {
       method,
@@ -301,6 +312,287 @@ class CJDropshippingAPI {
   }
 
   // ==========================================
+  // WAREHOUSE MANAGEMENT APIs
+  // ==========================================
+
+  /**
+   * Get Warehouse List
+   */
+  async getWarehouseList() {
+    return this.makeRequest('/warehouse/list');
+  }
+
+  /**
+   * Get Warehouse Info
+   */
+  async getWarehouseInfo(warehouseId) {
+    return this.makeRequest(`/warehouse/info?warehouseId=${warehouseId}`);
+  }
+
+  /**
+   * Query Warehouse Stock
+   */
+  async queryWarehouseStock(params = {}) {
+    return this.makeRequest('/warehouse/stock/query', 'POST', params);
+  }
+
+  /**
+   * Update Warehouse Stock
+   */
+  async updateWarehouseStock(data) {
+    return this.makeRequest('/warehouse/stock/update', 'POST', data);
+  }
+
+  /**
+   * Get Stock Alert
+   */
+  async getStockAlert(params = {}) {
+    return this.makeRequest('/warehouse/stock/alert', 'GET', params);
+  }
+
+  // ==========================================
+  // STORE AUTHORIZATION APIs
+  // ==========================================
+
+  /**
+   * Get Store List
+   */
+  async getStoreList() {
+    return this.makeRequest('/store/list');
+  }
+
+  /**
+   * Authorize Store
+   */
+  async authorizeStore(storeData) {
+    return this.makeRequest('/store/authorize', 'POST', storeData);
+  }
+
+  /**
+   * Get Store Authorization Status
+   */
+  async getStoreAuthStatus(storeId) {
+    return this.makeRequest(`/store/auth/status?storeId=${storeId}`);
+  }
+
+  /**
+   * Revoke Store Authorization
+   */
+  async revokeStoreAuth(storeId) {
+    return this.makeRequest('/store/auth/revoke', 'POST', { storeId });
+  }
+
+  /**
+   * Update Store Settings
+   */
+  async updateStoreSettings(storeId, settings) {
+    return this.makeRequest('/store/settings/update', 'POST', { storeId, ...settings });
+  }
+
+  /**
+   * Get Store Settings
+   */
+  async getStoreSettings(storeId) {
+    return this.makeRequest(`/store/settings?storeId=${storeId}`);
+  }
+
+  // ==========================================
+  // INVENTORY MANAGEMENT APIs
+  // ==========================================
+
+  /**
+   * Get Inventory List
+   */
+  async getInventoryList(params = {}) {
+    const queryString = new URLSearchParams(params).toString();
+    return this.makeRequest(`/inventory/list${queryString ? '?' + queryString : ''}`);
+  }
+
+  /**
+   * Update Inventory
+   */
+  async updateInventory(data) {
+    return this.makeRequest('/inventory/update', 'POST', data);
+  }
+
+  /**
+   * Sync Inventory
+   */
+  async syncInventory(params = {}) {
+    return this.makeRequest('/inventory/sync', 'POST', params);
+  }
+
+  /**
+   * Get Inventory History
+   */
+  async getInventoryHistory(productId, params = {}) {
+    const queryString = new URLSearchParams({ productId, ...params }).toString();
+    return this.makeRequest(`/inventory/history?${queryString}`);
+  }
+
+  // ==========================================
+  // SHIPPING TEMPLATES APIs
+  // ==========================================
+
+  /**
+   * Get Shipping Templates
+   */
+  async getShippingTemplates() {
+    return this.makeRequest('/shipping/templates');
+  }
+
+  /**
+   * Create Shipping Template
+   */
+  async createShippingTemplate(templateData) {
+    return this.makeRequest('/shipping/template/create', 'POST', templateData);
+  }
+
+  /**
+   * Update Shipping Template
+   */
+  async updateShippingTemplate(templateId, templateData) {
+    return this.makeRequest('/shipping/template/update', 'PUT', { templateId, ...templateData });
+  }
+
+  /**
+   * Delete Shipping Template
+   */
+  async deleteShippingTemplate(templateId) {
+    return this.makeRequest('/shipping/template/delete', 'DELETE', { templateId });
+  }
+
+  // ==========================================
+  // PRODUCT VARIANTS APIs
+  // ==========================================
+
+  /**
+   * Get Product Variants
+   */
+  async getProductVariants(productId) {
+    return this.makeRequest(`/product/variants?productId=${productId}`);
+  }
+
+  /**
+   * Create Product Variant
+   */
+  async createProductVariant(variantData) {
+    return this.makeRequest('/product/variant/create', 'POST', variantData);
+  }
+
+  /**
+   * Update Product Variant
+   */
+  async updateProductVariant(variantId, variantData) {
+    return this.makeRequest('/product/variant/update', 'PUT', { variantId, ...variantData });
+  }
+
+  /**
+   * Delete Product Variant
+   */
+  async deleteProductVariant(variantId) {
+    return this.makeRequest('/product/variant/delete', 'DELETE', { variantId });
+  }
+
+  // ==========================================
+  // RETURNS MANAGEMENT APIs
+  // ==========================================
+
+  /**
+   * Get Returns List
+   */
+  async getReturnsList(params = {}) {
+    const queryString = new URLSearchParams(params).toString();
+    return this.makeRequest(`/returns/list${queryString ? '?' + queryString : ''}`);
+  }
+
+  /**
+   * Create Return Request
+   */
+  async createReturnRequest(returnData) {
+    return this.makeRequest('/returns/create', 'POST', returnData);
+  }
+
+  /**
+   * Update Return Status
+   */
+  async updateReturnStatus(returnId, status) {
+    return this.makeRequest('/returns/status/update', 'PUT', { returnId, status });
+  }
+
+  /**
+   * Get Return Details
+   */
+  async getReturnDetails(returnId) {
+    return this.makeRequest(`/returns/details?returnId=${returnId}`);
+  }
+
+  // ==========================================
+  // ANALYTICS & REPORTS APIs
+  // ==========================================
+
+  /**
+   * Get Sales Report
+   */
+  async getSalesReport(params = {}) {
+    return this.makeRequest('/reports/sales', 'POST', params);
+  }
+
+  /**
+   * Get Product Performance
+   */
+  async getProductPerformance(params = {}) {
+    return this.makeRequest('/reports/product/performance', 'POST', params);
+  }
+
+  /**
+   * Get Order Analytics
+   */
+  async getOrderAnalytics(params = {}) {
+    return this.makeRequest('/reports/orders/analytics', 'POST', params);
+  }
+
+  /**
+   * Get Revenue Report
+   */
+  async getRevenueReport(params = {}) {
+    return this.makeRequest('/reports/revenue', 'POST', params);
+  }
+
+  // ==========================================
+  // NOTIFICATIONS APIs
+  // ==========================================
+
+  /**
+   * Get Notifications
+   */
+  async getNotifications(params = {}) {
+    const queryString = new URLSearchParams(params).toString();
+    return this.makeRequest(`/notifications${queryString ? '?' + queryString : ''}`);
+  }
+
+  /**
+   * Mark Notification as Read
+   */
+  async markNotificationRead(notificationId) {
+    return this.makeRequest('/notifications/read', 'PUT', { notificationId });
+  }
+
+  /**
+   * Get Notification Settings
+   */
+  async getNotificationSettings() {
+    return this.makeRequest('/notifications/settings');
+  }
+
+  /**
+   * Update Notification Settings
+   */
+  async updateNotificationSettings(settings) {
+    return this.makeRequest('/notifications/settings/update', 'PUT', settings);
+  }
+
+  // ==========================================
   // UTILITY METHODS
   // ==========================================
 
@@ -372,9 +664,61 @@ class CJDropshippingAPI {
       settings: [
         'getSettings'
       ],
+      warehouse: [
+        'getWarehouseList',
+        'getWarehouseInfo',
+        'queryWarehouseStock',
+        'updateWarehouseStock',
+        'getStockAlert'
+      ],
+      storeAuthorization: [
+        'getStoreList',
+        'authorizeStore',
+        'getStoreAuthStatus',
+        'revokeStoreAuth',
+        'updateStoreSettings',
+        'getStoreSettings'
+      ],
+      inventory: [
+        'getInventoryList',
+        'updateInventory',
+        'syncInventory',
+        'getInventoryHistory'
+      ],
+      shippingTemplates: [
+        'getShippingTemplates',
+        'createShippingTemplate',
+        'updateShippingTemplate',
+        'deleteShippingTemplate'
+      ],
+      productVariants: [
+        'getProductVariants',
+        'createProductVariant',
+        'updateProductVariant',
+        'deleteProductVariant'
+      ],
+      returns: [
+        'getReturnsList',
+        'createReturnRequest',
+        'updateReturnStatus',
+        'getReturnDetails'
+      ],
+      analytics: [
+        'getSalesReport',
+        'getProductPerformance',
+        'getOrderAnalytics',
+        'getRevenueReport'
+      ],
+      notifications: [
+        'getNotifications',
+        'markNotificationRead',
+        'getNotificationSettings',
+        'updateNotificationSettings'
+      ],
       utilities: [
         'testConnection',
-        'getAvailableMethods'
+        'getAvailableMethods',
+        'batchRequest'
       ]
     };
   }
