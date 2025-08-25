@@ -3,8 +3,12 @@ const express = require('express');
 const stripe = require('stripe')(process.env.STRIPE_KEY);
 const path = require('path');
 const sgMail = require('@sendgrid/mail');
+const CJDropshippingAPI = require('./cj-dropshipping-api');
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+// Initialize CJ Dropshipping API
+const cjAPI = new CJDropshippingAPI();
 
 const app = express();
 app.use(express.json());
@@ -190,6 +194,212 @@ app.post('/api/return-request', async (req, res) => {
     res.status(500).json({ error: 'Senden fehlgeschlagen' });
   }
 });
+
+// ==========================================
+// CJ DROPSHIPPING API ROUTES
+// ==========================================
+
+// Get CJ Product List
+app.get('/api/cj/products', async (req, res) => {
+  try {
+    const params = req.query;
+    const products = await cjAPI.getProductList(params);
+    res.json(products);
+  } catch (error) {
+    console.error('CJ Products Error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Search CJ Products
+app.post('/api/cj/products/search', async (req, res) => {
+  try {
+    const searchParams = req.body;
+    const products = await cjAPI.queryProducts(searchParams);
+    res.json(products);
+  } catch (error) {
+    console.error('CJ Product Search Error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Get Product Categories
+app.get('/api/cj/categories', async (req, res) => {
+  try {
+    const categories = await cjAPI.getProductCategory();
+    res.json(categories);
+  } catch (error) {
+    console.error('CJ Categories Error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Get Product Details by VID
+app.get('/api/cj/product/:vid', async (req, res) => {
+  try {
+    const { vid } = req.params;
+    const product = await cjAPI.queryProductByVid(vid);
+    res.json(product);
+  } catch (error) {
+    console.error('CJ Product Details Error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Get Product Stock
+app.get('/api/cj/product/:vid/stock', async (req, res) => {
+  try {
+    const { vid } = req.params;
+    const stock = await cjAPI.getProductStockByVid(vid);
+    res.json(stock);
+  } catch (error) {
+    console.error('CJ Product Stock Error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Create CJ Order
+app.post('/api/cj/orders/create', async (req, res) => {
+  try {
+    const orderData = req.body;
+    const order = await cjAPI.createOrderV2(orderData);
+    res.json(order);
+  } catch (error) {
+    console.error('CJ Create Order Error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Get CJ Orders
+app.get('/api/cj/orders', async (req, res) => {
+  try {
+    const params = req.query;
+    const orders = await cjAPI.getShoppingOrderList(params);
+    res.json(orders);
+  } catch (error) {
+    console.error('CJ Orders Error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Confirm CJ Order
+app.post('/api/cj/orders/:orderId/confirm', async (req, res) => {
+  try {
+    const { orderId } = req.params;
+    const result = await cjAPI.confirmOrder(orderId);
+    res.json(result);
+  } catch (error) {
+    console.error('CJ Confirm Order Error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Get Order Details
+app.get('/api/cj/orders/:orderId', async (req, res) => {
+  try {
+    const { orderId } = req.params;
+    const order = await cjAPI.getOrderDetail(orderId);
+    res.json(order);
+  } catch (error) {
+    console.error('CJ Order Details Error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Calculate Shipping Cost
+app.post('/api/cj/shipping/calculate', async (req, res) => {
+  try {
+    const shippingData = req.body;
+    const cost = await cjAPI.freightCalculate(shippingData);
+    res.json(cost);
+  } catch (error) {
+    console.error('CJ Shipping Calculate Error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Track Package
+app.get('/api/cj/track/:trackingNumber', async (req, res) => {
+  try {
+    const { trackingNumber } = req.params;
+    const tracking = await cjAPI.getTrackInfo(trackingNumber);
+    res.json(tracking);
+  } catch (error) {
+    console.error('CJ Tracking Error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Get Account Balance
+app.get('/api/cj/balance', async (req, res) => {
+  try {
+    const balance = await cjAPI.getBalance();
+    res.json(balance);
+  } catch (error) {
+    console.error('CJ Balance Error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Product Sourcing
+app.post('/api/cj/sourcing/create', async (req, res) => {
+  try {
+    const sourcingData = req.body;
+    const result = await cjAPI.createProductSourcing(sourcingData);
+    res.json(result);
+  } catch (error) {
+    console.error('CJ Product Sourcing Error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Get Disputes
+app.get('/api/cj/disputes', async (req, res) => {
+  try {
+    const params = req.query;
+    const disputes = await cjAPI.getDisputeList(params);
+    res.json(disputes);
+  } catch (error) {
+    console.error('CJ Disputes Error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Create Dispute
+app.post('/api/cj/disputes/create', async (req, res) => {
+  try {
+    const disputeData = req.body;
+    const dispute = await cjAPI.createDispute(disputeData);
+    res.json(dispute);
+  } catch (error) {
+    console.error('CJ Create Dispute Error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Test CJ API Connection
+app.get('/api/cj/test', async (req, res) => {
+  try {
+    const result = await cjAPI.testConnection();
+    res.json(result);
+  } catch (error) {
+    console.error('CJ API Test Error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Get Available CJ API Methods
+app.get('/api/cj/methods', (req, res) => {
+  try {
+    const methods = cjAPI.getAvailableMethods();
+    res.json(methods);
+  } catch (error) {
+    console.error('CJ Methods Error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
