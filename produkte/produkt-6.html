@@ -582,11 +582,257 @@
     const buyNowBtn = document.getElementById('buyNowBtn');
     
     function updatePrices() {
-      const qty = parseInt(quantityInput.value, 10) || 1;
-      const total = (product.price * qty).toFixed(2);
-      document.getElementById('currentPrice').textContent = product.price.toFixed(2);
-      document.getElementById('totalPrice').textContent = total;
+
+  // Animation trigger functions for product pages
+  function triggerCartButtonAnimation() {
+    // Trigger animation for main cart button
+    const cartButton = document.getElementById("cartBtn");
+    if (cartButton) {
+      cartButton.classList.add("success-animation");
+      setTimeout(() => {
+        cartButton.classList.remove("success-animation");
+      }, 1200);
     }
+    
+    // Trigger animation for quick order cart button
+    const buyNowBtn = document.querySelector(".buy-now-btn");
+    if (buyNowBtn) {
+      buyNowBtn.classList.add("success-animation");
+      setTimeout(() => {
+        buyNowBtn.classList.remove("success-animation");
+      }, 1200);
+    }
+  }
+
+  function triggerWishlistButtonAnimation() {
+    // Trigger animation for main wishlist button
+    const wishlistButton = document.getElementById("wishlistBtn");
+    if (wishlistButton) {
+      wishlistButton.classList.add("success-animation");
+      setTimeout(() => {
+        wishlistButton.classList.remove("success-animation");
+      }, 800);
+    }
+    
+    // Trigger animation for quick order wishlist button
+    const quickWishlistBtn = document.querySelector(".wishlist-btn");
+    if (quickWishlistBtn) {
+      quickWishlistBtn.classList.add("success-animation");
+      setTimeout(() => {
+        quickWishlistBtn.classList.remove("success-animation");
+      }, 800);
+    }
+  }
+      const qty = parseInt(quantityInput.value, 10) || 1;
+
+  // Animation trigger functions for product pages
+  function triggerCartButtonAnimation() {
+    // Trigger animation for main cart button
+    const cartButton = document.getElementById("cartBtn");
+    if (cartButton) {
+      cartButton.classList.add("success-animation");
+      setTimeout(() => {
+        cartButton.classList.remove("success-animation");
+      }, 1200);
+    }
+    
+    // Trigger animation for quick order cart button
+    const buyNowBtn = document.querySelector(".buy-now-btn");
+    if (buyNowBtn) {
+      buyNowBtn.classList.add("success-animation");
+      setTimeout(() => {
+        buyNowBtn.classList.remove("success-animation");
+      }, 1200);
+    }
+  }
+
+  function triggerWishlistButtonAnimation() {
+    // Trigger animation for main wishlist button
+    const wishlistButton = document.getElementById("wishlistBtn");
+    if (wishlistButton) {
+      wishlistButton.classList.add("success-animation");
+      setTimeout(() => {
+        wishlistButton.classList.remove("success-animation");
+      }, 800);
+    }
+    
+    // Trigger animation for quick order wishlist button
+    const quickWishlistBtn = document.querySelector(".wishlist-btn");
+    if (quickWishlistBtn) {
+      quickWishlistBtn.classList.add("success-animation");
+      setTimeout(() => {
+        quickWishlistBtn.classList.remove("success-animation");
+      }, 800);
+    }
+  }
+      const total = (product.price * qty).toFixed(2);
+
+  // Animation trigger functions for product pages
+  function triggerCartButtonAnimation() {
+    // Trigger animation for main cart button
+    const cartButton = document.getElementById("cartBtn");
+    if (cartButton) {
+      cartButton.classList.add("success-animation");
+      setTimeout(() => {
+        cartButton.classList.remove("success-animation");
+      }, 1200);
+    }
+    
+    // Trigger animation for quick order cart button
+    const buyNowBtn = document.querySelector(".buy-now-btn");
+    if (buyNowBtn) {
+      buyNowBtn.classList.add("success-animation");
+      setTimeout(() => {
+        buyNowBtn.classList.remove("success-animation");
+      }, 1200);
+    }
+  }
+
+  function triggerWishlistButtonAnimation() {
+    // Trigger animation for main wishlist button
+    const wishlistButton = document.getElementById("wishlistBtn");
+    if (wishlistButton) {
+      wishlistButton.classList.add("success-animation");
+      setTimeout(() => {
+        wishlistButton.classList.remove("success-animation");
+      }, 800);
+    }
+    
+    // Trigger animation for quick order wishlist button
+    const quickWishlistBtn = document.querySelector(".wishlist-btn");
+    if (quickWishlistBtn) {
+      quickWishlistBtn.classList.add("success-animation");
+      setTimeout(() => {
+        quickWishlistBtn.classList.remove("success-animation");
+      }, 800);
+    }
+  }
+      document.getElementById('currentPrice').textContent = product.price.toFixed(2);
+
+  // Animation trigger functions for product pages
+  function triggerCartButtonAnimation() {
+    // Trigger animation for main cart button
+    const cartButton = document.getElementById("cartBtn");
+    if (cartButton) {
+      cartButton.classList.add("success-animation");
+      setTimeout(() => {
+        cartButton.classList.remove("success-animation");
+      }, 1200);
+    }
+    
+    // Trigger animation for quick order cart button
+    const buyNowBtn = document.querySelector(".buy-now-btn");
+    if (buyNowBtn) {
+      buyNowBtn.classList.add("success-animation");
+      setTimeout(() => {
+        buyNowBtn.classList.remove("success-animation");
+      }, 1200);
+    }
+  }
+
+  function triggerWishlistButtonAnimation() {
+    // Trigger animation for main wishlist button
+    const wishlistButton = document.getElementById("wishlistBtn");
+    if (wishlistButton) {
+      wishlistButton.classList.add("success-animation");
+      setTimeout(() => {
+        wishlistButton.classList.remove("success-animation");
+      }, 800);
+    }
+    
+    // Trigger animation for quick order wishlist button
+    const quickWishlistBtn = document.querySelector(".wishlist-btn");
+    if (quickWishlistBtn) {
+      quickWishlistBtn.classList.add("success-animation");
+      setTimeout(() => {
+        quickWishlistBtn.classList.remove("success-animation");
+      }, 800);
+    }
+  }
+      document.getElementById('totalPrice').textContent = total;
+
+  // Animation trigger functions for product pages
+  function triggerCartButtonAnimation() {
+    // Trigger animation for main cart button
+    const cartButton = document.getElementById("cartBtn");
+    if (cartButton) {
+      cartButton.classList.add("success-animation");
+      setTimeout(() => {
+        cartButton.classList.remove("success-animation");
+      }, 1200);
+    }
+    
+    // Trigger animation for quick order cart button
+    const buyNowBtn = document.querySelector(".buy-now-btn");
+    if (buyNowBtn) {
+      buyNowBtn.classList.add("success-animation");
+      setTimeout(() => {
+        buyNowBtn.classList.remove("success-animation");
+      }, 1200);
+    }
+  }
+
+  function triggerWishlistButtonAnimation() {
+    // Trigger animation for main wishlist button
+    const wishlistButton = document.getElementById("wishlistBtn");
+    if (wishlistButton) {
+      wishlistButton.classList.add("success-animation");
+      setTimeout(() => {
+        wishlistButton.classList.remove("success-animation");
+      }, 800);
+    }
+    
+    // Trigger animation for quick order wishlist button
+    const quickWishlistBtn = document.querySelector(".wishlist-btn");
+    if (quickWishlistBtn) {
+      quickWishlistBtn.classList.add("success-animation");
+      setTimeout(() => {
+        quickWishlistBtn.classList.remove("success-animation");
+      }, 800);
+    }
+  }
+    }
+
+  // Animation trigger functions for product pages
+  function triggerCartButtonAnimation() {
+    // Trigger animation for main cart button
+    const cartButton = document.getElementById("cartBtn");
+    if (cartButton) {
+      cartButton.classList.add("success-animation");
+      setTimeout(() => {
+        cartButton.classList.remove("success-animation");
+      }, 1200);
+    }
+    
+    // Trigger animation for quick order cart button
+    const buyNowBtn = document.querySelector(".buy-now-btn");
+    if (buyNowBtn) {
+      buyNowBtn.classList.add("success-animation");
+      setTimeout(() => {
+        buyNowBtn.classList.remove("success-animation");
+      }, 1200);
+    }
+  }
+
+  function triggerWishlistButtonAnimation() {
+    // Trigger animation for main wishlist button
+    const wishlistButton = document.getElementById("wishlistBtn");
+    if (wishlistButton) {
+      wishlistButton.classList.add("success-animation");
+      setTimeout(() => {
+        wishlistButton.classList.remove("success-animation");
+      }, 800);
+    }
+    
+    // Trigger animation for quick order wishlist button
+    const quickWishlistBtn = document.querySelector(".wishlist-btn");
+    if (quickWishlistBtn) {
+      quickWishlistBtn.classList.add("success-animation");
+      setTimeout(() => {
+        quickWishlistBtn.classList.remove("success-animation");
+      }, 800);
+    }
+  }
     
     if (quantityInput && buyNowBtn) {
       quantityInput.addEventListener('input', updatePrices);
