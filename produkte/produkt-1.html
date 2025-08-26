@@ -488,10 +488,10 @@
       cartButton.classList.add('success-animation');
       setTimeout(() => {
         cartButton.classList.remove('success-animation');
-      }, 600);
+      }, 800);
       
-      // Create floating success indicator
-      createFloatingSuccessIndicator(cartButton, '✓');
+      // Create floating success indicator for cart
+      createFloatingSuccessIndicator(cartButton, '🛒', 'cart');
     }
   }
 
@@ -505,14 +505,14 @@
         wishlistButton.classList.remove('success-animation');
       }, 600);
       
-      // Create floating success indicator
-      createFloatingSuccessIndicator(wishlistButton, '♥');
+      // Create floating success indicator for wishlist
+      createFloatingSuccessIndicator(wishlistButton, '♥', 'wishlist');
     }
   }
 
-  function createFloatingSuccessIndicator(button, icon) {
+  function createFloatingSuccessIndicator(button, icon, type = 'cart') {
     const indicator = document.createElement('div');
-    indicator.className = 'floating-success';
+    indicator.className = `floating-success ${type}`;
     indicator.textContent = icon;
     
     // Position relative to the button
@@ -523,12 +523,13 @@
     
     document.body.appendChild(indicator);
     
-    // Remove after animation completes
+    // Remove after animation completes (different timing for cart vs wishlist)
+    const duration = type === 'cart' ? 1200 : 1000;
     setTimeout(() => {
       if (document.body.contains(indicator)) {
         indicator.remove();
       }
-    }, 1000);
+    }, duration);
   }
 
   // Enhanced showAlert function for cart popup with animations

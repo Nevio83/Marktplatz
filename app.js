@@ -363,10 +363,10 @@ function triggerCartButtonAnimation(productId) {
     cartButton.classList.add('success-animation');
     setTimeout(() => {
       cartButton.classList.remove('success-animation');
-    }, 600);
+    }, 800);
     
-    // Create floating success indicator
-    createFloatingSuccessIndicator(cartButton, '✓');
+    // Create floating success indicator for cart
+    createFloatingSuccessIndicator(cartButton, '🛒', 'cart');
   }
   
   // Animate the cart icon in the navigation
@@ -375,7 +375,7 @@ function triggerCartButtonAnimation(productId) {
     cartIcon.classList.add('cart-icon-bounce');
     setTimeout(() => {
       cartIcon.classList.remove('cart-icon-bounce');
-    }, 500);
+    }, 800);
   }
 }
 
@@ -389,8 +389,8 @@ function triggerWishlistButtonAnimation(productId) {
       wishlistButton.classList.remove('success-animation');
     }, 600);
     
-    // Create floating success indicator
-    createFloatingSuccessIndicator(wishlistButton, '♥');
+    // Create floating success indicator for wishlist
+    createFloatingSuccessIndicator(wishlistButton, '♥', 'wishlist');
   }
   
   // Animate the heart icon in the navigation
@@ -403,9 +403,9 @@ function triggerWishlistButtonAnimation(productId) {
   }
 }
 
-function createFloatingSuccessIndicator(button, icon) {
+function createFloatingSuccessIndicator(button, icon, type = 'cart') {
   const indicator = document.createElement('div');
-  indicator.className = 'floating-success';
+  indicator.className = `floating-success ${type}`;
   indicator.textContent = icon;
   
   // Position relative to the button
@@ -416,12 +416,13 @@ function createFloatingSuccessIndicator(button, icon) {
   
   document.body.appendChild(indicator);
   
-  // Remove after animation completes
+  // Remove after animation completes (different timing for cart vs wishlist)
+  const duration = type === 'cart' ? 1200 : 1000;
   setTimeout(() => {
     if (document.body.contains(indicator)) {
       indicator.remove();
     }
-  }, 1000);
+  }, duration);
 }
 
 // Make showAlert globally available with enhanced animations
