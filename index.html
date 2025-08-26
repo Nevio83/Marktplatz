@@ -34,7 +34,6 @@
             <i class="bi bi-heart" id="heartIcon"></i>
           </a>
           <a href="#" id="cartButton" class="nav-icon-link position-relative">
-            <i class="bi bi-cart3"></i>
             <span id="cartCounter">0</span>
           </a>
           <!-- Warenkorb Dropdown -->
@@ -87,6 +86,8 @@
     min-width: 0;
   }
 }
+
+
 </style>
 <script>
 // Mobile Suchfeld-Interaktion
@@ -799,16 +800,31 @@ if (searchInput && mobileSearchBtn) {
   console.log('Script geladen!');
 </script>
 <script>
-  // Herz-Icon bei Hover füllen
+  // Herz-Icon bei Hover füllen (CSS-basiert)
   const heartIcon = document.getElementById('heartIcon');
   const wishlistButton = document.getElementById('wishlistButton');
+  
   wishlistButton.addEventListener('mouseenter', () => {
     heartIcon.classList.remove('bi-heart');
     heartIcon.classList.add('bi-heart-fill');
   });
+  
   wishlistButton.addEventListener('mouseleave', () => {
     heartIcon.classList.remove('bi-heart-fill');
     heartIcon.classList.add('bi-heart');
+  });
+</script>
+<script>
+  // Warenkorb-Button (CSS-basiert)
+  const cartButton = document.getElementById('cartButton');
+  
+  // Hover-Effekt für den Warenkorb-Button (CSS übernimmt die Animation)
+  cartButton.addEventListener('mouseenter', () => {
+    // CSS übernimmt die Animation
+  });
+  
+  cartButton.addEventListener('mouseleave', () => {
+    // CSS übernimmt die Animation
   });
 </script>
 <script>

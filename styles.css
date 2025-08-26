@@ -548,20 +548,47 @@ body {
     color: var(--text-primary);
 }
 
-/* Herz-Symbol in der Navigation rot einfärben */
+/* Herz-Symbol in der Navigation mit erweiterten Farben */
 #wishlistButton {
     color: var(--danger-color) !important;
+    position: relative;
+    overflow: hidden;
 }
 
 #wishlistButton:hover {
     background: rgba(255, 107, 107, 0.1) !important;
+    animation: heartColorCycle 2s ease-in-out infinite;
 }
 
 #wishlistButton i {
     color: var(--danger-color) !important;
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 2;
 }
 
-/* Moderne Warenkorb-Button */
+#wishlistButton:hover i {
+    animation: heartIconColorChange 1.5s ease-in-out infinite;
+}
+
+/* Shimmer-Effekt für Herz-Button */
+#wishlistButton::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,107,107,0.3), transparent);
+    transition: left 0.6s ease;
+    z-index: 1;
+}
+
+#wishlistButton:hover::before {
+    left: 100%;
+}
+
+/* Moderne Warenkorb-Button mit erweiterten Farben */
 #cartButton {
     position: relative;
     background: var(--primary-gradient);
@@ -576,10 +603,31 @@ body {
     transition: all 0.3s ease;
     box-shadow: var(--shadow-light);
     font-size: 1.4rem;
+    overflow: hidden;
+    animation: cartColorCycle 3s ease-in-out infinite;
 }
 
 #cartButton:hover {
     box-shadow: var(--shadow-medium);
+    transform: scale(1.1) rotate(5deg);
+    animation: cartHoverEffect 0.6s ease-in-out;
+}
+
+/* Shimmer-Effekt für Warenkorb-Button */
+#cartButton::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    transition: left 0.8s ease;
+    z-index: 1;
+}
+
+#cartButton:hover::before {
+    left: 100%;
 }
 
 #cartCounter {
@@ -608,6 +656,23 @@ body {
         width: 18px;
         height: 18px;
         font-size: 0.7rem;
+    }
+    
+    /* Mobile Optimierungen für Animationen */
+    #wishlistButton:hover {
+        animation: heartColorCycle 1.5s ease-in-out infinite;
+    }
+    
+    #wishlistButton:hover i {
+        animation: heartIconColorChange 1s ease-in-out infinite;
+    }
+    
+    #cartButton {
+        animation: cartColorCycle 2s ease-in-out infinite;
+    }
+    
+    #cartButton:hover {
+        animation: cartHoverEffect 0.4s ease-in-out;
     }
 }
 
@@ -1805,6 +1870,53 @@ div#hilfePanel.offen,
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+/* Herz-Animationen mit erweiterten Farben */
+@keyframes heartColorCycle {
+    0%, 100% { background: rgba(255, 107, 107, 0.1); }
+    16.66% { background: rgba(255, 140, 0, 0.1); }
+    33.33% { background: rgba(255, 212, 59, 0.1); }
+    50% { background: rgba(81, 207, 102, 0.1); }
+    66.66% { background: rgba(78, 205, 196, 0.1); }
+    83.33% { background: rgba(102, 126, 234, 0.1); }
+}
+
+@keyframes heartIconColorChange {
+    0%, 100% { color: #ff6b6b !important; }
+    16.66% { color: #ff8c00 !important; }
+    33.33% { color: #ffd43b !important; }
+    50% { color: #51cf66 !important; }
+    66.66% { color: #4ecdc4 !important; }
+    83.33% { color: #667eea !important; }
+}
+
+/* Warenkorb-Animationen mit erweiterten Farben */
+@keyframes cartColorCycle {
+    0%, 100% { 
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+    }
+    16.66% { 
+        background: linear-gradient(135deg, #ff6b6b 0%, #ff8c00 100%); 
+    }
+    33.33% { 
+        background: linear-gradient(135deg, #ffd43b 0%, #51cf66 100%); 
+    }
+    50% { 
+        background: linear-gradient(135deg, #4ecdc4 0%, #667eea 100%); 
+    }
+    66.66% { 
+        background: linear-gradient(135deg, #764ba2 0%, #ff6b35 100%); 
+    }
+    83.33% { 
+        background: linear-gradient(135deg, #ff8c00 0%, #ffd43b 100%); 
+    }
+}
+
+@keyframes cartHoverEffect {
+    0% { transform: scale(1) rotate(0deg); }
+    50% { transform: scale(1.15) rotate(8deg); }
+    100% { transform: scale(1.1) rotate(5deg); }
 }
 
 /* Mobile-spezifische Optimierungen */
