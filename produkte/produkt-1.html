@@ -37,7 +37,7 @@
                         <span class="price-tag">€10.00</span>
                         <span class="badge bg-success">Kostenloser Versand in Europa</span>
                     </div>
-                    <button class="btn btn-light btn-lg me-3" id="cartBtn" onclick="addToCartAndRedirect()">
+                    <button class="btn btn-light btn-lg me-3" id="heroCartBtn">
                         <i class="bi bi-cart-plus"></i> In den Warenkorb
                     </button>
                     <button class="btn btn-outline-light btn-lg" id="wishlistBtn">
@@ -45,7 +45,7 @@
                     </button>
                 </div>
                 <div class="col-lg-6 text-center">
-                    <img src="../produkt bilder/ware.png" alt="Elektronik Produkt 1" class="img-fluid product-image" style="max-height: 400px;">
+                                            <img src="../produkt bilder/ware.png" alt="Elektronik Produkt 1" class="img-fluid product-image" style="max-height: 400px;">
                 </div>
             </div>
         </div>
@@ -94,8 +94,8 @@
                             </div>
                             
                             <div class="price-section">
-                                <div class="current-price">€10.00</div>
-                                <div class="total-price">Gesamt: <span id="totalPrice">€10.00</span></div>
+                                <div class="current-price">€12.00</div>
+                                <div class="total-price">Gesamt: <span id="totalPrice">€12.00</span></div>
                             </div>
                             
                             <div class="action-buttons">
@@ -138,8 +138,8 @@
                             </div>
                             
                             <div class="price-section">
-                                <div class="current-price">€10.00</div>
-                                <div class="total-price">Gesamt: <span id="totalPriceDesktop">€10.00</span></div>
+                                <div class="current-price">€12.00</div>
+                                <div class="total-price">Gesamt: <span id="totalPriceDesktop">€12.00</span></div>
                             </div>
                             
                             <div class="action-buttons">
@@ -176,13 +176,13 @@
                 </div>
                 <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3 g-md-4">
                 <div class="col">
-                    <div class="similar-product-card" onclick="window.location.href='produkt-2.html'">
+                    <div class="similar-product-card" onclick="window.location.href='produkt-1.html'">
                         <div class="product-image-wrapper">
-                            <img src="../produkt bilder/ware.png" class="product-image" alt="Elektronik Produkt 2">
+                            <img src="../produkt bilder/ware.png" class="product-image" alt="Elektronik Produkt 1">
                         </div>
                         <div class="product-info">
-                            <h5 class="product-title">Elektronik Produkt 2</h5>
-                            <div class="price-container"><span class="current-price">€12.00</span></div>
+                            <h5 class="product-title">Elektronik Produkt 1</h5>
+                            <div class="price-container"><span class="current-price">€10.00</span></div>
                             <div class="view-product-btn">
                                 <span>Jetzt ansehen</span>
                                 <i class="bi bi-arrow-right"></i>
@@ -247,7 +247,10 @@
     </footer>
 
     
+    <script src="../app.js"></script>
     <script>
+
+
   // Produktdaten für diese Seite
   const product = {
     id: 1,
@@ -263,19 +266,19 @@
     .then(products => {
       const prod = products.find(p => p.id === product.id);
       if (prod && prod.bundles && prod.bundles.length > 0) {
-        renderBundles(prod.bundles);
+        renderBundles();
       }
     });
 
   function renderBundles() {
-    // Preisstaffel: [ {menge, preisProSet, originalProSet} ]
+    const einzelpreis = 12.00;
     const staffel = [
-      {qty: 1, price: product.price, original: product.price},
-      {qty: 2, price: product.price * 0.85, original: product.price},
-      {qty: 3, price: product.price * 0.80, original: product.price}
+      {qty:1, price:einzelpreis, original:einzelpreis},
+      {qty:2, price:(einzelpreis*0.85), original:einzelpreis},
+      {qty:3, price:(einzelpreis*0.80), original:einzelpreis}
     ];
     const section = document.getElementById('bundle-section');
-    let selected = 1; // Standard: 2 Sets
+    let selected = 1;
     section.innerHTML = `
       <div class="bundle-box">
         <div class="bundle-header">BUNDLE & SPARE</div>
@@ -299,7 +302,7 @@
               </div>
             </div>
           `).join('')}
-          <button type="submit" class="btn bundle-add-btn" onclick="addBundleAndRedirect(event)">In den Warenkorb</button>
+          <button type="submit" class="btn bundle-add-btn">In den Warenkorb</button>
         </form>
       </div>
     `;
@@ -333,13 +336,26 @@
       });
     });
 
-    // Der Bundle-Button verwendet jetzt onclick="addBundleAndRedirect(event)"
+    section.querySelector('#bundleForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const idx = Array.from(radios).findIndex(r => r.checked);
+      const s = staffel[idx];
+      addBundleToCart({
+        id: product.id,
+        name: product.name + ` (${s.qty} Set${s.qty>1?'s':''})`,
+        price: s.price * s.qty, // Gesamtpreis für das Bundle
+        image: product.image,
+        description: product.description + ` (Bundle: ${s.qty} Set${s.qty>1?'s':''})`,
+        bundleId: `${product.id}-qty${s.qty}`,
+        quantity: 1
+      });
+    });
   }
 
   function addBundleToCart(bundle) {
     let cart = getCart();
     // Bundle als eigenes Cart-Item mit bundleId
-    const bundleId = bundle.bundleId;
+    const bundleId = `${product.id}-${bundle.id}`;
     const existing = cart.find(item => item.bundleId === bundleId);
     if (existing) {
       // Bei Bundles immer nur 1 erlauben
@@ -347,42 +363,16 @@
     } else {
       cart.push({
         id: product.id,
-        name: bundle.name,
+        name: product.name + ' - ' + bundle.name,
         price: bundle.price,
         image: product.image,
-        description: bundle.description,
+        description: product.description + ' (Bundle: ' + bundle.name + ')',
         bundleId: bundleId,
-        bundleItems: [], // Keine Items für die neue Staffel
-        quantity: 1 // Bundles haben immer Menge 1
+        bundleItems: bundle.items,
+        quantity: 1
       });
     }
     setCart(cart);
-  }
-
-  function addBundleAndRedirect(event) {
-    event.preventDefault();
-    const form = event.target.closest('form');
-    const selectedRadio = form.querySelector('input[name="bundle"]:checked');
-    if (!selectedRadio) return;
-    
-    const idx = parseInt(selectedRadio.value);
-    const staffel = [
-      {qty: 1, price: product.price, original: product.price},
-      {qty: 2, price: product.price * 0.85, original: product.price},
-      {qty: 3, price: product.price * 0.80, original: product.price}
-    ];
-    const s = staffel[idx];
-    
-    addBundleToCart({
-      id: product.id,
-      name: product.name + ` (${s.qty} Set${s.qty>1?'s':''})`,
-      price: s.price * s.qty, // Gesamtpreis für das Bundle
-      image: product.image,
-      description: product.description + ` (Bundle: ${s.qty} Set${s.qty>1?'s':''})`,
-      bundleId: `${product.id}-qty${s.qty}`,
-      quantity: 1
-    });
-    
     // Popup anzeigen statt direkter Weiterleitung
     if (typeof showAlert === 'function') {
       showAlert('Bundle zum Warenkorb hinzugefügt', 'cart.html');
@@ -407,7 +397,7 @@
       if (typeof showAlert === 'function') {
         showAlert('Produkt von der Wunschliste entfernt', 'wishlist.html');
       } else {
-        showNotification('Produkt von der Wunschliste entfernt');
+        showNotification('Von der Wunschliste entfernt', 'info');
       }
     } else {
       wishlist.push({
@@ -420,21 +410,25 @@
       if (typeof showAlert === 'function') {
         showAlert('Produkt zur Wunschliste hinzugefügt', 'wishlist.html');
       } else {
-        showNotification('Produkt zur Wunschliste hinzugefügt');
+        showNotification('Zur Wunschliste hinzugefügt');
       }
     }
     setWishlist(wishlist);
     updateWishlistButton();
   }
   function updateWishlistButton() {
-    const btn = document.getElementById('wishlistBtn');
-    if (!btn) return;
+    const heroBtn = document.getElementById('wishlistBtn');
+    
     if (isInWishlist(product.id)) {
-      btn.classList.add('active');
-      btn.innerHTML = '<i class="bi bi-heart-fill"></i> Entfernen';
+      if (heroBtn) {
+        heroBtn.classList.add('active');
+        heroBtn.innerHTML = '<i class="bi bi-heart-fill"></i> Entfernen';
+      }
     } else {
-      btn.classList.remove('active');
-      btn.innerHTML = '<i class="bi bi-heart"></i> Zur Wunschliste';
+      if (heroBtn) {
+        heroBtn.classList.remove('active');
+        heroBtn.innerHTML = '<i class="bi bi-heart"></i> Zur Wunschliste';
+      }
     }
   }
   function getCart() {
@@ -449,24 +443,17 @@
     if (existing) {
       existing.quantity += product.quantity || 1;
     } else {
-      cart.push({ ...product, quantity: product.quantity || 1 });
+      cart.push({ 
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        image: product.image,
+        description: product.description,
+        quantity: product.quantity || 1
+      });
     }
     setCart(cart);
     // Keine direkte Weiterleitung mehr, da wir das Popup verwenden
-  }
-
-  function addToCartAndRedirect() {
-    const productToAdd = {
-      ...product,
-      quantity: 1
-    };
-    addToCart(productToAdd);
-    // Popup anzeigen statt direkter Weiterleitung
-    if (typeof showAlert === 'function') {
-      showAlert('Produkt zum Warenkorb hinzugefügt', 'cart.html');
-    } else {
-      showNotification('Zum Warenkorb hinzugefügt');
-    }
   }
   
   // showAlert function for cart popup
@@ -570,15 +557,111 @@
   function updateTotalPrice() {
     const quantity = parseInt(document.getElementById('quantity').value, 10) || 1;
     const total = (product.price * quantity).toFixed(2);
-    document.getElementById('totalPrice').textContent = total;
+    document.getElementById('totalPrice').textContent = `€${total}`;
   }
 
   function addToCartWithQuantity() {
-    const quantity = parseInt(document.getElementById('quantity').value, 10) || 1;
+    const quantity = parseInt(document.getElementById("quantity").value, 10) || 1;
     const productToCart = {
       ...product,
       quantity: quantity
     };
+    addToCart(productToCart);
+    
+    // Trigger animation for cart button
+    triggerCartButtonAnimation(product.id);
+    
+    // Popup anzeigen statt direkter Weiterleitung
+    if (typeof showAlert === "function") {
+      showAlert("Produkt zum Warenkorb hinzugefügt", "cart.html");
+    } else {
+      showNotification("Zum Warenkorb hinzugefügt");
+    }
+  }
+
+  // Animation trigger functions for product pages
+  function triggerCartButtonAnimation() {
+    const cartButton = document.getElementById("cartBtn");
+    if (cartButton) {
+      cartButton.classList.add("success-animation");
+      setTimeout(() => {
+        cartButton.classList.remove("success-animation");
+      }, 1200);
+    }
+  }
+
+  function triggerWishlistButtonAnimation() {
+
+  // New function that combines cart functionality with animation
+  function addToCartWithAnimation() {
+    // Trigger animation first
+    triggerCartButtonAnimation(product.id);
+    
+    // Then call the original function
+    addToCartAndRedirect();
+  }
+    const wishlistButton = document.getElementById("wishlistBtn");
+
+  // New function that combines cart functionality with animation
+  function addToCartWithAnimation() {
+    // Trigger animation first
+    triggerCartButtonAnimation(product.id);
+    
+    // Then call the original function
+    addToCartAndRedirect();
+  }
+    if (wishlistButton) {
+
+  // New function that combines cart functionality with animation
+  function addToCartWithAnimation() {
+    // Trigger animation first
+    triggerCartButtonAnimation(product.id);
+    
+    // Then call the original function
+    addToCartAndRedirect();
+  }
+      wishlistButton.classList.add("success-animation");
+
+  // New function that combines cart functionality with animation
+  function addToCartWithAnimation() {
+    // Trigger animation first
+    triggerCartButtonAnimation(product.id);
+    
+    // Then call the original function
+    addToCartAndRedirect();
+  }
+      setTimeout(() => {
+
+  // New function that combines cart functionality with animation
+  function addToCartWithAnimation() {
+    // Trigger animation first
+    triggerCartButtonAnimation(product.id);
+    
+    // Then call the original function
+    addToCartAndRedirect();
+  }
+        wishlistButton.classList.remove("success-animation");
+
+  // New function that combines cart functionality with animation
+  function addToCartWithAnimation() {
+    // Trigger animation first
+    triggerCartButtonAnimation(product.id);
+    
+    // Then call the original function
+    addToCartAndRedirect();
+  }
+      }, 800);
+
+  // New function that combines cart functionality with animation
+  function addToCartWithAnimation() {
+    // Trigger animation first
+    triggerCartButtonAnimation(product.id);
+    
+    // Then call the original function
+    addToCartAndRedirect();
+  }
+    }
+  }
     addToCart(productToCart);
     // Popup anzeigen statt direkter Weiterleitung
     if (typeof showAlert === 'function') {
@@ -588,25 +671,47 @@
     }
   }
   document.addEventListener('DOMContentLoaded', function() {
-    // Wishlist-Button
-    let wishlistBtn = document.getElementById('wishlistBtn');
-    if (!wishlistBtn) {
-      // Fallback: Erstelle Button, falls nicht vorhanden
-      const hero = document.querySelector('.product-hero .col-lg-6');
-      if (hero) {
-        wishlistBtn = document.createElement('button');
-        wishlistBtn.id = 'wishlistBtn';
-        wishlistBtn.className = 'btn btn-outline-light btn-lg ms-2';
-        hero.appendChild(wishlistBtn);
-      }
-    }
-    if (wishlistBtn) {
-      wishlistBtn.addEventListener('click', function(e) {
+    // Hero Wishlist-Button
+    let heroWishlistBtn = document.getElementById('wishlistBtn');
+    if (heroWishlistBtn) {
+      heroWishlistBtn.addEventListener('click', function(e) {
         e.preventDefault();
+        triggerWishlistButtonAnimation(product.id);
         toggleWishlist(product);
       });
+      updateWishlistButton();
     }
+    
+    // Hero Cart-Button
+    let heroCartBtn = document.getElementById('heroCartBtn');
+    if (heroCartBtn) {
+      heroCartBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        triggerCartButtonAnimation(product.id);
+        const quantity = parseInt(document.getElementById('quantity').value, 10) || 1;
+        const productToCart = {
+          id: product.id,
+          name: product.name,
+          price: product.price,
+          image: product.image,
+          description: product.description,
+          quantity: quantity
+        };
+        addToCart(productToCart);
+        // Popup anzeigen statt direkter Weiterleitung
+        if (typeof showAlert === 'function') {
+          showAlert('Produkt zum Warenkorb hinzugefügt', 'cart.html');
+        } else {
+          showNotification('Zum Warenkorb hinzugefügt');
+        }
+      });
+    }
+    
 
+    
+    // Update both wishlist buttons on page load
+    updateWishlistButton();
+    
     // Event-Listener für Quantity-Input
     const quantityInput = document.getElementById('quantity');
     if (quantityInput) {

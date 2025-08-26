@@ -357,53 +357,75 @@ function triggerCartButtonAnimation(productId) {
   // Animate the specific add-to-cart button that was clicked
   const cartButton = document.querySelector(`[data-product-id="${productId}"] .add-to-cart`) ||
                      document.querySelector('.add-to-cart:focus') ||
-                     document.querySelector('.add-to-cart:last-child');
+                     document.querySelector('.add-to-cart:last-child') ||
+                     document.querySelector('#heroCartBtn') ||
+                     document.querySelector('#cartBtn');
   
   if (cartButton) {
     cartButton.classList.add('success-animation');
     setTimeout(() => {
       cartButton.classList.remove('success-animation');
-    }, 800);
+    }, 1200); // Longer duration for visible green flash
     
-    // Create floating success indicator for cart
-    createFloatingSuccessIndicator(cartButton, '🛒', 'cart');
+    // Add product card hover effect to the button
+    cartButton.style.transform = 'scale(1.05) translateY(-2px)';
+    cartButton.style.boxShadow = '0 8px 25px rgba(76, 175, 80, 0.4)';
+    
+    setTimeout(() => {
+      cartButton.style.transform = '';
+      cartButton.style.boxShadow = '';
+    }, 1200);
   }
   
-  // Animate the cart icon in the navigation
+  // Enhanced cart icon animation in the navigation
   const cartIcon = document.querySelector('#cartButton i');
   if (cartIcon) {
     cartIcon.classList.add('cart-icon-bounce');
     setTimeout(() => {
       cartIcon.classList.remove('cart-icon-bounce');
-    }, 800);
+    }, 1200);
   }
 }
 
 function triggerWishlistButtonAnimation(productId) {
   // Animate the specific wishlist button that was clicked
-  const wishlistButton = document.querySelector(`[data-product-id="${productId}"] .wishlist-btn`);
+  const wishlistButton = document.querySelector(`[data-product-id="${productId}"] .wishlist-btn`) ||
+                         document.querySelector('#wishlistBtn');
   
   if (wishlistButton) {
     wishlistButton.classList.add('success-animation');
     setTimeout(() => {
       wishlistButton.classList.remove('success-animation');
-    }, 600);
+    }, 800); // Extended duration for enhanced animation
     
-    // Create floating success indicator for wishlist
+    // Add enhanced hover effect to the wishlist button
+    wishlistButton.style.transform = 'scale(1.1) rotate(5deg)';
+    wishlistButton.style.background = 'linear-gradient(135deg, #ff6b6b, #ff5252)';
+    wishlistButton.style.color = 'white';
+    wishlistButton.style.boxShadow = '0 8px 25px rgba(255, 107, 107, 0.5)';
+    
+    setTimeout(() => {
+      wishlistButton.style.transform = '';
+      wishlistButton.style.background = '';
+      wishlistButton.style.color = '';
+      wishlistButton.style.boxShadow = '';
+    }, 800);
+    
+    // Create floating success indicator for wishlist (enhanced)
     createFloatingSuccessIndicator(wishlistButton, '♥', 'wishlist');
   }
   
-  // Animate the heart icon in the navigation
+  // Enhanced heart icon animation in the navigation
   const heartIcon = document.querySelector('#heartIcon');
   if (heartIcon) {
     heartIcon.classList.add('heart-pulse');
     setTimeout(() => {
       heartIcon.classList.remove('heart-pulse');
-    }, 500);
+    }, 800);
   }
 }
 
-function createFloatingSuccessIndicator(button, icon, type = 'cart') {
+function createFloatingSuccessIndicator(button, icon, type = 'wishlist') {
   const indicator = document.createElement('div');
   indicator.className = `floating-success ${type}`;
   indicator.textContent = icon;
@@ -416,13 +438,12 @@ function createFloatingSuccessIndicator(button, icon, type = 'cart') {
   
   document.body.appendChild(indicator);
   
-  // Remove after animation completes (different timing for cart vs wishlist)
-  const duration = type === 'cart' ? 1200 : 1000;
+  // Remove after animation completes
   setTimeout(() => {
     if (document.body.contains(indicator)) {
       indicator.remove();
     }
-  }, duration);
+  }, 1200);
 }
 
 // Make showAlert globally available with enhanced animations
