@@ -271,7 +271,7 @@ body {
 
 /* Moderne "In den Warenkorb" Button - TOUCH-OPTIMIERT */
 .product-card .btn.add-to-cart {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
     border: none;
     font-weight: 600;
     font-size: 0.9rem;
@@ -281,9 +281,9 @@ body {
 }
 
 .product-card .btn.add-to-cart:hover {
-    background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+    background: linear-gradient(135deg, #388E3C 0%, #2E7D32 100%);
     transform: scale(1.05) translateY(-2px);
-    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 8px 25px rgba(76, 175, 80, 0.4);
 }
 
 .product-card .btn.add-to-cart:active {
@@ -324,7 +324,7 @@ body {
         transform: translateY(0);
     }
 }
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
     border: none;
     border-radius: var(--border-radius-small);
     padding: 16px 24px;
@@ -341,9 +341,9 @@ body {
 }
 
 .product-card .btn.add-to-cart:hover {
-    background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+    background: linear-gradient(135deg, #388E3C 0%, #2E7D32 100%);
     transform: scale(1.05) translateY(-2px);
-    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 8px 25px rgba(76, 175, 80, 0.4);
 }
 
 .product-card .btn.add-to-cart i {
@@ -357,21 +357,21 @@ body {
   0% {
     transform: scale(1) translateY(0) rotate(0deg);
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    background: linear-gradient(135deg, #667eea, #764ba2);
+    background: linear-gradient(135deg, #4CAF50, #45a049);
   }
   25% {
     transform: scale(1.08) translateY(-4px) rotate(2deg);
-    background: linear-gradient(135deg, #4CAF50, #45a049);
+    background: linear-gradient(135deg, #388E3C, #2E7D32);
     box-shadow: 0 10px 30px rgba(76, 175, 80, 0.5);
   }
   50% {
     transform: scale(1.15) translateY(-8px) rotate(-1deg);
-    background: linear-gradient(135deg, #4CAF50, #45a049);
+    background: linear-gradient(135deg, #2E7D32, #1B5E20);
     box-shadow: 0 15px 40px rgba(76, 175, 80, 0.7);
   }
   75% {
     transform: scale(1.05) translateY(-3px) rotate(0.5deg);
-    background: linear-gradient(135deg, #4CAF50, #45a049);
+    background: linear-gradient(135deg, #388E3C, #2E7D32);
     box-shadow: 0 8px 25px rgba(76, 175, 80, 0.4);
   }
   100% {
