@@ -363,7 +363,7 @@ function triggerCartButtonAnimation(productId) {
     cartButton.classList.add('success-animation');
     setTimeout(() => {
       cartButton.classList.remove('success-animation');
-    }, 1000); // Extended duration for enhanced animation
+    }, 800); // Shorter duration for quick green flash
     
     // Add product card hover effect to the button
     cartButton.style.transform = 'scale(1.05) translateY(-2px)';
@@ -372,7 +372,7 @@ function triggerCartButtonAnimation(productId) {
     setTimeout(() => {
       cartButton.style.transform = '';
       cartButton.style.boxShadow = '';
-    }, 1000);
+    }, 800);
   }
   
   // Enhanced cart icon animation in the navigation
@@ -381,7 +381,7 @@ function triggerCartButtonAnimation(productId) {
     cartIcon.classList.add('cart-icon-bounce');
     setTimeout(() => {
       cartIcon.classList.remove('cart-icon-bounce');
-    }, 1000);
+    }, 800);
   }
 }
 
