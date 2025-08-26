@@ -34,7 +34,6 @@
             <i class="bi bi-heart" id="heartIcon"></i>
           </a>
           <a href="#" id="cartButton" class="nav-icon-link position-relative">
-            <i class="bi bi-cart3"></i>
             <span id="cartCounter">0</span>
           </a>
           <!-- Warenkorb Dropdown -->
@@ -86,6 +85,71 @@
     margin: 0 0.5rem;
     min-width: 0;
   }
+}
+
+/* Erweiterte Styles für den Warenkorb-Button ohne Icon */
+#cartButton {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
+  font-size: 1.4rem;
+  position: relative;
+  overflow: hidden;
+}
+
+#cartButton::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.5s;
+}
+
+#cartButton:hover::before {
+  left: 100%;
+}
+
+#cartButton:hover {
+  transform: scale(1.1) rotate(5deg);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+}
+
+/* Herz-Button mit erweiterten Farben */
+#wishlistButton {
+  position: relative;
+  overflow: hidden;
+}
+
+#wishlistButton::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,107,107,0.2), transparent);
+  transition: left 0.5s;
+}
+
+#wishlistButton:hover::before {
+  left: 100%;
+}
+
+#heartIcon {
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 2;
 }
 </style>
 <script>
@@ -799,16 +863,91 @@ if (searchInput && mobileSearchBtn) {
   console.log('Script geladen!');
 </script>
 <script>
-  // Herz-Icon bei Hover füllen
+  // Herz-Icon bei Hover füllen mit erweiterten Farben
   const heartIcon = document.getElementById('heartIcon');
   const wishlistButton = document.getElementById('wishlistButton');
+  
+  // Array mit verschiedenen Farben für die Herz-Animation
+  const heartColors = [
+    '#ff6b6b', // Rot
+    '#ff8c00', // Orange
+    '#ffd43b', // Gelb
+    '#51cf66', // Grün
+    '#4ecdc4', // Türkis
+    '#667eea', // Blau
+    '#764ba2', // Lila
+    '#ff6b35'  // Rot-Orange
+  ];
+  
+  let currentColorIndex = 0;
+  
   wishlistButton.addEventListener('mouseenter', () => {
     heartIcon.classList.remove('bi-heart');
     heartIcon.classList.add('bi-heart-fill');
+    
+    // Farbwechsel-Animation starten
+    const colorInterval = setInterval(() => {
+      heartIcon.style.color = heartColors[currentColorIndex];
+      currentColorIndex = (currentColorIndex + 1) % heartColors.length;
+    }, 200);
+    
+    // Interval speichern für späteres Stoppen
+    wishlistButton.colorInterval = colorInterval;
   });
+  
   wishlistButton.addEventListener('mouseleave', () => {
     heartIcon.classList.remove('bi-heart-fill');
     heartIcon.classList.add('bi-heart');
+    
+    // Farbwechsel-Animation stoppen
+    if (wishlistButton.colorInterval) {
+      clearInterval(wishlistButton.colorInterval);
+      wishlistButton.colorInterval = null;
+    }
+    
+    // Farbe zurücksetzen
+    heartIcon.style.color = '';
+    currentColorIndex = 0;
+  });
+</script>
+<script>
+  // Warenkorb-Button mit erweiterten Farben und Animation
+  const cartButton = document.getElementById('cartButton');
+  
+  // Array mit verschiedenen Farben für den Warenkorb-Button
+  const cartColors = [
+    '#667eea', // Blau
+    '#764ba2', // Lila
+    '#ff6b6b', // Rot
+    '#ff8c00', // Orange
+    '#51cf66', // Grün
+    '#4ecdc4', // Türkis
+    '#ffd43b', // Gelb
+    '#ff6b35'  // Rot-Orange
+  ];
+  
+  let cartColorIndex = 0;
+  
+  // Farbwechsel-Animation für den Warenkorb-Button
+  function startCartColorAnimation() {
+    cartButton.colorInterval = setInterval(() => {
+      cartButton.style.background = `linear-gradient(135deg, ${cartColors[cartColorIndex]} 0%, ${cartColors[(cartColorIndex + 1) % cartColors.length]} 100%)`;
+      cartColorIndex = (cartColorIndex + 1) % cartColors.length;
+    }, 1500);
+  }
+  
+  // Animation starten
+  startCartColorAnimation();
+  
+  // Hover-Effekt für den Warenkorb-Button
+  cartButton.addEventListener('mouseenter', () => {
+    cartButton.style.transform = 'scale(1.1) rotate(5deg)';
+    cartButton.style.boxShadow = '0 8px 25px rgba(0,0,0,0.3)';
+  });
+  
+  cartButton.addEventListener('mouseleave', () => {
+    cartButton.style.transform = 'scale(1) rotate(0deg)';
+    cartButton.style.boxShadow = '';
   });
 </script>
 <script>
