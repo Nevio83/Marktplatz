@@ -346,6 +346,18 @@ body {
     box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
 }
 
+/* Override hover when animation is active */
+.product-card .btn.add-to-cart.success-animation:hover {
+    background: linear-gradient(135deg, #4CAF50, #45a049) !important;
+    box-shadow: 0 8px 25px rgba(76, 175, 80, 0.4) !important;
+}
+
+/* Override hover when animation is active */
+.product-card .btn.add-to-cart.success-animation:hover {
+    background: linear-gradient(135deg, #4CAF50, #45a049) !important;
+    box-shadow: 0 8px 25px rgba(76, 175, 80, 0.4) !important;
+}
+
 
 
 .product-card .btn.add-to-cart i {
