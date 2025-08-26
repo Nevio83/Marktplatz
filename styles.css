@@ -352,42 +352,52 @@ body {
 
 /* ===== ENHANCED CART & WISHLIST BUTTON ANIMATIONS ===== */
 
-/* Enhanced animations for adding to cart with product card effects */
+/* Enhanced animations for adding to cart with rainbow colors */
 @keyframes addToCartSuccess {
   0% {
     transform: scale(1) translateY(0) rotate(0deg);
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    background: var(--primary-color);
+    background: linear-gradient(135deg, #667eea, #764ba2);
   }
-  15% {
-    transform: scale(1.08) translateY(-4px) rotate(2deg);
-    background: linear-gradient(135deg, #4CAF50, #45a049);
-    box-shadow: 0 10px 30px rgba(76, 175, 80, 0.5);
-  }
-  30% {
-    transform: scale(1.15) translateY(-8px) rotate(-1deg);
-    background: linear-gradient(135deg, #4CAF50, #45a049);
-    box-shadow: 0 15px 40px rgba(76, 175, 80, 0.7);
-  }
-  50% {
-    transform: scale(1.12) translateY(-6px) rotate(1deg);
-    background: linear-gradient(135deg, #4CAF50, #45a049);
-    box-shadow: 0 12px 35px rgba(76, 175, 80, 0.6);
-  }
-  70% {
-    transform: scale(1.05) translateY(-3px) rotate(-0.5deg);
+  12.5% {
+    transform: scale(1.06) translateY(-3px) rotate(1deg);
     background: linear-gradient(135deg, #4CAF50, #45a049);
     box-shadow: 0 8px 25px rgba(76, 175, 80, 0.4);
   }
-  85% {
-    transform: scale(1.02) translateY(-1px) rotate(0.2deg);
-    background: var(--primary-color);
-    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+  25% {
+    transform: scale(1.12) translateY(-6px) rotate(-1deg);
+    background: linear-gradient(135deg, #388E3C, #2E7D32);
+    box-shadow: 0 12px 35px rgba(56, 142, 60, 0.6);
+  }
+  37.5% {
+    transform: scale(1.18) translateY(-9px) rotate(1.5deg);
+    background: linear-gradient(135deg, #66bb6a, #4CAF50);
+    box-shadow: 0 15px 40px rgba(102, 187, 106, 0.7);
+  }
+  50% {
+    transform: scale(1.15) translateY(-7px) rotate(-0.5deg);
+    background: linear-gradient(135deg, #81c784, #66bb6a);
+    box-shadow: 0 13px 38px rgba(129, 199, 132, 0.65);
+  }
+  62.5% {
+    transform: scale(1.09) translateY(-4px) rotate(0.8deg);
+    background: linear-gradient(135deg, #a5d6a7, #81c784);
+    box-shadow: 0 10px 30px rgba(165, 214, 167, 0.5);
+  }
+  75% {
+    transform: scale(1.04) translateY(-2px) rotate(-0.3deg);
+    background: linear-gradient(135deg, #c8e6c9, #a5d6a7);
+    box-shadow: 0 6px 20px rgba(200, 230, 201, 0.4);
+  }
+  87.5% {
+    transform: scale(1.01) translateY(-0.5px) rotate(0.1deg);
+    background: linear-gradient(135deg, #e8f5e8, #c8e6c9);
+    box-shadow: 0 3px 12px rgba(232, 245, 232, 0.3);
   }
   100% {
     transform: scale(1) translateY(0) rotate(0deg);
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    background: var(--primary-color);
+    background: linear-gradient(135deg, #667eea, #764ba2);
   }
 }
 
@@ -396,21 +406,25 @@ body {
     transform: scale(1) rotate(0deg);
     color: white;
   }
-  20% {
-    transform: scale(1.2) rotate(-10deg);
+  16.67% {
+    transform: scale(1.15) rotate(-8deg);
     color: #4CAF50;
   }
-  40% {
-    transform: scale(1.4) rotate(5deg);
+  33.33% {
+    transform: scale(1.3) rotate(6deg);
     color: #45a049;
   }
-  60% {
-    transform: scale(1.3) rotate(-3deg);
-    color: #4CAF50;
+  50% {
+    transform: scale(1.4) rotate(-4deg);
+    color: #388E3C;
   }
-  80% {
-    transform: scale(1.1) rotate(1deg);
+  66.67% {
+    transform: scale(1.25) rotate(3deg);
     color: #66bb6a;
+  }
+  83.33% {
+    transform: scale(1.1) rotate(-1deg);
+    color: #81c784;
   }
   100% {
     transform: scale(1) rotate(0deg);
@@ -418,42 +432,54 @@ body {
   }
 }
 
-/* Enhanced animations for adding to wishlist with vibrant colors */
+/* Enhanced animations for adding to wishlist with rainbow colors */
 @keyframes addToWishlistSuccess {
   0% {
     transform: scale(1) rotate(0deg);
     background: rgba(255, 107, 107, 0.1);
     color: #ff6b6b;
   }
-  15% {
-    transform: scale(1.15) rotate(-8deg);
-    background: linear-gradient(135deg, #ff6b6b, #ff5252);
+  12.5% {
+    transform: scale(1.1) rotate(-6deg);
+    background: linear-gradient(135deg, #ff8e53, #ff6b6b);
     color: white;
-    box-shadow: 0 8px 25px rgba(255, 107, 107, 0.5);
+    box-shadow: 0 6px 20px rgba(255, 142, 83, 0.4);
   }
-  30% {
-    transform: scale(1.25) rotate(6deg);
-    background: linear-gradient(135deg, #ff6b6b, #ff5252);
+  25% {
+    transform: scale(1.2) rotate(5deg);
+    background: linear-gradient(135deg, #ffb347, #ff8e53);
     color: white;
-    box-shadow: 0 12px 35px rgba(255, 107, 107, 0.7);
+    box-shadow: 0 8px 25px rgba(255, 179, 71, 0.5);
+  }
+  37.5% {
+    transform: scale(1.25) rotate(-4deg);
+    background: linear-gradient(135deg, #ffd700, #ffb347);
+    color: white;
+    box-shadow: 0 10px 30px rgba(255, 215, 0, 0.6);
   }
   50% {
-    transform: scale(1.2) rotate(-4deg);
-    background: linear-gradient(135deg, #ff6b6b, #ff5252);
+    transform: scale(1.3) rotate(3deg);
+    background: linear-gradient(135deg, #ff69b4, #ffd700);
     color: white;
-    box-shadow: 0 10px 30px rgba(255, 107, 107, 0.6);
+    box-shadow: 0 12px 35px rgba(255, 105, 180, 0.7);
   }
-  70% {
-    transform: scale(1.1) rotate(2deg);
-    background: linear-gradient(135deg, #ff6b6b, #ff5252);
+  62.5% {
+    transform: scale(1.25) rotate(-2deg);
+    background: linear-gradient(135deg, #ff1493, #ff69b4);
     color: white;
-    box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+    box-shadow: 0 10px 30px rgba(255, 20, 147, 0.6);
   }
-  85% {
-    transform: scale(1.05) rotate(-1deg);
+  75% {
+    transform: scale(1.15) rotate(1deg);
+    background: linear-gradient(135deg, #ff4757, #ff1493);
+    color: white;
+    box-shadow: 0 8px 25px rgba(255, 71, 87, 0.5);
+  }
+  87.5% {
+    transform: scale(1.05) rotate(-0.5deg);
     background: rgba(255, 107, 107, 0.2);
     color: #ff6b6b;
-    box-shadow: 0 3px 10px rgba(255, 107, 107, 0.3);
+    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
   }
   100% {
     transform: scale(1) rotate(0deg);
@@ -467,17 +493,25 @@ body {
     transform: scale(1);
     color: #ff6b6b;
   }
-  25% {
-    transform: scale(1.3);
-    color: #ff4757;
+  16.67% {
+    transform: scale(1.2);
+    color: #ff8e53;
+  }
+  33.33% {
+    transform: scale(1.4);
+    color: #ffb347;
   }
   50% {
-    transform: scale(1.5);
-    color: #ff3838;
+    transform: scale(1.6);
+    color: #ffd700;
   }
-  75% {
-    transform: scale(1.3);
-    color: #ff4757;
+  66.67% {
+    transform: scale(1.4);
+    color: #ff69b4;
+  }
+  83.33% {
+    transform: scale(1.2);
+    color: #ff1493;
   }
   100% {
     transform: scale(1);
@@ -544,41 +578,7 @@ body {
 
 /* Enhanced floating animations with better colors */
 
-/* Enhanced floating animation for cart with better colors */
-@keyframes floatUpCart {
-  0% {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(0.8);
-    color: #4CAF50;
-    text-shadow: 0 0 10px rgba(76, 175, 80, 0.8);
-  }
-  25% {
-    opacity: 1;
-    transform: translate(-50%, -60px) scale(1.1);
-    color: #45a049;
-    text-shadow: 0 0 15px rgba(69, 160, 73, 0.9);
-  }
-  50% {
-    opacity: 1;
-    transform: translate(-50%, -80px) scale(1.3);
-    color: #388E3C;
-    text-shadow: 0 0 20px rgba(56, 142, 60, 1);
-  }
-  75% {
-    opacity: 0.8;
-    transform: translate(-50%, -100px) scale(1.1);
-    color: #4CAF50;
-    text-shadow: 0 0 15px rgba(76, 175, 80, 0.8);
-  }
-  100% {
-    opacity: 0;
-    transform: translate(-50%, -120px) scale(1);
-    color: #66bb6a;
-    text-shadow: 0 0 10px rgba(102, 187, 106, 0.6);
-  }
-}
-
-/* Enhanced floating animation for wishlist with better colors */
+/* Enhanced floating animation for wishlist with rainbow colors */
 @keyframes floatUpWishlist {
   0% {
     opacity: 1;
@@ -586,23 +586,47 @@ body {
     color: #ff6b6b;
     text-shadow: 0 0 10px rgba(255, 107, 107, 0.8);
   }
+  12.5% {
+    opacity: 1;
+    transform: translate(-50%, -55px) scale(1.05);
+    color: #ff8e53;
+    text-shadow: 0 0 12px rgba(255, 142, 83, 0.85);
+  }
   25% {
     opacity: 1;
     transform: translate(-50%, -60px) scale(1.1);
-    color: #ff4757;
-    text-shadow: 0 0 15px rgba(255, 71, 87, 0.9);
+    color: #ffb347;
+    text-shadow: 0 0 15px rgba(255, 179, 71, 0.9);
+  }
+  37.5% {
+    opacity: 1;
+    transform: translate(-50%, -70px) scale(1.2);
+    color: #ffd700;
+    text-shadow: 0 0 18px rgba(255, 215, 0, 0.95);
   }
   50% {
     opacity: 1;
     transform: translate(-50%, -80px) scale(1.3);
-    color: #ff3838;
-    text-shadow: 0 0 20px rgba(255, 56, 56, 1);
+    color: #ff69b4;
+    text-shadow: 0 0 20px rgba(255, 105, 180, 1);
+  }
+  62.5% {
+    opacity: 0.9;
+    transform: translate(-50%, -90px) scale(1.2);
+    color: #ff1493;
+    text-shadow: 0 0 18px rgba(255, 20, 147, 0.9);
   }
   75% {
     opacity: 0.8;
     transform: translate(-50%, -100px) scale(1.1);
-    color: #ff5252;
-    text-shadow: 0 0 15px rgba(255, 82, 82, 0.8);
+    color: #ff4757;
+    text-shadow: 0 0 15px rgba(255, 71, 87, 0.8);
+  }
+  87.5% {
+    opacity: 0.6;
+    transform: translate(-50%, -110px) scale(1.05);
+    color: #ff3838;
+    text-shadow: 0 0 12px rgba(255, 56, 56, 0.7);
   }
   100% {
     opacity: 0;
@@ -620,12 +644,6 @@ body {
   font-size: 1.8rem;
   pointer-events: none;
   z-index: 9999;
-  font-weight: bold;
-}
-
-.floating-success.cart {
-  animation: floatUpCart 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-  color: #4CAF50;
   font-weight: bold;
 }
 

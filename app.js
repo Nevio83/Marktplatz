@@ -373,9 +373,6 @@ function triggerCartButtonAnimation(productId) {
       cartButton.style.transform = '';
       cartButton.style.boxShadow = '';
     }, 1000);
-    
-    // Create enhanced floating success indicator for cart
-    createFloatingSuccessIndicator(cartButton, '🛒', 'cart');
   }
   
   // Enhanced cart icon animation in the navigation
