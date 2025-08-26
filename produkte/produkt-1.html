@@ -569,7 +569,7 @@
     addToCart(productToCart);
     
     // Trigger animation for cart button
-    triggerCartButtonAnimation();
+    triggerCartButtonAnimation(product.id);
     
     // Popup anzeigen statt direkter Weiterleitung
     if (typeof showAlert === "function") {
@@ -595,7 +595,7 @@
   // New function that combines cart functionality with animation
   function addToCartWithAnimation() {
     // Trigger animation first
-    triggerCartButtonAnimation();
+    triggerCartButtonAnimation(product.id);
     
     // Then call the original function
     addToCartAndRedirect();
@@ -605,7 +605,7 @@
   // New function that combines cart functionality with animation
   function addToCartWithAnimation() {
     // Trigger animation first
-    triggerCartButtonAnimation();
+    triggerCartButtonAnimation(product.id);
     
     // Then call the original function
     addToCartAndRedirect();
@@ -615,7 +615,7 @@
   // New function that combines cart functionality with animation
   function addToCartWithAnimation() {
     // Trigger animation first
-    triggerCartButtonAnimation();
+    triggerCartButtonAnimation(product.id);
     
     // Then call the original function
     addToCartAndRedirect();
@@ -625,7 +625,7 @@
   // New function that combines cart functionality with animation
   function addToCartWithAnimation() {
     // Trigger animation first
-    triggerCartButtonAnimation();
+    triggerCartButtonAnimation(product.id);
     
     // Then call the original function
     addToCartAndRedirect();
@@ -635,7 +635,7 @@
   // New function that combines cart functionality with animation
   function addToCartWithAnimation() {
     // Trigger animation first
-    triggerCartButtonAnimation();
+    triggerCartButtonAnimation(product.id);
     
     // Then call the original function
     addToCartAndRedirect();
@@ -645,7 +645,7 @@
   // New function that combines cart functionality with animation
   function addToCartWithAnimation() {
     // Trigger animation first
-    triggerCartButtonAnimation();
+    triggerCartButtonAnimation(product.id);
     
     // Then call the original function
     addToCartAndRedirect();
@@ -655,7 +655,7 @@
   // New function that combines cart functionality with animation
   function addToCartWithAnimation() {
     // Trigger animation first
-    triggerCartButtonAnimation();
+    triggerCartButtonAnimation(product.id);
     
     // Then call the original function
     addToCartAndRedirect();
@@ -676,7 +676,7 @@
     if (heroWishlistBtn) {
       heroWishlistBtn.addEventListener('click', function(e) {
         e.preventDefault();
-        triggerWishlistButtonAnimation();
+        triggerWishlistButtonAnimation(product.id);
         toggleWishlist(product);
       });
       updateWishlistButton();
@@ -687,7 +687,7 @@
     if (heroCartBtn) {
       heroCartBtn.addEventListener('click', function(e) {
         e.preventDefault();
-        triggerCartButtonAnimation();
+        triggerCartButtonAnimation(product.id);
         const quantity = parseInt(document.getElementById('quantity').value, 10) || 1;
         const productToCart = {
           id: product.id,

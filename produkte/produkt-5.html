@@ -1108,7 +1108,7 @@
         e.preventDefault();
         toggleWishlist(product);
         // Trigger animation for wishlist button
-        triggerWishlistButtonAnimation();
+        triggerWishlistButtonAnimation(product.id);
       });
       updateWishlistButton();
     }

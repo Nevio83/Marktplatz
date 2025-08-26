@@ -357,7 +357,9 @@ function triggerCartButtonAnimation(productId) {
   // Animate the specific add-to-cart button that was clicked
   const cartButton = document.querySelector(`[data-product-id="${productId}"] .add-to-cart`) ||
                      document.querySelector('.add-to-cart:focus') ||
-                     document.querySelector('.add-to-cart:last-child');
+                     document.querySelector('.add-to-cart:last-child') ||
+                     document.querySelector('#heroCartBtn') ||
+                     document.querySelector('#cartBtn');
   
   if (cartButton) {
     cartButton.classList.add('success-animation');
@@ -387,7 +389,8 @@ function triggerCartButtonAnimation(productId) {
 
 function triggerWishlistButtonAnimation(productId) {
   // Animate the specific wishlist button that was clicked
-  const wishlistButton = document.querySelector(`[data-product-id="${productId}"] .wishlist-btn`);
+  const wishlistButton = document.querySelector(`[data-product-id="${productId}"] .wishlist-btn`) ||
+                         document.querySelector('#wishlistBtn');
   
   if (wishlistButton) {
     wishlistButton.classList.add('success-animation');
