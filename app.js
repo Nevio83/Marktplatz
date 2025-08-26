@@ -373,6 +373,9 @@ function triggerCartButtonAnimation(productId) {
       cartButton.style.transform = '';
       cartButton.style.boxShadow = '';
     }, 1000);
+    
+    // Create enhanced floating success indicator for cart
+    createFloatingSuccessIndicator(cartButton, '🛒', 'cart');
   }
   
   // Enhanced cart icon animation in the navigation
@@ -423,11 +426,6 @@ function triggerWishlistButtonAnimation(productId) {
 }
 
 function createFloatingSuccessIndicator(button, icon, type = 'wishlist') {
-  // Only create floating indicator for wishlist (cart popup removed)
-  if (type !== 'wishlist') {
-    return;
-  }
-  
   const indicator = document.createElement('div');
   indicator.className = `floating-success ${type}`;
   indicator.textContent = icon;
@@ -445,7 +443,7 @@ function createFloatingSuccessIndicator(button, icon, type = 'wishlist') {
     if (document.body.contains(indicator)) {
       indicator.remove();
     }
-  }, 1000);
+  }, 1200);
 }
 
 // Make showAlert globally available with enhanced animations

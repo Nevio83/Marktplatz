@@ -542,21 +542,73 @@ body {
   animation: slideOutRight 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-/* Floating success indicators removed - replaced with enhanced button animations */
+/* Enhanced floating animations with better colors */
 
-/* Enhanced floating animation for wishlist only (cart popup removed) */
-@keyframes floatUpWishlist {
+/* Enhanced floating animation for cart with better colors */
+@keyframes floatUpCart {
   0% {
     opacity: 1;
     transform: translate(-50%, -50%) scale(0.8);
+    color: #4CAF50;
+    text-shadow: 0 0 10px rgba(76, 175, 80, 0.8);
+  }
+  25% {
+    opacity: 1;
+    transform: translate(-50%, -60px) scale(1.1);
+    color: #45a049;
+    text-shadow: 0 0 15px rgba(69, 160, 73, 0.9);
   }
   50% {
     opacity: 1;
-    transform: translate(-50%, -80px) scale(1.2);
+    transform: translate(-50%, -80px) scale(1.3);
+    color: #388E3C;
+    text-shadow: 0 0 20px rgba(56, 142, 60, 1);
+  }
+  75% {
+    opacity: 0.8;
+    transform: translate(-50%, -100px) scale(1.1);
+    color: #4CAF50;
+    text-shadow: 0 0 15px rgba(76, 175, 80, 0.8);
   }
   100% {
     opacity: 0;
     transform: translate(-50%, -120px) scale(1);
+    color: #66bb6a;
+    text-shadow: 0 0 10px rgba(102, 187, 106, 0.6);
+  }
+}
+
+/* Enhanced floating animation for wishlist with better colors */
+@keyframes floatUpWishlist {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(0.8);
+    color: #ff6b6b;
+    text-shadow: 0 0 10px rgba(255, 107, 107, 0.8);
+  }
+  25% {
+    opacity: 1;
+    transform: translate(-50%, -60px) scale(1.1);
+    color: #ff4757;
+    text-shadow: 0 0 15px rgba(255, 71, 87, 0.9);
+  }
+  50% {
+    opacity: 1;
+    transform: translate(-50%, -80px) scale(1.3);
+    color: #ff3838;
+    text-shadow: 0 0 20px rgba(255, 56, 56, 1);
+  }
+  75% {
+    opacity: 0.8;
+    transform: translate(-50%, -100px) scale(1.1);
+    color: #ff5252;
+    text-shadow: 0 0 15px rgba(255, 82, 82, 0.8);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -120px) scale(1);
+    color: #ff6b6b;
+    text-shadow: 0 0 10px rgba(255, 107, 107, 0.6);
   }
 }
 
@@ -565,13 +617,20 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   pointer-events: none;
   z-index: 9999;
+  font-weight: bold;
+}
+
+.floating-success.cart {
+  animation: floatUpCart 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  color: #4CAF50;
+  font-weight: bold;
 }
 
 .floating-success.wishlist {
-  animation: floatUpWishlist 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  animation: floatUpWishlist 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
   color: #ff6b6b;
   font-weight: bold;
 }
