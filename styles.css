@@ -18,7 +18,7 @@ html, body {
     }
 }
 
-/* Neue Farbpalette inspiriert von modernen Apps */
+/* Neue Farbpalette inspiriert von modernen Apps - Auffälliger */
 :root {
   --primary-color: #667eea;
   --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -26,7 +26,7 @@ html, body {
   --accent-color: #4ecdc4;
   --success-color: #51cf66;
   --warning-color: #ffd43b;
-  --danger-color: #ff6b6b;
+  --danger-color: #ff4757;
   --light-bg: #f8fafc;
   --card-bg: #ffffff;
   --text-primary: #2d3748;
@@ -36,6 +36,7 @@ html, body {
   --shadow-light: 0 2px 8px rgba(0,0,0,0.08);
   --shadow-medium: 0 4px 16px rgba(0,0,0,0.12);
   --shadow-heavy: 0 8px 32px rgba(0,0,0,0.16);
+  --shadow-glow: 0 0 25px rgba(255,107,107,0.4);
   --border-radius: 16px;
   --border-radius-small: 8px;
   --border-radius-large: 24px;
@@ -45,6 +46,12 @@ html, body {
   --orange-gradient: linear-gradient(135deg, #ff8c00 0%, #ff6b35 100%);
   --orange-light: #ffa726;
   --orange-dark: #e65100;
+  
+  /* Auffällige Glow-Effekte */
+  --glow-red: 0 0 20px rgba(255,107,107,0.6);
+  --glow-blue: 0 0 20px rgba(102,126,234,0.6);
+  --glow-green: 0 0 20px rgba(81,207,102,0.6);
+  --glow-orange: 0 0 20px rgba(255,140,0,0.6);
 }
 
 /* Verbesserte Basis-Styles */
@@ -94,8 +101,9 @@ body {
 
 .search-form .form-control:focus {
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2), var(--glow-blue);
     background: var(--card-bg);
+    transform: scale(1.02);
 }
 
 .search-form .btn {
@@ -133,10 +141,11 @@ body {
 }
 
 .category-tile:hover {
-    transform: translateY(-8px);
-    box-shadow: var(--shadow-heavy);
+    transform: translateY(-8px) scale(1.05);
+    box-shadow: var(--shadow-heavy), var(--glow-blue);
     text-decoration: none;
     color: inherit;
+    border-radius: var(--border-radius);
 }
 
 .category-tile img {
@@ -177,8 +186,9 @@ body {
 }
 
 .product-card:hover {
-    transform: translateY(-8px);
-    box-shadow: var(--shadow-heavy);
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: var(--shadow-heavy), var(--glow-blue);
+    border: 2px solid var(--primary-color);
 }
 
 .product-image-container {
@@ -361,9 +371,11 @@ body {
     transform: scale(1.1);
     text-decoration: none;
     color: var(--text-primary);
+    box-shadow: var(--shadow-medium);
+    border-radius: 50%;
 }
 
-/* Herz-Symbol in der Navigation mit erweiterten Farben */
+/* Herz-Symbol in der Navigation - wie vorher */
 #wishlistButton {
     color: var(--danger-color) !important;
     position: relative;
@@ -372,7 +384,6 @@ body {
 
 #wishlistButton:hover {
     background: rgba(255, 107, 107, 0.1) !important;
-    animation: heartColorCycle 2s ease-in-out infinite;
 }
 
 #wishlistButton i {
@@ -382,11 +393,7 @@ body {
     z-index: 2;
 }
 
-#wishlistButton:hover i {
-    animation: heartIconColorChange 1.5s ease-in-out infinite;
-}
-
-/* Shimmer-Effekt für Herz-Button */
+/* Auffälliger Shimmer-Effekt für Herz-Button */
 #wishlistButton::before {
     content: '';
     position: absolute;
@@ -394,55 +401,34 @@ body {
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,107,107,0.3), transparent);
-    transition: left 0.6s ease;
+    background: linear-gradient(90deg, transparent, rgba(255,107,107,0.8), transparent);
+    transition: left 0.3s ease;
     z-index: 1;
+    box-shadow: 0 0 20px rgba(255,107,107,0.5);
 }
 
 #wishlistButton:hover::before {
     left: 100%;
 }
 
-/* Moderne Warenkorb-Button mit erweiterten Farben */
-#cartButton {
-    position: relative;
-    background: var(--primary-gradient);
-    border: none;
+/* Auffälliger Hover-Effekt für Herz-Button */
+#wishlistButton:hover {
+    background: rgba(255, 107, 107, 0.2) !important;
+    transform: scale(1.15);
+    box-shadow: 0 0 25px rgba(255,107,107,0.4);
     border-radius: 50%;
-    width: 48px;
-    height: 48px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    transition: all 0.3s ease;
-    box-shadow: var(--shadow-light);
-    font-size: 1.4rem;
-    overflow: hidden;
-    animation: cartColorCycle 3s ease-in-out infinite;
 }
 
-#cartButton:hover {
-    box-shadow: var(--shadow-medium);
-    transform: scale(1.1) rotate(5deg);
-    animation: cartHoverEffect 0.6s ease-in-out;
+/* Glow-Effekt für das Herz-Icon */
+#wishlistButton:hover i {
+    color: #ff4757 !important;
+    text-shadow: 0 0 10px rgba(255,107,107,0.8);
+    transform: scale(1.2);
 }
 
-/* Shimmer-Effekt für Warenkorb-Button */
-#cartButton::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-    transition: left 0.8s ease;
-    z-index: 1;
-}
-
-#cartButton:hover::before {
-    left: 100%;
+/* Warenkorb-Button entfernt */
+#cartButton {
+    display: none !important;
 }
 
 #cartCounter {
@@ -473,22 +459,7 @@ body {
         font-size: 0.7rem;
     }
     
-    /* Mobile Optimierungen für Animationen */
-    #wishlistButton:hover {
-        animation: heartColorCycle 1.5s ease-in-out infinite;
-    }
-    
-    #wishlistButton:hover i {
-        animation: heartIconColorChange 1s ease-in-out infinite;
-    }
-    
-    #cartButton {
-        animation: cartColorCycle 2s ease-in-out infinite;
-    }
-    
-    #cartButton:hover {
-        animation: cartHoverEffect 0.4s ease-in-out;
-    }
+
 }
 
 @media (max-width: 600px) {
@@ -1687,52 +1658,9 @@ div#hilfePanel.offen,
     }
 }
 
-/* Herz-Animationen mit erweiterten Farben */
-@keyframes heartColorCycle {
-    0%, 100% { background: rgba(255, 107, 107, 0.1); }
-    16.66% { background: rgba(255, 140, 0, 0.1); }
-    33.33% { background: rgba(255, 212, 59, 0.1); }
-    50% { background: rgba(81, 207, 102, 0.1); }
-    66.66% { background: rgba(78, 205, 196, 0.1); }
-    83.33% { background: rgba(102, 126, 234, 0.1); }
-}
 
-@keyframes heartIconColorChange {
-    0%, 100% { color: #ff6b6b !important; }
-    16.66% { color: #ff8c00 !important; }
-    33.33% { color: #ffd43b !important; }
-    50% { color: #51cf66 !important; }
-    66.66% { color: #4ecdc4 !important; }
-    83.33% { color: #667eea !important; }
-}
 
-/* Warenkorb-Animationen mit erweiterten Farben */
-@keyframes cartColorCycle {
-    0%, 100% { 
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
-    }
-    16.66% { 
-        background: linear-gradient(135deg, #ff6b6b 0%, #ff8c00 100%); 
-    }
-    33.33% { 
-        background: linear-gradient(135deg, #ffd43b 0%, #51cf66 100%); 
-    }
-    50% { 
-        background: linear-gradient(135deg, #4ecdc4 0%, #667eea 100%); 
-    }
-    66.66% { 
-        background: linear-gradient(135deg, #764ba2 0%, #ff6b35 100%); 
-    }
-    83.33% { 
-        background: linear-gradient(135deg, #ff8c00 0%, #ffd43b 100%); 
-    }
-}
 
-@keyframes cartHoverEffect {
-    0% { transform: scale(1) rotate(0deg); }
-    50% { transform: scale(1.15) rotate(8deg); }
-    100% { transform: scale(1.1) rotate(5deg); }
-}
 
 /* Mobile-spezifische Optimierungen */
 @media (max-width: 768px) {
