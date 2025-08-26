@@ -37,7 +37,7 @@
                         <span class="price-tag">€10.00</span>
                         <span class="badge bg-success">Kostenloser Versand in Europa</span>
                     </div>
-                    <button class="btn btn-light btn-lg me-3" id="heroCartBtn" onclick="addToCartWithAnimation()">
+                    <button class="btn btn-light btn-lg me-3" id="heroCartBtn">
                         <i class="bi bi-cart-plus"></i> In den Warenkorb
                     </button>
                     <button class="btn btn-outline-light btn-lg" id="wishlistBtn">
@@ -248,61 +248,11 @@
 
     
     <script>
-  // Animation trigger functions for product pages
-  function triggerCartButtonAnimation() {
-    // Trigger animation for main cart button
-    const cartButton = document.getElementById('heroCartBtn');
-    if (cartButton) {
-      cartButton.classList.add('success-animation');
-      setTimeout(() => {
-        cartButton.classList.remove('success-animation');
-      }, 1200);
-    }
-    
-    // Trigger animation for quick order cart button
-    const buyNowBtn = document.querySelector('.buy-now-btn');
-    if (buyNowBtn) {
-      buyNowBtn.classList.add('success-animation');
-      setTimeout(() => {
-        buyNowBtn.classList.remove('success-animation');
-      }, 1200);
-    }
-  }
-
-  function triggerWishlistButtonAnimation() {
-    // Trigger animation for main wishlist button
-    const wishlistButton = document.getElementById('wishlistBtn');
-    if (wishlistButton) {
-      wishlistButton.classList.add('success-animation');
-      setTimeout(() => {
-        wishlistButton.classList.remove('success-animation');
-      }, 800);
-    }
-    
-    // Trigger animation for quick order wishlist button
-    const quickWishlistBtn = document.querySelector('.wishlist-btn');
-    if (quickWishlistBtn) {
-      quickWishlistBtn.classList.add('success-animation');
-      setTimeout(() => {
-        quickWishlistBtn.classList.remove('success-animation');
-      }, 800);
-    }
-  }
-
-  // New function that combines cart functionality with animation
-  function addToCartWithAnimation() {
-    // Trigger animation first
-    triggerCartButtonAnimation();
-    
-    // Then call the original function
-    addToCartAndRedirect();
-  }
-
   // Produktdaten für diese Seite
   const product = {
-    id: 1,
-    name: "Elektronik Produkt 1",
-    price: 10.00,
+    id: 2,
+    name: "Elektronik Produkt 2",
+    price: 12.00,
     image: "produkt bilder/ware.png",
     description: "Innovative Technologie für Ihren Alltag. Dieses hochwertige Produkt bietet die perfekte Balance zwischen Funktionalität und Design."
   };
