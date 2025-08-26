@@ -93,6 +93,9 @@ function toggleWishlist(productId) {
         description: product.description
       });
       showAlert('Produkt zur Wunschliste hinzugefügt', 'wishlist.html');
+      
+      // Trigger wishlist button animation
+      triggerWishlistButtonAnimation(productId);
     }
     
     setWishlist(wishlist);
@@ -305,6 +308,9 @@ function addProductToCart(products, productId) {
   // Show alert
   showAlert('Produkt wurde zum Warenkorb hinzugefügt');
 
+  // Trigger button animations
+  triggerCartButtonAnimation(productId);
+
   // --- NEU: Wenn der User auf cart.html ist, direkt die Seite aktualisieren ---
   if (window.location.pathname.endsWith('cart.html')) {
     if (typeof updateCartPage === 'function') {
@@ -346,10 +352,83 @@ window.updateCartCounter = function() {
   }
 };
 
-// Make showAlert globally available
+// Animation trigger functions
+function triggerCartButtonAnimation(productId) {
+  // Animate the specific add-to-cart button that was clicked
+  const cartButton = document.querySelector(`[data-product-id="${productId}"] .add-to-cart`) ||
+                     document.querySelector('.add-to-cart:focus') ||
+                     document.querySelector('.add-to-cart:last-child');
+  
+  if (cartButton) {
+    cartButton.classList.add('success-animation');
+    setTimeout(() => {
+      cartButton.classList.remove('success-animation');
+    }, 800);
+    
+    // Create floating success indicator for cart
+    createFloatingSuccessIndicator(cartButton, '🛒', 'cart');
+  }
+  
+  // Animate the cart icon in the navigation
+  const cartIcon = document.querySelector('#cartButton i');
+  if (cartIcon) {
+    cartIcon.classList.add('cart-icon-bounce');
+    setTimeout(() => {
+      cartIcon.classList.remove('cart-icon-bounce');
+    }, 800);
+  }
+}
+
+function triggerWishlistButtonAnimation(productId) {
+  // Animate the specific wishlist button that was clicked
+  const wishlistButton = document.querySelector(`[data-product-id="${productId}"] .wishlist-btn`);
+  
+  if (wishlistButton) {
+    wishlistButton.classList.add('success-animation');
+    setTimeout(() => {
+      wishlistButton.classList.remove('success-animation');
+    }, 600);
+    
+    // Create floating success indicator for wishlist
+    createFloatingSuccessIndicator(wishlistButton, '♥', 'wishlist');
+  }
+  
+  // Animate the heart icon in the navigation
+  const heartIcon = document.querySelector('#heartIcon');
+  if (heartIcon) {
+    heartIcon.classList.add('heart-pulse');
+    setTimeout(() => {
+      heartIcon.classList.remove('heart-pulse');
+    }, 500);
+  }
+}
+
+function createFloatingSuccessIndicator(button, icon, type = 'cart') {
+  const indicator = document.createElement('div');
+  indicator.className = `floating-success ${type}`;
+  indicator.textContent = icon;
+  
+  // Position relative to the button
+  const buttonRect = button.getBoundingClientRect();
+  indicator.style.position = 'fixed';
+  indicator.style.left = buttonRect.left + buttonRect.width / 2 + 'px';
+  indicator.style.top = buttonRect.top + buttonRect.height / 2 + 'px';
+  
+  document.body.appendChild(indicator);
+  
+  // Remove after animation completes (different timing for cart vs wishlist)
+  const duration = type === 'cart' ? 1200 : 1000;
+  setTimeout(() => {
+    if (document.body.contains(indicator)) {
+      indicator.remove();
+    }
+  }, duration);
+}
+
+// Make showAlert globally available with enhanced animations
 window.showAlert = function(message, redirectTo = 'cart.html') {
   const alert = document.createElement('div');
-  alert.className = 'alert alert-success position-fixed end-0 m-4 shadow-lg fade show';
+  alert.className = 'alert alert-success position-fixed end-0 m-4 shadow-lg notification-slide-in';
   alert.style.zIndex = '20000';
   alert.style.fontSize = '1rem';
   alert.style.minWidth = '160px';
@@ -372,13 +451,14 @@ window.showAlert = function(message, redirectTo = 'cart.html') {
     window.location.href = redirectTo;
   });
   document.body.appendChild(alert);
+  
   setTimeout(() => {
     if (document.body.contains(alert)) {
-      alert.classList.remove('show');
-      alert.classList.add('fade');
+      alert.classList.remove('notification-slide-in');
+      alert.classList.add('notification-slide-out');
       setTimeout(() => alert.remove(), 400);
     }
-  }, 1700);
+  }, 3000);
 };
 
 // changeQuantity function moved to cart.js to avoid duplication
