@@ -99,10 +99,10 @@
                             </div>
                             
                             <div class="action-buttons">
-                                <button class="buy-now-btn" onclick="addToCartWithQuantity()">
+                                <button class="buy-now-btn add-to-cart" onclick="addToCartWithQuantity()">
                                     <i class="bi bi-cart-plus"></i> Jetzt kaufen
                                 </button>
-                                <button class="wishlist-btn" onclick="toggleWishlist(product)">
+                                <button class="wishlist-btn wishlist-button" onclick="toggleWishlist(product)" data-product-id="1">
                                     <i class="bi bi-heart"></i> Zur Wunschliste
                                 </button>
                             </div>
@@ -143,10 +143,10 @@
                             </div>
                             
                             <div class="action-buttons">
-                                <button class="buy-now-btn" onclick="addToCartWithQuantity()">
+                                <button class="buy-now-btn add-to-cart" onclick="addToCartWithQuantity()">
                                     <i class="bi bi-cart-plus"></i> Jetzt kaufen
                                 </button>
-                                <button class="wishlist-btn" onclick="toggleWishlist(product)">
+                                <button class="wishlist-btn wishlist-button" onclick="toggleWishlist(product)" data-product-id="1">
                                     <i class="bi bi-heart"></i> Zur Wunschliste
                                 </button>
                             </div>
@@ -299,7 +299,7 @@
               </div>
             </div>
           `).join('')}
-          <button type="submit" class="btn bundle-add-btn" onclick="addBundleAndRedirect(event)">In den Warenkorb</button>
+          <button type="submit" class="btn bundle-add-btn add-to-cart" onclick="addBundleAndRedirect(event)">In den Warenkorb</button>
         </form>
       </div>
     `;
@@ -383,6 +383,10 @@
       quantity: 1
     });
     
+    // Enhanced animations for bundle
+    triggerBundleButtonAnimation(event.target);
+    triggerNavCartAnimation();
+    
     // Popup anzeigen statt direkter Weiterleitung
     if (typeof showAlert === 'function') {
       showAlert('Bundle zum Warenkorb hinzugefügt', 'cart.html');
@@ -417,6 +421,10 @@
         image: product.image,
         description: product.description
       });
+      
+      // Enhanced wishlist animation (same as index.html)
+      triggerWishlistButtonAnimation(product.id);
+      
       if (typeof showAlert === 'function') {
         showAlert('Produkt zur Wunschliste hinzugefügt', 'wishlist.html');
       } else {
@@ -492,6 +500,39 @@
       setTimeout(() => {
         navCartButton.classList.remove('cart-rainbow-bounce');
       }, 800);
+    }
+  }
+
+  // Animation function for bundle button
+  function triggerBundleButtonAnimation(button) {
+    if (button) {
+      button.classList.add('success-animation');
+      setTimeout(() => {
+        button.classList.remove('success-animation');
+      }, 600);
+    }
+  }
+
+  // Enhanced wishlist animation (same as index.html)
+  function triggerWishlistButtonAnimation(productId) {
+    const wishlistButton = document.querySelector(`[data-product-id="${productId}"] .wishlist-button`) ||
+                           document.querySelector('.wishlist-button:focus') ||
+                           document.querySelector('.wishlist-button');
+    
+    if (wishlistButton) {
+      wishlistButton.classList.add('success-animation');
+      setTimeout(() => {
+        wishlistButton.classList.remove('success-animation');
+      }, 800);
+      
+      // Heart pulse animation
+      const heartIcon = wishlistButton.querySelector('i');
+      if (heartIcon) {
+        heartIcon.classList.add('heart-pulse');
+        setTimeout(() => {
+          heartIcon.classList.remove('heart-pulse');
+        }, 500);
+      }
     }
   }
   
