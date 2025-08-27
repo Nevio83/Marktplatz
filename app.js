@@ -372,18 +372,19 @@ function triggerCartButtonAnimation(productId) {
     createFloatingSuccessIndicator(cartButton, '🛒', 'cart');
   }
   
-  // Hide the cart icon during animation
+  // Make cart icon fly upwards and disappear
   const navCartButton = document.querySelector('#cartButton');
   const cartIcon = document.querySelector('#cartButton i');
   if (navCartButton && cartIcon) {
+    navCartButton.style.transition = 'all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+    navCartButton.style.transform = 'translateY(-50px) scale(0.3)';
     navCartButton.style.opacity = '0';
-    navCartButton.style.transform = 'scale(0.8)';
-    navCartButton.style.transition = 'all 0.3s ease';
     
     setTimeout(() => {
+      navCartButton.style.transition = 'all 0.5s ease';
+      navCartButton.style.transform = 'translateY(0) scale(1)';
       navCartButton.style.opacity = '1';
-      navCartButton.style.transform = 'scale(1)';
-    }, 600);
+    }, 800);
   }
 }
 
