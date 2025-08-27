@@ -372,7 +372,10 @@ function updateCartPage() {
                             <img src="${item.image}" alt="${item.name}" class="cart-item-image">
                             <div class="cart-item-details">
                                 <h5>${item.name}</h5>
-                                <div class="cart-item-price">${currentCurrency.symbol}${convertPrice(item.price, currentCurrency.code).toFixed(2)}</div>
+                                <div class="cart-item-price">
+                                    <span class="item-total-price">${currentCurrency.symbol}${(convertPrice(item.price, currentCurrency.code) * item.quantity).toFixed(2)}</span>
+                                    <small class="item-unit-price">${currentCurrency.symbol}${convertPrice(item.price, currentCurrency.code).toFixed(2)} pro Stück</small>
+                                </div>
                             </div>
                             ${item.bundleId ? `
                                 <div class="quantity-controls disabled">

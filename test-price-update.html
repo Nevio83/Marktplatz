@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test: Preis-Update mit Menge</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .test-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .product-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            background: white;
+        }
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        .quantity-btn {
+            width: 30px;
+            height: 30px;
+            border: none;
+            background: #007bff;
+            color: white;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .quantity-btn:hover {
+            background: #0056b3;
+        }
+        .price-display {
+            font-size: 18px;
+            font-weight: bold;
+            color: #27ae60;
+            margin: 10px 0;
+        }
+        .unit-price {
+            font-size: 14px;
+            color: #666;
+        }
+        .total-price {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin: 15px 0;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+        .success-message {
+            color: #27ae60;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Test: Preis-Update mit Menge</h1>
+    
+    <div class="test-container">
+        <h2>Elektronik Produkt 1</h2>
+        <p>Dieser Test zeigt, dass sich der Preis direkt mit der Menge aktualisiert.</p>
+        
+        <div class="product-card">
+            <h3>Elektronik Produkt 1</h3>
+            <p>Preis pro Stück: <span class="unit-price">€10.00</span></p>
+            
+            <div class="quantity-controls">
+                <button class="quantity-btn" onclick="changeQuantity(-1)">-</button>
+                <span id="quantity">1</span>
+                <button class="quantity-btn" onclick="changeQuantity(1)">+</button>
+            </div>
+            
+            <div class="price-display">
+                Gesamtpreis: <span id="totalPrice">€10.00</span>
+            </div>
+            
+            <div class="total-price">
+                Zwischensumme: <span id="subtotal">€10.00</span>
+            </div>
+        </div>
+        
+        <div id="successMessage" class="success-message" style="display: none;">
+            ✓ Preis wurde erfolgreich mit der Menge aktualisiert!
+        </div>
+    </div>
+
+    <div class="test-container">
+        <h3>Wie es funktioniert:</h3>
+        <ol>
+            <li>Klicken Sie auf die +/- Buttons, um die Menge zu ändern</li>
+            <li>Der Gesamtpreis wird sofort aktualisiert (Preis × Menge)</li>
+            <li>Die Zwischensumme wird ebenfalls aktualisiert</li>
+            <li>Der Einzelpreis bleibt konstant</li>
+        </ol>
+    </div>
+
+    <script>
+        let quantity = 1;
+        const unitPrice = 10.00;
+        
+        function changeQuantity(change) {
+            quantity += change;
+            if (quantity < 1) quantity = 1;
+            
+            document.getElementById('quantity').textContent = quantity;
+            updatePrices();
+            showSuccessMessage();
+        }
+        
+        function updatePrices() {
+            const totalPrice = (unitPrice * quantity).toFixed(2);
+            const subtotal = totalPrice;
+            
+            document.getElementById('totalPrice').textContent = `€${totalPrice}`;
+            document.getElementById('subtotal').textContent = `€${subtotal}`;
+        }
+        
+        function showSuccessMessage() {
+            const message = document.getElementById('successMessage');
+            message.style.display = 'block';
+            setTimeout(() => {
+                message.style.display = 'none';
+            }, 2000);
+        }
+        
+        // Initial update
+        updatePrices();
+    </script>
+</body>
+</html>
