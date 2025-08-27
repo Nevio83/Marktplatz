@@ -99,7 +99,7 @@
                             </div>
                             
                             <div class="action-buttons">
-                                <button class="buy-now-btn add-to-cart" onclick="addToCartWithQuantity()">
+                                <button class="buy-now-btn wishlist-style-btn" onclick="addToCartWithQuantity()">
                                     <i class="bi bi-cart-plus"></i> Jetzt kaufen
                                 </button>
                                 <button class="wishlist-btn wishlist-button" onclick="toggleWishlist(product)" data-product-id="1">
@@ -143,7 +143,7 @@
                             </div>
                             
                             <div class="action-buttons">
-                                <button class="buy-now-btn add-to-cart" onclick="addToCartWithQuantity()">
+                                <button class="buy-now-btn wishlist-style-btn" onclick="addToCartWithQuantity()">
                                     <i class="bi bi-cart-plus"></i> Jetzt kaufen
                                 </button>
                                 <button class="wishlist-btn wishlist-button" onclick="toggleWishlist(product)" data-product-id="1">
@@ -518,11 +518,41 @@
   function triggerCartButtonAnimation() {
     const cartButton = document.getElementById('cartBtn');
     if (cartButton) {
+      // Use wishlist-style animation for main cart button
       cartButton.classList.add('success-animation');
       setTimeout(() => {
         cartButton.classList.remove('success-animation');
-      }, 600);
+      }, 800);
+      
+      // Add heart pulse style animation to cart icon
+      const cartIcon = cartButton.querySelector('i');
+      if (cartIcon) {
+        cartIcon.classList.add('heart-pulse');
+        setTimeout(() => {
+          cartIcon.classList.remove('heart-pulse');
+        }, 500);
+      }
     }
+  }
+
+  // New animation function for quick order buttons (wishlist-style)
+  function triggerQuickOrderAnimation() {
+    const quickOrderButtons = document.querySelectorAll('.wishlist-style-btn');
+    quickOrderButtons.forEach(button => {
+      button.classList.add('success-animation');
+      setTimeout(() => {
+        button.classList.remove('success-animation');
+      }, 800);
+      
+      // Add heart pulse style animation to button icon
+      const buttonIcon = button.querySelector('i');
+      if (buttonIcon) {
+        buttonIcon.classList.add('heart-pulse');
+        setTimeout(() => {
+          buttonIcon.classList.remove('heart-pulse');
+        }, 500);
+      }
+    });
   }
 
   function triggerNavCartAnimation() {
@@ -545,11 +575,10 @@
     }
   }
 
-  // Enhanced wishlist animation (same as index.html)
+  // Enhanced wishlist animation (only for main button, not quick order)
   function triggerWishlistButtonAnimation(productId) {
-    const wishlistButton = document.querySelector(`[data-product-id="${productId}"] .wishlist-button`) ||
-                           document.querySelector('.wishlist-button:focus') ||
-                           document.querySelector('.wishlist-button');
+    // Only animate the main wishlist button, not the quick order ones
+    const wishlistButton = document.getElementById('wishlistBtn');
     
     if (wishlistButton) {
       wishlistButton.classList.add('success-animation');
@@ -680,8 +709,8 @@
     };
     addToCart(productToCart);
     
-    // Enhanced animations for product page
-    triggerCartButtonAnimation();
+    // Enhanced animations for product page - wishlist style for quick order
+    triggerQuickOrderAnimation();
     triggerNavCartAnimation();
     
     // Popup anzeigen statt direkter Weiterleitung
