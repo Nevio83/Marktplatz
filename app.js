@@ -340,13 +340,16 @@ window.updateCartCounter = function() {
       counter.style.display = 'flex';
     }
     
-    // Force re-render of dropdown if it's currently open
+    // Prevent automatic dropdown refresh during animation
+    // Dropdown will update only when manually opened
+    /* 
     const cartDropdown = document.getElementById('cartDropdown');
     if (cartDropdown && cartDropdown.classList.contains('show')) {
       if (typeof renderCartDropdown === 'function') {
         renderCartDropdown();
       }
     }
+    */
   } else {
     console.log('Cart counter element not found');
   }
@@ -365,16 +368,19 @@ function triggerCartButtonAnimation(productId) {
       cartButton.classList.remove('success-animation');
     }, 800);
     
-    // Create floating success indicator for cart
-    createFloatingSuccessIndicator(cartButton, '🛒', 'cart');
+    // Floating cart emoji removed as requested
+    // createFloatingSuccessIndicator(cartButton, '🛒', 'cart');
   }
   
-  // Animate the cart icon in the navigation
+  // Enhanced colorful cart icon animation (no emojis)
+  const navCartButton = document.querySelector('#cartButton');
   const cartIcon = document.querySelector('#cartButton i');
-  if (cartIcon) {
-    cartIcon.classList.add('cart-icon-bounce');
+  if (navCartButton && cartIcon) {
+    // Add colorful bounce animation class
+    navCartButton.classList.add('cart-rainbow-bounce');
+    
     setTimeout(() => {
-      cartIcon.classList.remove('cart-icon-bounce');
+      navCartButton.classList.remove('cart-rainbow-bounce');
     }, 800);
   }
 }
