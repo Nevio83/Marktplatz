@@ -37,7 +37,7 @@
                         <span class="price-tag">€10.00</span>
                         <span class="badge bg-success">Kostenloser Versand in Europa</span>
                     </div>
-                    <button class="btn btn-light btn-lg me-3" id="cartBtn" onclick="addToCartAndRedirect()">
+                    <button class="btn btn-light btn-lg me-3 add-to-cart" id="cartBtn" onclick="addToCartAndRedirect()">
                         <i class="bi bi-cart-plus"></i> In den Warenkorb
                     </button>
                     <button class="btn btn-outline-light btn-lg" id="wishlistBtn">
@@ -461,11 +461,37 @@
       quantity: 1
     };
     addToCart(productToAdd);
+    
+    // Enhanced animations for product page
+    triggerCartButtonAnimation();
+    triggerNavCartAnimation();
+    
     // Popup anzeigen statt direkter Weiterleitung
     if (typeof showAlert === 'function') {
       showAlert('Produkt zum Warenkorb hinzugefügt', 'cart.html');
     } else {
       showNotification('Zum Warenkorb hinzugefügt');
+    }
+  }
+
+  // Animation functions for product page
+  function triggerCartButtonAnimation() {
+    const cartButton = document.getElementById('cartBtn');
+    if (cartButton) {
+      cartButton.classList.add('success-animation');
+      setTimeout(() => {
+        cartButton.classList.remove('success-animation');
+      }, 600);
+    }
+  }
+
+  function triggerNavCartAnimation() {
+    const navCartButton = document.querySelector('.cart-nav-link');
+    if (navCartButton) {
+      navCartButton.classList.add('cart-rainbow-bounce');
+      setTimeout(() => {
+        navCartButton.classList.remove('cart-rainbow-bounce');
+      }, 800);
     }
   }
   
@@ -580,6 +606,11 @@
       quantity: quantity
     };
     addToCart(productToCart);
+    
+    // Enhanced animations for product page
+    triggerCartButtonAnimation();
+    triggerNavCartAnimation();
+    
     // Popup anzeigen statt direkter Weiterleitung
     if (typeof showAlert === 'function') {
       showAlert('Produkt zum Warenkorb hinzugefügt', 'cart.html');

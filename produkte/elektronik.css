@@ -1674,3 +1674,67 @@
 .product-card .h4 {
     color: #764ba2 !important;
 }
+
+/* Subtle cart icon animation for product pages */
+.cart-rainbow-bounce {
+  animation: cartSubtlePulse 0.8s ease-in-out;
+  will-change: transform, box-shadow;
+  backface-visibility: hidden;
+}
+
+@keyframes cartSubtlePulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.2);
+  }
+  20% {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3);
+  }
+  40% {
+    transform: scale(1.08);
+    box-shadow: 0 8px 25px rgba(6, 182, 212, 0.25);
+  }
+  60% {
+    transform: scale(1.06);
+    box-shadow: 0 6px 20px rgba(139, 92, 246, 0.3);
+  }
+  80% {
+    transform: scale(1.02);
+    box-shadow: 0 5px 18px rgba(99, 102, 241, 0.25);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.2);
+  }
+}
+
+/* Enhanced add-to-cart button animation */
+.add-to-cart.success-animation {
+  animation: addToCartSuccess 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes addToCartSuccess {
+  0% {
+    transform: scale(1) translateY(0);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  25% {
+    transform: scale(1.05) translateY(-3px);
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+    box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+  }
+  50% {
+    transform: scale(1.1) translateY(-6px);
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+    box-shadow: 0 12px 35px rgba(16, 185, 129, 0.6);
+  }
+  75% {
+    transform: scale(1.02) translateY(-2px);
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3);
+  }
+  100% {
+    transform: scale(1) translateY(0);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+}
