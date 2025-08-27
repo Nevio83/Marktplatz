@@ -372,7 +372,20 @@ function triggerCartButtonAnimation(productId) {
     // createFloatingSuccessIndicator(cartButton, '🛒', 'cart');
   }
   
-  // No cart icon animation - removed as requested
+  // Enhanced colorful cart icon animation with particles
+  const navCartButton = document.querySelector('#cartButton');
+  const cartIcon = document.querySelector('#cartButton i');
+  if (navCartButton && cartIcon) {
+    // Add colorful bounce animation class
+    navCartButton.classList.add('cart-rainbow-bounce');
+    
+    // Create colorful particles around cart icon
+    createCartParticles(navCartButton);
+    
+    setTimeout(() => {
+      navCartButton.classList.remove('cart-rainbow-bounce');
+    }, 1200);
+  }
 }
 
 function triggerWishlistButtonAnimation(productId) {
