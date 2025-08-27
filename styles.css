@@ -382,39 +382,7 @@ body {
   }
 }
 
-@keyframes cartIconFlyUp {
-  0% {
-    transform: translateY(0) scale(1);
-    opacity: 1;
-  }
-  30% {
-    transform: translateY(-20px) scale(1.1);
-    opacity: 0.8;
-  }
-  70% {
-    transform: translateY(-40px) scale(0.5);
-    opacity: 0.3;
-  }
-  100% {
-    transform: translateY(-60px) scale(0.2);
-    opacity: 0;
-  }
-}
-
-@keyframes cartIconReturn {
-  0% {
-    transform: translateY(-10px) scale(0.8);
-    opacity: 0;
-  }
-  50% {
-    transform: translateY(-5px) scale(0.9);
-    opacity: 0.5;
-  }
-  100% {
-    transform: translateY(0) scale(1);
-    opacity: 1;
-  }
-}
+/* Cart icon animations removed as requested */
 
 /* Animations for adding to wishlist */
 @keyframes addToWishlistSuccess {
