@@ -372,15 +372,12 @@ function triggerCartButtonAnimation(productId) {
     // createFloatingSuccessIndicator(cartButton, '🛒', 'cart');
   }
   
-  // Enhanced colorful cart icon animation with particles
+  // Enhanced colorful cart icon animation (no emojis)
   const navCartButton = document.querySelector('#cartButton');
   const cartIcon = document.querySelector('#cartButton i');
   if (navCartButton && cartIcon) {
     // Add colorful bounce animation class
     navCartButton.classList.add('cart-rainbow-bounce');
-    
-    // Create colorful particles around cart icon
-    createCartParticles(navCartButton);
     
     setTimeout(() => {
       navCartButton.classList.remove('cart-rainbow-bounce');
