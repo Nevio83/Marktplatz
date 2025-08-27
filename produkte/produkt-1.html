@@ -408,6 +408,9 @@
     let wishlist = getWishlist();
     if (isInWishlist(product.id)) {
       wishlist = wishlist.filter(item => Number(item.id) !== Number(product.id));
+      setWishlist(wishlist);
+      updateAllWishlistButtons(); // Update all wishlist buttons
+      
       if (typeof showAlert === 'function') {
         showAlert('Produkt von der Wunschliste entfernt', 'wishlist.html');
       } else {
@@ -421,9 +424,11 @@
         image: product.image,
         description: product.description
       });
+      setWishlist(wishlist);
       
-      // Enhanced wishlist animation (same as index.html)
+      // Enhanced wishlist animation only when adding (same as index.html)
       triggerWishlistButtonAnimation(product.id);
+      updateAllWishlistButtons(); // Update all wishlist buttons
       
       if (typeof showAlert === 'function') {
         showAlert('Produkt zur Wunschliste hinzugefügt', 'wishlist.html');
@@ -431,8 +436,6 @@
         showNotification('Produkt zur Wunschliste hinzugefügt');
       }
     }
-    setWishlist(wishlist);
-    updateWishlistButton();
   }
   function updateWishlistButton() {
     const btn = document.getElementById('wishlistBtn');
@@ -444,6 +447,35 @@
       btn.classList.remove('active');
       btn.innerHTML = '<i class="bi bi-heart"></i> Zur Wunschliste';
     }
+  }
+
+  // New function to update all wishlist buttons synchronously
+  function updateAllWishlistButtons() {
+    const isInList = isInWishlist(product.id);
+    
+    // Update main wishlist button
+    const mainBtn = document.getElementById('wishlistBtn');
+    if (mainBtn) {
+      if (isInList) {
+        mainBtn.classList.add('active');
+        mainBtn.innerHTML = '<i class="bi bi-heart-fill"></i> Entfernt';
+      } else {
+        mainBtn.classList.remove('active');
+        mainBtn.innerHTML = '<i class="bi bi-heart"></i> Zur Wunschliste';
+      }
+    }
+    
+    // Update all quick order wishlist buttons
+    const quickOrderBtns = document.querySelectorAll('.wishlist-button');
+    quickOrderBtns.forEach(btn => {
+      if (isInList) {
+        btn.classList.add('active');
+        btn.innerHTML = '<i class="bi bi-heart-fill"></i> Entfernt';
+      } else {
+        btn.classList.remove('active');
+        btn.innerHTML = '<i class="bi bi-heart"></i> Zur Wunschliste';
+      }
+    });
   }
   function getCart() {
     return JSON.parse(localStorage.getItem('cart')) || [];
@@ -686,6 +718,9 @@
       quantityInput.addEventListener('change', updateTotalPrice);
       updateTotalPrice(); // Initialisiere den Preis
     }
+    
+    // Initialize all wishlist buttons with correct status
+    updateAllWishlistButtons();
   });
 </script>
 </body>
