@@ -299,7 +299,7 @@
               </div>
             </div>
           `).join('')}
-          <button type="submit" class="btn bundle-add-btn add-to-cart" onclick="addBundleAndRedirect(event)">In den Warenkorb</button>
+          <button type="submit" class="btn bundle-add-btn wishlist-style-btn" onclick="addBundleAndRedirect(event)">In den Warenkorb</button>
         </form>
       </div>
     `;
@@ -565,13 +565,22 @@
     }
   }
 
-  // Animation function for bundle button
+  // Animation function for bundle button (wishlist-style)
   function triggerBundleButtonAnimation(button) {
     if (button) {
       button.classList.add('success-animation');
       setTimeout(() => {
         button.classList.remove('success-animation');
-      }, 600);
+      }, 800);
+      
+      // Add heart pulse style animation to bundle button icon
+      const buttonIcon = button.querySelector('i');
+      if (buttonIcon) {
+        buttonIcon.classList.add('heart-pulse');
+        setTimeout(() => {
+          buttonIcon.classList.remove('heart-pulse');
+        }, 500);
+      }
     }
   }
 
