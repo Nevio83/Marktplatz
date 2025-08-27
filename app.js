@@ -381,7 +381,7 @@ function triggerCartButtonAnimation(productId) {
     
     setTimeout(() => {
       navCartButton.classList.remove('cart-rainbow-bounce');
-    }, 1200);
+    }, 600);
   }
 }
 
