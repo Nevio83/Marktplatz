@@ -37,7 +37,7 @@
                         <span class="price-tag">€10.00</span>
                         <span class="badge bg-success">Kostenloser Versand in Europa</span>
                     </div>
-                    <button class="btn btn-light btn-lg me-3" id="cartBtn" onclick="addToCartAndRedirect()">
+                    <button class="btn btn-light btn-lg me-3 add-to-cart" id="cartBtn" onclick="addToCartAndRedirect()">
                         <i class="bi bi-cart-plus"></i> In den Warenkorb
                     </button>
                     <button class="btn btn-outline-light btn-lg" id="wishlistBtn">
@@ -99,10 +99,10 @@
                             </div>
                             
                             <div class="action-buttons">
-                                <button class="buy-now-btn" onclick="addToCartWithQuantity()">
+                                <button class="buy-now-btn wishlist-style-btn" onclick="addToCartWithQuantity()">
                                     <i class="bi bi-cart-plus"></i> Jetzt kaufen
                                 </button>
-                                <button class="wishlist-btn" onclick="toggleWishlist(product)">
+                                <button class="wishlist-btn wishlist-button" onclick="toggleWishlist(product)" data-product-id="1">
                                     <i class="bi bi-heart"></i> Zur Wunschliste
                                 </button>
                             </div>
@@ -143,10 +143,10 @@
                             </div>
                             
                             <div class="action-buttons">
-                                <button class="buy-now-btn" onclick="addToCartWithQuantity()">
+                                <button class="buy-now-btn wishlist-style-btn" onclick="addToCartWithQuantity()">
                                     <i class="bi bi-cart-plus"></i> Jetzt kaufen
                                 </button>
-                                <button class="wishlist-btn" onclick="toggleWishlist(product)">
+                                <button class="wishlist-btn wishlist-button" onclick="toggleWishlist(product)" data-product-id="1">
                                     <i class="bi bi-heart"></i> Zur Wunschliste
                                 </button>
                             </div>
@@ -299,7 +299,7 @@
               </div>
             </div>
           `).join('')}
-          <button type="submit" class="btn bundle-add-btn" onclick="addBundleAndRedirect(event)">In den Warenkorb</button>
+          <button type="submit" class="btn bundle-add-btn wishlist-style-btn" onclick="addBundleAndRedirect(event)">In den Warenkorb</button>
         </form>
       </div>
     `;
@@ -383,6 +383,10 @@
       quantity: 1
     });
     
+    // Enhanced animations for bundle
+    triggerBundleButtonAnimation(event.target);
+    triggerNavCartAnimation();
+    
     // Popup anzeigen statt direkter Weiterleitung
     if (typeof showAlert === 'function') {
       showAlert('Bundle zum Warenkorb hinzugefügt', 'cart.html');
@@ -404,6 +408,9 @@
     let wishlist = getWishlist();
     if (isInWishlist(product.id)) {
       wishlist = wishlist.filter(item => Number(item.id) !== Number(product.id));
+      setWishlist(wishlist);
+      updateAllWishlistButtons(); // Update all wishlist buttons
+      
       if (typeof showAlert === 'function') {
         showAlert('Produkt von der Wunschliste entfernt', 'wishlist.html');
       } else {
@@ -417,14 +424,18 @@
         image: product.image,
         description: product.description
       });
+      setWishlist(wishlist);
+      
+      // Enhanced wishlist animation only when adding (same as index.html)
+      triggerWishlistButtonAnimation(product.id);
+      updateAllWishlistButtons(); // Update all wishlist buttons
+      
       if (typeof showAlert === 'function') {
         showAlert('Produkt zur Wunschliste hinzugefügt', 'wishlist.html');
       } else {
         showNotification('Produkt zur Wunschliste hinzugefügt');
       }
     }
-    setWishlist(wishlist);
-    updateWishlistButton();
   }
   function updateWishlistButton() {
     const btn = document.getElementById('wishlistBtn');
@@ -436,6 +447,35 @@
       btn.classList.remove('active');
       btn.innerHTML = '<i class="bi bi-heart"></i> Zur Wunschliste';
     }
+  }
+
+  // New function to update all wishlist buttons synchronously
+  function updateAllWishlistButtons() {
+    const isInList = isInWishlist(product.id);
+    
+    // Update main wishlist button
+    const mainBtn = document.getElementById('wishlistBtn');
+    if (mainBtn) {
+      if (isInList) {
+        mainBtn.classList.add('active');
+        mainBtn.innerHTML = '<i class="bi bi-heart-fill"></i> Entfernt';
+      } else {
+        mainBtn.classList.remove('active');
+        mainBtn.innerHTML = '<i class="bi bi-heart"></i> Zur Wunschliste';
+      }
+    }
+    
+    // Update all quick order wishlist buttons
+    const quickOrderBtns = document.querySelectorAll('.wishlist-button');
+    quickOrderBtns.forEach(btn => {
+      if (isInList) {
+        btn.classList.add('active');
+        btn.innerHTML = '<i class="bi bi-heart-fill"></i> Entfernt';
+      } else {
+        btn.classList.remove('active');
+        btn.innerHTML = '<i class="bi bi-heart"></i> Zur Wunschliste';
+      }
+    });
   }
   function getCart() {
     return JSON.parse(localStorage.getItem('cart')) || [];
@@ -461,11 +501,108 @@
       quantity: 1
     };
     addToCart(productToAdd);
+    
+    // Enhanced animations for product page
+    triggerCartButtonAnimation();
+    triggerNavCartAnimation();
+    
     // Popup anzeigen statt direkter Weiterleitung
     if (typeof showAlert === 'function') {
       showAlert('Produkt zum Warenkorb hinzugefügt', 'cart.html');
     } else {
       showNotification('Zum Warenkorb hinzugefügt');
+    }
+  }
+
+  // Animation functions for product page
+  function triggerCartButtonAnimation() {
+    const cartButton = document.getElementById('cartBtn');
+    if (cartButton) {
+      // Use wishlist-style animation for main cart button
+      cartButton.classList.add('success-animation');
+      setTimeout(() => {
+        cartButton.classList.remove('success-animation');
+      }, 800);
+      
+      // Add cart icon pulse animation (red effect)
+      const cartIcon = cartButton.querySelector('i');
+      if (cartIcon) {
+        cartIcon.classList.add('cart-icon-pulse');
+        setTimeout(() => {
+          cartIcon.classList.remove('cart-icon-pulse');
+        }, 500);
+      }
+    }
+  }
+
+  // New animation function for quick order buttons (wishlist-style)
+  function triggerQuickOrderAnimation() {
+    const quickOrderButtons = document.querySelectorAll('.wishlist-style-btn');
+    quickOrderButtons.forEach(button => {
+      button.classList.add('success-animation');
+      setTimeout(() => {
+        button.classList.remove('success-animation');
+      }, 800);
+      
+      // Add cart icon pulse animation to button icon (red effect)
+      const buttonIcon = button.querySelector('i');
+      if (buttonIcon) {
+        buttonIcon.classList.add('cart-icon-pulse');
+        setTimeout(() => {
+          buttonIcon.classList.remove('cart-icon-pulse');
+        }, 500);
+      }
+    });
+  }
+
+  function triggerNavCartAnimation() {
+    const navCartButton = document.querySelector('.cart-nav-link');
+    if (navCartButton) {
+      navCartButton.classList.add('cart-rainbow-bounce');
+      setTimeout(() => {
+        navCartButton.classList.remove('cart-rainbow-bounce');
+      }, 800);
+    }
+  }
+
+  // Animation function for bundle button (wishlist-style)
+  function triggerBundleButtonAnimation(button) {
+    if (button) {
+      button.classList.add('success-animation');
+      setTimeout(() => {
+        button.classList.remove('success-animation');
+      }, 800);
+      
+      // Add cart icon pulse animation to bundle button icon (red effect)
+      const buttonIcon = button.querySelector('i');
+      if (buttonIcon) {
+        buttonIcon.classList.add('cart-icon-pulse');
+        setTimeout(() => {
+          buttonIcon.classList.remove('cart-icon-pulse');
+        }, 500);
+      }
+    }
+  }
+
+  // Enhanced wishlist animation (only for main button, not quick order)
+  function triggerWishlistButtonAnimation(productId) {
+    // Only animate the main wishlist button, not the quick order ones
+    const wishlistButton = document.getElementById('wishlistBtn');
+    
+    if (wishlistButton) {
+      wishlistButton.classList.add('success-animation');
+      setTimeout(() => {
+        wishlistButton.classList.remove('success-animation');
+      }, 800);
+      
+      // Heart pulse animation
+      const heartIcon = wishlistButton.querySelector('i');
+      if (heartIcon) {
+        heartIcon.classList.add('heart-pulse');
+        setTimeout(() => {
+          heartIcon.classList.remove('heart-pulse');
+        }, 500);
+      }
     }
   }
   
@@ -580,6 +717,11 @@
       quantity: quantity
     };
     addToCart(productToCart);
+    
+    // Enhanced animations for product page - wishlist style for quick order
+    triggerQuickOrderAnimation();
+    triggerNavCartAnimation();
+    
     // Popup anzeigen statt direkter Weiterleitung
     if (typeof showAlert === 'function') {
       showAlert('Produkt zum Warenkorb hinzugefügt', 'cart.html');
@@ -614,6 +756,9 @@
       quantityInput.addEventListener('change', updateTotalPrice);
       updateTotalPrice(); // Initialisiere den Preis
     }
+    
+    // Initialize all wishlist buttons with correct status
+    updateAllWishlistButtons();
   });
 </script>
 </body>
