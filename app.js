@@ -368,8 +368,8 @@ function triggerCartButtonAnimation(productId) {
       cartButton.classList.remove('success-animation');
     }, 800);
     
-    // Create floating success indicator for cart
-    createFloatingSuccessIndicator(cartButton, '🛒', 'cart');
+    // Floating cart emoji removed as requested
+    // createFloatingSuccessIndicator(cartButton, '🛒', 'cart');
   }
   
   // No cart icon animation - removed as requested
