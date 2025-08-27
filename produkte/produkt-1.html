@@ -781,13 +781,22 @@
       });
     }
 
-    // Event-Listener für Quantity-Input
+    // Event-Listener für Quantity-Input (Mobile)
     const quantityInput = document.getElementById('quantity');
     if (quantityInput) {
       quantityInput.addEventListener('input', updateTotalPrice);
       quantityInput.addEventListener('change', updateTotalPrice);
-      updateTotalPrice(); // Initialisiere den Preis
     }
+
+    // Event-Listener für Quantity-Input (Desktop)
+    const quantityInputDesktop = document.getElementById('quantity-desktop');
+    if (quantityInputDesktop) {
+      quantityInputDesktop.addEventListener('input', updateTotalPrice);
+      quantityInputDesktop.addEventListener('change', updateTotalPrice);
+    }
+
+    // Initialisiere die Preise
+    updateTotalPrice();
     
     // Initialize all wishlist buttons with correct status
     updateAllWishlistButtons();
