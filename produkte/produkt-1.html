@@ -721,13 +721,40 @@
   }
 
   function updateTotalPrice() {
+    // Preisstaffel basierend auf Menge
+    const getPriceForQuantity = (quantity) => {
+      if (quantity >= 3) {
+        return product.price * 0.80; // 20% Rabatt ab 3 Stück
+      } else if (quantity >= 2) {
+        return product.price * 0.85; // 15% Rabatt ab 2 Stück
+      } else {
+        return product.price; // Originalpreis für 1 Stück
+      }
+    };
+    
     // Update both mobile and desktop total prices
     const mobileQuantity = parseInt(document.getElementById('quantity')?.value, 10) || 1;
     const desktopQuantity = parseInt(document.getElementById('quantity-desktop')?.value, 10) || 1;
     
-    const mobileTotal = (product.price * mobileQuantity).toFixed(2);
-    const desktopTotal = (product.price * desktopQuantity).toFixed(2);
+    const mobilePricePerUnit = getPriceForQuantity(mobileQuantity);
+    const desktopPricePerUnit = getPriceForQuantity(desktopQuantity);
     
+    const mobileTotal = (mobilePricePerUnit * mobileQuantity).toFixed(2);
+    const desktopTotal = (desktopPricePerUnit * desktopQuantity).toFixed(2);
+    
+    // Update current price displays
+    const mobileCurrentPriceElements = document.querySelectorAll('.d-lg-none .current-price');
+    const desktopCurrentPriceElements = document.querySelectorAll('.d-none.d-lg-block .current-price');
+    
+    mobileCurrentPriceElements.forEach(element => {
+      element.textContent = `€${mobilePricePerUnit.toFixed(2)}`;
+    });
+    
+    desktopCurrentPriceElements.forEach(element => {
+      element.textContent = `€${desktopPricePerUnit.toFixed(2)}`;
+    });
+    
+    // Update total prices
     const mobileTotalElement = document.getElementById('totalPrice');
     const desktopTotalElement = document.getElementById('totalPriceDesktop');
     
