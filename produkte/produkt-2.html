@@ -99,7 +99,7 @@
                             </div>
                             
                             <div class="action-buttons">
-                                <button class="buy-now-btn" onclick="addToCartWithQuantity()">
+                                <button class="buy-now-btn" onclick="addToCartWithQuantity(event)">
                                     <i class="bi bi-cart-plus"></i> Jetzt kaufen
                                 </button>
                                 <button class="wishlist-btn" onclick="toggleWishlist(product)">
@@ -143,7 +143,7 @@
                             </div>
                             
                             <div class="action-buttons">
-                                <button class="buy-now-btn" onclick="addToCartWithQuantity()">
+                                <button class="buy-now-btn" onclick="addToCartWithQuantity(event)">
                                     <i class="bi bi-cart-plus"></i> Jetzt kaufen
                                 </button>
                                 <button class="wishlist-btn" onclick="toggleWishlist(product)">
@@ -581,32 +581,36 @@
     const desktopCurrentPriceElements = document.querySelectorAll('.d-none.d-lg-block .current-price');
     
     mobileCurrentPriceElements.forEach(element => {
-      element.textContent = `€${mobileTotal}`;
+      element.textContent = `${mobileTotal}€`;
     });
     
     desktopCurrentPriceElements.forEach(element => {
-      element.textContent = `€${desktopTotal}`;
+      element.textContent = `${desktopTotal}€`;
     });
     
     // Update total prices
     const mobileTotalElement = document.getElementById('totalPrice');
     const desktopTotalElement = document.getElementById('totalPriceDesktop');
     
-    if (mobileTotalElement) mobileTotalElement.textContent = `€${mobileTotal}`;
-    if (desktopTotalElement) desktopTotalElement.textContent = `€${desktopTotal}`;
+    if (mobileTotalElement) mobileTotalElement.textContent = `${mobileTotal}€`;
+    if (desktopTotalElement) desktopTotalElement.textContent = `${desktopTotal}€`;
   }
 
-  function addToCartWithQuantity() {
-    const quantity = parseInt(document.getElementById('quantity').value, 10) || 1;
+  function addToCartWithQuantity(event) {
+    // Determine which quantity input to use based on the clicked button
+    const button = event ? event.target : null;
+    const isDesktop = button && button.closest('.d-none.d-lg-block');
+    
+    const inputId = isDesktop ? 'quantity-desktop' : 'quantity';
+    const quantityInput = document.getElementById(inputId);
+    const quantity = quantityInput ? parseInt(quantityInput.value, 10) || 1 : 1;
+    
     const productToCart = {
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      image: product.image,
-      description: product.description,
+      ...product,
       quantity: quantity
     };
     addToCart(productToCart);
+    
     // Popup anzeigen statt direkter Weiterleitung
     if (typeof showAlert === 'function') {
       showAlert('Produkt zum Warenkorb hinzugefügt', 'cart.html');
@@ -669,6 +673,7 @@
     }
 
     // Initialisiere die Preise
+    console.log('Initializing prices for product 2');
     updateTotalPrice();
   });
 </script>
