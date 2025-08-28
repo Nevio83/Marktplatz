@@ -578,19 +578,31 @@
   }
 
   function updatePrices() {
-    const quantityInput = document.getElementById('quantity');
-    const currentPriceSpan = document.getElementById('currentPrice');
+    // Update both mobile and desktop total prices
+    const mobileQuantity = parseInt(document.getElementById('quantity')?.value, 10) || 1;
+    const desktopQuantity = parseInt(document.getElementById('quantity-desktop')?.value, 10) || 1;
+    
+    // Einfache Berechnung: Gesamtpreis = Menge × Einzelpreis
+    const mobileTotal = (product.price * mobileQuantity).toFixed(2);
+    const desktopTotal = (product.price * desktopQuantity).toFixed(2);
+    
+    // Update current price displays (zeigt jetzt den Gesamtpreis)
+    const mobileCurrentPriceSpan = document.getElementById('currentPrice');
+    const desktopCurrentPriceSpan = document.getElementById('currentPriceDesktop');
     const totalPriceSpan = document.getElementById('totalPrice');
-    const buyBtn = document.querySelector('.buy-now-btn');
+    const totalPriceDesktopSpan = document.getElementById('totalPriceDesktop');
     
-    const qty = parseInt(quantityInput.value, 10) || 1;
-    const total = (product.price * qty).toFixed(2);
+    if (mobileCurrentPriceSpan) mobileCurrentPriceSpan.textContent = mobileTotal;
+    if (desktopCurrentPriceSpan) desktopCurrentPriceSpan.textContent = desktopTotal;
+    if (totalPriceSpan) totalPriceSpan.textContent = mobileTotal;
+    if (totalPriceDesktopSpan) totalPriceDesktopSpan.textContent = desktopTotal;
     
-    if (currentPriceSpan) currentPriceSpan.textContent = product.price.toFixed(2);
-    if (totalPriceSpan) totalPriceSpan.textContent = total;
-    if (buyBtn) {
-      buyBtn.innerHTML = `<i class="bi bi-cart-plus"></i> Jetzt kaufen - €${total}`;
-    }
+    // Update buy buttons
+    const buyBtns = document.querySelectorAll('.buy-now-btn');
+    buyBtns.forEach((btn, index) => {
+      const total = index === 0 ? mobileTotal : desktopTotal;
+      btn.innerHTML = `<i class="bi bi-cart-plus"></i> Jetzt kaufen - €${total}`;
+    });
   }
 
   document.addEventListener('DOMContentLoaded', function() {

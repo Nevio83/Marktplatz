@@ -414,7 +414,10 @@
 }
 
 .total-price {
-    display: none;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #667eea;
+    margin-top: 0.5rem;
 }
 
 .action-buttons {
@@ -844,9 +847,7 @@
   }
   
   .total-price {
-    font-size: 2rem;
-    font-weight: 700;
-    color: #667eea;
+    display: none;
   }
   
   .action-buttons {
@@ -1563,7 +1564,7 @@
     }
     
     .total-price {
-        font-size: 1.2rem;
+        display: none;
     }
     
     .buy-now-btn {
@@ -1621,7 +1622,7 @@
     }
     
     .total-price {
-        font-size: 1.1rem;
+        display: none;
     }
     
     .buy-now-btn {

@@ -578,10 +578,24 @@
     const buyNowBtn = document.getElementById('buyNowBtn');
     
     function updatePrices() {
-      const qty = parseInt(quantityInput.value, 10) || 1;
-      const total = (product.price * qty).toFixed(2);
-      document.getElementById('currentPrice').textContent = product.price.toFixed(2);
-      document.getElementById('totalPrice').textContent = total;
+      // Update both mobile and desktop total prices
+      const mobileQuantity = parseInt(document.getElementById('quantity')?.value, 10) || 1;
+      const desktopQuantity = parseInt(document.getElementById('quantity-desktop')?.value, 10) || 1;
+      
+      // Einfache Berechnung: Gesamtpreis = Menge × Einzelpreis
+      const mobileTotal = (product.price * mobileQuantity).toFixed(2);
+      const desktopTotal = (product.price * desktopQuantity).toFixed(2);
+      
+      // Update current price displays (zeigt jetzt den Gesamtpreis)
+      const mobileCurrentPriceSpan = document.getElementById('currentPrice');
+      const desktopCurrentPriceSpan = document.getElementById('currentPriceDesktop');
+      const totalPriceSpan = document.getElementById('totalPrice');
+      const totalPriceDesktopSpan = document.getElementById('totalPriceDesktop');
+      
+      if (mobileCurrentPriceSpan) mobileCurrentPriceSpan.textContent = mobileTotal;
+      if (desktopCurrentPriceSpan) desktopCurrentPriceSpan.textContent = desktopTotal;
+      if (totalPriceSpan) totalPriceSpan.textContent = mobileTotal;
+      if (totalPriceDesktopSpan) totalPriceDesktopSpan.textContent = desktopTotal;
     }
     
     if (quantityInput && buyNowBtn) {
