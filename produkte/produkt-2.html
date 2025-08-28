@@ -533,7 +533,7 @@
   }
 
   // Funktionen für die neue Schnellbestellung
-  window.increaseQuantity = function(event) {
+  function increaseQuantity(event) {
     // Determine which quantity input to use based on the clicked button
     const button = event ? event.target : null;
     const isDesktop = button && button.closest('.d-none.d-lg-block');
@@ -548,9 +548,9 @@
         updateTotalPrice();
       }
     }
-  };
+  }
 
-  window.decreaseQuantity = function(event) {
+  function decreaseQuantity(event) {
     // Determine which quantity input to use based on the clicked button
     const button = event ? event.target : null;
     const isDesktop = button && button.closest('.d-none.d-lg-block');
@@ -565,9 +565,9 @@
         updateTotalPrice();
       }
     }
-  };
+  }
 
-  window.updateTotalPrice = function() {
+  function updateTotalPrice() {
     // Update both mobile and desktop total prices
     const mobileQuantity = parseInt(document.getElementById('quantity')?.value, 10) || 1;
     const desktopQuantity = parseInt(document.getElementById('quantity-desktop')?.value, 10) || 1;
@@ -581,22 +581,22 @@
     const desktopCurrentPriceElements = document.querySelectorAll('.d-none.d-lg-block .current-price');
     
     mobileCurrentPriceElements.forEach(element => {
-      element.textContent = `${mobileTotal}€`;
+      element.textContent = `€${mobileTotal}`;
     });
     
     desktopCurrentPriceElements.forEach(element => {
-      element.textContent = `${desktopTotal}€`;
+      element.textContent = `€${desktopTotal}`;
     });
     
     // Update total prices
     const mobileTotalElement = document.getElementById('totalPrice');
     const desktopTotalElement = document.getElementById('totalPriceDesktop');
     
-    if (mobileTotalElement) mobileTotalElement.textContent = `${mobileTotal}€`;
-    if (desktopTotalElement) desktopTotalElement.textContent = `${desktopTotal}€`;
-  };
+    if (mobileTotalElement) mobileTotalElement.textContent = `€${mobileTotal}`;
+    if (desktopTotalElement) desktopTotalElement.textContent = `€${desktopTotal}`;
+  }
 
-  window.addToCartWithQuantity = function(event) {
+  function addToCartWithQuantity(event) {
     // Determine which quantity input to use based on the clicked button
     const button = event ? event.target : null;
     const isDesktop = button && button.closest('.d-none.d-lg-block');
@@ -611,53 +611,37 @@
     };
     addToCart(productToCart);
     
+    // Enhanced animations for product page - wishlist style for quick order
+    triggerQuickOrderAnimation();
+    triggerNavCartAnimation();
+    
     // Popup anzeigen statt direkter Weiterleitung
     if (typeof showAlert === 'function') {
       showAlert('Produkt zum Warenkorb hinzugefügt', 'cart.html');
     } else {
       showNotification('Zum Warenkorb hinzugefügt');
     }
-  };
+  }
   document.addEventListener('DOMContentLoaded', function() {
-    // Hero Wishlist-Button
-    let heroWishlistBtn = document.getElementById('wishlistBtn');
-    if (heroWishlistBtn) {
-      heroWishlistBtn.addEventListener('click', function(e) {
+    // Wishlist-Button
+    let wishlistBtn = document.getElementById('wishlistBtn');
+    if (!wishlistBtn) {
+      // Fallback: Erstelle Button, falls nicht vorhanden
+      const hero = document.querySelector('.product-hero .col-lg-6');
+      if (hero) {
+        wishlistBtn = document.createElement('button');
+        wishlistBtn.id = 'wishlistBtn';
+        wishlistBtn.className = 'btn btn-outline-light btn-lg ms-2';
+        hero.appendChild(wishlistBtn);
+      }
+    }
+    if (wishlistBtn) {
+      wishlistBtn.addEventListener('click', function(e) {
         e.preventDefault();
         toggleWishlist(product);
       });
-      updateWishlistButton();
     }
-    
-    // Hero Cart-Button
-    let heroCartBtn = document.getElementById('heroCartBtn');
-    if (heroCartBtn) {
-      heroCartBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        const quantity = parseInt(document.getElementById('quantity').value, 10) || 1;
-        const productToCart = {
-          id: product.id,
-          name: product.name,
-          price: product.price,
-          image: product.image,
-          description: product.description,
-          quantity: quantity
-        };
-        addToCart(productToCart);
-        // Popup anzeigen statt direkter Weiterleitung
-        if (typeof showAlert === 'function') {
-          showAlert('Produkt zum Warenkorb hinzugefügt', 'cart.html');
-        } else {
-          showNotification('Zum Warenkorb hinzugefügt');
-        }
-      });
-    }
-    
 
-    
-    // Update both wishlist buttons on page load
-    updateWishlistButton();
-    
     // Event-Listener für Quantity-Input (Mobile)
     const quantityInput = document.getElementById('quantity');
     if (quantityInput) {
@@ -673,8 +657,10 @@
     }
 
     // Initialisiere die Preise
-    console.log('Initializing prices for product 2');
     updateTotalPrice();
+    
+    // Initialize all wishlist buttons with correct status
+    updateAllWishlistButtons();
   });
 </script>
 </body>
