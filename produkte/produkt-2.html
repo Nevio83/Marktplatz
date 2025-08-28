@@ -87,9 +87,9 @@
                             <div class="quantity-section">
                                 <label class="quantity-label">Menge:</label>
                                 <div class="quantity-input-group">
-                                    <button class="quantity-btn" onclick="decreaseQuantity()">-</button>
+                                    <button class="quantity-btn" onclick="decreaseQuantity(event)">-</button>
                                     <input type="number" class="quantity-input" id="quantity" value="1" min="1" max="10">
-                                    <button class="quantity-btn" onclick="increaseQuantity()">+</button>
+                                    <button class="quantity-btn" onclick="increaseQuantity(event)">+</button>
                                 </div>
                             </div>
                             
@@ -131,9 +131,9 @@
                             <div class="quantity-section">
                                 <label class="quantity-label">Menge:</label>
                                 <div class="quantity-input-group">
-                                    <button class="quantity-btn" onclick="decreaseQuantity()">-</button>
+                                    <button class="quantity-btn" onclick="decreaseQuantity(event)">-</button>
                                     <input type="number" class="quantity-input" id="quantity-desktop" value="1" min="1" max="10">
-                                    <button class="quantity-btn" onclick="increaseQuantity()">+</button>
+                                    <button class="quantity-btn" onclick="increaseQuantity(event)">+</button>
                                 </div>
                             </div>
                             
@@ -533,21 +533,37 @@
   }
 
   // Funktionen für die neue Schnellbestellung
-  function increaseQuantity() {
-    const input = document.getElementById('quantity');
-    const currentValue = parseInt(input.value, 10) || 1;
-    if (currentValue < 10) {
-      input.value = currentValue + 1;
-      updateTotalPrice();
+  function increaseQuantity(event) {
+    // Determine which quantity input to use based on the clicked button
+    const button = event ? event.target : null;
+    const isDesktop = button && button.closest('.d-none.d-lg-block');
+    
+    const inputId = isDesktop ? 'quantity-desktop' : 'quantity';
+    const input = document.getElementById(inputId);
+    
+    if (input) {
+      const currentValue = parseInt(input.value, 10) || 1;
+      if (currentValue < 10) {
+        input.value = currentValue + 1;
+        updateTotalPrice();
+      }
     }
   }
 
-  function decreaseQuantity() {
-    const input = document.getElementById('quantity');
-    const currentValue = parseInt(input.value, 10) || 1;
-    if (currentValue > 1) {
-      input.value = currentValue - 1;
-      updateTotalPrice();
+  function decreaseQuantity(event) {
+    // Determine which quantity input to use based on the clicked button
+    const button = event ? event.target : null;
+    const isDesktop = button && button.closest('.d-none.d-lg-block');
+    
+    const inputId = isDesktop ? 'quantity-desktop' : 'quantity';
+    const input = document.getElementById(inputId);
+    
+    if (input) {
+      const currentValue = parseInt(input.value, 10) || 1;
+      if (currentValue > 1) {
+        input.value = currentValue - 1;
+        updateTotalPrice();
+      }
     }
   }
 
@@ -638,13 +654,22 @@
     // Update both wishlist buttons on page load
     updateWishlistButton();
     
-    // Event-Listener für Quantity-Input
+    // Event-Listener für Quantity-Input (Mobile)
     const quantityInput = document.getElementById('quantity');
     if (quantityInput) {
       quantityInput.addEventListener('input', updateTotalPrice);
       quantityInput.addEventListener('change', updateTotalPrice);
-      updateTotalPrice(); // Initialisiere den Preis
     }
+
+    // Event-Listener für Quantity-Input (Desktop)
+    const quantityInputDesktop = document.getElementById('quantity-desktop');
+    if (quantityInputDesktop) {
+      quantityInputDesktop.addEventListener('input', updateTotalPrice);
+      quantityInputDesktop.addEventListener('change', updateTotalPrice);
+    }
+
+    // Initialisiere die Preise
+    updateTotalPrice();
   });
 </script>
 </body>
