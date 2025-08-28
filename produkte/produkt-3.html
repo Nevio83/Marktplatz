@@ -541,9 +541,32 @@
   }
 
   function updateTotalPrice() {
-    const quantity = parseInt(document.getElementById('quantity').value, 10) || 1;
-    const total = (product.price * quantity).toFixed(2);
-    document.getElementById('totalPrice').textContent = total;
+    // Update both mobile and desktop total prices
+    const mobileQuantity = parseInt(document.getElementById('quantity')?.value, 10) || 1;
+    const desktopQuantity = parseInt(document.getElementById('quantity-desktop')?.value, 10) || 1;
+    
+    // Einfache Berechnung: Gesamtpreis = Menge × Einzelpreis
+    const mobileTotal = (product.price * mobileQuantity).toFixed(2);
+    const desktopTotal = (product.price * desktopQuantity).toFixed(2);
+    
+    // Update current price displays (zeigt jetzt den Gesamtpreis)
+    const mobileCurrentPriceElements = document.querySelectorAll('.d-lg-none .current-price');
+    const desktopCurrentPriceElements = document.querySelectorAll('.d-none.d-lg-block .current-price');
+    
+    mobileCurrentPriceElements.forEach(element => {
+      element.textContent = `€${mobileTotal}`;
+    });
+    
+    desktopCurrentPriceElements.forEach(element => {
+      element.textContent = `€${desktopTotal}`;
+    });
+    
+    // Update total prices
+    const mobileTotalElement = document.getElementById('totalPrice');
+    const desktopTotalElement = document.getElementById('totalPriceDesktop');
+    
+    if (mobileTotalElement) mobileTotalElement.textContent = `€${mobileTotal}`;
+    if (desktopTotalElement) desktopTotalElement.textContent = `€${desktopTotal}`;
   }
 
   function addToCartWithQuantity() {
