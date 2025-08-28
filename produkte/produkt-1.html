@@ -725,9 +725,21 @@
     const mobileQuantity = parseInt(document.getElementById('quantity')?.value, 10) || 1;
     const desktopQuantity = parseInt(document.getElementById('quantity-desktop')?.value, 10) || 1;
     
-    // Einfache Berechnung: Preis pro Stück bleibt gleich, Gesamtpreis = Menge × Einzelpreis
+    // Einfache Berechnung: Gesamtpreis = Menge × Einzelpreis
     const mobileTotal = (product.price * mobileQuantity).toFixed(2);
     const desktopTotal = (product.price * desktopQuantity).toFixed(2);
+    
+    // Update current price displays (zeigt jetzt den Gesamtpreis)
+    const mobileCurrentPriceElements = document.querySelectorAll('.d-lg-none .current-price');
+    const desktopCurrentPriceElements = document.querySelectorAll('.d-none.d-lg-block .current-price');
+    
+    mobileCurrentPriceElements.forEach(element => {
+      element.textContent = `€${mobileTotal}`;
+    });
+    
+    desktopCurrentPriceElements.forEach(element => {
+      element.textContent = `€${desktopTotal}`;
+    });
     
     // Update total prices
     const mobileTotalElement = document.getElementById('totalPrice');
