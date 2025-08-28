@@ -533,7 +533,7 @@
   }
 
   // Funktionen für die neue Schnellbestellung
-  function increaseQuantity(event) {
+  window.increaseQuantity = function(event) {
     // Determine which quantity input to use based on the clicked button
     const button = event ? event.target : null;
     const isDesktop = button && button.closest('.d-none.d-lg-block');
@@ -548,9 +548,9 @@
         updateTotalPrice();
       }
     }
-  }
+  };
 
-  function decreaseQuantity(event) {
+  window.decreaseQuantity = function(event) {
     // Determine which quantity input to use based on the clicked button
     const button = event ? event.target : null;
     const isDesktop = button && button.closest('.d-none.d-lg-block');
@@ -565,9 +565,9 @@
         updateTotalPrice();
       }
     }
-  }
+  };
 
-  function updateTotalPrice() {
+  window.updateTotalPrice = function() {
     // Update both mobile and desktop total prices
     const mobileQuantity = parseInt(document.getElementById('quantity')?.value, 10) || 1;
     const desktopQuantity = parseInt(document.getElementById('quantity-desktop')?.value, 10) || 1;
@@ -594,9 +594,9 @@
     
     if (mobileTotalElement) mobileTotalElement.textContent = `${mobileTotal}€`;
     if (desktopTotalElement) desktopTotalElement.textContent = `${desktopTotal}€`;
-  }
+  };
 
-  function addToCartWithQuantity(event) {
+  window.addToCartWithQuantity = function(event) {
     // Determine which quantity input to use based on the clicked button
     const button = event ? event.target : null;
     const isDesktop = button && button.closest('.d-none.d-lg-block');
@@ -617,7 +617,7 @@
     } else {
       showNotification('Zum Warenkorb hinzugefügt');
     }
-  }
+  };
   document.addEventListener('DOMContentLoaded', function() {
     // Hero Wishlist-Button
     let heroWishlistBtn = document.getElementById('wishlistBtn');
