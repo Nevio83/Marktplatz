@@ -102,7 +102,7 @@
                                 <button class="buy-now-btn" onclick="addToCartWithQuantity()">
                                     <i class="bi bi-cart-plus"></i> Jetzt kaufen
                                 </button>
-                                <button class="wishlist-btn" onclick="toggleWishlist(product)">
+                                <button class="wishlist-btn" onclick="toggleWishlist(product)" id="mobileWishlistBtn">
                                     <i class="bi bi-heart"></i> Zur Wunschliste
                                 </button>
                             </div>
@@ -146,7 +146,7 @@
                                 <button class="buy-now-btn" onclick="addToCartWithQuantity()">
                                     <i class="bi bi-cart-plus"></i> Jetzt kaufen
                                 </button>
-                                <button class="wishlist-btn" onclick="toggleWishlist(product)">
+                                <button class="wishlist-btn" onclick="toggleWishlist(product)" id="desktopWishlistBtn">
                                     <i class="bi bi-heart"></i> Zur Wunschliste
                                 </button>
                             </div>
@@ -262,9 +262,13 @@
     .then(res => res.json())
     .then(products => {
       const prod = products.find(p => p.id === product.id);
-      if (prod && prod.bundles && prod.bundles.length > 0) {
-        renderBundles();
-      }
+      // Always render bundles for product 2
+      renderBundles();
+    })
+    .catch(error => {
+      console.error('Error loading products:', error);
+      // Fallback: render bundles anyway
+      renderBundles();
     });
 
   function renderBundles() {
@@ -346,6 +350,15 @@
         bundleId: `${product.id}-qty${s.qty}`,
         quantity: 1
       });
+      
+      // Trigger animation on bundle button
+      const bundleButton = e.target.querySelector('.bundle-add-btn');
+      if (bundleButton) {
+        bundleButton.classList.add('success-animation');
+        setTimeout(() => {
+          bundleButton.classList.remove('success-animation');
+        }, 800);
+      }
     });
   }
 
@@ -555,10 +568,25 @@
     const quantity = parseInt(document.getElementById('quantity').value, 10) || 1;
     const total = (product.price * quantity).toFixed(2);
     document.getElementById('totalPrice').textContent = `€${total}`;
+    
+    // Also update desktop price if element exists
+    const totalPriceDesktop = document.getElementById('totalPriceDesktop');
+    if (totalPriceDesktop) {
+      totalPriceDesktop.textContent = `€${total}`;
+    }
   }
 
   function addToCartWithQuantity() {
-    const quantity = parseInt(document.getElementById('quantity').value, 10) || 1;
+    // Check which quantity input to use based on screen size or button context
+    let quantityInput = document.getElementById('quantity');
+    if (window.innerWidth >= 992) { // Desktop
+      const desktopInput = document.getElementById('quantity-desktop');
+      if (desktopInput) {
+        quantityInput = desktopInput;
+      }
+    }
+    
+    const quantity = parseInt(quantityInput.value, 10) || 1;
     const productToCart = {
       id: product.id,
       name: product.name,
@@ -574,6 +602,15 @@
     } else {
       showNotification('Zum Warenkorb hinzugefügt');
     }
+    
+    // Trigger animation
+    const button = event.target;
+    if (button) {
+      button.classList.add('success-animation');
+      setTimeout(() => {
+        button.classList.remove('success-animation');
+      }, 800);
+    }
   }
   document.addEventListener('DOMContentLoaded', function() {
     // Hero Wishlist-Button
@@ -582,6 +619,12 @@
       heroWishlistBtn.addEventListener('click', function(e) {
         e.preventDefault();
         toggleWishlist(product);
+        
+        // Trigger animation
+        heroWishlistBtn.classList.add('success-animation');
+        setTimeout(() => {
+          heroWishlistBtn.classList.remove('success-animation');
+        }, 800);
       });
       updateWishlistButton();
     }
@@ -591,6 +634,7 @@
     if (heroCartBtn) {
       heroCartBtn.addEventListener('click', function(e) {
         e.preventDefault();
+        // Use mobile quantity by default for hero button
         const quantity = parseInt(document.getElementById('quantity').value, 10) || 1;
         const productToCart = {
           id: product.id,
@@ -607,13 +651,73 @@
         } else {
           showNotification('Zum Warenkorb hinzugefügt');
         }
+        
+        // Trigger animation
+        heroCartBtn.classList.add('success-animation');
+        setTimeout(() => {
+          heroCartBtn.classList.remove('success-animation');
+        }, 800);
+      });
+    }
+    
+    // Mobile Wishlist Button
+    let mobileWishlistBtn = document.getElementById('mobileWishlistBtn');
+    if (mobileWishlistBtn) {
+      mobileWishlistBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        toggleWishlist(product);
+        
+        // Trigger animation
+        mobileWishlistBtn.classList.add('success-animation');
+        setTimeout(() => {
+          mobileWishlistBtn.classList.remove('success-animation');
+        }, 800);
+      });
+    }
+    
+    // Desktop Wishlist Button
+    let desktopWishlistBtn = document.getElementById('desktopWishlistBtn');
+    if (desktopWishlistBtn) {
+      desktopWishlistBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        toggleWishlist(product);
+        
+        // Trigger animation
+        desktopWishlistBtn.classList.add('success-animation');
+        setTimeout(() => {
+          desktopWishlistBtn.classList.remove('success-animation');
+        }, 800);
       });
     }
     
 
     
-    // Update both wishlist buttons on page load
+    // Update all wishlist buttons on page load
     updateWishlistButton();
+    
+    // Update mobile and desktop wishlist buttons
+    const mobileBtn = document.getElementById('mobileWishlistBtn');
+    const desktopBtn = document.getElementById('desktopWishlistBtn');
+    
+    if (mobileBtn) {
+      if (isInWishlist(product.id)) {
+        mobileBtn.classList.add('active');
+        mobileBtn.innerHTML = '<i class="bi bi-heart-fill"></i> Entfernen';
+      } else {
+        mobileBtn.classList.remove('active');
+        mobileBtn.innerHTML = '<i class="bi bi-heart"></i> Zur Wunschliste';
+      }
+    }
+    
+    if (desktopBtn) {
+      if (isInWishlist(product.id)) {
+        desktopBtn.classList.add('active');
+        desktopBtn.innerHTML = '<i class="bi bi-heart-fill"></i> Entfernen';
+      } else {
+        desktopBtn.classList.remove('active');
+        desktopBtn.innerHTML = '<i class="bi bi-heart"></i> Zur Wunschliste';
+      }
+    }
     
     // Event-Listener für Quantity-Input
     const quantityInput = document.getElementById('quantity');
@@ -621,6 +725,13 @@
       quantityInput.addEventListener('input', updateTotalPrice);
       quantityInput.addEventListener('change', updateTotalPrice);
       updateTotalPrice(); // Initialisiere den Preis
+    }
+    
+    // Event-Listener für Desktop Quantity-Input
+    const quantityInputDesktop = document.getElementById('quantity-desktop');
+    if (quantityInputDesktop) {
+      quantityInputDesktop.addEventListener('input', updateTotalPrice);
+      quantityInputDesktop.addEventListener('change', updateTotalPrice);
     }
   });
 </script>
