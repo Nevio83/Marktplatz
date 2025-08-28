@@ -425,7 +425,10 @@
 }
 
 .total-price {
-    display: none;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #e74c3c;
+    margin-top: 0.5rem;
 }
 
 .action-buttons {
