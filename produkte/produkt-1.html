@@ -7,6 +7,39 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="elektronik.css" rel="stylesheet">
+    <style>
+        .success-animation {
+            animation: success-animation 0.8s ease-in-out;
+        }
+        .cart-icon-pulse {
+            animation: cart-icon-pulse 0.5s ease-in-out;
+        }
+        .cart-rainbow-bounce {
+            animation: cart-rainbow-bounce 0.8s ease-in-out;
+        }
+        .heart-pulse {
+            animation: heart-pulse 0.5s ease-in-out;
+        }
+        @keyframes success-animation {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        @keyframes cart-icon-pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        @keyframes cart-rainbow-bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        @keyframes heart-pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+    </style>
 </head>
 <body>
     <!-- Navigation -->
@@ -61,7 +94,11 @@
                     
                     <h3>Hauptmerkmale</h3>
                     <ul class="list-unstyled">
-                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Hochwertige Materialien</li><li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Langlebige Konstruktion</li><li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Benutzerfreundliches Design</li><li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Energieeffizient</li><li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>2 Jahre Garantie</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Hochwertige Materialien</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Langlebige Konstruktion</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Benutzerfreundliches Design</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Energieeffizient</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>2 Jahre Garantie</li>
                     </ul>
 
                     <h3 class="mt-4">Technische Spezifikationen</h3>
@@ -95,7 +132,7 @@
                             
                             <div class="price-section">
                                 <div class="current-price">€10.00</div>
-                                <div class="total-price">Gesamt: <span id="totalPrice">€10.00</span></div>
+                                <!-- Entfernt: <div class="total-price">Gesamt: <span id="totalPrice">€10.00</span></div> -->
                             </div>
                             
                             <div class="action-buttons">
@@ -139,7 +176,7 @@
                             
                             <div class="price-section">
                                 <div class="current-price">€10.00</div>
-                                <div class="total-price">Gesamt: <span id="totalPriceDesktop">€10.00</span></div>
+                                <!-- Entfernt: <div class="total-price">Gesamt: <span id="totalPriceDesktop">€10.00</span></div> -->
                             </div>
                             
                             <div class="action-buttons">
@@ -166,15 +203,13 @@
     </section>
 
     <!-- Ähnliche Produkte -->
-    
-        <!-- Ähnliche Produkte -->
-        <section class="py-5 similar-products-section">
-            <div class="container">
-                <div class="section-header text-center mb-5">
-                    <h2 class="section-title">Ähnliche Produkte</h2>
-                    <p class="section-subtitle">Entdecken Sie weitere Produkte, die Ihnen gefallen könnten</p>
-                </div>
-                <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3 g-md-4">
+    <section class="py-5 similar-products-section">
+        <div class="container">
+            <div class="section-header text-center mb-5">
+                <h2 class="section-title">Ähnliche Produkte</h2>
+                <p class="section-subtitle">Entdecken Sie weitere Produkte, die Ihnen gefallen könnten</p>
+            </div>
+            <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3 g-md-4">
                 <div class="col">
                     <div class="similar-product-card" onclick="window.location.href='produkt-2.html'">
                         <div class="product-image-wrapper">
@@ -235,9 +270,9 @@
                         </div>
                     </div>
                 </div>
-                </div>
             </div>
-        </section>
+        </div>
+    </section>
 
     <!-- Footer -->
     <footer class="bg-dark text-white py-4">
@@ -437,19 +472,6 @@
       }
     }
   }
-  function updateWishlistButton() {
-    const btn = document.getElementById('wishlistBtn');
-    if (!btn) return;
-    if (isInWishlist(product.id)) {
-      btn.classList.add('active');
-      btn.innerHTML = '<i class="bi bi-heart-fill"></i> Entfernen';
-    } else {
-      btn.classList.remove('active');
-      btn.innerHTML = '<i class="bi bi-heart"></i> Zur Wunschliste';
-    }
-  }
-
-  // New function to update all wishlist buttons synchronously
   function updateAllWishlistButtons() {
     const isInList = isInWishlist(product.id);
     
@@ -458,7 +480,7 @@
     if (mainBtn) {
       if (isInList) {
         mainBtn.classList.add('active');
-        mainBtn.innerHTML = '<i class="bi bi-heart-fill"></i> Entfernt';
+        mainBtn.innerHTML = '<i class="bi bi-heart-fill"></i> Entfernen';
       } else {
         mainBtn.classList.remove('active');
         mainBtn.innerHTML = '<i class="bi bi-heart"></i> Zur Wunschliste';
@@ -470,7 +492,7 @@
     quickOrderBtns.forEach(btn => {
       if (isInList) {
         btn.classList.add('active');
-        btn.innerHTML = '<i class="bi bi-heart-fill"></i> Entfernt';
+        btn.innerHTML = '<i class="bi bi-heart-fill"></i> Entfernen';
       } else {
         btn.classList.remove('active');
         btn.innerHTML = '<i class="bi bi-heart"></i> Zur Wunschliste';
@@ -518,69 +540,66 @@
   function triggerCartButtonAnimation() {
     const cartButton = document.getElementById('cartBtn');
     if (cartButton) {
-      // Use wishlist-style animation for main cart button
-      cartButton.classList.add('success-animation');
-      setTimeout(() => {
-        cartButton.classList.remove('success-animation');
-      }, 800);
-      
-      // Add cart icon pulse animation (red effect)
-      const cartIcon = cartButton.querySelector('i');
-      if (cartIcon) {
-        cartIcon.classList.add('cart-icon-pulse');
+        cartButton.classList.add('add-to-cart', 'success-animation');
         setTimeout(() => {
-          cartIcon.classList.remove('cart-icon-pulse');
-        }, 500);
-      }
+            cartButton.classList.remove('success-animation');
+        }, 800);
+        
+        // Add cart icon pulse animation (red effect)
+        const cartIcon = cartButton.querySelector('i');
+        if (cartIcon) {
+            cartIcon.classList.add('cart-icon-pulse');
+            setTimeout(() => {
+                cartIcon.classList.remove('cart-icon-pulse');
+            }, 500);
+        }
     }
   }
 
-  // New animation function for quick order buttons (wishlist-style)
   function triggerQuickOrderAnimation() {
     const quickOrderButtons = document.querySelectorAll('.wishlist-style-btn');
     quickOrderButtons.forEach(button => {
-      button.classList.add('success-animation');
-      setTimeout(() => {
-        button.classList.remove('success-animation');
-      }, 800);
-      
-      // Add cart icon pulse animation to button icon (red effect)
-      const buttonIcon = button.querySelector('i');
-      if (buttonIcon) {
-        buttonIcon.classList.add('cart-icon-pulse');
+        button.classList.add('add-to-cart', 'success-animation');
         setTimeout(() => {
-          buttonIcon.classList.remove('cart-icon-pulse');
-        }, 500);
-      }
+            button.classList.remove('success-animation');
+        }, 800);
+        
+        // Add cart icon pulse animation to button icon (red effect)
+        const buttonIcon = button.querySelector('i');
+        if (buttonIcon) {
+            buttonIcon.classList.add('cart-icon-pulse');
+            setTimeout(() => {
+                buttonIcon.classList.remove('cart-icon-pulse');
+            }, 500);
+        }
     });
   }
 
   function triggerNavCartAnimation() {
     const navCartButton = document.querySelector('.cart-nav-link');
     if (navCartButton) {
-      navCartButton.classList.add('cart-rainbow-bounce');
-      setTimeout(() => {
-        navCartButton.classList.remove('cart-rainbow-bounce');
-      }, 800);
+        navCartButton.classList.add('cart-rainbow-bounce');
+        setTimeout(() => {
+            navCartButton.classList.remove('cart-rainbow-bounce');
+        }, 800);
     }
   }
 
-  // Animation function for bundle button (wishlist-style)
   function triggerBundleButtonAnimation(button) {
     if (button) {
-      button.classList.add('success-animation');
-      setTimeout(() => {
-        button.classList.remove('success-animation');
-      }, 800);
-      
-      // Add cart icon pulse animation to bundle button icon (red effect)
-      const buttonIcon = button.querySelector('i');
-      if (buttonIcon) {
-        buttonIcon.classList.add('cart-icon-pulse');
+        button.classList.add('add-to-cart', 'success-animation');
         setTimeout(() => {
-          buttonIcon.classList.remove('cart-icon-pulse');
-        }, 500);
-      }
+            button.classList.remove('success-animation');
+        }, 800);
+        
+        // Add cart icon pulse animation to bundle button icon (red effect)
+        const buttonIcon = button.querySelector('i');
+        if (buttonIcon) {
+            buttonIcon.classList.add('cart-icon-pulse');
+            setTimeout(() => {
+                buttonIcon.classList.remove('cart-icon-pulse');
+            }, 500);
+        }
     }
   }
 

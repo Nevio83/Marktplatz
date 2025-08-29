@@ -29,6 +29,38 @@
             font-weight: bold;
             font-size: 1.5rem;
         }
+        /* Added animation CSS classes for consistent animations */
+        .success-animation {
+            animation: successAnimation 0.6s ease;
+        }
+        @keyframes successAnimation {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        .heart-pulse {
+            animation: heartPulse 0.6s ease;
+        }
+        @keyframes heartPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        .cart-rainbow-bounce {
+            animation: cartRainbowBounce 1s ease;
+        }
+        @keyframes cartRainbowBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .cart-icon-pulse {
+            animation: cartIconPulse 0.6s ease;
+        }
+        @keyframes cartIconPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
     </style>
 </head>
 <body>
@@ -57,13 +89,13 @@
                     <h1 class="display-4 fw-bold mb-3">Haushalt Produkt 1</h1>
                     <p class="lead mb-4">Praktische Lösungen für Ihren Haushalt. Qualität und Funktionalität für ein angenehmes Zuhause.</p>
                     <div class="d-flex align-items-center gap-3 mb-4">
-                        <span class="price-tag">€40.00</span>
+                        <span class="price-tag">€15.00</span>
                         <span class="badge bg-success">Kostenloser Versand in Europa</span>
                     </div>
-                    <button class="btn btn-light btn-lg me-3" id="cartBtn">
+                    <button class="btn btn-light btn-lg me-3 add-to-cart" id="cartBtn">
                         <i class="bi bi-cart-plus"></i> In den Warenkorb
                     </button>
-                    <button class="btn btn-outline-light btn-lg" id="wishlistBtn">
+                    <button class="btn btn-outline-light btn-lg wishlist-style-btn wishlist-button" id="wishlistBtn">
                         <i class="bi bi-heart"></i> Merken
                     </button>
                 </div>
@@ -74,7 +106,7 @@
         </div>
     </section>
 
-    <!-- Produktdetails -->
+    <!-- Produkt Details -->
     <section class="py-5">
         <div class="container">
             <div class="row">
@@ -84,7 +116,11 @@
                     
                     <h3>Hauptmerkmale</h3>
                     <ul class="list-unstyled">
-                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Robuste Konstruktion</li><li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Einfache Bedienung</li><li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Platzsparend</li><li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Wartungsarm</li><li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>3 Jahre Garantie</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Robuste Konstruktion</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Einfache Bedienung</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Platzsparend</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Wartungsarm</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>3 Jahre Garantie</li>
                     </ul>
 
                     <h3 class="mt-4">Technische Spezifikationen</h3>
@@ -92,7 +128,7 @@
                         <div class="col-md-6">
                             <p><strong>Kategorie:</strong> Haushalt</p>
                             <p><strong>Artikelnummer:</strong> 010</p>
-                            <p><strong>Preis:</strong> €40.00</p>
+                            <p><strong>Preis:</strong> €15.00</p>
                         </div>
                         <div class="col-md-6">
                             <p><strong>Verfügbarkeit:</strong> Auf Lager</p>
@@ -110,20 +146,20 @@
                             <div class="quantity-section">
                                 <label class="quantity-label">Menge:</label>
                                 <div class="quantity-input-group">
-                                    <button class="quantity-btn" onclick="decreaseQuantity()">-</button>
-                                    <input type="number" class="quantity-input" id="quantity" value="1" min="1" max="10">
-                                    <button class="quantity-btn" onclick="increaseQuantity()">+</button>
+                                    <button class="quantity-btn" onclick="decreaseQuantity(event, 'mobile')">-</button>
+                                    <input type="number" class="quantity-input" id="quantity-mobile" value="1" min="1" max="10">
+                                    <button class="quantity-btn" onclick="increaseQuantity(event, 'mobile')">+</button>
                                 </div>
                             </div>
                             <div class="price-section">
-                                <div class="current-price">€40.00</div>
-                                <div class="total-price">Gesamt: <span id="totalPrice">€40.00</span></div>
+                                <div class="current-price">€15.00</div>
+                                <div class="total-price">Gesamt: <span id="totalPrice-mobile">€15.00</span></div>
                             </div>
                             <div class="action-buttons">
-                                <button class="buy-now-btn" onclick="addToCartWithQuantity()">
+                                <button class="buy-now-btn add-to-cart" onclick="addToCartWithQuantity('mobile')">
                                     <i class="bi bi-cart-plus"></i> Jetzt kaufen
                                 </button>
-                                <button class="wishlist-btn" onclick="toggleWishlist(product)">
+                                <button class="wishlist-btn wishlist-style-btn wishlist-button" data-product-id="10">
                                     <i class="bi bi-heart"></i> Zur Wunschliste
                                 </button>
                             </div>
@@ -150,23 +186,23 @@
                             <div class="quantity-section">
                                 <label class="quantity-label">Menge:</label>
                                 <div class="quantity-input-group">
-                                    <button class="quantity-btn" onclick="decreaseQuantity()">-</button>
-                                    <input type="number" class="quantity-input" id="quantity" value="1" min="1" max="10">
-                                    <button class="quantity-btn" onclick="increaseQuantity()">+</button>
+                                    <button class="quantity-btn" onclick="decreaseQuantity(event, 'desktop')">-</button>
+                                    <input type="number" class="quantity-input" id="quantity-desktop" value="1" min="1" max="10">
+                                    <button class="quantity-btn" onclick="increaseQuantity(event, 'desktop')">+</button>
                                 </div>
                             </div>
                             
                             <div class="price-section">
-                                <div class="current-price">€40.00</div>
-                                <div class="total-price">Gesamt: <span id="totalPrice">€40.00</span></div>
+                                <div class="current-price">€15.00</div>
+                                <div class="total-price">Gesamt: <span id="totalPrice-desktop">€15.00</span></div>
                             </div>
                             
                             <div class="action-buttons">
-                                <button class="buy-now-btn" id="buyNowBtn">
+                                <button class="buy-now-btn add-to-cart" id="buyNowBtn">
                                     <i class="bi bi-cart-plus"></i> Jetzt kaufen
                                 </button>
-                                <button class="wishlist-btn" onclick="toggleWishlist(product)">
-                                    <i class="bi bi-heart"></i> Zur Wunschliste hinzufügen
+                                <button class="wishlist-btn wishlist-style-btn wishlist-button" data-product-id="10">
+                                    <i class="bi bi-heart"></i> Zur Wunschliste
                                 </button>
                             </div>
                             
@@ -185,15 +221,13 @@
     </section>
 
     <!-- Ähnliche Produkte -->
-    
-        <!-- Ähnliche Produkte -->
-        <section class="py-5 similar-products-section">
-            <div class="container">
-                <div class="section-header text-center mb-5">
-                    <h2 class="section-title">Ähnliche Produkte</h2>
-                    <p class="section-subtitle">Entdecken Sie weitere Produkte, die Ihnen gefallen könnten</p>
-                </div>
-                <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3 g-md-4">
+    <section class="py-5 similar-products-section">
+        <div class="container">
+            <div class="section-header text-center mb-5">
+                <h2 class="section-title">Ähnliche Produkte</h2>
+                <p class="section-subtitle">Entdecken Sie weitere Produkte, die Ihnen gefallen könnten</p>
+            </div>
+            <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3 g-md-4">
                 <div class="col">
                     <div class="similar-product-card" onclick="window.location.href='produkt-11.html'">
                         <div class="product-image-wrapper">
@@ -201,7 +235,7 @@
                         </div>
                         <div class="product-info">
                             <h5 class="product-title">Haushalt Produkt 2</h5>
-                            <div class="price-container"><span class="current-price">€18.00</span></div>
+                            <div class="price-container"><span class="current-price">€42.00</span></div>
                             <div class="view-product-btn">
                                 <span>Jetzt ansehen</span>
                                 <i class="bi bi-arrow-right"></i>
@@ -254,382 +288,500 @@
                         </div>
                     </div>
                 </div>
-                </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-    <!-- Footer -->
+    <!--  Footer-->
     <footer class="bg-dark text-white py-4">
         <div class="container text-center">
             <p>&copy; 2024 Marktplatz - Alle Rechte vorbehalten</p>
         </div>
     </footer>
 
-    
     <script>
-  // Produktdaten für diese Seite
-  const product = {
-    id: 10,
-    name: "Haushalt Produkt 1",
-    price: 40.00,
-    image: "produkt bilder/ware.png",
-    description: "Praktisch und zuverlässig für Ihr Zuhause. Dieses hochwertige Produkt bietet die perfekte Balance zwischen Funktionalität und Design."
-  };
-
-  // Bundles dynamisch laden
-  fetch('../products.json')
-    .then(res => res.json())
-    .then(products => {
-      const prod = products.find(p => p.id === product.id);
-      if (prod && prod.bundles && prod.bundles.length > 0) {
-        renderBundles(prod.bundles);
-      } else {
-        // Fallback: Bundle-Box immer anzeigen
-        renderBundles();
-      }
-    });
-
-  function renderBundles() {
-    const einzelpreis = 40.00;
-    const staffel = [
-      {qty:1, price:einzelpreis, original:einzelpreis},
-      {qty:2, price:(einzelpreis*0.85), original:einzelpreis},
-      {qty:3, price:(einzelpreis*0.80), original:einzelpreis}
-    ];
-    const section = document.getElementById('bundle-section');
-    let selected = 1;
-    section.innerHTML = `
-      <div class="bundle-box">
-        <div class="bundle-header">BUNDLE & SPARE</div>
-        <form id="bundleForm">
-          ${staffel.map((s, i) => `
-            <div class="bundle-card${i===selected?' selected':''}" data-index="${i}">
-              <input type="radio" name="bundle" class="bundle-radio" id="bundleRadio${i}" value="${i}" ${i===selected?'checked':''}>
-              <div class="bundle-info">
-                <div class="bundle-title">
-                  ${s.qty} Set${s.qty>1?'s':''} kaufen
-                  ${i===1 ? '<span class="bundle-badge popular">Am beliebtesten</span>' : ''}
-                  ${i===2 ? '<span class="bundle-badge savings">Meiste Ersparnis</span>' : ''}
-                  ${i>0 ? `<span class="bundle-label">EXTRA ${i===1?'15':i===2?'20':'0'}% RABATT</span>` : ''}
-                </div>
-                <div class="bundle-prices">
-                  €${s.price.toFixed(2)} pro Set
-                  <span class="old">€${s.original.toFixed(2)}</span>
-                  <span class="savings">Spare €${((s.original-s.price)*s.qty).toFixed(2)}</span>
-                </div>
-                ${s.qty>1?`<div class='bundle-total'>Gesamt: <b>€${(s.price*s.qty).toFixed(2)}</b> <span class='old'>€${(s.original*s.qty).toFixed(2)}</span></div>`:''}
-              </div>
-            </div>
-          `).join('')}
-          <button type="submit" class="btn bundle-add-btn">In den Warenkorb</button>
-        </form>
-      </div>
-    `;
-    // Interaktive Auswahl
-    const cards = section.querySelectorAll('.bundle-card');
-    const radios = section.querySelectorAll('.bundle-radio');
-    
-    // Event-Listener für Radio-Buttons
-    radios.forEach((radio, i) => {
-      radio.addEventListener('change', () => {
-        cards.forEach(c => c.classList.remove('selected'));
-        cards[i].classList.add('selected');
-      });
-    });
-
-    // Event-Listener für Bundle-Cards
-    cards.forEach((card, i) => {
-      card.addEventListener('click', (e) => {
-        // Verhindere Bubbling wenn auf Radio geklickt wurde
-        if (e.target === radios[i]) return;
-        
-        // Wähle Radio-Button aus
-        radios[i].checked = true;
-        
-        // Aktualisiere Selected-Status
-        cards.forEach(c => c.classList.remove('selected'));
-        card.classList.add('selected');
-        
-        // Trigger change Event auf Radio
-        radios[i].dispatchEvent(new Event('change'));
-      });
-    });
-
-    section.querySelector('#bundleForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const idx = Array.from(radios).findIndex(r => r.checked);
-      const s = staffel[idx];
-      addBundleToCart({
-        id: product.id,
-        name: product.name + ` (${s.qty} Set${s.qty>1?'s':''})`,
-        price: s.price * s.qty, // Gesamtpreis für das Bundle
-        image: product.image,
-        description: product.description + ` (Bundle: ${s.qty} Set${s.qty>1?'s':''})`,
-        bundleId: `${product.id}-qty${s.qty}`,
-        quantity: 1
-      });
-    });
-  }
-
-  function addBundleToCart(bundle) {
-    let cart = getCart();
-    // Bundle als eigenes Cart-Item mit bundleId
-    const bundleId = bundle.bundleId;
-    const existing = cart.find(item => item.bundleId === bundleId);
-    if (existing) {
-      // Bei Bundles immer nur 1 erlauben
-      existing.quantity = 1;
-    } else {
-      cart.push({
-        id: product.id,
-        name: bundle.name,
-        price: bundle.price,
-        image: product.image,
-        description: bundle.description,
-        bundleId: bundleId,
-        bundleItems: [], // Keine Items für die neue Staffel
-        quantity: 1
-      });
-    }
-    setCart(cart);
-    // Popup anzeigen statt direkter Weiterleitung
-    if (typeof showAlert === 'function') {
-      showAlert('Bundle zum Warenkorb hinzugefügt', 'cart.html');
-    } else {
-      showNotification('Bundle zum Warenkorb hinzugefügt');
-    }
-  }
-
-  function getWishlist() {
-    return JSON.parse(localStorage.getItem('wishlist')) || [];
-  }
-  function setWishlist(wishlist) {
-    localStorage.setItem('wishlist', JSON.stringify(wishlist));
-  }
-  function isInWishlist(id) {
-    return getWishlist().some(item => Number(item.id) === Number(id));
-  }
-  function toggleWishlist(product) {
-    let wishlist = getWishlist();
-    if (isInWishlist(product.id)) {
-      wishlist = wishlist.filter(item => Number(item.id) !== Number(product.id));
-      if (typeof showAlert === 'function') {
-        showAlert('Produkt von der Wunschliste entfernt', 'wishlist.html');
-      } else {
-        showNotification('Von der Wunschliste entfernt', 'info');
-      }
-    } else {
-      wishlist.push({
-        id: product.id,
-        name: product.name,
-        price: product.price,
-        image: product.image,
-        description: product.description
-      });
-      if (typeof showAlert === 'function') {
-        showAlert('Produkt zur Wunschliste hinzugefügt', 'wishlist.html');
-      } else {
-        showNotification('Zur Wunschliste hinzugefügt');
-      }
-    }
-    setWishlist(wishlist);
-    updateWishlistButton();
-  }
-  function updateWishlistButton() {
-    const btn = document.getElementById('wishlistBtn');
-    if (!btn) return;
-    if (isInWishlist(product.id)) {
-      btn.classList.add('active');
-      btn.innerHTML = '<i class="bi bi-heart-fill"></i> Entfernen';
-    } else {
-      btn.classList.remove('active');
-      btn.innerHTML = '<i class="bi bi-heart"></i> Zur Wunschliste';
-    }
-  }
-  function getCart() {
-    return JSON.parse(localStorage.getItem('cart')) || [];
-            }
-  function setCart(cart) {
-            localStorage.setItem('cart', JSON.stringify(cart));
-  }
-  function addToCart(product) {
-      let cart = getCart();
-      const existing = cart.find(item => Number(item.id) === Number(product.id));
-      if (existing) {
-          existing.quantity += product.quantity || 1;
-      } else {
-          cart.push({ ...product, quantity: product.quantity || 1 });
-      }
-      setCart(cart);
-      // Keine direkte Weiterleitung mehr, da wir das Popup verwenden
-  }
-  
-  // showAlert function for cart popup
-  function showAlert(message, redirectTo = 'cart.html') {
-    const alert = document.createElement('div');
-    alert.className = 'alert alert-success position-fixed end-0 m-4 shadow-lg fade show';
-    alert.style.zIndex = '20000';
-    alert.style.fontSize = '1rem';
-    alert.style.minWidth = '160px';
-    alert.style.maxWidth = '320px';
-    alert.style.padding = '0.75rem 2rem';
-    alert.style.textAlign = 'center';
-    alert.style.borderRadius = '2rem';
-    alert.style.boxShadow = '0 8px 32px rgba(0,0,0,0.18)';
-    alert.style.background = 'linear-gradient(90deg, #4f8cff 0%, #38c6ff 100%)';
-    alert.style.color = '#fff';
-    alert.style.fontWeight = '500';
-    alert.style.letterSpacing = '0.02em';
-    alert.style.pointerEvents = 'auto';
-    alert.style.position = 'fixed';
-    alert.style.right = '2.5rem';
-    alert.style.top = 'calc(56px + 1.2rem)';
-    alert.style.cursor = 'pointer';
-    alert.textContent = message;
-    alert.addEventListener('click', () => {
-      window.location.href = '../' + redirectTo;
-    });
-    document.body.appendChild(alert);
-    setTimeout(() => {
-      if (document.body.contains(alert)) {
-        alert.classList.remove('show');
-        alert.classList.add('fade');
-        setTimeout(() => alert.remove(), 400);
-      }
-    }, 1700);
-  }
-
-  function showNotification(message, type = 'success') {
-    const notification = document.createElement('div');
-    notification.className = `alert alert-${type} position-fixed end-0 m-4 shadow-lg fade show`;
-    notification.style.zIndex = '20000';
-    notification.style.fontSize = '1rem';
-    notification.style.minWidth = '160px';
-    notification.style.maxWidth = '320px';
-    notification.style.padding = '0.75rem 2rem';
-    notification.style.textAlign = 'center';
-    notification.style.borderRadius = '2rem';
-    notification.style.boxShadow = '0 8px 32px rgba(0,0,0,0.18)';
-    notification.style.background = type === 'success' 
-      ? 'linear-gradient(90deg, #4f8cff 0%, #38c6ff 100%)' 
-      : 'linear-gradient(90deg, #ff6b6b 0%, #ee5a24 100%)';
-    notification.style.color = '#fff';
-    notification.style.fontWeight = '500';
-    notification.style.letterSpacing = '0.02em';
-    notification.style.pointerEvents = 'auto';
-    notification.style.position = 'fixed';
-    notification.style.right = '2.5rem';
-    notification.style.top = 'calc(56px + 1.2rem)';
-    notification.style.cursor = 'pointer';
-    notification.textContent = message;
-    
-    // Klick-Event hinzufügen
-    notification.addEventListener('click', function() {
-      notification.classList.remove('show');
-      notification.classList.add('fade');
-      setTimeout(() => notification.remove(), 400);
-      // Zur Wishlist-Seite weiterleiten (aus dem produkte/ Ordner)
-      window.location.href = '../wishlist.html';
-    });
-    
-    document.body.appendChild(notification);
-    
-    setTimeout(() => {
-      if (document.body.contains(notification)) {
-        notification.classList.remove('show');
-        notification.classList.add('fade');
-        setTimeout(() => notification.remove(), 400);
-      }
-    }, 2000);
-  }
-  // Funktionen für die neue Schnellbestellung
-  function increaseQuantity() {
-    const input = document.getElementById('quantity');
-    const currentValue = parseInt(input.value, 10) || 1;
-    if (currentValue < 10) {
-      input.value = currentValue + 1;
-      updateTotalPrice();
-    }
-  }
-
-  function decreaseQuantity() {
-    const input = document.getElementById('quantity');
-    const currentValue = parseInt(input.value, 10) || 1;
-    if (currentValue > 1) {
-      input.value = currentValue - 1;
-      updateTotalPrice();
-    }
-  }
-
-  function updateTotalPrice() {
-    const quantity = parseInt(document.getElementById('quantity').value, 10) || 1;
-    const total = (product.price * quantity).toFixed(2);
-    document.getElementById('totalPrice').textContent = `€${total}`;
-  }
-
-
-
-  document.addEventListener('DOMContentLoaded', function() {
-    // Event-Listener für Hero-Buttons
-    const cartBtn = document.getElementById('cartBtn');
-    const wishlistBtn = document.getElementById('wishlistBtn');
-    
-    if (cartBtn) {
-      cartBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        addToCart({
-            id: product.id,
-            name: product.name,
-            price: product.price,
-            image: product.image,
-            description: product.description,
-            quantity: 1
-        });
-        // Popup anzeigen statt direkter Weiterleitung
-        if (typeof showAlert === 'function') {
-          showAlert('Produkt zum Warenkorb hinzugefügt', 'cart.html');
-        } else {
-          showNotification('Zum Warenkorb hinzugefügt');
-        }
-    });
-    }
-    
-    if (wishlistBtn) {
-      wishlistBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        toggleWishlist(product);
-      });
-      updateWishlistButton();
-    }
-
-    // Event-Listener für Quantity-Input
-    const quantityInput = document.getElementById('quantity');
-    const buyNowBtn = document.getElementById('buyNowBtn');
-    
-    if (quantityInput) {
-      quantityInput.addEventListener('input', updateTotalPrice);
-      quantityInput.addEventListener('change', updateTotalPrice);
-      updateTotalPrice(); // Initialisiere den Preis
-    }
-    
-    if (buyNowBtn) {
-      buyNowBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        const quantity = parseInt(quantityInput.value, 10) || 1;
-        const productToCart = {
-          ...product,
-          quantity: quantity
+        // Produktdaten für diese Seite
+        const product = {
+            id: 10,
+            name: "Haushalt Produkt 1",
+            price: 15.00,
+            image: "produkt bilder/ware.png",
+            description: "Praktisch und zuverlässig für Ihr Zuhause."
         };
-        addToCart(productToCart);
-        // Popup anzeigen statt direkter Weiterleitung
-        if (typeof showAlert === 'function') {
-          showAlert('Produkt zum Warenkorb hinzugefügt', 'cart.html');
-        } else {
-          showNotification('Zum Warenkorb hinzugefügt');
+
+        // Bundles dynamisch laden
+        fetch('../products.json')
+            .then(res => res.json())
+            .then(products => {
+                const prod = products.find(p => p.id === product.id);
+                if (prod && prod.bundles && prod.bundles.length > 0) {
+                    renderBundles(prod.bundles);
+                } else {
+                    // Fallback: Bundle-Box immer anzeigen
+                    renderBundles();
+                }
+            });
+
+        function getWishlist() {
+            return JSON.parse(localStorage.getItem('wishlist')) || [];
         }
-      });
-    }
-  });
+        function setWishlist(wishlist) {
+            localStorage.setItem('wishlist', JSON.stringify(wishlist));
+        }
+        function isInWishlist(id) {
+            return getWishlist().some(item => Number(item.id) === Number(id));
+        }
+        function toggleWishlist(product) {
+            let wishlist = getWishlist();
+            if (isInWishlist(product.id)) {
+                wishlist = wishlist.filter(item => Number(item.id) !== Number(product.id));
+                if (typeof showAlert === 'function') {
+                    showAlert('Produkt von der Wunschliste entfernt', 'wishlist.html');
+                } else {
+                    showNotification('Von der Wunschliste entfernt', 'info');
+                }
+            } else {
+                wishlist.push({
+                    id: product.id,
+                    name: product.name,
+                    price: product.price,
+                    image: product.image,
+                    description: product.description
+                });
+                if (typeof showAlert === 'function') {
+                    showAlert('Produkt zur Wunschliste hinzugefügt', 'wishlist.html');
+                } else {
+                    showNotification('Zur Wunschliste hinzugefügt');
+                }
+            }
+            setWishlist(wishlist);
+            updateAllWishlistButtons();
+        }
+        function updateWishlistButton() {
+            const btn = document.getElementById('wishlistBtn');
+            if (!btn) return;
+            if (isInWishlist(product.id)) {
+                btn.classList.add('active');
+                btn.innerHTML = '<i class="bi bi-heart-fill"></i> Entfernen';
+            } else {
+                btn.classList.remove('active');
+                btn.innerHTML = '<i class="bi bi-heart"></i> Zur Wunschliste';
+            }
+        }
+        function updateAllWishlistButtons() {
+            const isInList = isInWishlist(product.id);
+            
+            // Update main wishlist button
+            const mainBtn = document.getElementById('wishlistBtn');
+            if (mainBtn) {
+                if (isInList) {
+                    mainBtn.classList.add('active');
+                    mainBtn.innerHTML = '<i class="bi bi-heart-fill"></i> Entfernen';
+                } else {
+                    mainBtn.classList.remove('active');
+                    mainBtn.innerHTML = '<i class="bi bi-heart"></i> Zur Wunschliste';
+                }
+            }
+            
+            // Update all quick order wishlist buttons
+            const quickOrderBtns = document.querySelectorAll('.wishlist-button');
+            quickOrderBtns.forEach(btn => {
+                if (isInList) {
+                    btn.classList.add('active');
+                    btn.innerHTML = '<i class="bi bi-heart-fill"></i> Entfernen';
+                } else {
+                    btn.classList.remove('active');
+                    btn.innerHTML = '<i class="bi bi-heart"></i> Zur Wunschliste';
+                }
+            });
+        }
+        function getCart() {
+            return JSON.parse(localStorage.getItem('cart')) || [];
+        }
+        function setCart(cart) {
+            localStorage.setItem('cart', JSON.stringify(cart));
+        }
+        function addToCart(product) {
+            let cart = getCart();
+            const existing = cart.find(item => Number(item.id) === Number(product.id));
+            if (existing) {
+                existing.quantity++;
+            } else {
+                cart.push({ ...product, quantity: 1 });
+            }
+            setCart(cart);
+            // Keine direkte Weiterleitung mehr, da wir das Popup verwenden
+        }
+        
+        // showAlert function for cart popup
+        function showAlert(message, redirectTo = 'cart.html') {
+            const alert = document.createElement('div');
+            alert.className = 'alert alert-success position-fixed end-0 m-4 shadow-lg fade show';
+            alert.style.zIndex = '20000';
+            alert.style.fontSize = '1rem';
+            alert.style.minWidth = '160px';
+            alert.style.maxWidth = '320px';
+            alert.style.padding = '0.75rem 2rem';
+            alert.style.textAlign = 'center';
+            alert.style.borderRadius = '2rem';
+            alert.style.boxShadow = '0 8px 32px rgba(0,0,0,0.18)';
+            alert.style.background = 'linear-gradient(90deg, #4f8cff 0%, #38c6ff 100%)';
+            alert.style.color = '#fff';
+            alert.style.fontWeight = '500';
+            alert.style.letterSpacing = '0.02em';
+            alert.style.pointerEvents = 'auto';
+            alert.style.position = 'fixed';
+            alert.style.right = '2.5rem';
+            alert.style.top = 'calc(56px + 1.2rem)';
+            alert.style.cursor = 'pointer';
+            alert.textContent = message;
+            alert.addEventListener('click', () => {
+                window.location.href = '../' + redirectTo;
+            });
+            document.body.appendChild(alert);
+            setTimeout(() => {
+                if (document.body.contains(alert)) {
+                    alert.classList.remove('show');
+                    alert.classList.add('fade');
+                    setTimeout(() => alert.remove(), 400);
+                }
+            }, 1700);
+        }
+
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = `alert alert-${type} position-fixed end-0 m-4 shadow-lg fade show`;
+            notification.style.zIndex = '20000';
+            notification.style.fontSize = '1rem';
+            notification.style.minWidth = '160px';
+            notification.style.maxWidth = '320px';
+            notification.style.padding = '0.75rem 2rem';
+            notification.style.textAlign = 'center';
+            notification.style.borderRadius = '2rem';
+            notification.style.boxShadow = '0 8px 32px rgba(0,0,0,0.18)';
+            notification.style.background = type === 'success' 
+                ? 'linear-gradient(90deg, #4f8cff 0%, #38c6ff 100%)' 
+                : 'linear-gradient(90deg, #ff6b6b 0%, #ee5a24 100%)';
+            notification.style.color = '#fff';
+            notification.style.fontWeight = '500';
+            notification.style.letterSpacing = '0.02em';
+            notification.style.pointerEvents = 'auto';
+            notification.style.position = 'fixed';
+            notification.style.right = '2.5rem';
+            notification.style.top = 'calc(56px + 1.2rem)';
+            notification.style.cursor = 'pointer';
+            notification.textContent = message;
+            
+            // Klick-Event hinzufügen
+            notification.addEventListener('click', function() {
+                notification.classList.remove('show');
+                notification.classList.add('fade');
+                setTimeout(() => notification.remove(), 400);
+                // Zur Wishlist-Seite weiterleiten (aus dem produkte/ Ordner)
+                window.location.href = '../wishlist.html';
+            });
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                if (document.body.contains(notification)) {
+                    notification.classList.remove('show');
+                    notification.classList.add('fade');
+                    setTimeout(() => notification.remove(), 400);
+                }
+            }, 2000);
+        }
+
+        function renderBundles(bundles = []) {
+            const einzelpreis = 15.00;
+            const staffel = [
+                {qty:1, price:einzelpreis, original:einzelpreis},
+                {qty:2, price:(einzelpreis*0.85), original:einzelpreis},
+                {qty:3, price:(einzelpreis*0.80), original:einzelpreis}
+            ];
+            const section = document.getElementById('bundle-section');
+            let selected = 1;
+            section.innerHTML = `
+                <div class="bundle-box">
+                    <div class="bundle-header">BUNDLE & SPARE</div>
+                    <form id="bundleForm">
+                        ${staffel.map((s, i) => `
+                            <div class="bundle-card${i===selected?' selected':''}" data-index="${i}">
+                                <input type="radio" name="bundle" class="bundle-radio" id="bundleRadio${i}" value="${i}" ${i===selected?'checked':''}>
+                                <div class="bundle-info">
+                                    <div class="bundle-title">
+                                        ${s.qty} Set${s.qty>1?'s':''} kaufen
+                                        ${i===1 ? '<span class="bundle-badge popular">Am beliebtesten</span>' : ''}
+                                        ${i===2 ? '<span class="bundle-badge savings">Meiste Ersparnis</span>' : ''}
+                                        ${i>0 ? `<span class="bundle-label">EXTRA ${i===1?'15':i===2?'20':'0'}% RABATT</span>` : ''}
+                                    </div>
+                                    <div class="bundle-prices">
+                                        €${s.price.toFixed(2)} pro Set
+                                        <span class="old">€${s.original.toFixed(2)}</span>
+                                        <span class="savings">Spare €${((s.original-s.price)*s.qty).toFixed(2)}</span>
+                                    </div>
+                                    ${s.qty>1?`<div class='bundle-total'>Gesamt: <b>€${(s.price*s.qty).toFixed(2)}</b> <span class='old'>€${(s.original*s.qty).toFixed(2)}</span></div>`:''}
+                                </div>
+                            </div>
+                        `).join('')}
+                        <button type="submit" class="btn bundle-add-btn">In den Warenkorb</button>
+                    </form>
+                </div>
+            `;
+            // Interaktive Auswahl
+            const cards = section.querySelectorAll('.bundle-card');
+            const radios = section.querySelectorAll('.bundle-radio');
+            
+            // Event-Listener für Radio-Buttons
+            radios.forEach((radio, i) => {
+                radio.addEventListener('change', () => {
+                    cards.forEach(c => c.classList.remove('selected'));
+                    cards[i].classList.add('selected');
+                });
+            });
+
+            // Event-Listener für Bundle-Cards
+            cards.forEach((card, i) => {
+                card.addEventListener('click', (e) => {
+                    // Verhindere Bubbling wenn auf Radio geklickt wurde
+                    if (e.target === radios[i]) return;
+                    
+                    // Wähle Radio-Button aus
+                    radios[i].checked = true;
+                    
+                    // Aktualisiere Selected-Status
+                    cards.forEach(c => c.classList.remove('selected'));
+                    card.classList.add('selected');
+                    
+                    // Trigger change Event auf Radio
+                    radios[i].dispatchEvent(new Event('change'));
+                });
+            });
+
+            section.querySelector('#bundleForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const idx = Array.from(radios).findIndex(r => r.checked);
+                const s = staffel[idx];
+                addToCart({
+                    id: product.id,
+                    name: product.name + ` (${s.qty} Set${s.qty>1?'s':''})`,
+                    price: s.price * s.qty, // Gesamtpreis für das Bundle
+                    image: product.image,
+                    description: product.description + ` (Bundle: ${s.qty} Set${s.qty>1?'s':''})`,
+                    bundleId: `${product.id}-qty${s.qty}`,
+                    quantity: s.qty
+                });
+                
+                const button = document.querySelector('.bundle-add-btn');
+                triggerCartButtonAnimation(button);
+                triggerNavCartAnimation();
+                triggerCartIconPulse();
+                
+                if (typeof showAlert === 'function') {
+                    showAlert('Bundle zum Warenkorb hinzugefügt', 'cart.html');
+                } else {
+                    showNotification('Bundle zum Warenkorb hinzugefügt');
+                }
+            });
+        }
+
+        function increaseQuantity(event, device = 'desktop') {
+            if (event) event.preventDefault();
+            const input = document.getElementById(`quantity-${device}`);
+            const currentValue = parseInt(input.value, 10) || 1;
+            if (currentValue < 10) {
+                input.value = currentValue + 1;
+                updateTotalPrice(device);
+                const otherDevice = device === 'mobile' ? 'desktop' : 'mobile';
+                const otherInput = document.getElementById(`quantity-${otherDevice}`);
+                if (otherInput) {
+                    otherInput.value = input.value;
+                    updateTotalPrice(otherDevice);
+                }
+            }
+        }
+
+        function decreaseQuantity(event, device = 'desktop') {
+            if (event) event.preventDefault();
+            const input = document.getElementById(`quantity-${device}`);
+            const currentValue = parseInt(input.value, 10) || 1;
+            if (currentValue > 1) {
+                input.value = currentValue - 1;
+                updateTotalPrice(device);
+                const otherDevice = device === 'mobile' ? 'desktop' : 'mobile';
+                const otherInput = document.getElementById(`quantity-${otherDevice}`);
+                if (otherInput) {
+                    otherInput.value = input.value;
+                    updateTotalPrice(otherDevice);
+                }
+            }
+        }
+
+        function updateTotalPrice(device = 'desktop') {
+            const input = document.getElementById(`quantity-${device}`);
+            const totalElement = document.getElementById(`totalPrice-${device}`);
+            if (input && totalElement) {
+                const quantity = parseInt(input.value, 10) || 1;
+                const total = (product.price * quantity).toFixed(2);
+                totalElement.textContent = `€${total}`;
+            }
+        }
+
+        function addToCartWithQuantity(device = 'desktop') {
+            const input = document.getElementById(`quantity-${device}`);
+            const quantity = parseInt(input.value, 10) || 1;
+            const productToCart = {
+                ...product,
+                quantity: quantity
+            };
+            addToCart(productToCart);
+            
+            const button = device === 'mobile' ? 
+                document.querySelector('.quick-order-card.d-lg-none .buy-now-btn') : 
+                document.querySelector('#buyNowBtn');
+            triggerCartButtonAnimation(button);
+            triggerNavCartAnimation();
+            triggerCartIconPulse();
+            
+            if (typeof showAlert === 'function') {
+                showAlert('Produkt zum Warenkorb hinzugefügt', 'cart.html');
+            } else {
+                showNotification('Zum Warenkorb hinzugefügt');
+            }
+        }
+
+        /* Added animation functions for consistent behavior */
+        function triggerCartButtonAnimation(button) {
+            if (!button) return;
+            button.classList.add('success-animation');
+            setTimeout(() => {
+                button.classList.remove('success-animation');
+            }, 600);
+        }
+
+        function triggerWishlistButtonAnimation(button) {
+            if (!button) return;
+            button.classList.add('heart-pulse');
+            setTimeout(() => {
+                button.classList.remove('heart-pulse');
+            }, 600);
+        }
+
+        function triggerNavCartAnimation() {
+            const cartNavLink = document.querySelector('.cart-nav-link');
+            if (cartNavLink) {
+                cartNavLink.classList.add('cart-rainbow-bounce');
+                setTimeout(() => {
+                    cartNavLink.classList.remove('cart-rainbow-bounce');
+                }, 1000);
+            }
+        }
+
+        function triggerCartIconPulse() {
+            const cartIcon = document.querySelector('.cart-nav-link i');
+            if (cartIcon) {
+                cartIcon.classList.add('cart-icon-pulse');
+                setTimeout(() => {
+                    cartIcon.classList.remove('cart-icon-pulse');
+                }, 600);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const cartBtn = document.getElementById('cartBtn');
+            const wishlistBtn = document.getElementById('wishlistBtn');
+            
+            if (cartBtn) {
+                cartBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    addToCart({
+                        id: product.id,
+                        name: product.name,
+                        price: product.price,
+                        image: product.image,
+                        description: product.description,
+                        quantity: 1
+                    });
+                    
+                    triggerCartButtonAnimation(this);
+                    triggerNavCartAnimation();
+                    triggerCartIconPulse();
+                    
+                    if (typeof showAlert === 'function') {
+                        showAlert('Produkt zum Warenkorb hinzugefügt', 'cart.html');
+                    } else {
+                        showNotification('Zum Warenkorb hinzugefügt');
+                    }
+                });
+            }
+            
+            if (wishlistBtn) {
+                wishlistBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    triggerWishlistButtonAnimation(this);
+                    toggleWishlist(product);
+                });
+                updateWishlistButton();
+            }
+
+            const quantityInputMobile = document.getElementById('quantity-mobile');
+            const quantityInputDesktop = document.getElementById('quantity-desktop');
+            const buyNowBtn = document.getElementById('buyNowBtn');
+            
+            if (quantityInputMobile) {
+                quantityInputMobile.addEventListener('input', () => {
+                    updateTotalPrice('mobile');
+                    if (quantityInputDesktop) {
+                        quantityInputDesktop.value = quantityInputMobile.value;
+                        updateTotalPrice('desktop');
+                    }
+                });
+                quantityInputMobile.addEventListener('change', () => {
+                    updateTotalPrice('mobile');
+                    if (quantityInputDesktop) {
+                        quantityInputDesktop.value = quantityInputMobile.value;
+                        updateTotalPrice('desktop');
+                    }
+                });
+                updateTotalPrice('mobile');
+            }
+            
+            if (quantityInputDesktop) {
+                quantityInputDesktop.addEventListener('input', () => {
+                    updateTotalPrice('desktop');
+                    if (quantityInputMobile) {
+                        quantityInputMobile.value = quantityInputDesktop.value;
+                        updateTotalPrice('mobile');
+                    }
+                });
+                quantityInputDesktop.addEventListener('change', () => {
+                    updateTotalPrice('desktop');
+                    if (quantityInputMobile) {
+                        quantityInputMobile.value = quantityInputDesktop.value;
+                        updateTotalPrice('mobile');
+                    }
+                });
+                updateTotalPrice('desktop');
+            }
+            
+            if (buyNowBtn) {
+                buyNowBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    addToCartWithQuantity('desktop');
+                });
+            }
+            
+            const wishlistButtons = document.querySelectorAll('.wishlist-button');
+            wishlistButtons.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    triggerWishlistButtonAnimation(this);
+                    toggleWishlist(product);
+                });
+            });
+            
+            updateAllWishlistButtons();
+        });
     </script>
 </body>
 </html>

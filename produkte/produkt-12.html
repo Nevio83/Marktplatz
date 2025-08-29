@@ -29,6 +29,38 @@
             font-weight: bold;
             font-size: 1.5rem;
         }
+        /* Added animation CSS classes for consistent animations */
+        .success-animation {
+            animation: successAnimation 0.6s ease;
+        }
+        @keyframes successAnimation {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        .heart-pulse {
+            animation: heartPulse 0.6s ease;
+        }
+        @keyframes heartPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        .cart-rainbow-bounce {
+            animation: cartRainbowBounce 1s ease;
+        }
+        @keyframes cartRainbowBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .cart-icon-pulse {
+            animation: cartIconPulse 0.6s ease;
+        }
+        @keyframes cartIconPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
     </style>
 </head>
 <body>
@@ -60,10 +92,11 @@
                         <span class="price-tag">€44.00</span>
                         <span class="badge bg-success">Kostenloser Versand in Europa</span>
                     </div>
-                    <button class="btn btn-light btn-lg me-3" id="cartBtn">
+                    <!-- Added proper CSS classes for animations -->
+                    <button class="btn btn-light btn-lg me-3 add-to-cart" id="cartBtn">
                         <i class="bi bi-cart-plus"></i> In den Warenkorb
                     </button>
-                    <button class="btn btn-outline-light btn-lg" id="wishlistBtn">
+                    <button class="btn btn-outline-light btn-lg wishlist-style-btn wishlist-button" id="wishlistBtn">
                         <i class="bi bi-heart"></i> Merken
                     </button>
                 </div>
@@ -84,7 +117,11 @@
                     
                     <h3>Hauptmerkmale</h3>
                     <ul class="list-unstyled">
-                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Robuste Konstruktion</li><li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Einfache Bedienung</li><li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Platzsparend</li><li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Wartungsarm</li><li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>3 Jahre Garantie</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Robuste Konstruktion</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Einfache Bedienung</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Platzsparend</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Wartungsarm</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>3 Jahre Garantie</li>
                     </ul>
 
                     <h3 class="mt-4">Technische Spezifikationen</h3>
@@ -110,9 +147,10 @@
                             <div class="quantity-section">
                                 <label class="quantity-label">Menge:</label>
                                 <div class="quantity-input-group">
-                                    <button class="quantity-btn" onclick="decreaseQuantity()">-</button>
+                                    <!-- Added event parameter to +/- buttons -->
+                                    <button class="quantity-btn" onclick="decreaseQuantity(event)">-</button>
                                     <input type="number" class="quantity-input" id="quantity" value="1" min="1" max="10">
-                                    <button class="quantity-btn" onclick="increaseQuantity()">+</button>
+                                    <button class="quantity-btn" onclick="increaseQuantity(event)">+</button>
                                 </div>
                             </div>
                             <div class="price-section">
@@ -120,10 +158,11 @@
                                 <div class="total-price">Gesamt: <span id="totalPrice">€44.00</span></div>
                             </div>
                             <div class="action-buttons">
-                                <button class="buy-now-btn" onclick="addToCartWithQuantity()">
+                                <!-- Added proper CSS classes for animations -->
+                                <button class="buy-now-btn add-to-cart" onclick="addToCartWithQuantity()">
                                     <i class="bi bi-cart-plus"></i> Jetzt kaufen
                                 </button>
-                                <button class="wishlist-btn" onclick="toggleWishlist(product)">
+                                <button class="wishlist-btn wishlist-style-btn wishlist-button" onclick="toggleWishlist(product)">
                                     <i class="bi bi-heart"></i> Zur Wunschliste
                                 </button>
                             </div>
@@ -150,9 +189,10 @@
                             <div class="quantity-section">
                                 <label class="quantity-label">Menge:</label>
                                 <div class="quantity-input-group">
-                                    <button class="quantity-btn" onclick="decreaseQuantity()">-</button>
+                                    <!-- Added event parameter to +/- buttons -->
+                                    <button class="quantity-btn" onclick="decreaseQuantity(event)">-</button>
                                     <input type="number" class="quantity-input" id="quantity" value="1" min="1" max="10">
-                                    <button class="quantity-btn" onclick="increaseQuantity()">+</button>
+                                    <button class="quantity-btn" onclick="increaseQuantity(event)">+</button>
                                 </div>
                             </div>
                             
@@ -162,10 +202,11 @@
                             </div>
                             
                             <div class="action-buttons">
-                                <button class="buy-now-btn" id="buyNowBtn">
+                                <!-- Added proper CSS classes for animations -->
+                                <button class="buy-now-btn add-to-cart" id="buyNowBtn">
                                     <i class="bi bi-cart-plus"></i> Jetzt kaufen
                                 </button>
-                                <button class="wishlist-btn" onclick="toggleWishlist(product)">
+                                <button class="wishlist-btn wishlist-style-btn wishlist-button" onclick="toggleWishlist(product)">
                                     <i class="bi bi-heart"></i> Zur Wunschliste hinzufügen
                                 </button>
                             </div>
@@ -322,18 +363,34 @@
       }
     }
     setWishlist(wishlist);
-    updateWishlistButton();
+    updateAllWishlistButtons();
   }
-  function updateWishlistButton() {
-    const btn = document.getElementById('wishlistBtn');
-    if (!btn) return;
-    if (isInWishlist(product.id)) {
-      btn.classList.add('active');
-      btn.innerHTML = '<i class="bi bi-heart-fill"></i> Entfernen';
-    } else {
-      btn.classList.remove('active');
-      btn.innerHTML = '<i class="bi bi-heart"></i> Zur Wunschliste';
+  function updateAllWishlistButtons() {
+    const isInList = isInWishlist(product.id);
+    
+    // Update main wishlist button
+    const mainBtn = document.getElementById('wishlistBtn');
+    if (mainBtn) {
+        if (isInList) {
+            mainBtn.classList.add('active');
+            mainBtn.innerHTML = '<i class="bi bi-heart-fill"></i> Entfernen';
+        } else {
+            mainBtn.classList.remove('active');
+            mainBtn.innerHTML = '<i class="bi bi-heart"></i> Zur Wunschliste';
+        }
     }
+    
+    // Update all quick order wishlist buttons
+    const quickOrderBtns = document.querySelectorAll('.wishlist-button');
+    quickOrderBtns.forEach(btn => {
+        if (isInList) {
+            btn.classList.add('active');
+            btn.innerHTML = '<i class="bi bi-heart-fill"></i> Entfernen';
+        } else {
+            btn.classList.remove('active');
+            btn.innerHTML = '<i class="bi bi-heart"></i> Zur Wunschliste';
+        }
+    });
   }
   function getCart() {
     return JSON.parse(localStorage.getItem('cart')) || [];
@@ -544,7 +601,9 @@
   renderBundles();
 
   // Funktionen für die neue Schnellbestellung
-  function increaseQuantity() {
+  function increaseQuantity(event) {
+    // Added event parameter handling
+    if (event) event.preventDefault();
     const input = document.getElementById('quantity');
     const currentValue = parseInt(input.value, 10) || 1;
     if (currentValue < 10) {
@@ -553,7 +612,9 @@
     }
   }
 
-  function decreaseQuantity() {
+  function decreaseQuantity(event) {
+    // Added event parameter handling
+    if (event) event.preventDefault();
     const input = document.getElementById('quantity');
     const currentValue = parseInt(input.value, 10) || 1;
     if (currentValue > 1) {
@@ -568,7 +629,63 @@
     document.getElementById('totalPrice').textContent = `€${total}`;
   }
 
+  function addToCartWithQuantity() {
+    const quantity = parseInt(document.getElementById('quantity').value, 10) || 1;
+    const productToCart = {
+      ...product,
+      quantity: quantity
+    };
+    addToCart(productToCart);
+    
+    // Added animation triggers
+    const button = document.querySelector('.buy-now-btn');
+    triggerCartButtonAnimation(button);
+    triggerNavCartAnimation();
+    triggerCartIconPulse();
+    
+    if (typeof showAlert === 'function') {
+      showAlert('Produkt zum Warenkorb hinzugefügt', 'cart.html');
+    } else {
+      showNotification('Zum Warenkorb hinzugefügt');
+    }
+  }
 
+  // Added animation functions for consistent behavior
+  function triggerCartButtonAnimation(button) {
+    if (!button) return;
+    button.classList.add('success-animation');
+    setTimeout(() => {
+      button.classList.remove('success-animation');
+    }, 600);
+  }
+
+  function triggerWishlistButtonAnimation(button) {
+    if (!button) return;
+    button.classList.add('heart-pulse');
+    setTimeout(() => {
+      button.classList.remove('heart-pulse');
+    }, 600);
+  }
+
+  function triggerNavCartAnimation() {
+    const cartNavLink = document.querySelector('.cart-nav-link');
+    if (cartNavLink) {
+      cartNavLink.classList.add('cart-rainbow-bounce');
+      setTimeout(() => {
+        cartNavLink.classList.remove('cart-rainbow-bounce');
+      }, 1000);
+    }
+  }
+
+  function triggerCartIconPulse() {
+    const cartIcon = document.querySelector('.cart-nav-link i');
+    if (cartIcon) {
+      cartIcon.classList.add('cart-icon-pulse');
+      setTimeout(() => {
+        cartIcon.classList.remove('cart-icon-pulse');
+      }, 600);
+    }
+  }
 
   document.addEventListener('DOMContentLoaded', function() {
     // Event-Listener für Hero-Buttons
@@ -586,6 +703,12 @@
             description: product.description,
             quantity: 1
         });
+        
+        // Added animation triggers
+        triggerCartButtonAnimation(this);
+        triggerNavCartAnimation();
+        triggerCartIconPulse();
+        
         // Popup anzeigen statt direkter Weiterleitung
         if (typeof showAlert === 'function') {
           showAlert('Produkt zum Warenkorb hinzugefügt', 'cart.html');
@@ -598,9 +721,11 @@
     if (wishlistBtn) {
       wishlistBtn.addEventListener('click', function(e) {
         e.preventDefault();
+        // Added wishlist animation trigger
+        triggerWishlistButtonAnimation(this);
         toggleWishlist(product);
       });
-      updateWishlistButton();
+      updateAllWishlistButtons();
     }
 
     // Event-Listener für Quantity-Input
@@ -622,6 +747,12 @@
           quantity: quantity
         };
         addToCart(productToCart);
+        
+        // Added animation triggers
+        triggerCartButtonAnimation(this);
+        triggerNavCartAnimation();
+        triggerCartIconPulse();
+        
         // Popup anzeigen statt direkter Weiterleitung
         if (typeof showAlert === 'function') {
           showAlert('Produkt zum Warenkorb hinzugefügt', 'cart.html');

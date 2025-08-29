@@ -15,6 +15,73 @@
     <link href="styles.css?v=1.4" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
     <script>window.CJ_DROPSHIPPING_KEY='6b4d5d2c435d4aceb4473c792e94e5f5';</script>
+    
+    <style>
+        /* Simple animations matching product 4 exactly */
+        .success-animation {
+            animation: success-animation 1.2s ease-in-out;
+        }
+        .cart-icon-pulse {
+            animation: cart-icon-pulse 1s ease-in-out;
+        }
+        .cart-rainbow-bounce {
+            animation: cart-rainbow-bounce 1.2s ease-in-out;
+        }
+        .heart-pulse {
+            animation: heart-pulse 1s ease-in-out;
+        }
+        
+        @keyframes success-animation {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        @keyframes cart-icon-pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        @keyframes cart-rainbow-bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        @keyframes heart-pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        
+        /* Notification slide animations */
+        @keyframes slideInRight {
+            0% {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            100% {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideOutRight {
+            0% {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+        
+        .notification-slide-in {
+            animation: slideInRight 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .notification-slide-out {
+            animation: slideOutRight 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+    </style>
 </head>
 <body>
     <!-- Navigation -->
@@ -189,7 +256,7 @@ if (searchInput && mobileSearchBtn) {
                 <div class="col">
                     <div class="product-card h-100">
                         <div class="product-image-container">
-                            <img src="" alt="" class="product-image">
+                            <img src="/placeholder.svg" alt="" class="product-image">
                             <button class="wishlist-btn" aria-label="Zur Wunschliste hinzufügen">
                                 <i class="bi bi-heart"></i>
                             </button>
@@ -890,4 +957,3 @@ function clearSearchInput() {
 <script src="cart.js"></script>
 </body>
 </html>
-

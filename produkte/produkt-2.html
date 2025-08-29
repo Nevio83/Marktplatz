@@ -37,7 +37,8 @@
                         <span class="price-tag">€12.00</span>
                         <span class="badge bg-success">Kostenloser Versand in Europa</span>
                     </div>
-                    <button class="btn btn-light btn-lg me-3" id="heroCartBtn">
+                    <!-- Updated hero buttons to match product-1 with proper classes and onclick handlers -->
+                    <button class="btn btn-light btn-lg me-3 add-to-cart" id="cartBtn" onclick="addToCartAndRedirect()">
                         <i class="bi bi-cart-plus"></i> In den Warenkorb
                     </button>
                     <button class="btn btn-outline-light btn-lg" id="wishlistBtn">
@@ -87,22 +88,24 @@
                             <div class="quantity-section">
                                 <label class="quantity-label">Menge:</label>
                                 <div class="quantity-input-group">
-                                    <button class="quantity-btn" onclick="decreaseQuantity()">-</button>
+                                    <!-- Updated quantity buttons to match product-1 with event parameter -->
+                                    <button class="quantity-btn" onclick="decreaseQuantity(event)">-</button>
                                     <input type="number" class="quantity-input" id="quantity" value="1" min="1" max="10">
-                                    <button class="quantity-btn" onclick="increaseQuantity()">+</button>
+                                    <button class="quantity-btn" onclick="increaseQuantity(event)">+</button>
                                 </div>
                             </div>
                             
                             <div class="price-section">
                                 <div class="current-price">€12.00</div>
-                                <div class="total-price">Gesamt: <span id="totalPrice">€12.00</span></div>
+                                <!-- Removed total price display to match product-1 -->
                             </div>
                             
                             <div class="action-buttons">
-                                <button class="buy-now-btn" onclick="addToCartWithQuantity()">
+                                <!-- Updated buttons to match product-1 with wishlist-style-btn class and proper onclick -->
+                                <button class="buy-now-btn wishlist-style-btn" onclick="addToCartWithQuantity(event)">
                                     <i class="bi bi-cart-plus"></i> Jetzt kaufen
                                 </button>
-                                <button class="wishlist-btn" onclick="toggleWishlist(product)" id="mobileWishlistBtn">
+                                <button class="wishlist-btn wishlist-button" onclick="toggleWishlist(product)" data-product-id="2">
                                     <i class="bi bi-heart"></i> Zur Wunschliste
                                 </button>
                             </div>
@@ -131,22 +134,24 @@
                             <div class="quantity-section">
                                 <label class="quantity-label">Menge:</label>
                                 <div class="quantity-input-group">
-                                    <button class="quantity-btn" onclick="decreaseQuantity()">-</button>
+                                    <!-- Updated quantity buttons to match product-1 with event parameter -->
+                                    <button class="quantity-btn" onclick="decreaseQuantity(event)">-</button>
                                     <input type="number" class="quantity-input" id="quantity-desktop" value="1" min="1" max="10">
-                                    <button class="quantity-btn" onclick="increaseQuantity()">+</button>
+                                    <button class="quantity-btn" onclick="increaseQuantity(event)">+</button>
                                 </div>
                             </div>
                             
                             <div class="price-section">
                                 <div class="current-price">€12.00</div>
-                                <div class="total-price">Gesamt: <span id="totalPriceDesktop">€12.00</span></div>
+                                <!-- Removed total price display to match product-1 -->
                             </div>
                             
                             <div class="action-buttons">
-                                <button class="buy-now-btn" onclick="addToCartWithQuantity()">
+                                <!-- Updated buttons to match product-1 with wishlist-style-btn class and proper onclick -->
+                                <button class="buy-now-btn wishlist-style-btn" onclick="addToCartWithQuantity(event)">
                                     <i class="bi bi-cart-plus"></i> Jetzt kaufen
                                 </button>
-                                <button class="wishlist-btn" onclick="toggleWishlist(product)" id="desktopWishlistBtn">
+                                <button class="wishlist-btn wishlist-button" onclick="toggleWishlist(product)" data-product-id="2">
                                     <i class="bi bi-heart"></i> Zur Wunschliste
                                 </button>
                             </div>
@@ -262,24 +267,20 @@
     .then(res => res.json())
     .then(products => {
       const prod = products.find(p => p.id === product.id);
-      // Always render bundles for product 2
-      renderBundles();
-    })
-    .catch(error => {
-      console.error('Error loading products:', error);
-      // Fallback: render bundles anyway
-      renderBundles();
+      if (prod && prod.bundles && prod.bundles.length > 0) {
+        renderBundles(prod.bundles);
+      }
     });
 
   function renderBundles() {
-    const einzelpreis = 12.00;
+    // Preisstaffel: [ {menge, preisProSet, originalProSet} ]
     const staffel = [
-      {qty:1, price:einzelpreis, original:einzelpreis},
-      {qty:2, price:(einzelpreis*0.85), original:einzelpreis},
-      {qty:3, price:(einzelpreis*0.80), original:einzelpreis}
+      {qty: 1, price: product.price, original: product.price},
+      {qty: 2, price: product.price * 0.85, original: product.price},
+      {qty: 3, price: product.price * 0.80, original: product.price}
     ];
     const section = document.getElementById('bundle-section');
-    let selected = 1;
+    let selected = 1; // Standard: 2 Sets
     section.innerHTML = `
       <div class="bundle-box">
         <div class="bundle-header">BUNDLE & SPARE</div>
@@ -303,7 +304,8 @@
               </div>
             </div>
           `).join('')}
-          <button type="submit" class="btn bundle-add-btn">In den Warenkorb</button>
+          <!-- Updated bundle button to match product-1 with wishlist-style-btn class and onclick handler -->
+          <button type="submit" class="btn bundle-add-btn wishlist-style-btn" onclick="addBundleAndRedirect(event)">In den Warenkorb</button>
         </form>
       </div>
     `;
@@ -337,35 +339,13 @@
       });
     });
 
-    section.querySelector('#bundleForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const idx = Array.from(radios).findIndex(r => r.checked);
-      const s = staffel[idx];
-      addBundleToCart({
-        id: product.id,
-        name: product.name + ` (${s.qty} Set${s.qty>1?'s':''})`,
-        price: s.price * s.qty, // Gesamtpreis für das Bundle
-        image: product.image,
-        description: product.description + ` (Bundle: ${s.qty} Set${s.qty>1?'s':''})`,
-        bundleId: `${product.id}-qty${s.qty}`,
-        quantity: 1
-      });
-      
-      // Trigger animation on bundle button
-      const bundleButton = e.target.querySelector('.bundle-add-btn');
-      if (bundleButton) {
-        bundleButton.classList.add('success-animation');
-        setTimeout(() => {
-          bundleButton.classList.remove('success-animation');
-        }, 800);
-      }
-    });
+    // Der Bundle-Button verwendet jetzt onclick="addBundleAndRedirect(event)"
   }
 
   function addBundleToCart(bundle) {
     let cart = getCart();
     // Bundle als eigenes Cart-Item mit bundleId
-    const bundleId = `${product.id}-${bundle.id}`;
+    const bundleId = bundle.bundleId;
     const existing = cart.find(item => item.bundleId === bundleId);
     if (existing) {
       // Bei Bundles immer nur 1 erlauben
@@ -373,16 +353,46 @@
     } else {
       cart.push({
         id: product.id,
-        name: product.name + ' - ' + bundle.name,
+        name: bundle.name,
         price: bundle.price,
         image: product.image,
-        description: product.description + ' (Bundle: ' + bundle.name + ')',
+        description: bundle.description,
         bundleId: bundleId,
-        bundleItems: bundle.items,
-        quantity: 1
+        bundleItems: [], // Keine Items für die neue Staffel
+        quantity: 1 // Bundles haben immer Menge 1
       });
     }
     setCart(cart);
+  }
+
+  function addBundleAndRedirect(event) {
+    event.preventDefault();
+    const form = event.target.closest('form');
+    const selectedRadio = form.querySelector('input[name="bundle"]:checked');
+    if (!selectedRadio) return;
+    
+    const idx = parseInt(selectedRadio.value);
+    const staffel = [
+      {qty: 1, price: product.price, original: product.price},
+      {qty: 2, price: product.price * 0.85, original: product.price},
+      {qty: 3, price: product.price * 0.80, original: product.price}
+    ];
+    const s = staffel[idx];
+    
+    addBundleToCart({
+      id: product.id,
+      name: product.name + ` (${s.qty} Set${s.qty>1?'s':''})`,
+      price: s.price * s.qty, // Gesamtpreis für das Bundle
+      image: product.image,
+      description: product.description + ` (Bundle: ${s.qty} Set${s.qty>1?'s':''})`,
+      bundleId: `${product.id}-qty${s.qty}`,
+      quantity: 1
+    });
+    
+    // Enhanced animations for bundle
+    triggerBundleButtonAnimation(event.target);
+    triggerNavCartAnimation();
+    
     // Popup anzeigen statt direkter Weiterleitung
     if (typeof showAlert === 'function') {
       showAlert('Bundle zum Warenkorb hinzugefügt', 'cart.html');
@@ -404,10 +414,13 @@
     let wishlist = getWishlist();
     if (isInWishlist(product.id)) {
       wishlist = wishlist.filter(item => Number(item.id) !== Number(product.id));
+      setWishlist(wishlist);
+      updateAllWishlistButtons(); // Update all wishlist buttons
+      
       if (typeof showAlert === 'function') {
         showAlert('Produkt von der Wunschliste entfernt', 'wishlist.html');
       } else {
-        showNotification('Von der Wunschliste entfernt', 'info');
+        showNotification('Produkt von der Wunschliste entfernt');
       }
     } else {
       wishlist.push({
@@ -417,29 +430,45 @@
         image: product.image,
         description: product.description
       });
+      setWishlist(wishlist);
+      
+      // Enhanced wishlist animation only when adding (same as index.html)
+      triggerWishlistButtonAnimation(product.id);
+      updateAllWishlistButtons(); // Update all wishlist buttons
+      
       if (typeof showAlert === 'function') {
         showAlert('Produkt zur Wunschliste hinzugefügt', 'wishlist.html');
       } else {
-        showNotification('Zur Wunschliste hinzugefügt');
+        showNotification('Produkt zur Wunschliste hinzugefügt');
       }
     }
-    setWishlist(wishlist);
-    updateWishlistButton();
   }
-  function updateWishlistButton() {
-    const heroBtn = document.getElementById('wishlistBtn');
+  function updateAllWishlistButtons() {
+    const isInList = isInWishlist(product.id);
     
-    if (isInWishlist(product.id)) {
-      if (heroBtn) {
-        heroBtn.classList.add('active');
-        heroBtn.innerHTML = '<i class="bi bi-heart-fill"></i> Entfernen';
-      }
-    } else {
-      if (heroBtn) {
-        heroBtn.classList.remove('active');
-        heroBtn.innerHTML = '<i class="bi bi-heart"></i> Zur Wunschliste';
+    // Update main wishlist button
+    const mainBtn = document.getElementById('wishlistBtn');
+    if (mainBtn) {
+      if (isInList) {
+        mainBtn.classList.add('active');
+        mainBtn.innerHTML = '<i class="bi bi-heart-fill"></i> Entfernen';
+      } else {
+        mainBtn.classList.remove('active');
+        mainBtn.innerHTML = '<i class="bi bi-heart"></i> Zur Wunschliste';
       }
     }
+    
+    // Update all quick order wishlist buttons
+    const quickOrderBtns = document.querySelectorAll('.wishlist-button');
+    quickOrderBtns.forEach(btn => {
+      if (isInList) {
+        btn.classList.add('active');
+        btn.innerHTML = '<i class="bi bi-heart-fill"></i> Entfernen';
+      } else {
+        btn.classList.remove('active');
+        btn.innerHTML = '<i class="bi bi-heart"></i> Zur Wunschliste';
+      }
+    });
   }
   function getCart() {
     return JSON.parse(localStorage.getItem('cart')) || [];
@@ -453,17 +482,120 @@
     if (existing) {
       existing.quantity += product.quantity || 1;
     } else {
-      cart.push({ 
-        id: product.id,
-        name: product.name,
-        price: product.price,
-        image: product.image,
-        description: product.description,
-        quantity: product.quantity || 1
-      });
+      cart.push({ ...product, quantity: product.quantity || 1 });
     }
     setCart(cart);
     // Keine direkte Weiterleitung mehr, da wir das Popup verwenden
+  }
+
+  function addToCartAndRedirect() {
+    const productToAdd = {
+      ...product,
+      quantity: 1
+    };
+    addToCart(productToAdd);
+    
+    // Enhanced animations for product page
+    triggerCartButtonAnimation();
+    triggerNavCartAnimation();
+    
+    // Popup anzeigen statt direkter Weiterleitung
+    if (typeof showAlert === 'function') {
+      showAlert('Produkt zum Warenkorb hinzugefügt', 'cart.html');
+    } else {
+      showNotification('Zum Warenkorb hinzugefügt');
+    }
+  }
+
+  function triggerCartButtonAnimation() {
+    const cartButton = document.getElementById('cartBtn');
+    if (cartButton) {
+      // Use wishlist-style animation for main cart button
+      cartButton.classList.add('success-animation');
+      setTimeout(() => {
+        cartButton.classList.remove('success-animation');
+      }, 800);
+      
+      // Add cart icon pulse animation (red effect)
+      const cartIcon = cartButton.querySelector('i');
+      if (cartIcon) {
+        cartIcon.classList.add('cart-icon-pulse');
+        setTimeout(() => {
+          cartIcon.classList.remove('cart-icon-pulse');
+        }, 500);
+      }
+    }
+  }
+
+  // New animation function for quick order buttons (wishlist-style)
+  function triggerQuickOrderAnimation() {
+    const quickOrderButtons = document.querySelectorAll('.wishlist-style-btn');
+    quickOrderButtons.forEach(button => {
+      button.classList.add('success-animation');
+      setTimeout(() => {
+        button.classList.remove('success-animation');
+      }, 800);
+      
+      // Add cart icon pulse animation to button icon (red effect)
+      const buttonIcon = button.querySelector('i');
+      if (buttonIcon) {
+        buttonIcon.classList.add('cart-icon-pulse');
+        setTimeout(() => {
+          buttonIcon.classList.remove('cart-icon-pulse');
+        }, 500);
+      }
+    });
+  }
+
+  function triggerNavCartAnimation() {
+    const navCartButton = document.querySelector('.cart-nav-link');
+    if (navCartButton) {
+      navCartButton.classList.add('cart-rainbow-bounce');
+      setTimeout(() => {
+        navCartButton.classList.remove('cart-rainbow-bounce');
+      }, 800);
+    }
+  }
+
+  // Animation function for bundle button (wishlist-style)
+  function triggerBundleButtonAnimation(button) {
+    if (button) {
+      button.classList.add('success-animation');
+      setTimeout(() => {
+        button.classList.remove('success-animation');
+      }, 800);
+      
+      // Add cart icon pulse animation to bundle button icon (red effect)
+      const buttonIcon = button.querySelector('i');
+      if (buttonIcon) {
+        buttonIcon.classList.add('cart-icon-pulse');
+        setTimeout(() => {
+          buttonIcon.classList.remove('cart-icon-pulse');
+        }, 500);
+      }
+    }
+  }
+
+  // Enhanced wishlist animation (only for main button, not quick order)
+  function triggerWishlistButtonAnimation(productId) {
+    // Only animate the main wishlist button, not the quick order ones
+    const wishlistButton = document.getElementById('wishlistBtn');
+    
+    if (wishlistButton) {
+      wishlistButton.classList.add('success-animation');
+      setTimeout(() => {
+        wishlistButton.classList.remove('success-animation');
+      }, 800);
+      
+      // Heart pulse animation
+      const heartIcon = wishlistButton.querySelector('i');
+      if (heartIcon) {
+        heartIcon.classList.add('heart-pulse');
+        setTimeout(() => {
+          heartIcon.classList.remove('heart-pulse');
+        }, 500);
+      }
+    }
   }
   
   // showAlert function for cart popup
@@ -546,193 +678,134 @@
   }
 
   // Funktionen für die neue Schnellbestellung
-  function increaseQuantity() {
-    const input = document.getElementById('quantity');
-    const currentValue = parseInt(input.value, 10) || 1;
-    if (currentValue < 10) {
-      input.value = currentValue + 1;
-      updateTotalPrice();
+  function increaseQuantity(event) {
+    // Determine which quantity input to use based on the clicked button
+    const button = event ? event.target : null;
+    const isDesktop = button && button.closest('.d-none.d-lg-block');
+    
+    const inputId = isDesktop ? 'quantity-desktop' : 'quantity';
+    const input = document.getElementById(inputId);
+    
+    if (input) {
+      const currentValue = parseInt(input.value, 10) || 1;
+      if (currentValue < 10) {
+        input.value = currentValue + 1;
+        updateTotalPrice();
+      }
     }
   }
 
-  function decreaseQuantity() {
-    const input = document.getElementById('quantity');
-    const currentValue = parseInt(input.value, 10) || 1;
-    if (currentValue > 1) {
-      input.value = currentValue - 1;
-      updateTotalPrice();
+  function decreaseQuantity(event) {
+    // Determine which quantity input to use based on the clicked button
+    const button = event ? event.target : null;
+    const isDesktop = button && button.closest('.d-none.d-lg-block');
+    
+    const inputId = isDesktop ? 'quantity-desktop' : 'quantity';
+    const input = document.getElementById(inputId);
+    
+    if (input) {
+      const currentValue = parseInt(input.value, 10) || 1;
+      if (currentValue > 1) {
+        input.value = currentValue - 1;
+        updateTotalPrice();
+      }
     }
   }
 
   function updateTotalPrice() {
-    const quantity = parseInt(document.getElementById('quantity').value, 10) || 1;
-    const total = (product.price * quantity).toFixed(2);
-    document.getElementById('totalPrice').textContent = `€${total}`;
+    // Update both mobile and desktop total prices
+    const mobileQuantity = parseInt(document.getElementById('quantity')?.value, 10) || 1;
+    const desktopQuantity = parseInt(document.getElementById('quantity-desktop')?.value, 10) || 1;
     
-    // Also update desktop price if element exists
-    const totalPriceDesktop = document.getElementById('totalPriceDesktop');
-    if (totalPriceDesktop) {
-      totalPriceDesktop.textContent = `€${total}`;
-    }
+    // Einfache Berechnung: Gesamtpreis = Menge × Einzelpreis
+    const mobileTotal = (product.price * mobileQuantity).toFixed(2);
+    const desktopTotal = (product.price * desktopQuantity).toFixed(2);
+    
+    // Update current price displays (zeigt jetzt den Gesamtpreis)
+    const mobileCurrentPriceElements = document.querySelectorAll('.d-lg-none .current-price');
+    const desktopCurrentPriceElements = document.querySelectorAll('.d-none.d-lg-block .current-price');
+    
+    mobileCurrentPriceElements.forEach(element => {
+      element.textContent = `€${mobileTotal}`;
+    });
+    
+    desktopCurrentPriceElements.forEach(element => {
+      element.textContent = `€${desktopTotal}`;
+    });
+    
+    // Update total prices
+    const mobileTotalElement = document.getElementById('totalPrice');
+    const desktopTotalElement = document.getElementById('totalPriceDesktop');
+    
+    if (mobileTotalElement) mobileTotalElement.textContent = `€${mobileTotal}`;
+    if (desktopTotalElement) desktopTotalElement.textContent = `€${desktopTotal}`;
   }
 
-  function addToCartWithQuantity() {
-    // Check which quantity input to use based on screen size or button context
-    let quantityInput = document.getElementById('quantity');
-    if (window.innerWidth >= 992) { // Desktop
-      const desktopInput = document.getElementById('quantity-desktop');
-      if (desktopInput) {
-        quantityInput = desktopInput;
-      }
-    }
+  function addToCartWithQuantity(event) {
+    // Determine which quantity input to use based on the clicked button
+    const button = event ? event.target : null;
+    const isDesktop = button && button.closest('.d-none.d-lg-block');
     
-    const quantity = parseInt(quantityInput.value, 10) || 1;
+    const inputId = isDesktop ? 'quantity-desktop' : 'quantity';
+    const quantityInput = document.getElementById(inputId);
+    const quantity = quantityInput ? parseInt(quantityInput.value, 10) || 1 : 1;
+    
     const productToCart = {
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      image: product.image,
-      description: product.description,
+      ...product,
       quantity: quantity
     };
     addToCart(productToCart);
+    
+    // Enhanced animations for product page - wishlist style for quick order
+    triggerQuickOrderAnimation();
+    triggerNavCartAnimation();
+    
     // Popup anzeigen statt direkter Weiterleitung
     if (typeof showAlert === 'function') {
       showAlert('Produkt zum Warenkorb hinzugefügt', 'cart.html');
     } else {
       showNotification('Zum Warenkorb hinzugefügt');
     }
-    
-    // Trigger animation
-    const button = event.target;
-    if (button) {
-      button.classList.add('success-animation');
-      setTimeout(() => {
-        button.classList.remove('success-animation');
-      }, 800);
-    }
   }
   document.addEventListener('DOMContentLoaded', function() {
-    // Hero Wishlist-Button
-    let heroWishlistBtn = document.getElementById('wishlistBtn');
-    if (heroWishlistBtn) {
-      heroWishlistBtn.addEventListener('click', function(e) {
+    // Wishlist-Button
+    let wishlistBtn = document.getElementById('wishlistBtn');
+    if (!wishlistBtn) {
+      // Fallback: Erstelle Button, falls nicht vorhanden
+      const hero = document.querySelector('.product-hero .col-lg-6');
+      if (hero) {
+        wishlistBtn = document.createElement('button');
+        wishlistBtn.id = 'wishlistBtn';
+        wishlistBtn.className = 'btn btn-outline-light btn-lg ms-2';
+        hero.appendChild(wishlistBtn);
+      }
+    }
+    if (wishlistBtn) {
+      wishlistBtn.addEventListener('click', function(e) {
         e.preventDefault();
         toggleWishlist(product);
-        
-        // Trigger animation
-        heroWishlistBtn.classList.add('success-animation');
-        setTimeout(() => {
-          heroWishlistBtn.classList.remove('success-animation');
-        }, 800);
-      });
-      updateWishlistButton();
-    }
-    
-    // Hero Cart-Button
-    let heroCartBtn = document.getElementById('heroCartBtn');
-    if (heroCartBtn) {
-      heroCartBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        // Use mobile quantity by default for hero button
-        const quantity = parseInt(document.getElementById('quantity').value, 10) || 1;
-        const productToCart = {
-          id: product.id,
-          name: product.name,
-          price: product.price,
-          image: product.image,
-          description: product.description,
-          quantity: quantity
-        };
-        addToCart(productToCart);
-        // Popup anzeigen statt direkter Weiterleitung
-        if (typeof showAlert === 'function') {
-          showAlert('Produkt zum Warenkorb hinzugefügt', 'cart.html');
-        } else {
-          showNotification('Zum Warenkorb hinzugefügt');
-        }
-        
-        // Trigger animation
-        heroCartBtn.classList.add('success-animation');
-        setTimeout(() => {
-          heroCartBtn.classList.remove('success-animation');
-        }, 800);
       });
     }
-    
-    // Mobile Wishlist Button
-    let mobileWishlistBtn = document.getElementById('mobileWishlistBtn');
-    if (mobileWishlistBtn) {
-      mobileWishlistBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        toggleWishlist(product);
-        
-        // Trigger animation
-        mobileWishlistBtn.classList.add('success-animation');
-        setTimeout(() => {
-          mobileWishlistBtn.classList.remove('success-animation');
-        }, 800);
-      });
-    }
-    
-    // Desktop Wishlist Button
-    let desktopWishlistBtn = document.getElementById('desktopWishlistBtn');
-    if (desktopWishlistBtn) {
-      desktopWishlistBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        toggleWishlist(product);
-        
-        // Trigger animation
-        desktopWishlistBtn.classList.add('success-animation');
-        setTimeout(() => {
-          desktopWishlistBtn.classList.remove('success-animation');
-        }, 800);
-      });
-    }
-    
 
-    
-    // Update all wishlist buttons on page load
-    updateWishlistButton();
-    
-    // Update mobile and desktop wishlist buttons
-    const mobileBtn = document.getElementById('mobileWishlistBtn');
-    const desktopBtn = document.getElementById('desktopWishlistBtn');
-    
-    if (mobileBtn) {
-      if (isInWishlist(product.id)) {
-        mobileBtn.classList.add('active');
-        mobileBtn.innerHTML = '<i class="bi bi-heart-fill"></i> Entfernen';
-      } else {
-        mobileBtn.classList.remove('active');
-        mobileBtn.innerHTML = '<i class="bi bi-heart"></i> Zur Wunschliste';
-      }
-    }
-    
-    if (desktopBtn) {
-      if (isInWishlist(product.id)) {
-        desktopBtn.classList.add('active');
-        desktopBtn.innerHTML = '<i class="bi bi-heart-fill"></i> Entfernen';
-      } else {
-        desktopBtn.classList.remove('active');
-        desktopBtn.innerHTML = '<i class="bi bi-heart"></i> Zur Wunschliste';
-      }
-    }
-    
-    // Event-Listener für Quantity-Input
+    // Event-Listener für Quantity-Input (Mobile)
     const quantityInput = document.getElementById('quantity');
     if (quantityInput) {
       quantityInput.addEventListener('input', updateTotalPrice);
       quantityInput.addEventListener('change', updateTotalPrice);
-      updateTotalPrice(); // Initialisiere den Preis
     }
-    
-    // Event-Listener für Desktop Quantity-Input
+
+    // Event-Listener für Quantity-Input (Desktop)
     const quantityInputDesktop = document.getElementById('quantity-desktop');
     if (quantityInputDesktop) {
       quantityInputDesktop.addEventListener('input', updateTotalPrice);
       quantityInputDesktop.addEventListener('change', updateTotalPrice);
     }
+
+    // Initialisiere die Preise
+    updateTotalPrice();
+    
+    // Initialize all wishlist buttons with correct status
+    updateAllWishlistButtons();
   });
 </script>
 </body>
