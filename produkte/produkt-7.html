@@ -146,13 +146,13 @@
                                 <label class="quantity-label">Menge:</label>
                                 <div class="quantity-input-group">
                                     <button class="quantity-btn" onclick="decreaseQuantity(event)">-</button>
-                                    <input type="number" class="quantity-input" id="quantity" value="1" min="1" max="10">
+                                    <input type="number" class="quantity-input" id="quantity-mobile" value="1" min="1" max="10">
                                     <button class="quantity-btn" onclick="increaseQuantity(event)">+</button>
                                 </div>
                             </div>
                             <div class="price-section">
-                                <div class="current-price">€30.00</div>
-                                <div class="total-price">Gesamt: <span id="totalPrice">€30.00</span></div>
+                                <div class="current-price">€<span id="currentPrice-mobile">30.00</span></div>
+                                <div class="total-price">Gesamt: <span id="totalPrice-mobile" class="text-success">€30.00</span></div>
                             </div>
                             <div class="action-buttons">
                                 <button class="buy-now-btn add-to-cart" onclick="addToCartWithQuantity()">
@@ -193,7 +193,7 @@
                             
                             <div class="price-section">
                                 <div class="current-price">€<span id="currentPrice">30.00</span></div>
-                                <div class="total-price">Gesamt: €<span id="totalPrice">30.00</span></div>
+                                <div class="total-price">Gesamt: €<span id="totalPrice" class="text-success">30.00</span></div>
                             </div>
                             
                             <div class="action-buttons">
@@ -592,37 +592,71 @@
   // Mengenfunktionen für Schnellbestellung
   function decreaseQuantity(event) {
     if (event) event.preventDefault();
-    const quantityInput = document.getElementById('quantity');
-    const currentValue = parseInt(quantityInput.value, 10) || 1;
+    const quantityInputMobile = document.getElementById('quantity-mobile');
+    const quantityInputDesktop = document.getElementById('quantity');
+    const currentValue = quantityInputMobile ? parseInt(quantityInputMobile.value, 10) || 1 : 
+                         quantityInputDesktop ? parseInt(quantityInputDesktop.value, 10) || 1 : 1;
+    
     if (currentValue > 1) {
-      quantityInput.value = currentValue - 1;
+      if (quantityInputMobile) quantityInputMobile.value = currentValue - 1;
+      if (quantityInputDesktop) quantityInputDesktop.value = currentValue - 1;
       updatePrices();
     }
   }
 
   function increaseQuantity(event) {
     if (event) event.preventDefault();
-    const quantityInput = document.getElementById('quantity');
-    const currentValue = parseInt(quantityInput.value, 10) || 1;
+    const quantityInputMobile = document.getElementById('quantity-mobile');
+    const quantityInputDesktop = document.getElementById('quantity');
+    const currentValue = quantityInputMobile ? parseInt(quantityInputMobile.value, 10) || 1 : 
+                         quantityInputDesktop ? parseInt(quantityInputDesktop.value, 10) || 1 : 1;
+    
     if (currentValue < 10) {
-      quantityInput.value = currentValue + 1;
+      if (quantityInputMobile) quantityInputMobile.value = currentValue + 1;
+      if (quantityInputDesktop) quantityInputDesktop.value = currentValue + 1;
       updatePrices();
     }
   }
 
   function updatePrices() {
-    const quantityInput = document.getElementById('quantity');
-    const currentPriceSpan = document.getElementById('currentPrice');
-    const totalPriceSpan = document.getElementById('totalPrice');
+    const quantityInputMobile = document.getElementById('quantity-mobile');
+    const quantityInputDesktop = document.getElementById('quantity');
+    const currentPriceMobile = document.getElementById('currentPrice-mobile');
+    const currentPriceDesktop = document.getElementById('currentPrice');
+    const totalPriceMobile = document.getElementById('totalPrice-mobile');
+    const totalPriceDesktop = document.getElementById('totalPrice');
     const buyBtn = document.querySelector('.buy-now-btn');
     
-    const qty = parseInt(quantityInput.value, 10) || 1;
+    // Get quantity from whichever input is available
+    const qty = quantityInputMobile ? parseInt(quantityInputMobile.value, 10) || 1 : 
+               quantityInputDesktop ? parseInt(quantityInputDesktop.value, 10) || 1 : 1;
     const total = (product.price * qty).toFixed(2);
     
-    if (currentPriceSpan) currentPriceSpan.textContent = product.price.toFixed(2);
-    if (totalPriceSpan) totalPriceSpan.textContent = total;
+    // Sync quantity between mobile and desktop inputs
+    if (quantityInputMobile && quantityInputDesktop) {
+      quantityInputMobile.value = qty;
+      quantityInputDesktop.value = qty;
+    }
+    
+    // Update price displays
+    if (currentPriceMobile) currentPriceMobile.textContent = product.price.toFixed(2);
+    if (currentPriceDesktop) currentPriceDesktop.textContent = product.price.toFixed(2);
+    if (totalPriceMobile) totalPriceMobile.textContent = '€' + total;
+    if (totalPriceDesktop) totalPriceDesktop.textContent = '€' + total;
+    
+    // Update buy now button text
     if (buyBtn) {
       buyBtn.innerHTML = `<i class="bi bi-cart-plus"></i> Jetzt kaufen - €${total}`;
+    }
+    
+    // Trigger animation for visual feedback
+    if (quantityInputMobile) {
+      quantityInputMobile.classList.add('success-animation');
+      setTimeout(() => quantityInputMobile.classList.remove('success-animation'), 300);
+    }
+    if (quantityInputDesktop) {
+      quantityInputDesktop.classList.add('success-animation');
+      setTimeout(() => quantityInputDesktop.classList.remove('success-animation'), 300);
     }
   }
 
