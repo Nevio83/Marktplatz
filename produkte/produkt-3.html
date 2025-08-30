@@ -373,8 +373,8 @@
             const bundleId = bundle.bundleId;
             const existing = cart.find(item => item.bundleId === bundleId);
             if (existing) {
-                // Bei Bundles immer nur 1 erlauben
-                existing.quantity = 1;
+                // Erhöhe die Menge bei wiederholtem Hinzufügen
+                existing.quantity++;
             } else {
                 cart.push({
                     id: product.id,
@@ -384,7 +384,7 @@
                     description: bundle.description,
                     bundleId: bundleId,
                     bundleItems: [], // Keine Items für die neue Staffel
-                    quantity: 1 // Bundles haben immer Menge 1
+                    quantity: 1
                 });
             }
             setCart(cart);
@@ -504,16 +504,18 @@
             localStorage.setItem('cart', JSON.stringify(cart));
         }
         function addToCart(product) {
-            let cart = getCart();
-            const existing = cart.find(item => Number(item.id) === Number(product.id));
-            if (existing) {
-                existing.quantity += product.quantity || 1;
-            } else {
-                cart.push({ ...product, quantity: product.quantity || 1 });
-            }
-            setCart(cart);
-        }
-        
+  let cart = getCart();
+  // Only match regular products (items without bundleId)
+  const existing = cart.find(item => Number(item.id) === Number(product.id) && !item.bundleId);
+  if (existing) {
+    existing.quantity += product.quantity || 1;
+  } else {
+    cart.push({ ...product, quantity: product.quantity || 1 });
+  }
+  setCart(cart);
+  // Keine direkte Weiterleitung mehr, da wir das Popup verwenden
+}        
+
         // showAlert function for cart popup
         function showAlert(message, redirectTo = 'cart.html') {
             const alert = document.createElement('div');

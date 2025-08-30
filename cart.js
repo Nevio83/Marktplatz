@@ -303,7 +303,7 @@ function updateCartPage() {
                     <div class="addon-list">
                         ${randomProducts.map(product => `
                             <div class="addon-card">
-                                <img src="${product.image}" class="addon-card-img" alt="${product.name}">
+                                <img src="${product.image.startsWith('produkt bilder/') ? product.image : product.image.replace('../', '')}" class="addon-card-img" alt="${product.name}">
                                 <div class="addon-card-info">
                                     <div class="addon-card-title">${product.name}</div>
                                     <div class="addon-card-price">${currentCurrency.symbol}${product.price.toFixed(2)}</div>
@@ -369,27 +369,21 @@ function updateCartPage() {
                 <div id="cartItemsList">
                     ${cartItems.map(item => `
                         <div class="cart-item" data-id="${item.id}">
-                            <img src="${item.image}" alt="${item.name}" class="cart-item-image">
+                            <img src="${item.image.startsWith('produkt bilder/') ? item.image : item.image.replace('../', '')}" alt="${item.name}" class="cart-item-image">
                             <div class="cart-item-details">
                                 <h5>${item.name}</h5>
                                 <div class="cart-item-price">${currentCurrency.symbol}${convertPrice(item.price, currentCurrency.code).toFixed(2)}</div>
                             </div>
-                            ${item.bundleId ? `
-                                <div class="quantity-controls disabled">
-                                    <span class="quantity-display">1</span>
-                                </div>
-                            ` : `
-                                <div class="quantity-controls">
-                                    <button class="quantity-btn" onclick="changeQuantity(${item.id}, -1)">
-                                        <i class="bi bi-dash"></i>
-                                    </button>
-                                    <span class="quantity-display">${item.quantity}</span>
-                                    <button class="quantity-btn" onclick="changeQuantity(${item.id}, 1)">
-                                        <i class="bi bi-plus"></i>
-                                    </button>
-                                </div>
-                            `}
-                            <button class="remove-btn" onclick="removeFromCart(${item.id})">
+                            <div class="quantity-controls">
+                                <button class="quantity-btn" onclick="changeQuantity(${item.id}, -1)">
+                                    <i class="bi bi-dash"></i>
+                                </button>
+                                <span class="quantity-display">${item.quantity}</span>
+                                <button class="quantity-btn" onclick="changeQuantity(${item.id}, 1)">
+                                    <i class="bi bi-plus"></i>
+                                </button>
+                            </div>
+                            <button class="remove-btn" onclick="removeFromCart('${item.id}')">
                                 <i class="bi bi-trash"></i>
                             </button>
                         </div>
@@ -408,7 +402,7 @@ function updateCartPage() {
                     <div class="addon-list">
                         ${addonProducts.map(addon => `
                             <div class="addon-card">
-                                <img src="${addon.image}" class="addon-card-img" alt="${addon.name}">
+                                <img src="${addon.image.startsWith('produkt bilder/') ? addon.image : addon.image.replace('../', '')}" class="addon-card-img" alt="${addon.name}">
                                 <div class="addon-card-info">
                                     <div class="addon-card-title">${addon.name}</div>
                                     <div class="addon-card-price">${currentCurrency.symbol}${convertPrice(addon.price, currentCurrency.code).toFixed(2)}</div>
@@ -611,6 +605,11 @@ function updateCartPage() {
                         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>
                         <span class="button-text"><i class="bi bi-lock"></i> Jetzt bestellen - ${currentCurrency.symbol}${total.toFixed(2)}</span>
                     </button>
+                    
+                    <!-- Clear Cart Button -->
+                    <button type="button" onclick="clearCart()" class="btn btn-outline-danger w-100 mt-3" style="border-radius: 12px; padding: 12px; font-weight: 500;">
+                        <i class="bi bi-trash"></i> Warenkorb leeren
+                    </button>
                 </form>
             </div>
         </div>
@@ -650,10 +649,10 @@ function changeQuantity(productId, change) {
     const itemIndex = cart.findIndex(item => item.id === productId);
     
     if (itemIndex !== -1) {
-        // Bei Bundles (Items mit bundleId) keine Mengenänderung erlauben
-        if (cart[itemIndex].bundleId) {
-            return; // Keine Änderung bei Bundles
-        }
+        // Bundles können jetzt auch in der Menge geändert werden
+        // if (cart[itemIndex].bundleId) {
+        //     return; // Keine Änderung bei Bundles
+        // }
         
         cart[itemIndex].quantity += change;
         if (cart[itemIndex].quantity <= 0) {
@@ -680,8 +679,21 @@ function changeQuantity(productId, change) {
 }
 
 function removeFromCart(productId) {
+    console.log('removeFromCart called with productId:', productId, 'type:', typeof productId);
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
-    cart = cart.filter(item => Number(item.id) !== Number(productId));
+    console.log('Cart before removal:', cart);
+    
+    const originalLength = cart.length;
+    cart = cart.filter(item => {
+        const itemId = Number(item.id);
+        const targetId = Number(productId);
+        console.log('Comparing item ID:', itemId, 'with target ID:', targetId, 'match:', itemId === targetId);
+        return itemId !== targetId;
+    });
+    
+    console.log('Cart after removal:', cart);
+    console.log('Items removed:', originalLength - cart.length);
+    
     localStorage.setItem('cart', JSON.stringify(cart));
     if (typeof updateCartCounter === 'function') {
         updateCartCounter();
@@ -689,8 +701,10 @@ function removeFromCart(productId) {
     
     // Check if we're on the cart page or main page
     if (window.location.pathname.includes('cart.html')) {
-        // If on cart page, redirect to cart.html
-        window.location.href = 'cart.html';
+        // If on cart page, update the cart page instead of redirecting
+        if (typeof updateCartPage === 'function') {
+            updateCartPage();
+        }
     } else {
         // If on main page, just update the dropdown
         if (typeof renderCartDropdown === 'function') {

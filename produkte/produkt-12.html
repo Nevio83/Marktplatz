@@ -397,15 +397,16 @@
             localStorage.setItem('cart', JSON.stringify(cart));
   }
   function addToCart(product) {
-      let cart = getCart();
-      const existing = cart.find(item => Number(item.id) === Number(product.id));
-      if (existing) {
-          existing.quantity += product.quantity || 1;
-      } else {
-          cart.push({ ...product, quantity: product.quantity || 1 });
-      }
-      setCart(cart);
-      // Keine direkte Weiterleitung mehr, da wir das Popup verwenden
+    let cart = getCart();
+    // Only match regular products (items without bundleId)
+    const existing = cart.find(item => Number(item.id) === Number(product.id) && !item.bundleId);
+    if (existing) {
+      existing.quantity += product.quantity || 1;
+    } else {
+      cart.push({ ...product, quantity: product.quantity || 1 });
+    }
+    setCart(cart);
+    // Keine direkte Weiterleitung mehr, da wir das Popup verwenden
   }
   
   // showAlert function for cart popup
@@ -492,7 +493,8 @@
     const bundleId = bundle.bundleId;
     const existing = cart.find(item => item.bundleId === bundleId);
     if (existing) {
-        existing.quantity = 1;
+        // Erhöhe die Menge bei wiederholtem Hinzufügen
+        existing.quantity++;
     } else {
         cart.push({
             id: product.id,
@@ -506,6 +508,25 @@
         });
     }
     setCart(cart);
+    
+    // Trigger same animations as regular cart buttons
+    const bundleButton = document.querySelector('.bundle-add-btn');
+    if (bundleButton) {
+      bundleButton.classList.add('success-animation');
+      setTimeout(() => {
+        bundleButton.classList.remove('success-animation');
+      }, 600);
+    }
+    
+    // Animate navigation cart
+    const cartNavLink = document.querySelector('.cart-nav-link');
+    if (cartNavLink) {
+      cartNavLink.classList.add('cart-rainbow-bounce');
+      setTimeout(() => {
+        cartNavLink.classList.remove('cart-rainbow-bounce');
+      }, 1000);
+    }
+    
     // Popup anzeigen statt direkter Weiterleitung
     if (typeof showAlert === 'function') {
       showAlert('Bundle zum Warenkorb hinzugefügt', 'cart.html');
@@ -677,8 +698,8 @@
     };
     addToCart(productToCart);
     
-    // Enhanced animations for product page - wishlist style for quick order
-    triggerQuickOrderAnimation();
+    // Enhanced animations for product page - only animate the clicked button
+    triggerQuickOrderAnimation(button);
     triggerNavCartAnimation();
     
     if (typeof showAlert === 'function') {
@@ -688,14 +709,14 @@
     }
   }
 
-  function triggerQuickOrderAnimation() {
-    const quickOrderCards = document.querySelectorAll('.quick-order-card');
-    quickOrderCards.forEach(card => {
-      card.classList.add('success-animation');
+  function triggerQuickOrderAnimation(button) {
+    // Only animate the specific button that was clicked
+    if (button) {
+      button.classList.add('success-animation');
       setTimeout(() => {
-        card.classList.remove('success-animation');
-      }, 800);
-    });
+        button.classList.remove('success-animation');
+      }, 600);
+    }
   }
 
   // Added animation functions for consistent behavior

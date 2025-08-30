@@ -340,21 +340,17 @@ window.updateCartCounter = function() {
       counter.style.display = 'flex';
     }
     
-    // Prevent automatic dropdown refresh during animation
-    // Dropdown will update only when manually opened
-    /* 
+    // Update dropdown if it's currently open
     const cartDropdown = document.getElementById('cartDropdown');
     if (cartDropdown && cartDropdown.classList.contains('show')) {
       if (typeof renderCartDropdown === 'function') {
         renderCartDropdown();
       }
     }
-    */
   } else {
     console.log('Cart counter element not found');
   }
 };
-
 // Animation trigger functions
 function triggerCartButtonAnimation(productId) {
   // Animate the specific add-to-cart button that was clicked
@@ -629,18 +625,12 @@ function renderCartDropdown() {
         </div>
       </div>
       <div class="cart-item-controls">
-        ${item.bundleId ? `
-          <div class="quantity-controls disabled">
-            <span class="quantity-display">1</span>
-          </div>
-        ` : `
-          <div class="quantity-controls" style="display: flex; align-items: center; gap: 4px;">
-            <button class="quantity-btn" onclick="changeQuantity(${Number(item.id)}, -1)" style="cursor: pointer; pointer-events: auto;">-</button>
-            <span class="quantity-display">${item.quantity}</span>
-            <button class="quantity-btn" onclick="changeQuantity(${Number(item.id)}, 1)" style="cursor: pointer; pointer-events: auto;">+</button>
-          </div>
-        `}
-        <button class="remove-item" onclick="removeFromCart(${Number(item.id)})" style="cursor: pointer; pointer-events: auto;">&times;</button>
+        <div class="quantity-controls" style="display: flex; align-items: center; gap: 4px;">
+          <button class="quantity-btn" onclick="changeQuantity(${Number(item.id)}, -1)" style="cursor: pointer; pointer-events: auto;">-</button>
+          <span class="quantity-display">${item.quantity}</span>
+          <button class="quantity-btn" onclick="changeQuantity(${Number(item.id)}, 1)" style="cursor: pointer; pointer-events: auto;">+</button>
+        </div>
+        <button class="remove-item" onclick="removeFromCart('${item.id}')" style="cursor: pointer; pointer-events: auto;">&times;</button>
       </div>
     </div>
   `).join('');

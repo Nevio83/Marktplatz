@@ -399,8 +399,8 @@
     const bundleId = bundle.bundleId;
     const existing = cart.find(item => item.bundleId === bundleId);
     if (existing) {
-        // Bei Bundles immer nur 1 erlauben
-        existing.quantity = 1;
+        // Erhöhe die Menge bei wiederholtem Hinzufügen
+        existing.quantity++;
     } else {
         cart.push({
             id: product.id,
@@ -410,7 +410,7 @@
             description: bundle.description,
             bundleId: bundleId,
             bundleItems: [], // Keine Items für die neue Staffel
-            quantity: 1 // Bundles haben immer Menge 1
+            quantity: 1
         });
     }
     setCart(cart);
@@ -543,13 +543,14 @@ function updateWishlistButton() {
   }
   function addToCart(product) {
     let cart = getCart();
-    const existing = cart.find(item => Number(item.id) === Number(product.id));
+    // Only match regular products (items without bundleId)
+    const existing = cart.find(item => Number(item.id) === Number(product.id) && !item.bundleId);
     if (existing) {
       existing.quantity += product.quantity || 1;
     } else {
       cart.push({ ...product, quantity: product.quantity || 1 });
     }
-        setCart(cart);
+    setCart(cart);
     // Keine direkte Weiterleitung mehr, da wir das Popup verwenden
   }
   
@@ -900,19 +901,7 @@ function triggerWishlistButtonAnimation(productId) {
       });
       updateWishlistButton();
     }
-    let cartBtn = document.getElementById('cartBtn');
-    if (cartBtn) {
-      cartBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        addToCart(product);
-        // Popup anzeigen statt direkter Weiterleitung
-        if (typeof showAlert === 'function') {
-          showAlert('Produkt zum Warenkorb hinzugefügt', 'cart.html');
-        } else {
-          showNotification('Zum Warenkorb hinzugefügt');
-        }
-      });
-    }
+    // Cart button uses onclick attribute, no need for additional event listener
     
     // Dynamischer Preis für Schnellbestellung
     const quantityInput = document.getElementById('quantity');

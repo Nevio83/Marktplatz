@@ -410,26 +410,45 @@
     const bundleId = `${product.id}-${bundle.id}`;
     const existing = cart.find(item => item.bundleId === bundleId);
     if (existing) {
-      // Bei Bundles immer nur 1 erlauben
-      existing.quantity = 1;
+      // Erhöhe die Menge bei wiederholtem Hinzufügen
+      existing.quantity++;
     } else {
       cart.push({
         id: product.id,
-        name: product.name + ' - ' + bundle.name,
+        name: bundle.name,
         price: bundle.price,
         image: product.image,
         description: bundle.description,
         bundleId: bundleId,
-        bundleItems: bundle.items,
+        bundleItems: [], // Keine Items für die neue Staffel
         quantity: 1
       });
     }
     setCart(cart);
-    // Popup anzeigen statt direkter Weiterleitung
+    
+    // Trigger same animations as regular cart buttons
+    const bundleButton = document.querySelector('.bundle-add-btn');
+    if (bundleButton) {
+      bundleButton.classList.add('success-animation');
+      setTimeout(() => {
+        bundleButton.classList.remove('success-animation');
+      }, 600);
+    }
+    
+    // Animate navigation cart
+    const cartNavLink = document.querySelector('.cart-nav-link');
+    if (cartNavLink) {
+      cartNavLink.classList.add('cart-rainbow-bounce');
+      setTimeout(() => {
+        cartNavLink.classList.remove('cart-rainbow-bounce');
+      }, 1000);
+    }
+    
+    // Show notification
     if (typeof showAlert === 'function') {
       showAlert('Bundle zum Warenkorb hinzugefügt', 'cart.html');
     } else {
-      showNotification('Bundle zum Warenkorb hinzugefügt');
+      showNotification('Bundle hinzugefügt');
     }
   }
 
@@ -500,7 +519,8 @@
   }
   function addToCart(product) {
     let cart = getCart();
-    const existing = cart.find(item => Number(item.id) === Number(product.id));
+    // Only match regular products (items without bundleId)
+    const existing = cart.find(item => Number(item.id) === Number(product.id) && !item.bundleId);
     if (existing) {
       existing.quantity += product.quantity || 1;
     } else {
