@@ -193,7 +193,7 @@
                             
                             <div class="price-section">
                                 <div class="current-price">€<span id="currentPrice">30.00</span></div>
-                                <div class="total-price">Gesamt: €<span id="totalPrice" class="text-success">30.00</span></div>
+                                <div class="total-price">Gesamt: <span id="totalPrice" class="text-success">€30.00</span></div>
                             </div>
                             
                             <div class="action-buttons">
@@ -589,75 +589,104 @@
     }, 2000);
   }
 
-  // Mengenfunktionen für Schnellbestellung
-  function decreaseQuantity(event) {
-    if (event) event.preventDefault();
-    const quantityInputMobile = document.getElementById('quantity-mobile');
-    const quantityInputDesktop = document.getElementById('quantity');
-    const currentValue = quantityInputMobile ? parseInt(quantityInputMobile.value, 10) || 1 : 
-                         quantityInputDesktop ? parseInt(quantityInputDesktop.value, 10) || 1 : 1;
-    
-    if (currentValue > 1) {
-      if (quantityInputMobile) quantityInputMobile.value = currentValue - 1;
-      if (quantityInputDesktop) quantityInputDesktop.value = currentValue - 1;
-      updatePrices();
-    }
-  }
-
+  // Funktionen für die Schnellbestellung (wie in Produkt 1)
   function increaseQuantity(event) {
-    if (event) event.preventDefault();
-    const quantityInputMobile = document.getElementById('quantity-mobile');
-    const quantityInputDesktop = document.getElementById('quantity');
-    const currentValue = quantityInputMobile ? parseInt(quantityInputMobile.value, 10) || 1 : 
-                         quantityInputDesktop ? parseInt(quantityInputDesktop.value, 10) || 1 : 1;
+    // Determine which quantity input to use based on the clicked button
+    const button = event ? event.target : null;
+    const isDesktop = button && button.closest('.d-none.d-lg-block');
     
-    if (currentValue < 10) {
-      if (quantityInputMobile) quantityInputMobile.value = currentValue + 1;
-      if (quantityInputDesktop) quantityInputDesktop.value = currentValue + 1;
-      updatePrices();
+    const inputId = isDesktop ? 'quantity' : 'quantity-mobile';
+    const input = document.getElementById(inputId);
+    
+    if (input) {
+      const currentValue = parseInt(input.value, 10) || 1;
+      if (currentValue < 10) {
+        input.value = currentValue + 1;
+        updateTotalPrice();
+      }
     }
   }
 
-  function updatePrices() {
-    const quantityInputMobile = document.getElementById('quantity-mobile');
-    const quantityInputDesktop = document.getElementById('quantity');
-    const currentPriceMobile = document.getElementById('currentPrice-mobile');
-    const currentPriceDesktop = document.getElementById('currentPrice');
-    const totalPriceMobile = document.getElementById('totalPrice-mobile');
-    const totalPriceDesktop = document.getElementById('totalPrice');
-    const buyBtn = document.querySelector('.buy-now-btn');
+  function decreaseQuantity(event) {
+    // Determine which quantity input to use based on the clicked button
+    const button = event ? event.target : null;
+    const isDesktop = button && button.closest('.d-none.d-lg-block');
     
-    // Get quantity from whichever input is available
-    const qty = quantityInputMobile ? parseInt(quantityInputMobile.value, 10) || 1 : 
-               quantityInputDesktop ? parseInt(quantityInputDesktop.value, 10) || 1 : 1;
-    const total = (product.price * qty).toFixed(2);
+    const inputId = isDesktop ? 'quantity' : 'quantity-mobile';
+    const input = document.getElementById(inputId);
     
-    // Sync quantity between mobile and desktop inputs
-    if (quantityInputMobile && quantityInputDesktop) {
-      quantityInputMobile.value = qty;
-      quantityInputDesktop.value = qty;
+    if (input) {
+      const currentValue = parseInt(input.value, 10) || 1;
+      if (currentValue > 1) {
+        input.value = currentValue - 1;
+        updateTotalPrice();
+      }
     }
+  }
+
+  function updateTotalPrice() {
+    // Update both mobile and desktop total prices
+    const mobileQuantity = parseInt(document.getElementById('quantity-mobile')?.value, 10) || 1;
+    const desktopQuantity = parseInt(document.getElementById('quantity')?.value, 10) || 1;
     
-    // Update price displays
-    if (currentPriceMobile) currentPriceMobile.textContent = product.price.toFixed(2);
-    if (currentPriceDesktop) currentPriceDesktop.textContent = product.price.toFixed(2);
-    if (totalPriceMobile) totalPriceMobile.textContent = '€' + total;
-    if (totalPriceDesktop) totalPriceDesktop.textContent = '€' + total;
+    // Einfache Berechnung: Gesamtpreis = Menge × Einzelpreis
+    const mobileTotal = (product.price * mobileQuantity).toFixed(2);
+    const desktopTotal = (product.price * desktopQuantity).toFixed(2);
     
-    // Update buy now button text
-    if (buyBtn) {
-      buyBtn.innerHTML = `<i class="bi bi-cart-plus"></i> Jetzt kaufen - €${total}`;
-    }
+    // Update current price displays (zeigt jetzt den Gesamtpreis)
+    const mobileCurrentPriceElements = document.querySelectorAll('.d-lg-none .current-price');
+    const desktopCurrentPriceElements = document.querySelectorAll('.d-none.d-lg-block .current-price');
     
-    // Trigger animation for visual feedback
-    if (quantityInputMobile) {
-      quantityInputMobile.classList.add('success-animation');
-      setTimeout(() => quantityInputMobile.classList.remove('success-animation'), 300);
+    mobileCurrentPriceElements.forEach(element => {
+      element.textContent = `€${mobileTotal}`;
+    });
+    
+    desktopCurrentPriceElements.forEach(element => {
+      element.textContent = `€${desktopTotal}`;
+    });
+    
+    // Update total prices
+    const mobileTotalElement = document.getElementById('totalPrice-mobile');
+    const desktopTotalElement = document.getElementById('totalPrice');
+    
+    if (mobileTotalElement) mobileTotalElement.textContent = `€${mobileTotal}`;
+    if (desktopTotalElement) desktopTotalElement.textContent = `€${desktopTotal}`;
+  }
+
+  function addToCartWithQuantity(event) {
+    // Determine which quantity input to use based on the clicked button
+    const button = event ? event.target : null;
+    const isDesktop = button && button.closest('.d-none.d-lg-block');
+    
+    const inputId = isDesktop ? 'quantity' : 'quantity-mobile';
+    const quantityInput = document.getElementById(inputId);
+    const quantity = quantityInput ? parseInt(quantityInput.value, 10) || 1 : 1;
+    
+    const productToCart = {
+      ...product,
+      quantity: quantity
+    };
+    addToCart(productToCart);
+    
+    // Enhanced animations for product page - wishlist style for quick order
+    triggerQuickOrderAnimation();
+    triggerNavCartAnimation();
+    
+    if (typeof showAlert === 'function') {
+      showAlert('Produkt zum Warenkorb hinzugefügt', 'cart.html');
+    } else {
+      showNotification('Zum Warenkorb hinzugefügt');
     }
-    if (quantityInputDesktop) {
-      quantityInputDesktop.classList.add('success-animation');
-      setTimeout(() => quantityInputDesktop.classList.remove('success-animation'), 300);
-    }
+  }
+
+  function triggerQuickOrderAnimation() {
+    const quickOrderCards = document.querySelectorAll('.quick-order-card');
+    quickOrderCards.forEach(card => {
+      card.classList.add('success-animation');
+      setTimeout(() => {
+        card.classList.remove('success-animation');
+      }, 800);
+    });
   }
 
   document.addEventListener('DOMContentLoaded', function() {
@@ -708,22 +737,35 @@
     // Update both wishlist buttons on page load
     updateWishlistButton();
     
-    // Buy Now Button
+    // Event-Listener für Quantity-Input (Mobile)
+    const quantityInputMobile = document.getElementById('quantity-mobile');
+    if (quantityInputMobile) {
+      quantityInputMobile.addEventListener('input', updateTotalPrice);
+      quantityInputMobile.addEventListener('change', updateTotalPrice);
+    }
+
+    // Event-Listener für Quantity-Input (Desktop)
     const quantityInput = document.getElementById('quantity');
+    if (quantityInput) {
+      quantityInput.addEventListener('input', updateTotalPrice);
+      quantityInput.addEventListener('change', updateTotalPrice);
+    }
+
+    // Initialisiere die Preise
+    updateTotalPrice();
+    
+    // Buy Now Button
     const buyNowBtn = document.getElementById('buyNowBtn');
     
-    if (quantityInput && buyNowBtn) {
-      quantityInput.addEventListener('input', updatePrices);
-      quantityInput.addEventListener('change', updatePrices);
-      updatePrices();
-      
+    if (buyNowBtn) {
       buyNowBtn.addEventListener('click', function(e) {
         e.preventDefault();
         triggerCartButtonAnimation(this);
         triggerNavCartAnimation();
         triggerCartIconPulse();
         
-        const qty = parseInt(quantityInput.value, 10) || 1;
+        const qty = quantityInput ? parseInt(quantityInput.value, 10) || 1 : 
+                    quantityInputMobile ? parseInt(quantityInputMobile.value, 10) || 1 : 1;
         const productToCart = {
           ...product,
           quantity: qty

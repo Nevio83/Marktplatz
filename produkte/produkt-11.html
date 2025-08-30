@@ -147,16 +147,16 @@
                                 <label class="quantity-label">Menge:</label>
                                 <div class="quantity-input-group">
                                     <button class="quantity-btn" onclick="decreaseQuantity(event)">-</button>
-                                    <input type="number" class="quantity-input" id="quantity" value="1" min="1" max="10">
+                                    <input type="number" class="quantity-input" id="quantity-mobile" value="1" min="1" max="10">
                                     <button class="quantity-btn" onclick="increaseQuantity(event)">+</button>
                                 </div>
                             </div>
                             <div class="price-section">
-                                <div class="current-price">€42.00</div>
-                                <div class="total-price">Gesamt: <span id="totalPrice">€42.00</span></div>
+                                <div class="current-price">€<span id="currentPrice-mobile">42.00</span></div>
+                                <div class="total-price">Gesamt: <span id="totalPrice-mobile" class="text-success">€42.00</span></div>
                             </div>
                             <div class="action-buttons">
-                                <button class="buy-now-btn add-to-cart" onclick="addToCartWithQuantity()">
+                                <button class="buy-now-btn add-to-cart" onclick="addToCartWithQuantity(event)">
                                     <i class="bi bi-cart-plus"></i> Jetzt kaufen
                                 </button>
                                 <button class="wishlist-btn wishlist-style-btn wishlist-button" onclick="toggleWishlist(product)">
@@ -193,12 +193,12 @@
                             </div>
                             
                             <div class="price-section">
-                                <div class="current-price">€42.00</div>
-                                <div class="total-price">Gesamt: <span id="totalPrice">€42.00</span></div>
+                                <div class="current-price">€<span id="currentPrice">42.00</span></div>
+                                <div class="total-price">Gesamt: <span id="totalPrice" class="text-success">€42.00</span></div>
                             </div>
                             
                             <div class="action-buttons">
-                                <button class="buy-now-btn add-to-cart" id="buyNowBtn">
+                                <button class="buy-now-btn add-to-cart" id="buyNowBtn" onclick="addToCartWithQuantity(event)">
                                     <i class="bi bi-cart-plus"></i> Jetzt kaufen
                                 </button>
                                 <button class="wishlist-btn wishlist-style-btn wishlist-button" onclick="toggleWishlist(product)">
@@ -700,24 +700,103 @@
             }
         });
 
-        function addToCartWithQuantity() {
-            const quantity = parseInt(document.getElementById('quantity').value, 10) || 1;
+        function addToCartWithQuantity(event) {
+            // Determine which quantity input to use based on the clicked button
+            const button = event ? event.target : null;
+            const isDesktop = button && button.closest('.d-none.d-lg-block');
+            
+            const inputId = isDesktop ? 'quantity' : 'quantity-mobile';
+            const quantityInput = document.getElementById(inputId);
+            const quantity = quantityInput ? parseInt(quantityInput.value, 10) || 1 : 1;
+            
             const productToCart = {
                 ...product,
                 quantity: quantity
             };
             addToCart(productToCart);
             
-            const button = document.querySelector('.buy-now-btn');
-            triggerCartButtonAnimation(button);
+            // Enhanced animations for product page - wishlist style for quick order
+            triggerQuickOrderAnimation();
             triggerNavCartAnimation();
-            triggerCartIconPulse();
             
             if (typeof showAlert === 'function') {
                 showAlert('Produkt zum Warenkorb hinzugefügt', 'cart.html');
             } else {
                 showNotification('Zum Warenkorb hinzugefügt');
             }
+        }
+
+        function triggerQuickOrderAnimation() {
+            const quickOrderCards = document.querySelectorAll('.quick-order-card');
+            quickOrderCards.forEach(card => {
+                card.classList.add('success-animation');
+                setTimeout(() => {
+                    card.classList.remove('success-animation');
+                }, 800);
+            });
+        }
+
+        function increaseQuantity(event) {
+            // Determine which input to use based on the clicked button
+            const button = event ? event.target : null;
+            const isDesktop = button && button.closest('.d-none.d-lg-block');
+            
+            const inputId = isDesktop ? 'quantity' : 'quantity-mobile';
+            const input = document.getElementById(inputId);
+            
+            if (input) {
+                const currentValue = parseInt(input.value, 10) || 1;
+                if (currentValue < 10) {
+                    input.value = currentValue + 1;
+                    updateTotalPrice();
+                }
+            }
+        }
+
+        function decreaseQuantity(event) {
+            // Determine which input to use based on the clicked button
+            const button = event ? event.target : null;
+            const isDesktop = button && button.closest('.d-none.d-lg-block');
+            
+            const inputId = isDesktop ? 'quantity' : 'quantity-mobile';
+            const input = document.getElementById(inputId);
+            
+            if (input) {
+                const currentValue = parseInt(input.value, 10) || 1;
+                if (currentValue > 1) {
+                    input.value = currentValue - 1;
+                    updateTotalPrice();
+                }
+            }
+        }
+
+        function updateTotalPrice() {
+            // Update both mobile and desktop total prices
+            const mobileQuantity = parseInt(document.getElementById('quantity-mobile')?.value, 10) || 1;
+            const desktopQuantity = parseInt(document.getElementById('quantity')?.value, 10) || 1;
+            
+            // Einfache Berechnung: Gesamtpreis = Menge × Einzelpreis
+            const mobileTotal = (product.price * mobileQuantity).toFixed(2);
+            const desktopTotal = (product.price * desktopQuantity).toFixed(2);
+            
+            // Update current price displays (zeigt jetzt den Gesamtpreis)
+            const mobileCurrentPriceElements = document.querySelectorAll('.d-lg-none .current-price');
+            const desktopCurrentPriceElements = document.querySelectorAll('.d-none.d-lg-block .current-price');
+            
+            mobileCurrentPriceElements.forEach(element => {
+                element.textContent = `€${mobileTotal}`;
+            });
+            
+            desktopCurrentPriceElements.forEach(element => {
+                element.textContent = `€${desktopTotal}`;
+            });
+            
+            // Update total prices
+            const mobileTotalElement = document.getElementById('totalPrice-mobile');
+            const desktopTotalElement = document.getElementById('totalPrice');
+            
+            if (mobileTotalElement) mobileTotalElement.textContent = `€${mobileTotal}`;
+            if (desktopTotalElement) desktopTotalElement.textContent = `€${desktopTotal}`;
         }
     </script>
 </body>
