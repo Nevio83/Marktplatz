@@ -520,6 +520,52 @@ function initializeCartDropdown() {
       cartDropdown.style.display = 'none'; // Overlay immer ausblenden
     });
   }
+
+  // Close cart dropdown when clicking outside
+  document.addEventListener('click', (e) => {
+    if (cartDropdown && cartDropdown.classList.contains('show')) {
+      // Check if click is outside the cart dropdown and cart button
+      if (!cartDropdown.contains(e.target) && !cartButton.contains(e.target)) {
+        cartDropdown.classList.remove('show');
+        cartDropdown.style.display = 'none';
+      }
+    }
+  });
+
+  // Reset category filter when clicking on Marktplatz logo
+  const navbarBrand = document.querySelector('.navbar-brand');
+  if (navbarBrand) {
+    navbarBrand.addEventListener('click', (e) => {
+      e.preventDefault();
+      const categoryFilter = document.getElementById('categoryFilter');
+      const searchInput = document.getElementById('searchInput');
+      
+      if (categoryFilter) {
+        categoryFilter.value = 'Alle Kategorien';
+        categoryFilter.dispatchEvent(new Event('change'));
+      }
+      
+      // Reset custom dropdown
+      const customDropdown = document.getElementById('categoryDropdown');
+      const categorySelected = document.getElementById('categorySelected');
+      if (customDropdown && categorySelected) {
+        categorySelected.innerHTML = `
+          <span class="category-icon">📋</span>
+          <span class="category-text">Alle Kategorien</span>
+          <span class="dropdown-arrow">▼</span>
+        `;
+        customDropdown.classList.remove('open');
+      }
+      
+      if (searchInput) {
+        searchInput.value = '';
+        searchInput.dispatchEvent(new Event('input'));
+      }
+      
+      // Scroll to top
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
   
   // Initialize clear cart button
   const clearCartBtn = document.getElementById('clearCart');
@@ -841,12 +887,115 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
       console.log('Additional button initialization...');
       initializeAddToCartButtons();
+      initializeCustomDropdown();
     }, 500);
   });
   
   // Initialize category tiles
   initializeCategoryTiles();
 });
+
+// Custom Category Dropdown Functionality
+function initializeCustomDropdown() {
+  // Initialize Category Dropdown
+  const customDropdown = document.getElementById('categoryDropdown');
+  const categorySelected = document.getElementById('categorySelected');
+  const categoryOptions = document.getElementById('categoryOptions');
+  const categoryFilter = document.getElementById('categoryFilter');
+  
+  if (customDropdown && categorySelected && categoryOptions && categoryFilter) {
+    // Toggle dropdown
+    categorySelected.addEventListener('click', (e) => {
+      e.stopPropagation();
+      customDropdown.classList.toggle('open');
+      // Close price sort dropdown if open
+      const priceSortDropdown = document.getElementById('priceSortDropdown');
+      if (priceSortDropdown) {
+        priceSortDropdown.classList.remove('open');
+      }
+    });
+    
+    // Handle option selection
+    const options = categoryOptions.querySelectorAll('.custom-option');
+    options.forEach(option => {
+      option.addEventListener('click', (e) => {
+        e.stopPropagation();
+        
+        const value = option.getAttribute('data-value');
+        const icon = option.querySelector('.category-icon').textContent;
+        const text = option.querySelector('.category-text').textContent;
+        
+        // Update selected display
+        categorySelected.innerHTML = `
+          <span class="category-icon">${icon}</span>
+          <span class="category-text">${text}</span>
+          <span class="dropdown-arrow">▼</span>
+        `;
+        
+        // Update hidden select
+        categoryFilter.value = value;
+        categoryFilter.dispatchEvent(new Event('change'));
+        
+        // Close dropdown
+        customDropdown.classList.remove('open');
+      });
+    });
+  }
+  
+  // Initialize Price Sort Dropdown
+  const priceSortDropdown = document.getElementById('priceSortDropdown');
+  const priceSortSelected = document.getElementById('priceSortSelected');
+  const priceSortOptions = document.getElementById('priceSortOptions');
+  const priceSort = document.getElementById('priceSort');
+  
+  if (priceSortDropdown && priceSortSelected && priceSortOptions && priceSort) {
+    // Toggle dropdown
+    priceSortSelected.addEventListener('click', (e) => {
+      e.stopPropagation();
+      priceSortDropdown.classList.toggle('open');
+      // Close category dropdown if open
+      if (customDropdown) {
+        customDropdown.classList.remove('open');
+      }
+    });
+    
+    // Handle option selection
+    const options = priceSortOptions.querySelectorAll('.custom-option');
+    options.forEach(option => {
+      option.addEventListener('click', (e) => {
+        e.stopPropagation();
+        
+        const value = option.getAttribute('data-value');
+        const icon = option.querySelector('.category-icon').textContent;
+        const text = option.querySelector('.category-text').textContent;
+        
+        // Update selected display
+        priceSortSelected.innerHTML = `
+          <span class="category-icon">${icon}</span>
+          <span class="category-text">${text}</span>
+          <span class="dropdown-arrow">▼</span>
+        `;
+        
+        // Update hidden select
+        priceSort.value = value;
+        priceSort.dispatchEvent(new Event('change'));
+        
+        // Close dropdown
+        priceSortDropdown.classList.remove('open');
+      });
+    });
+  }
+  
+  // Close dropdowns when clicking outside
+  document.addEventListener('click', (e) => {
+    if (customDropdown && !customDropdown.contains(e.target)) {
+      customDropdown.classList.remove('open');
+    }
+    if (priceSortDropdown && !priceSortDropdown.contains(e.target)) {
+      priceSortDropdown.classList.remove('open');
+    }
+  });
+}
 
 // Bilder optimieren
 function optimizeImages() {

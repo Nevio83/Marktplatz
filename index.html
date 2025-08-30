@@ -232,7 +232,38 @@ if (searchInput && mobileSearchBtn) {
         <div class="container mt-5">
             <div class="row mb-4">
                 <div class="col-md-4">
-                    <select class="form-select rounded-pill" id="categoryFilter">
+                    <!-- Custom Category Dropdown -->
+                    <div class="custom-dropdown" id="categoryDropdown">
+                        <div class="custom-dropdown-selected" id="categorySelected">
+                            <span class="category-icon">📋</span>
+                            <span class="category-text">Alle Kategorien</span>
+                            <span class="dropdown-arrow">▼</span>
+                        </div>
+                        <div class="custom-dropdown-options" id="categoryOptions">
+                            <div class="custom-option" data-value="Alle Kategorien">
+                                <span class="category-icon">📋</span>
+                                <span class="category-text">Alle Kategorien</span>
+                            </div>
+                            <div class="custom-option" data-value="Elektronik">
+                                <span class="category-icon">⚡</span>
+                                <span class="category-text">Elektronik</span>
+                            </div>
+                            <div class="custom-option" data-value="Fitness">
+                                <span class="category-icon">💪</span>
+                                <span class="category-text">Fitness</span>
+                            </div>
+                            <div class="custom-option" data-value="Mode">
+                                <span class="category-icon">👕</span>
+                                <span class="category-text">Mode</span>
+                            </div>
+                            <div class="custom-option" data-value="Haushalt">
+                                <span class="category-icon">🏠</span>
+                                <span class="category-text">Haushalt</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Hidden select for form compatibility -->
+                    <select class="form-select d-none" id="categoryFilter">
                         <option>Alle Kategorien</option>
                         <option>Elektronik</option>
                         <option>Fitness</option>
@@ -241,7 +272,26 @@ if (searchInput && mobileSearchBtn) {
                     </select>
                 </div>
                 <div class="col-md-4">
-                    <select class="form-select rounded-pill" id="priceSort">
+                    <!-- Custom Price Sort Dropdown -->
+                    <div class="custom-dropdown" id="priceSortDropdown">
+                        <div class="custom-dropdown-selected" id="priceSortSelected">
+                            <span class="category-icon">📈</span>
+                            <span class="category-text">Aufsteigend</span>
+                            <span class="dropdown-arrow">▼</span>
+                        </div>
+                        <div class="custom-dropdown-options" id="priceSortOptions">
+                            <div class="custom-option" data-value="Aufsteigend">
+                                <span class="category-icon">📈</span>
+                                <span class="category-text">Aufsteigend</span>
+                            </div>
+                            <div class="custom-option" data-value="Absteigend">
+                                <span class="category-icon">📉</span>
+                                <span class="category-text">Absteigend</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Hidden select for form compatibility -->
+                    <select class="form-select d-none" id="priceSort">
                         <option>Aufsteigend</option>
                         <option>Absteigend</option>
                     </select>
