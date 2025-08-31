@@ -231,7 +231,8 @@ body {
   z-index: 10;
 }
 
-.wishlist-btn:hover {
+/* Hover effect only when item is NOT in wishlist */
+.wishlist-btn:not(.active):hover {
   background: var(--danger-color);
   transform: scale(1.1);
 }
@@ -242,7 +243,7 @@ body {
   transition: color 0.3s ease;
 }
 
-.wishlist-btn:hover .bi-heart {
+.wishlist-btn:not(.active):hover .bi-heart {
   color: white;
 }
 
@@ -1290,7 +1291,7 @@ footer a:hover {
   z-index: 9998;
   visibility: hidden;
   transform: translateY(20px);
-  transition: all 0.3s ease;
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 1000;
   cursor: pointer;
   display: flex;
@@ -1306,8 +1307,8 @@ footer a:hover {
 
 #scrollToTopBtn:hover {
   background: linear-gradient(135deg, #5a6fd8, #6a4190);
-  transform: translateY(-4px);
-  box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4);
+  transform: translateY(-8px);
+  box-shadow: 0 12px 40px rgba(102, 126, 234, 0.5);
 }
 
 #scrollToTopBtn i {
@@ -1485,6 +1486,11 @@ div#hilfeButton,
     visibility: visible !important;
     opacity: 1 !important;
     display: flex !important;
+  }
+  
+  /* Nach oben Button für Mobile weiter runter */
+  #scrollToTopBtn {
+    bottom: 30px !important;
   }
 
   #hilfeButton:hover {
