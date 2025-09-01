@@ -90,20 +90,27 @@
       
       try {
         // Direkte E-Mail über EmailJS senden
-        await emailjs.send('service_ftlmmdq', 'template_gam8j1a', templateParams);
+        console.log('Sende EmailJS mit Parametern:', templateParams);
+        const result = await emailjs.send('service_ftlmmdq', 'template_gam8j1a', templateParams);
+        console.log('EmailJS Erfolg:', result);
         statusEl.textContent = 'Retoure-Anfrage erfolgreich gesendet!';
         statusEl.style.color = 'green';
         form.reset();
       } catch (error) {
-        console.error('EmailJS Fehler:', error);
-        // Fallback: mailto-Link öffnen
-        const subject = encodeURIComponent(`Retoure-Anfrage #${templateParams.order_id}`);
-        const body = encodeURIComponent(`Bestellnummer: ${formData.get('orderId')}\nE-Mail: ${formData.get('email')}\nGrund: ${formData.get('reason') || 'Nicht angegeben'}`);
-        const mailtoLink = `mailto:marktplatzcontact@gmail.com?subject=${subject}&body=${body}`;
+        console.error('EmailJS Fehler Details:', error);
+        statusEl.textContent = `EmailJS Fehler: ${error.text || error.message || 'Unbekannter Fehler'}. Verwende Fallback.`;
+        statusEl.style.color = 'red';
         
-        window.open(mailtoLink, '_blank');
-        statusEl.textContent = 'E-Mail-Programm geöffnet. Bitte senden Sie die E-Mail manuell.';
-        statusEl.style.color = 'orange';
+        // Fallback: mailto-Link öffnen
+        setTimeout(() => {
+          const subject = encodeURIComponent(`Retoure-Anfrage #${formData.get('orderId')}`);
+          const body = encodeURIComponent(`Bestellnummer: ${formData.get('orderId')}\nE-Mail: ${formData.get('email')}\nGrund: ${formData.get('reason') || 'Nicht angegeben'}`);
+          const mailtoLink = `mailto:marktplatzcontact@gmail.com?subject=${subject}&body=${body}`;
+          
+          window.open(mailtoLink, '_blank');
+          statusEl.textContent = 'E-Mail-Programm geöffnet. Bitte senden Sie die E-Mail manuell.';
+          statusEl.style.color = 'orange';
+        }, 2000);
       }
     });
   })();
