@@ -90,16 +90,14 @@
       };
       
       try {
-        // Fallback: Verwende das funktionierende Contact Template
+        // Verwende das funktionierende Contact Template
         const contactParams = {
-          to_name: 'Marktplatz Support',
           from_name: `Retoure #${formData.get('orderId')}`,
           from_email: formData.get('email'),
-          message: `RETOURE-ANFRAGE\n\nBestellnummer: ${formData.get('orderId')}\nKunden-E-Mail: ${formData.get('email')}\nGrund: ${formData.get('reason') || 'Nicht angegeben'}`,
-          reply_to: formData.get('email')
+          message: `RETOURE-ANFRAGE\n\nBestellnummer: ${formData.get('orderId')}\nKunden-E-Mail: ${formData.get('email')}\nGrund: ${formData.get('reason') || 'Nicht angegeben'}`
         };
         
-        console.log('Sende mit Contact Template (funktioniert):', contactParams);
+        console.log('Sende mit Contact Template:', contactParams);
         const result = await emailjs.send('service_ftlmmdq', 'template_gam8j1a', contactParams);
         console.log('EmailJS Erfolg:', result);
         statusEl.textContent = 'Retoure-Anfrage erfolgreich gesendet!';
