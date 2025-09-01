@@ -90,15 +90,23 @@
       };
       
       try {
-        // Direkte E-Mail über EmailJS senden
-        console.log('Sende EmailJS mit Parametern:', templateParams);
-        const result = await emailjs.send('service_ftlmmdq', 'template_gam8j1a', templateParams);
+        // Test: Einfache Parameter ohne komplexe Nachrichten
+        const simpleParams = {
+          to_name: 'Support',
+          from_name: formData.get('email'),
+          message: 'Test Retoure',
+          reply_to: formData.get('email')
+        };
+        
+        console.log('Teste mit einfachen Parametern:', simpleParams);
+        const result = await emailjs.send('service_ftlmmdq', 'template_gam8j1a', simpleParams);
         console.log('EmailJS Erfolg:', result);
         statusEl.textContent = 'Retoure-Anfrage erfolgreich gesendet!';
         statusEl.style.color = 'green';
         form.reset();
       } catch (error) {
         console.error('EmailJS Fehler Details:', error);
+        console.error('Error object:', JSON.stringify(error, null, 2));
         statusEl.textContent = `EmailJS Fehler: ${error.text || error.message || 'Unbekannter Fehler'}. Verwende Fallback.`;
         statusEl.style.color = 'red';
         
