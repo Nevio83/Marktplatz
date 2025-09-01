@@ -93,8 +93,10 @@
         // Verwende Order Confirmation Template mit passenden Parametern
         const orderParams = {
           order_id: formData.get('orderId'),
-          customer_email: formData.get('email'),
-          orders: `Retoure-Anfrage\nBestellnummer: ${formData.get('orderId')}\nGrund: ${formData.get('reason') || 'Nicht angegeben'}`,
+          customer_email: 'marktplatzcontact@gmail.com',
+          to_email: 'marktplatzcontact@gmail.com',
+          from_email: formData.get('email'),
+          orders: `Retoure-Anfrage\nBestellnummer: ${formData.get('orderId')}\nKunden-Email: ${formData.get('email')}\nGrund: ${formData.get('reason') || 'Nicht angegeben'}`,
           name: 'Retoure-Anfrage',
           price: '0.00',
           units: '1'
