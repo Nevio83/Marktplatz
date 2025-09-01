@@ -416,6 +416,13 @@ function updateCartPage() {
                 </div>
                 ` : ''}
                 <!-- Ende Add-ons Bereich -->
+                
+                <!-- Clear Cart Button -->
+                <div class="text-center mt-4 mb-3">
+                    <button type="button" onclick="clearCart()" class="btn btn-outline-danger w-100" style="border-radius: 12px; padding: 12px 24px; font-weight: 500; max-width: 400px;">
+                        <i class="bi bi-trash"></i> Warenkorb leeren
+                    </button>
+                </div>
             </div>
             
             <div class="checkout-section">
@@ -535,7 +542,7 @@ function updateCartPage() {
                         <label for="address" class="form-label">
                             <i class="bi bi-geo-alt"></i> Adresse
                         </label>
-                        <input type="text" id="address" class="form-control" required placeholder="Straße und Hausnummer">
+                        <input type="text" id="address" class="form-control" required placeholder="Straße und Hausnummer" pattern=".*\d+.*" title="Bitte geben Sie eine Hausnummer ein">
                     </div>
                     
                     <div class="form-group">
@@ -606,10 +613,6 @@ function updateCartPage() {
                         <span class="button-text"><i class="bi bi-lock"></i> Jetzt bestellen - ${currentCurrency.symbol}${total.toFixed(2)}</span>
                     </button>
                     
-                    <!-- Clear Cart Button -->
-                    <button type="button" onclick="clearCart()" class="btn btn-outline-danger w-100 mt-3" style="border-radius: 12px; padding: 12px; font-weight: 500;">
-                        <i class="bi bi-trash"></i> Warenkorb leeren
-                    </button>
                 </form>
             </div>
         </div>
@@ -618,6 +621,33 @@ function updateCartPage() {
     startCartTimer();
     // Stripe-Elemente nach dem Neuzeichnen des DOMs einhängen
     setupPostcodeAutocomplete();
+    
+    // Validierung für Hausnummer in Adresse
+    const addressInput = document.getElementById('address');
+    if (addressInput) {
+        addressInput.addEventListener('input', function() {
+            const value = this.value.trim();
+            const hasNumber = /\d/.test(value);
+            
+            if (value.length > 0 && !hasNumber) {
+                this.setCustomValidity('Bitte geben Sie eine Hausnummer ein');
+                this.classList.add('is-invalid');
+            } else {
+                this.setCustomValidity('');
+                this.classList.remove('is-invalid');
+            }
+        });
+        
+        addressInput.addEventListener('blur', function() {
+            const value = this.value.trim();
+            const hasNumber = /\d/.test(value);
+            
+            if (value.length > 0 && !hasNumber) {
+                this.setCustomValidity('Bitte geben Sie eine Hausnummer ein');
+                this.classList.add('is-invalid');
+            }
+        });
+    }
     setupStripeForm(); // Diese Zeile hinzufügen
     mountStripeElements();
 }
@@ -782,6 +812,33 @@ document.addEventListener('DOMContentLoaded', function() {
             suggestions.style.display = 'none';
         }
     });
+
+    // Prevent clicks on interactive elements from causing unwanted behavior
+    document.addEventListener('click', function(event) {
+        // Check if the clicked element is an interactive element that should not trigger default behaviors
+        const interactiveElements = [
+            '.quantity-btn',
+            '.remove-btn', 
+            '.addon-btn',
+            '.cart-item',
+            '.quantity-controls',
+            '.quantity-display',
+            'button[onclick*="changeQuantity"]',
+            'button[onclick*="removeFromCart"]',
+            'button[onclick*="addAddonToCart"]',
+            'button[onclick*="clearCart"]'
+        ];
+        
+        // If the clicked element or its parent matches any interactive element, prevent unwanted propagation
+        const isInteractiveElement = interactiveElements.some(selector => 
+            event.target.matches(selector) || event.target.closest(selector)
+        );
+        
+        if (isInteractiveElement) {
+            // Allow the click to proceed normally but prevent unwanted side effects
+            event.stopPropagation();
+        }
+    });
 });
 
 function setupStripeForm() {
@@ -914,12 +971,15 @@ async function handleStripeSubmit(event) {
 // --- NEUE ADRESSVORSCHLAG-LOGIK ---
 function setupPostcodeAutocomplete() {
     const postcodeInput = document.getElementById('postcode');
+    const cityInput = document.getElementById('city');
+    const addressInput = document.getElementById('address');
     const suggestionsDiv = document.getElementById('address-suggestions');
     if (!postcodeInput || !suggestionsDiv) return;
 
     let lastQuery = '';
     let debounceTimeout;
 
+    // Setup for postcode field
     postcodeInput.addEventListener('input', function() {
         const value = postcodeInput.value.trim();
         const country = document.getElementById('country')?.value || '';
@@ -932,7 +992,7 @@ function setupPostcodeAutocomplete() {
             lastQuery = value;
             try {
                 let query = value;
-                let url = `https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=50&q=${encodeURIComponent(query)}`;
+                let url = `https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=100&q=${encodeURIComponent(query)}`;
                 if (country) {
                     url += `&countrycodes=${country.toLowerCase()}`;
                 }
@@ -982,7 +1042,9 @@ function setupPostcodeAutocomplete() {
                     }
                     // Immer einen Vorschlag anzeigen, auch wenn keine PLZ gefunden wurde
                     if (plz) {
-                        return `<div class="address-suggestion" tabindex="0" data-plz="${plz}" data-country="${countryCode}">${plz} ${ort}, ${land}</div>`;
+                        // Wenn mehrere PLZ vorhanden sind, nimm die erste für data-plz
+                        const firstPlz = plz.split(',')[0].trim();
+                        return `<div class="address-suggestion" tabindex="0" data-plz="${firstPlz}" data-country="${countryCode}">${plz} ${ort}, ${land}</div>`;
                     } else {
                         return `<div class="address-suggestion" tabindex="0" data-plz="" data-country="${countryCode}">${ort}, ${land} (PLZ nicht gefunden)</div>`;
                     }
@@ -996,20 +1058,161 @@ function setupPostcodeAutocomplete() {
             } catch (e) {
                 suggestionsDiv.style.display = 'none';
             }
-        }, 100);
+        }, 50);
     });
+
+    // Setup for city field
+    if (cityInput) {
+        cityInput.addEventListener('input', function() {
+            const value = cityInput.value.trim();
+            const country = document.getElementById('country')?.value || '';
+            const postcode = postcodeInput.value.trim();
+            
+            if (value.length < 2) {
+                suggestionsDiv.style.display = 'none';
+                return;
+            }
+            
+            clearTimeout(debounceTimeout);
+            debounceTimeout = setTimeout(async () => {
+                try {
+                    let query = value;
+                    if (postcode) query = `${postcode} ${value}`;
+                    
+                    let url = `https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=50&q=${encodeURIComponent(query)}`;
+                    if (country) {
+                        url += `&countrycodes=${country.toLowerCase()}`;
+                    }
+                    
+                    const response = await fetch(url);
+                    const data = await response.json();
+                    
+                    const filtered = data.filter(addr => {
+                        if (!addr.address) return false;
+                        const city = (addr.address.city || addr.address.town || addr.address.village || '').toLowerCase();
+                        return city.includes(value.toLowerCase());
+                    });
+                    
+                    if (filtered.length === 0) {
+                        suggestionsDiv.style.display = 'none';
+                        return;
+                    }
+                    
+                    suggestionsDiv.innerHTML = filtered.map(addr => {
+                        const plz = addr.address.postcode || '';
+                        const city = addr.address.city || addr.address.town || addr.address.village || '';
+                        const country = addr.address.country || '';
+                        return `<div class="address-suggestion" data-type="city" data-plz="${plz}" data-city="${city}">${plz} ${city}, ${country}</div>`;
+                    }).join('');
+                    
+                    positionSuggestions(cityInput);
+                    suggestionsDiv.style.display = 'block';
+                } catch (e) {
+                    suggestionsDiv.style.display = 'none';
+                }
+            }, 50);
+        });
+    }
+    
+    // Setup for address/street field
+    if (addressInput) {
+        addressInput.addEventListener('input', function() {
+            const value = addressInput.value.trim();
+            const country = document.getElementById('country')?.value || '';
+            const postcode = postcodeInput.value.trim();
+            const city = cityInput.value.trim();
+            
+            if (value.length < 3) {
+                suggestionsDiv.style.display = 'none';
+                return;
+            }
+            
+            clearTimeout(debounceTimeout);
+            debounceTimeout = setTimeout(async () => {
+                try {
+                    let query = value;
+                    if (city) query = `${value}, ${city}`;
+                    if (postcode) query = `${value}, ${postcode} ${city}`;
+                    
+                    let url = `https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=30&q=${encodeURIComponent(query)}`;
+                    if (country) {
+                        url += `&countrycodes=${country.toLowerCase()}`;
+                    }
+                    
+                    const response = await fetch(url);
+                    const data = await response.json();
+                    
+                    const filtered = data.filter(addr => {
+                        if (!addr.address) return false;
+                        const street = (addr.address.road || addr.address.pedestrian || '').toLowerCase();
+                        const houseNumber = addr.address.house_number || '';
+                        return street.includes(value.toLowerCase()) || 
+                               (street + ' ' + houseNumber).toLowerCase().includes(value.toLowerCase());
+                    });
+                    
+                    if (filtered.length === 0) {
+                        suggestionsDiv.style.display = 'none';
+                        return;
+                    }
+                    
+                    suggestionsDiv.innerHTML = filtered.map(addr => {
+                        const street = addr.address.road || addr.address.pedestrian || '';
+                        const houseNumber = addr.address.house_number || '';
+                        const plz = addr.address.postcode || '';
+                        const city = addr.address.city || addr.address.town || addr.address.village || '';
+                        const fullAddress = `${street}${houseNumber ? ' ' + houseNumber : ''}`;
+                        return `<div class="address-suggestion" data-type="street" data-street="${fullAddress}" data-plz="${plz}" data-city="${city}">${fullAddress}, ${plz} ${city}</div>`;
+                    }).join('');
+                    
+                    positionSuggestions(addressInput);
+                    suggestionsDiv.style.display = 'block';
+                } catch (e) {
+                    suggestionsDiv.style.display = 'none';
+                }
+            }, 50);
+        });
+    }
+    
+    function positionSuggestions(inputElement) {
+        suggestionsDiv.style.position = 'absolute';
+        suggestionsDiv.style.top = (inputElement.offsetTop + inputElement.offsetHeight) + 'px';
+        suggestionsDiv.style.left = inputElement.offsetLeft + 'px';
+        suggestionsDiv.style.width = inputElement.offsetWidth + 'px';
+    }
 
     suggestionsDiv.onclick = function(e) {
         const el = e.target.closest('.address-suggestion');
         if (el) {
-            postcodeInput.value = el.getAttribute('data-plz') || el.textContent;
+            const type = el.getAttribute('data-type');
             
-            // Stadt aus dem Vorschlagstext extrahieren und setzen
-            const suggestionText = el.textContent;
-            const cityMatch = suggestionText.match(/^\d*\s*([^,]+)/);
-            if (cityMatch) {
-                const cityInput = document.getElementById('city');
-                if (cityInput) {
+            if (type === 'city') {
+                const city = el.getAttribute('data-city');
+                if (city) cityInput.value = city;
+            } else if (type === 'street') {
+                const street = el.getAttribute('data-street');
+                const plz = el.getAttribute('data-plz');
+                const city = el.getAttribute('data-city');
+                if (street) addressInput.value = street;
+                if (plz) postcodeInput.value = plz;
+                if (city) cityInput.value = city;
+            } else {
+                // Original postcode logic
+                const plz = el.getAttribute('data-plz');
+                if (plz) {
+                    postcodeInput.value = plz;
+                } else {
+                    // Fallback: extract postcode from text content
+                    const suggestionText = el.textContent;
+                    const plzMatch = suggestionText.match(/^(\d{4,5})/);
+                    if (plzMatch) {
+                        postcodeInput.value = plzMatch[1];
+                    }
+                }
+                
+                // Stadt aus dem Vorschlagstext extrahieren und setzen
+                const suggestionText = el.textContent;
+                const cityMatch = suggestionText.match(/^\d*\s*([^,]+)/);
+                if (cityMatch && cityInput) {
                     cityInput.value = cityMatch[1].trim();
                 }
             }
@@ -1035,22 +1238,38 @@ function setupPostcodeAutocomplete() {
     let suggestionsHasFocus = false;
     suggestionsDiv.addEventListener('mouseenter', function() { suggestionsHasFocus = true; });
     suggestionsDiv.addEventListener('mouseleave', function() { suggestionsHasFocus = false; });
-    postcodeInput.addEventListener('blur', function() {
-        setTimeout(function() {
-            if (!suggestionsHasFocus && document.activeElement !== postcodeInput) {
-                suggestionsDiv.style.display = 'none';
-            }
-        }, 250);
+    // Add blur event listeners for all input fields with longer delay
+    [postcodeInput, cityInput, addressInput].forEach(input => {
+        if (input) {
+            input.addEventListener('blur', function() {
+                setTimeout(function() {
+                    if (!suggestionsHasFocus && 
+                        document.activeElement !== postcodeInput && 
+                        document.activeElement !== cityInput && 
+                        document.activeElement !== addressInput) {
+                        suggestionsDiv.style.display = 'none';
+                    }
+                }, 800);
+            });
+        }
     });
     suggestionsDiv.addEventListener('blur', function() {
         setTimeout(function() {
-            if (!postcodeInput.matches(':focus')) {
+            if (!postcodeInput.matches(':focus') && 
+                !cityInput.matches(':focus') && 
+                !addressInput.matches(':focus')) {
                 suggestionsDiv.style.display = 'none';
             }
-        }, 250);
+        }, 800);
     }, true);
+    // Only hide suggestions when clicking far outside the form area
     document.addEventListener('click', function(e) {
-        if (!suggestionsDiv.contains(e.target) && e.target !== postcodeInput) {
+        const formArea = document.querySelector('.payment-form') || document.querySelector('form');
+        if (!suggestionsDiv.contains(e.target) && 
+            e.target !== postcodeInput && 
+            e.target !== cityInput && 
+            e.target !== addressInput &&
+            (!formArea || !formArea.contains(e.target))) {
             suggestionsDiv.style.display = 'none';
         }
     });

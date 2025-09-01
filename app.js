@@ -532,6 +532,32 @@ function initializeCartDropdown() {
     }
   });
 
+  // Prevent cart dropdown from closing when clicking on interactive elements inside it
+  if (cartDropdown) {
+    cartDropdown.addEventListener('click', (e) => {
+      // Check if the clicked element is an interactive element that should not close the dropdown
+      const interactiveElements = [
+        '.quantity-btn',
+        '.remove-item', 
+        '.recommendation-add-btn',
+        '.cart-item-controls',
+        '.quantity-controls',
+        '.quantity-display',
+        'button',
+        'input'
+      ];
+      
+      // If the clicked element or its parent matches any interactive element, prevent closing
+      const isInteractiveElement = interactiveElements.some(selector => 
+        e.target.matches(selector) || e.target.closest(selector)
+      );
+      
+      if (isInteractiveElement) {
+        e.stopPropagation(); // Prevent the click from bubbling up and closing the dropdown
+      }
+    });
+  }
+
   // Reset category filter when clicking on Marktplatz logo
   const navbarBrand = document.querySelector('.navbar-brand');
   if (navbarBrand) {

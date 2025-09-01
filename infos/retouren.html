@@ -84,7 +84,8 @@
           statusEl.textContent = data.error || 'Fehler beim Senden.';
         }
       } catch(e) {
-        statusEl.textContent = 'Netzwerkfehler.';
+        statusEl.textContent = 'Server nicht verfügbar. Bitte starten Sie den Node.js-Server mit "node server.js".';
+        console.error('Server-Fehler:', e);
       }
     });
   })();

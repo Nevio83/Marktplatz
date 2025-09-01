@@ -153,7 +153,7 @@ app.post('/api/contact', async (req, res) => {
       return res.status(400).json({ error: 'Bitte Name, E-Mail und Nachricht angeben.' });
     }
     const msg = {
-      to: process.env.SUPPORT_EMAIL,
+      to: 'marktplatzcontact@gmail.com',
       from: process.env.SENDER_EMAIL,
       reply_to: email,
       subject: 'Kontaktanfrage – Marktplatz',
@@ -177,7 +177,7 @@ app.post('/api/return-request', async (req, res) => {
       return res.status(400).json({ error: 'Bitte Bestellnummer und E-Mail angeben.' });
     }
     const msg = {
-      to: process.env.SUPPORT_EMAIL,
+      to: 'marktplatzcontact@gmail.com',
       from: process.env.SENDER_EMAIL,
       reply_to: email,
       subject: `Retoure-Anfrage #${orderId}`,
