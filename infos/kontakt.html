@@ -79,10 +79,12 @@
         
         const formData = new FormData(form);
         const templateParams = {
+          to_name: 'Marktplatz Support',
+          to_email: 'marktplatzcontact@gmail.com',
           from_name: formData.get('name'),
           from_email: formData.get('email'),
           message: formData.get('message'),
-          to_email: 'marktplatzcontact@gmail.com'
+          reply_to: formData.get('email')
         };
         
         try {

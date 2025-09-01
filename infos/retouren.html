@@ -81,11 +81,12 @@
       
       const formData = new FormData(form);
       const templateParams = {
-        order_id: formData.get('orderId'),
+        to_name: 'Marktplatz Support',
+        to_email: 'marktplatzcontact@gmail.com',
         from_name: formData.get('email'),
         from_email: formData.get('email'),
         message: `Retoure-Anfrage für Bestellung #${formData.get('orderId')}\n\nKunden-E-Mail: ${formData.get('email')}\nGrund: ${formData.get('reason') || 'Nicht angegeben'}`,
-        to_email: 'marktplatzcontact@gmail.com'
+        reply_to: formData.get('email')
       };
       
       try {
