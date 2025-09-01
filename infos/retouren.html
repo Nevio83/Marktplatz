@@ -90,20 +90,17 @@
       };
       
       try {
-        // Verwende Order Confirmation Template mit passenden Parametern
-        const orderParams = {
-          order_id: formData.get('orderId'),
-          customer_email: 'marktplatzcontact@gmail.com',
-          to_email: 'marktplatzcontact@gmail.com',
+        // Fallback: Verwende das funktionierende Contact Template
+        const contactParams = {
+          to_name: 'Marktplatz Support',
+          from_name: `Retoure #${formData.get('orderId')}`,
           from_email: formData.get('email'),
-          orders: `Retoure-Anfrage\nBestellnummer: ${formData.get('orderId')}\nKunden-Email: ${formData.get('email')}\nGrund: ${formData.get('reason') || 'Nicht angegeben'}`,
-          name: 'Retoure-Anfrage',
-          price: '0.00',
-          units: '1'
+          message: `RETOURE-ANFRAGE\n\nBestellnummer: ${formData.get('orderId')}\nKunden-E-Mail: ${formData.get('email')}\nGrund: ${formData.get('reason') || 'Nicht angegeben'}`,
+          reply_to: formData.get('email')
         };
         
-        console.log('Sende mit Order Template Parametern:', orderParams);
-        const result = await emailjs.send('service_ftlmmdq', 'template_wgiuf6l', orderParams);
+        console.log('Sende mit Contact Template (funktioniert):', contactParams);
+        const result = await emailjs.send('service_ftlmmdq', 'template_gam8j1a', contactParams);
         console.log('EmailJS Erfolg:', result);
         statusEl.textContent = 'Retoure-Anfrage erfolgreich gesendet!';
         statusEl.style.color = 'green';
