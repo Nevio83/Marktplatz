@@ -674,30 +674,29 @@
   }
 
   function addToCartWithQuantity(event) {
-    // Determine which quantity input to use based on the clicked button
-    const button = event ? event.target : null;
-    const isDesktop = button && button.closest('.d-none.d-lg-block');
-    
-    const inputId = isDesktop ? 'quantity' : 'quantity-mobile';
-    const quantityInput = document.getElementById(inputId);
-    const quantity = quantityInput ? parseInt(quantityInput.value, 10) || 1 : 1;
-    
-    const productToCart = {
-      ...product,
-      quantity: quantity
-    };
-    addToCart(productToCart);
-    
-    // Enhanced animations for product page - wishlist style for quick order
-    triggerQuickOrderAnimation();
-    triggerNavCartAnimation();
-    
-    if (typeof showAlert === 'function') {
-      showAlert('Produkt zum Warenkorb hinzugefügt', 'cart.html');
-    } else {
-      showNotification('Zum Warenkorb hinzugefügt');
-    }
-  }
+  // Determine which quantity input to use based on the clicked button
+  const button = event ? event.target : null;
+  const isDesktop = button && button.closest('.d-none.d-lg-block');
+  
+  const inputId = isDesktop ? 'quantity' : 'quantity-mobile';
+  const quantityInput = document.getElementById(inputId);
+  const quantity = quantityInput ? parseInt(quantityInput.value, 10) || 1 : 1;
+  
+  const productToCart = {
+    ...product,
+    quantity: quantity
+  };
+  addToCart(productToCart);
+  
+  // Enhanced animations for product page - wishlist style for quick order
+  triggerQuickOrderAnimation();
+  triggerNavCartAnimation();
+  
+  // Direkt zum Warenkorb weiterleiten
+  setTimeout(() => {
+    window.location.href = '../cart.html';
+  }, 500); // Kurze Verzögerung für die Animation
+}
 
   function triggerQuickOrderAnimation() {
     const quickOrderCards = document.querySelectorAll('.quick-order-card');
@@ -735,7 +734,7 @@
           quantity: quantity
         };
         addToCart(productToCart);
-        // Popup anzeigen statt direkter Weiterleitung
+        // Popup anzeigen statt direkter Weiterleitung für "In den Warenkorb" Button
         if (typeof showAlert === 'function') {
           showAlert('Produkt zum Warenkorb hinzugefügt', 'cart.html');
         } else {
@@ -791,12 +790,10 @@
           quantity: qty
         };
         addToCart(productToCart);
-        // Popup anzeigen statt direkter Weiterleitung
-        if (typeof showAlert === 'function') {
-          showAlert('Produkt zum Warenkorb hinzugefügt', 'cart.html');
-        } else {
-          showNotification('Zum Warenkorb hinzugefügt');
-        }
+        // Direkt zum Warenkorb weiterleiten
+        setTimeout(() => {
+          window.location.href = '../cart.html';
+        }, 500); // Kurze Verzögerung für die Animation
       });
     }
   });

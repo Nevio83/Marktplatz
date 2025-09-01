@@ -155,7 +155,7 @@
                                 <div class="total-price">Gesamt: <span id="totalPrice-mobile">€42.00</span></div>
                             </div>
                             <div class="action-buttons">
-                                <button class="buy-now-btn" onclick="addToCartWithQuantity()">
+                                <button class="buy-now-btn" onclick="addToCartWithQuantity(event)">
                                     <i class="bi bi-cart-plus"></i> Jetzt kaufen
                                 </button>
                                 <button class="wishlist-btn wishlist-style-btn wishlist-button" onclick="toggleWishlist(product)">
@@ -197,7 +197,7 @@
                             </div>
                             
                             <div class="action-buttons">
-                                <button class="buy-now-btn add-to-cart" id="buyNowBtn">
+                                <button class="buy-now-btn add-to-cart" id="buyNowBtn" onclick="addToCartWithQuantity(event)">
                                     <i class="bi bi-cart-plus"></i> Jetzt kaufen
                                 </button>
                                 <button class="wishlist-btn wishlist-style-btn wishlist-button" id="cardWishlistBtn">
@@ -444,7 +444,7 @@
       }, 1000);
     }
     
-    // Popup anzeigen statt direkter Weiterleitung
+    // Popup anzeigen statt direkter Weiterleitung für Bundle
     if (typeof showAlert === 'function') {
       showAlert('Bundle zum Warenkorb hinzugefügt', 'cart.html');
     } else {
@@ -695,24 +695,23 @@
     addToCart(productToCart);
     
     // Enhanced animations for product page - wishlist style for quick order
-    triggerQuickOrderAnimation();
+    triggerQuickOrderAnimation(button);
     triggerNavCartAnimation();
     
-    if (typeof showAlert === 'function') {
-      showAlert('Produkt zum Warenkorb hinzugefügt', 'cart.html');
-    } else {
-      showNotification('Zum Warenkorb hinzugefügt');
-    }
+    // Direkt zum Warenkorb weiterleiten
+    setTimeout(() => {
+      window.location.href = '../cart.html';
+    }, 500); // Kurze Verzögerung für die Animation
   }
 
-  function triggerQuickOrderAnimation() {
-    const quickOrderCards = document.querySelectorAll('.quick-order-card');
-    quickOrderCards.forEach(card => {
-      card.classList.add('success-animation');
+  function triggerQuickOrderAnimation(button) {
+    // Only animate the specific button that was clicked
+    if (button) {
+      button.classList.add('success-animation');
       setTimeout(() => {
-        card.classList.remove('success-animation');
-      }, 800);
-    });
+        button.classList.remove('success-animation');
+      }, 600);
+    }
   }
 
   document.addEventListener('DOMContentLoaded', function() {

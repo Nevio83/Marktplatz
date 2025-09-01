@@ -529,7 +529,7 @@
     triggerCartButtonAnimation();
     triggerNavCartAnimation();
     
-    // Popup anzeigen statt direkter Weiterleitung
+    // Popup anzeigen statt direkter Weiterleitung für "In den Warenkorb" Button
     if (typeof showAlert === 'function') {
       showAlert('Produkt zum Warenkorb hinzugefügt', 'cart.html');
     } else {
@@ -788,12 +788,10 @@
     triggerQuickOrderAnimation();
     triggerNavCartAnimation();
     
-    // Popup anzeigen statt direkter Weiterleitung
-    if (typeof showAlert === 'function') {
-      showAlert('Produkt zum Warenkorb hinzugefügt', 'cart.html');
-    } else {
-      showNotification('Zum Warenkorb hinzugefügt');
-    }
+    // Direkt zum Warenkorb weiterleiten
+    setTimeout(() => {
+      window.location.href = '../cart.html';
+    }, 500); // Kurze Verzögerung für die Animation
   }
   document.addEventListener('DOMContentLoaded', function() {
     // Wishlist-Button

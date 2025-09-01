@@ -66,8 +66,8 @@ body {
 
 .cart-item {
     display: grid;
-    grid-template-columns: 120px 1fr 160px auto; /* Spalte für Mengensteuerung breiter */
-    gap: 1.5rem;
+    grid-template-columns: 120px 1fr 220px auto; /* Noch mehr Platz für Mengensteuerung */
+    gap: 2rem;
     align-items: center;
     padding: 1.5rem;
     border: 2px solid #f8f9fa;
@@ -138,14 +138,14 @@ body {
 .quantity-controls {
     display: flex;
     align-items: center;
-    gap: 1.2rem; /* mehr Abstand zwischen den Elementen */
+    gap: 1rem; /* Reduzierter Abstand zwischen den Elementen */
     background: none;
     border: none;
     box-shadow: none;
     padding: 0;
     min-width: 0;
     justify-content: center;
-    margin-left: 2rem;
+    margin-left: 0; /* Kein zusätzlicher Margin */
     border-radius: 0;
     margin-bottom: 0;
 }

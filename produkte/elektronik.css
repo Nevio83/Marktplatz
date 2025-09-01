@@ -300,14 +300,18 @@
   color: white;
   border: none;
   padding: 1rem 2rem;
-  border-radius: 25px;
+  border-radius: 30px;
   font-weight: 600;
   font-size: 1.1rem;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
   width: 100%;
   margin-top: 1rem;
+}
+
+.bundle-add-btn.success-animation {
+  animation: success-animation 0.8s ease-in-out;
 }
 
 .bundle-add-btn:hover {

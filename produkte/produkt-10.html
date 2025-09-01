@@ -669,12 +669,10 @@
             // Enhanced animations for product page - only animate the clicked button
             triggerQuickOrderAnimation(button);
             triggerNavCartAnimation();
-            
-            if (typeof showAlert === 'function') {
-                showAlert('Produkt zum Warenkorb hinzugefügt', 'cart.html');
-            } else {
-                showNotification('Zum Warenkorb hinzugefügt');
-            }
+            // Direkt zum Warenkorb weiterleiten
+            setTimeout(() => {
+              window.location.href = '../cart.html';
+            }, 500); // Kurze Verzögerung für die Animation
         }
 
         function triggerQuickOrderAnimation(button) {
