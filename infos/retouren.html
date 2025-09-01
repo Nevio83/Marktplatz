@@ -90,16 +90,18 @@
       };
       
       try {
-        // Test: Einfache Parameter ohne komplexe Nachrichten
-        const simpleParams = {
-          to_name: 'Support',
-          from_name: formData.get('email'),
-          message: 'Test Retoure',
-          reply_to: formData.get('email')
+        // Verwende Order Confirmation Template mit passenden Parametern
+        const orderParams = {
+          order_id: formData.get('orderId'),
+          customer_email: formData.get('email'),
+          orders: `Retoure-Anfrage\nBestellnummer: ${formData.get('orderId')}\nGrund: ${formData.get('reason') || 'Nicht angegeben'}`,
+          name: 'Retoure-Anfrage',
+          price: '0.00',
+          units: '1'
         };
         
-        console.log('Teste mit einfachen Parametern:', simpleParams);
-        const result = await emailjs.send('service_ftlmmdq', 'template_gam8j1a', simpleParams);
+        console.log('Sende mit Order Template Parametern:', orderParams);
+        const result = await emailjs.send('service_ftlmmdq', 'template_wgiuf6l', orderParams);
         console.log('EmailJS Erfolg:', result);
         statusEl.textContent = 'Retoure-Anfrage erfolgreich gesendet!';
         statusEl.style.color = 'green';
