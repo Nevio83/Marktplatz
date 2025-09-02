@@ -85,11 +85,11 @@
   },
   { 
     "id": 4, 
-    "name": "Mode Produkt 1", 
+    "name": "Beleuchtung Produkt 1", 
     "price": 20.00, 
-    "category": "Mode", 
+    "category": "Beleuchtung", 
     "image": "produkt bilder/ware.png", 
-"description": "Modisch und hochwertig für jeden Anlass.",
+"description": "Hochwertige Beleuchtungslösungen für Ihr Zuhause.",
 "bundles": [
       {
         "id": "bundle1",
@@ -113,11 +113,11 @@
   },
   { 
     "id": 5, 
-    "name": "Mode Produkt 2", 
+    "name": "Beleuchtung Produkt 2", 
     "price": 22.00, 
-    "category": "Mode", 
+    "category": "Beleuchtung", 
     "image": "produkt bilder/ware.png", 
-    "description": "Modisch und hochwertig für jeden Anlass.",
+    "description": "Hochwertige Beleuchtungslösungen für Ihr Zuhause.",
     "bundles": [
       {
         "id": "bundle1",
@@ -141,11 +141,11 @@
   },
   { 
     "id": 6, 
-    "name": "Mode Produkt 3", 
+    "name": "Beleuchtung Produkt 3", 
     "price": 24.00, 
-    "category": "Mode", 
+    "category": "Beleuchtung", 
     "image": "produkt bilder/ware.png", 
-    "description": "Modisch und hochwertig für jeden Anlass.",
+    "description": "Hochwertige Beleuchtungslösungen für Ihr Zuhause.",
     "bundles": [
       {
         "id": "bundle1",
@@ -169,11 +169,11 @@
   },
   { 
     "id": 7, 
-    "name": "Fitness Produkt 1", 
+    "name": "Körperpflege/Wellness Produkt 1", 
     "price": 30.00, 
-    "category": "Fitness", 
+    "category": "Körperpflege/Wellness", 
     "image": "produkt bilder/ware.png", 
-"description": "Für ein aktives und gesundes Leben.",
+"description": "Pflegeprodukte und Wellness für Ihr Wohlbefinden.",
 "bundles": [
       {
         "id": "bundle1",
@@ -197,11 +197,11 @@
   },
   { 
     "id": 8, 
-    "name": "Fitness Produkt 2", 
+    "name": "Körperpflege/Wellness Produkt 2", 
     "price": 42.00, 
-    "category": "Fitness", 
+    "category": "Körperpflege/Wellness", 
     "image": "produkt bilder/ware.png", 
-    "description": "Für ein aktives und gesundes Leben.",
+    "description": "Pflegeprodukte und Wellness für Ihr Wohlbefinden.",
     "bundles": [
       {
         "id": "bundle1",
@@ -225,11 +225,11 @@
   },
   { 
     "id": 9, 
-    "name": "Fitness Produkt 3", 
+    "name": "Körperpflege/Wellness Produkt 3", 
     "price": 44.00, 
-    "category": "Fitness", 
+    "category": "Körperpflege/Wellness", 
     "image": "produkt bilder/ware.png", 
-    "description": "Für ein aktives und gesundes Leben.",
+    "description": "Pflegeprodukte und Wellness für Ihr Wohlbefinden.",
     "bundles": [
       {
         "id": "bundle1",
@@ -253,9 +253,9 @@
   },
   { 
     "id": 10, 
-    "name": "Haushalt Produkt 1", 
+    "name": "Haushalt und Küche Produkt 1", 
     "price": 40.00, 
-    "category": "Haushalt", 
+    "category": "Haushalt und Küche", 
     "image": "produkt bilder/ware.png", 
     "description": "Praktisch und zuverlässig für Ihr Zuhause.",
     "bundles": [
@@ -281,9 +281,9 @@
   },
   { 
     "id": 11, 
-    "name": "Haushalt Produkt 2", 
+    "name": "Haushalt und Küche Produkt 2", 
     "price": 42.00, 
-    "category": "Haushalt", 
+    "category": "Haushalt und Küche", 
     "image": "produkt bilder/ware.png", 
     "description": "Praktisch und zuverlässig für Ihr Zuhause.",
     "bundles": [
@@ -309,9 +309,9 @@
   },
   { 
     "id": 12, 
-    "name": "Haushalt Produkt 3", 
+    "name": "Haushalt und Küche Produkt 3", 
     "price": 44.00, 
-    "category": "Haushalt", 
+    "category": "Haushalt und Küche", 
     "image": "produkt bilder/ware.png", 
     "description": "Praktisch und zuverlässig für Ihr Zuhause.",
     "bundles": [
