@@ -253,85 +253,232 @@
   },
   { 
     "id": 10, 
-    "name": "Haushalt und Küche Produkt 1", 
-    "price": 40.00, 
+    "name": "Elektrischer Wasserspender für Schreibtisch", 
+    "price": 49.99, 
+    "originalPrice": 69.99,
     "category": "Haushalt und Küche", 
     "image": "produkt bilder/ware.png", 
-    "description": "Praktisch und zuverlässig für Ihr Zuhause.",
+    "description": "Automatischer Wasserspender für Gallon-Flaschen. Wiederaufladbar und perfekt für Büro und Zuhause.",
+    "sku": "CJ1621032671155597312",
+    "inStock": true,
+    "shippingTime": "7-15 Werktage",
+    "tags": ["wasser", "spender", "büro", "automatisch"],
     "bundles": [
       {
         "id": "bundle1",
-        "name": "Home Bundle",
-        "description": "Produkt + Haushaltszubehör",
-        "items": ["Haushaltszubehör", "Pflegeanleitung"],
-        "originalPrice": 60.00,
-        "bundlePrice": 50.00,
+        "name": "Büro Bundle",
+        "description": "Wasserspender + Bürozubehör",
+        "items": ["Ersatzpumpe", "Reinigungsset"],
+        "originalPrice": 75.00,
+        "bundlePrice": 65.00,
         "savings": 10.00
       },
       {
         "id": "bundle2",
-        "name": "Complete Home",
-        "description": "Komplettes Haushalts-Set",
-        "items": ["Haushaltszubehör", "Premium Pflege", "Installationsservice"],
-        "originalPrice": 100.00,
-        "bundlePrice": 75.00,
-        "savings": 25.00
+        "name": "Premium Hydration",
+        "description": "Komplettes Hydration-Set",
+        "items": ["Ersatzpumpe", "Reinigungsset", "Wasserfilterset"],
+        "originalPrice": 120.00,
+        "bundlePrice": 89.00,
+        "savings": 31.00
       }
     ]
   },
   { 
     "id": 11, 
-    "name": "Haushalt und Küche Produkt 2", 
-    "price": 42.00, 
+    "name": "350ml Elektrischer Mixer Entsafter", 
+    "price": 34.99, 
+    "originalPrice": 49.99,
     "category": "Haushalt und Küche", 
     "image": "produkt bilder/ware.png", 
-    "description": "Praktisch und zuverlässig für Ihr Zuhause.",
+    "description": "Kompakter elektrischer Mixer und Entsafter. Perfekt für Smoothies und frische Säfte unterwegs.",
+    "sku": "CJ1621032671155597313",
+    "inStock": true,
+    "shippingTime": "7-15 Werktage",
+    "tags": ["mixer", "entsafter", "smoothie", "tragbar"],
     "bundles": [
       {
         "id": "bundle1",
-        "name": "Household Pack",
-        "description": "Produkt + Haushaltshilfe",
-        "items": ["Haushaltshilfe", "Bedienungsanleitung"],
-        "originalPrice": 62.00,
-        "bundlePrice": 52.00,
+        "name": "Smoothie Starter",
+        "description": "Mixer + Rezepte",
+        "items": ["Rezeptbuch", "Ersatzklingen"],
+        "originalPrice": 55.00,
+        "bundlePrice": 45.00,
         "savings": 10.00
       },
       {
         "id": "bundle2",
-        "name": "Smart Home",
-        "description": "Intelligentes Zuhause",
-        "items": ["Haushaltshilfe", "Smart Features", "Installation"],
-        "originalPrice": 105.00,
-        "bundlePrice": 80.00,
-        "savings": 25.00
+        "name": "Health Master",
+        "description": "Komplettes Gesundheits-Set",
+        "items": ["Rezeptbuch", "Ersatzklingen", "Superfood Starter Kit"],
+        "originalPrice": 85.00,
+        "bundlePrice": 65.00,
+        "savings": 20.00
       }
     ]
   },
   { 
     "id": 12, 
-    "name": "Haushalt und Küche Produkt 3", 
-    "price": 44.00, 
+    "name": "Multifunktions Gemüseschneider", 
+    "price": 19.99, 
+    "originalPrice": 29.99,
     "category": "Haushalt und Küche", 
     "image": "produkt bilder/ware.png", 
-    "description": "Praktisch und zuverlässig für Ihr Zuhause.",
+    "description": "Vielseitiger Gemüseschneider mit austauschbaren Klingen. Spart Zeit und Mühe beim Kochen.",
+    "sku": "CJ1621032671155597314",
+    "inStock": true,
+    "shippingTime": "7-15 Werktage",
+    "tags": ["gemüse", "schneider", "küche", "multifunktion"],
     "bundles": [
       {
         "id": "bundle1",
-        "name": "Home Essential",
-        "description": "Produkt + Essentials",
-        "items": ["Haushalts Essentials", "Anleitung"],
-        "originalPrice": 64.00,
-        "bundlePrice": 54.00,
-        "savings": 10.00
+        "name": "Küchen Starter",
+        "description": "Schneider + Zubehör",
+        "items": ["Extra Klingen", "Reinigungsbürste"],
+        "originalPrice": 35.00,
+        "bundlePrice": 28.00,
+        "savings": 7.00
       },
       {
         "id": "bundle2",
-        "name": "Premium Home",
-        "description": "Premium Haushalt",
-        "items": ["Haushalts Essentials", "Premium Service", "Installation"],
+        "name": "Profi Küche",
+        "description": "Professionelles Küchen-Set",
+        "items": ["Extra Klingen", "Reinigungsbürste", "Aufbewahrungsbox"],
+        "originalPrice": 55.00,
+        "bundlePrice": 40.00,
+        "savings": 15.00
+      }
+    ]
+  },
+  { 
+    "id": 13, 
+    "name": "Luft Wasser Flasche mit Pumpe", 
+    "price": 24.99, 
+    "originalPrice": 34.99,
+    "category": "Haushalt und Küche", 
+    "image": "produkt bilder/ware.png", 
+    "description": "Innovative Wasserflasche mit integrierter Luftpumpe. Perfekt für Sport, Reisen und den täglichen Gebrauch.",
+    "sku": "ALI1005007209",
+    "inStock": true,
+    "shippingTime": "10-20 Werktage",
+    "tags": ["wasser", "sport", "pumpe", "flasche"],
+    "bundles": [
+      {
+        "id": "bundle1",
+        "name": "Sport Bundle",
+        "description": "Flasche + Sport Zubehör",
+        "items": ["Trageschlaufe", "Reinigungsset"],
+        "originalPrice": 35.00,
+        "bundlePrice": 30.00,
+        "savings": 5.00
+      },
+      {
+        "id": "bundle2",
+        "name": "Active Lifestyle",
+        "description": "Komplettes Sport-Set",
+        "items": ["Trageschlaufe", "Reinigungsset", "Ersatzventil"],
+        "originalPrice": 50.00,
+        "bundlePrice": 40.00,
+        "savings": 10.00
+      }
+    ]
+  },
+  { 
+    "id": 14, 
+    "name": "10-1 Stück Aroma-Pads", 
+    "price": 12.99, 
+    "originalPrice": 18.99,
+    "category": "Haushalt und Küche", 
+    "image": "produkt bilder/ware.png", 
+    "description": "Hochwertige Aroma-Pads für Kaffeemaschinen. Wiederverwendbar und umweltfreundlich für perfekten Kaffeegenuss.",
+    "sku": "ALI1005008666",
+    "inStock": true,
+    "shippingTime": "10-20 Werktage",
+    "tags": ["kaffee", "pads", "wiederverwendbar", "umweltfreundlich"],
+    "bundles": [
+      {
+        "id": "bundle1",
+        "name": "Kaffee Starter",
+        "description": "Pads + Kaffee Zubehör",
+        "items": ["Reinigungsbürste", "Aufbewahrungsbox"],
+        "originalPrice": 20.00,
+        "bundlePrice": 17.00,
+        "savings": 3.00
+      },
+      {
+        "id": "bundle2",
+        "name": "Barista Set",
+        "description": "Professionelles Kaffee-Set",
+        "items": ["Reinigungsbürste", "Aufbewahrungsbox", "Premium Kaffeebohnen"],
+        "originalPrice": 35.00,
+        "bundlePrice": 25.00,
+        "savings": 10.00
+      }
+    ]
+  },
+  { 
+    "id": 15, 
+    "name": "Drahtlose elektrische tragbare Espressomaschine", 
+    "price": 89.99, 
+    "originalPrice": 119.99,
+    "category": "Haushalt und Küche", 
+    "image": "produkt bilder/ware.png", 
+    "description": "Premium tragbare Espressomaschine mit drahtloser Technologie. Perfekter Espresso überall und jederzeit.",
+    "sku": "ALI1005007317",
+    "inStock": true,
+    "shippingTime": "10-20 Werktage",
+    "tags": ["espresso", "kaffee", "tragbar", "drahtlos"],
+    "bundles": [
+      {
+        "id": "bundle1",
+        "name": "Espresso Starter",
+        "description": "Maschine + Grundausstattung",
+        "items": ["Reinigungsset", "Ersatzkapseln"],
         "originalPrice": 110.00,
-        "bundlePrice": 85.00,
+        "bundlePrice": 99.00,
+        "savings": 11.00
+      },
+      {
+        "id": "bundle2",
+        "name": "Barista Professional",
+        "description": "Professionelles Espresso-Set",
+        "items": ["Reinigungsset", "Ersatzkapseln", "Premium Kaffeebohnen", "Milchaufschäumer"],
+        "originalPrice": 150.00,
+        "bundlePrice": 125.00,
         "savings": 25.00
+      }
+    ]
+  },
+  { 
+    "id": 16, 
+    "name": "Elektrische Küchenwaage Digital", 
+    "price": 29.99, 
+    "originalPrice": 39.99,
+    "category": "Haushalt und Küche", 
+    "image": "produkt bilder/ware.png", 
+    "description": "Präzise digitale Küchenwaage mit LCD-Display. Ideal für genaues Wiegen beim Kochen und Backen.",
+    "sku": "ALI1005007542",
+    "inStock": true,
+    "shippingTime": "10-20 Werktage",
+    "tags": ["waage", "küche", "digital", "präzise"],
+    "bundles": [
+      {
+        "id": "bundle1",
+        "name": "Baking Starter",
+        "description": "Waage + Back-Zubehör",
+        "items": ["Messbecher Set", "Rezeptbuch"],
+        "originalPrice": 40.00,
+        "bundlePrice": 35.00,
+        "savings": 5.00
+      },
+      {
+        "id": "bundle2",
+        "name": "Master Baker",
+        "description": "Professionelles Back-Set",
+        "items": ["Messbecher Set", "Rezeptbuch", "Silikon Backformen", "Digitaler Timer"],
+        "originalPrice": 70.00,
+        "bundlePrice": 55.00,
+        "savings": 15.00
       }
     ]
   }

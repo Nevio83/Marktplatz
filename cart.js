@@ -542,7 +542,7 @@ function updateCartPage() {
                         <label for="address" class="form-label">
                             <i class="bi bi-geo-alt"></i> Adresse
                         </label>
-                        <input type="text" id="address" class="form-control" required placeholder="Straße und Hausnummer" pattern=".*\d+.*" title="Bitte geben Sie eine Hausnummer ein">
+                        <input type="text" id="address" class="form-control" required placeholder="Straße und Hausnummer">
                     </div>
                     
                     <div class="form-group">
@@ -622,30 +622,13 @@ function updateCartPage() {
     // Stripe-Elemente nach dem Neuzeichnen des DOMs einhängen
     setupPostcodeAutocomplete();
     
-    // Validierung für Hausnummer in Adresse
+    // Adressfeld ohne Hausnummer-Validierung
     const addressInput = document.getElementById('address');
     if (addressInput) {
         addressInput.addEventListener('input', function() {
-            const value = this.value.trim();
-            const hasNumber = /\d/.test(value);
-            
-            if (value.length > 0 && !hasNumber) {
-                this.setCustomValidity('Bitte geben Sie eine Hausnummer ein');
-                this.classList.add('is-invalid');
-            } else {
-                this.setCustomValidity('');
-                this.classList.remove('is-invalid');
-            }
-        });
-        
-        addressInput.addEventListener('blur', function() {
-            const value = this.value.trim();
-            const hasNumber = /\d/.test(value);
-            
-            if (value.length > 0 && !hasNumber) {
-                this.setCustomValidity('Bitte geben Sie eine Hausnummer ein');
-                this.classList.add('is-invalid');
-            }
+            // Keine spezielle Validierung mehr nötig
+            this.setCustomValidity('');
+            this.classList.remove('is-invalid');
         });
     }
     setupStripeForm(); // Diese Zeile hinzufügen
@@ -916,6 +899,8 @@ async function handleStripeSubmit(event) {
         const lastname = document.getElementById('lastname').value;
         const country = document.getElementById('country').value;
         const city = document.getElementById('city').value;
+        const address = document.getElementById('address').value;
+        const postalCode = document.getElementById('postcode').value;
 
         if (cart.length === 0) {
             throw new Error("Ihr Warenkorb ist leer.");
@@ -942,6 +927,12 @@ async function handleStripeSubmit(event) {
                     billing_details: {
                         name: `${firstname} ${lastname}`,
                         email: email,
+                        address: {
+                            line1: address,
+                            city: city,
+                            country: country,
+                            postal_code: postalCode
+                        }
                     },
                 },
             }
