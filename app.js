@@ -808,7 +808,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // URL-Parameter (z.B. ?category=Elektronik) auslesen und Filter setzen
+  // URL-Parameter (z.B. ?category=Technik/Gadgets) auslesen und Filter setzen
   try {
     const urlParams = new URLSearchParams(window.location.search);
     const categoryParam = urlParams.get('category');
@@ -1254,7 +1254,7 @@ window.testAddProduct1 = function() {
     id: 1,
     name: "Elektronik Produkt 1",
     price: 10.00,
-    category: "Elektronik",
+    category: "Technik/Gadgets",
     image: "produkt bilder/ware.png",
     description: "Innovative Technologie für Ihren Alltag."
   };
