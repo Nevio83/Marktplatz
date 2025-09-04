@@ -3,50 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Körperpflege/Wellness Produkt 2 - Marktplatz</title>
+    <title>LED Motion Sensor Licht Drahtlos - Marktplatz</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link href="koerperpflege-wellness.css" rel="stylesheet">
+    <link href="beleuchtung.css" rel="stylesheet">
+    <!-- Added animation styles for consistent animations -->
     <style>
-        .product-hero {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            color: white;
-            padding: 4rem 0;
-        }
-        .product-image {
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
-        }
-        .product-image:hover {
-            transform: scale(1.02);
-        }
-        .price-tag {
-            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
-            color: white;
-            padding: 0.5rem 1.5rem;
-            border-radius: 25px;
-            font-weight: bold;
-            font-size: 1.5rem;
-        }
         .success-animation {
-            animation: success-animation 0.6s ease;
-        }
-        .heart-pulse {
-            animation: heart-pulse 0.6s ease;
-        }
-        .cart-rainbow-bounce {
-            animation: cart-rainbow-bounce 1s ease;
+            animation: success-animation 0.8s ease-in-out;
         }
         .cart-icon-pulse {
-            animation: cart-icon-pulse 0.6s ease;
+            animation: cart-icon-pulse 0.5s ease-in-out;
+        }
+        .cart-rainbow-bounce {
+            animation: cart-rainbow-bounce 0.8s ease-in-out;
+        }
+        .heart-pulse {
+            animation: heart-pulse 0.5s ease-in-out;
         }
         @keyframes success-animation {
             0% { transform: scale(1); }
             50% { transform: scale(1.1); }
             100% { transform: scale(1); }
         }
-        @keyframes heart-pulse {
+        @keyframes cart-icon-pulse {
             0% { transform: scale(1); }
             50% { transform: scale(1.2); }
             100% { transform: scale(1); }
@@ -55,7 +35,7 @@
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-10px); }
         }
-        @keyframes cart-icon-pulse {
+        @keyframes heart-pulse {
             0% { transform: scale(1); }
             50% { transform: scale(1.2); }
             100% { transform: scale(1); }
@@ -85,21 +65,23 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-6">
-                    <h1 class="display-4 fw-bold mb-3">Körperpflege/Wellness Produkt 2</h1>
-                    <p class="lead mb-4">Hochwertige Pflegeprodukte für Wellness und Entspannung. Für Ihr tägliches Wohlbefinden.</p>
+                    <h1 class="display-4 fw-bold mb-3">LED Motion Sensor Licht Drahtlose</h1>
+                    <p class="lead mb-4">Intelligente, kabellose Beleuchtung mit Bewegungsmelder für Schränke, Schubladen und mehr</p>
                     <div class="d-flex align-items-center gap-3 mb-4">
-                        <span class="price-tag">€42.00</span>
+                        <span class="price-tag">€19.99</span>
+                        <span class="text-muted text-decoration-line-through">€29.99</span>
                         <span class="badge bg-success">Kostenloser Versand in Europa</span>
                     </div>
-                    <button class="btn btn-light btn-lg me-3 add-to-cart" id="heroCartBtn">
+                    <!-- Added proper CSS classes and onclick handler for animations -->
+                    <button class="btn btn-light btn-lg me-3 add-to-cart" id="heroCartBtn" onclick="addToCartAndRedirect()">
                         <i class="bi bi-cart-plus"></i> In den Warenkorb
                     </button>
-                    <button class="btn btn-outline-light btn-lg wishlist-style-btn wishlist-button" id="wishlistBtn">
+                    <button class="btn btn-outline-light btn-lg wishlist-button" id="wishlistBtn" data-product-id="6">
                         <i class="bi bi-heart"></i> Zur Wunschliste
                     </button>
                 </div>
                 <div class="col-lg-6 text-center">
-                    <img src="../produkt bilder/ware.png" alt="Körperpflege/Wellness Produkt 2" class="img-fluid product-image" style="max-height: 400px;">
+                    <img src="../produkt bilder/ware.png" alt="LED Motion Sensor Licht Drahtlos" class="img-fluid product-image" style="max-height: 400px;">
                 </div>
             </div>
         </div>
@@ -111,23 +93,52 @@
             <div class="row">
                 <div class="col-lg-8">
                     <h2 class="mb-4">Produktbeschreibung</h2>
-                    <p class="lead mb-4">Hochwertige Pflegeprodukte für Wellness und Entspannung. Für Ihr tägliches Wohlbefinden.</p>
+                    <p class="lead mb-4">Das praktische LED Motion Sensor Licht bietet Ihnen automatische Beleuchtung genau dort, wo Sie sie benötigen. Perfekt für Schränke, Schubladen, Regale oder als Nachtlicht.</p>
+                    
+                    <div class="specifications">
+                        <h5>Spezifikationen:</h5>
+                        <ul class="list-unstyled">
+                            <li><strong>Material:</strong> ABS-Kunststoff</li>
+                            <li><strong>Farbe:</strong> Kaltweiß (6000K)</li>
+                            <li><strong>Stromversorgung:</strong> 3x AAA Batterien (nicht im Lieferumfang enthalten)</li>
+                            <li><strong>Leistung:</strong> 0.5W pro LED</li>
+                            <li><strong>Helligkeit:</strong> 60 Lumen</li>
+                            <li><strong>Sensorreichweite:</strong> 2-3 Meter (120° Erfassungswinkel)</li>
+                            <li><strong>Bewegungserkennung:</strong> Automatisch bei Dunkelheit</li>
+                            <li><strong>Leuchtdauer:</strong> 15 Sekunden nach letzter Bewegung</li>
+                            <li><strong>Abmessungen:</strong> 8 x 3 x 1.5 cm</li>
+                            <li><strong>Gewicht:</strong> 30g (ohne Batterien)</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="features mt-4">
+                        <h5>Besonderheiten:</h5>
+                        <ul>
+                            <li>Berührungslose Bewegungserkennung</li>
+                            <li>Automatische Ein-/Ausschaltung</li>
+                            <li>Einfache Klebemontage (3M Klebepad inklusive)</li>
+                            <li>Keine Verkabelung erforderlich</li>
+                            <li>Energiesparmodus für lange Batterielebensdauer</li>
+                            <li>Perfekt für Schränke, Schubladen, Treppen, Flure und mehr</li>
+                        </ul>
+                    </div>
                     
                     <h3>Hauptmerkmale</h3>
                     <ul class="list-unstyled">
-                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Natürliche Inhaltsstoffe</li>
-                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Dermatologisch getestet</li>
-                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Entspannende Wirkung</li>
-                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Langanhaltend</li>
-                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Vegan & Cruelty-free</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Berührungslose Bewegungserkennung</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Automatische Ein-/Ausschaltung</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Einfache Installation ohne Bohren</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Langlebig</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Einfache Installation</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Modernes Design</li>
                     </ul>
 
                     <h3 class="mt-4">Technische Spezifikationen</h3>
                     <div class="row">
                         <div class="col-md-6">
-                            <p><strong>Kategorie:</strong> Körperpflege/Wellness</p>
-                            <p><strong>Artikelnummer:</strong> 008</p>
-                            <p><strong>Preis:</strong> €42.00</p>
+                            <p><strong>Kategorie:</strong> Beleuchtung</p>
+                            <p><strong>Artikelnummer:</strong> 006</p>
+                            <p><strong>Preis:</strong> €19.99</p>
                         </div>
                         <div class="col-md-6">
                             <p><strong>Verfügbarkeit:</strong> Auf Lager</p>
@@ -146,28 +157,20 @@
                                 <label class="quantity-label">Menge:</label>
                                 <div class="quantity-input-group">
                                     <button class="quantity-btn" onclick="decreaseQuantity(event)">-</button>
-                                    <input type="number" class="quantity-input" id="quantity-mobile" value="1" min="1" max="10">
+                                    <input type="number" class="quantity-input" id="quantity" value="1" min="1" max="10">
                                     <button class="quantity-btn" onclick="increaseQuantity(event)">+</button>
                                 </div>
                             </div>
                             <div class="price-section">
-                                <div class="current-price">€<span id="currentPrice-mobile">42.00</span></div>
-                                <div class="total-price">Gesamt: <span id="totalPrice-mobile">€42.00</span></div>
+                                <div class="current-price">€19.99</div>
                             </div>
                             <div class="action-buttons">
-                                <button class="buy-now-btn" onclick="addToCartWithQuantity(event)">
+                                <button class="buy-now-btn wishlist-style-btn" onclick="addToCartWithQuantity(event)">
                                     <i class="bi bi-cart-plus"></i> Jetzt kaufen
                                 </button>
-                                <button class="wishlist-btn wishlist-style-btn wishlist-button" onclick="toggleWishlist(product)">
+                                <button class="wishlist-btn wishlist-button" data-product-id="6">
                                     <i class="bi bi-heart"></i> Zur Wunschliste
                                 </button>
-                            </div>
-                            <div class="features-section">
-                                <ul class="features-list">
-                                    <li><i class="bi bi-truck"></i> Kostenloser Versand in Europa</li>
-                                    <li><i class="bi bi-shield-check"></i> Garantie inklusive</li>
-                                    <li><i class="bi bi-arrow-return-left"></i> 30 Tage Rückgaberecht</li>
-                                </ul>
                             </div>
                         </div>
                     </div>
@@ -186,31 +189,22 @@
                                 <label class="quantity-label">Menge:</label>
                                 <div class="quantity-input-group">
                                     <button class="quantity-btn" onclick="decreaseQuantity(event)">-</button>
-                                    <input type="number" class="quantity-input" id="quantity" value="1" min="1" max="10">
+                                    <input type="number" class="quantity-input" id="quantity-desktop" value="1" min="1" max="10">
                                     <button class="quantity-btn" onclick="increaseQuantity(event)">+</button>
                                 </div>
                             </div>
                             
                             <div class="price-section">
-                                <div class="current-price">€<span id="currentPrice">42.00</span></div>
-                                <div class="total-price">Gesamt: <span id="totalPrice">€42.00</span></div>
+                                <div class="current-price">€19.99</div>
                             </div>
                             
                             <div class="action-buttons">
-                                <button class="buy-now-btn add-to-cart" id="buyNowBtn" onclick="addToCartWithQuantity(event)">
+                                <button class="buy-now-btn wishlist-style-btn" id="buyNowBtn" onclick="addToCartWithQuantity(event)">
                                     <i class="bi bi-cart-plus"></i> Jetzt kaufen
                                 </button>
-                                <button class="wishlist-btn wishlist-style-btn wishlist-button" id="cardWishlistBtn">
-                                    <i class="bi bi-heart"></i> Zur Wunschliste hinzufügen
+                                <button class="wishlist-btn wishlist-button" id="cardWishlistBtn" data-product-id="6">
+                                    <i class="bi bi-heart"></i> Zur Wunschliste
                                 </button>
-                            </div>
-                            
-                            <div class="features-section">
-                                <ul class="features-list">
-                                    <li><i class="bi bi-truck"></i> Kostenloser Versand in Europa</li>
-                                    <li><i class="bi bi-shield-check"></i> Garantie inklusive</li>
-                                    <li><i class="bi bi-arrow-return-left"></i> 30 Tage Rückgaberecht</li>
-                                </ul>
                             </div>
                         </div>
                     </div>
@@ -220,76 +214,76 @@
     </section>
 
     <!-- Ähnliche Produkte -->
-    <section class="py-5 similar-products-section">
-        <div class="container">
-            <div class="section-header text-center mb-5">
-                <h2 class="section-title">Ähnliche Produkte</h2>
-                <p class="section-subtitle">Entdecken Sie weitere Produkte, die Ihnen gefallen könnten</p>
-            </div>
-            <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3 g-md-4">
+        <section class="py-5 similar-products-section">
+            <div class="container">
+                <div class="section-header text-center mb-5">
+                    <h2 class="section-title">Ähnliche Produkte</h2>
+                    <p class="section-subtitle">Entdecken Sie weitere Produkte, die Ihnen gefallen könnten</p>
+                </div>
+                <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3 g-md-4">
                 <div class="col">
-                    <div class="similar-product-card" onclick="window.location.href='produkt-7.html'">
+                    <div class="similar-product-card" onclick="window.location.href='produkt-22.html'">
                         <div class="product-image-wrapper">
-                            <img src="../produkt bilder/ware.png" class="product-image" alt="Körperpflege/Wellness Produkt 1">
+                            <img src="../produkt bilder/ware.png" class="product-image" alt="Waterproof RGB LED Solar Light">
                         </div>
                         <div class="product-info">
-                            <h5 class="product-title">Körperpflege/Wellness Produkt 1</h5>
-                            <div class="price-container"><span class="current-price">€30.00</span></div>
+                            <h5 class="product-title">Waterproof RGB LED Solar Light</h5>
+                            <div class="price-container"><span class="current-price">€24.99</span></div>
                             <div class="view-product-btn">
                                 <span>Jetzt ansehen</span>
                                 <i class="bi bi-arrow-right"></i>
                             </div>
-                        </div>
+                </div>
                     </div>
                 </div>
                 <div class="col">
-                    <div class="similar-product-card" onclick="window.location.href='produkt-15.html'">
+                    <div class="similar-product-card" onclick="window.location.href='produkt-25.html'">
                         <div class="product-image-wrapper">
-                            <img src="../produkt bilder/ware.png" class="product-image" alt="Drahtlose elektrische tragbare Espressomaschine">
+                            <img src="../produkt bilder/ware.png" class="product-image" alt="Nachtlichter mit Bewegungsmelder">
                         </div>
                         <div class="product-info">
-                            <h5 class="product-title">Drahtlose elektrische tragbare Espressomaschine</h5>
-                            <div class="price-container"><span class="current-price">€89.99</span></div>
+                            <h5 class="product-title">Nachtlichter mit Bewegungsmelder</h5>
+                            <div class="price-container"><span class="current-price">€16.99</span></div>
                             <div class="view-product-btn">
                                 <span>Jetzt ansehen</span>
                                 <i class="bi bi-arrow-right"></i>
                             </div>
-                        </div>
+                </div>
                     </div>
                 </div>
                 <div class="col">
-                    <div class="similar-product-card" onclick="window.location.href='produkt-16.html'">
+                    <div class="similar-product-card" onclick="window.location.href='produkt-21.html'">
                         <div class="product-image-wrapper">
-                            <img src="../produkt bilder/ware.png" class="product-image" alt="Elektrische Küchenwaage Digital">
+                            <img src="../produkt bilder/ware.png" class="product-image" alt="LED Water Ripple Crystal">
                         </div>
                         <div class="product-info">
-                            <h5 class="product-title">Elektrische Küchenwaage Digital</h5>
+                            <h5 class="product-title">LED Water Ripple Crystal</h5>
+                            <div class="price-container"><span class="current-price">€39.99</span></div>
+                            <div class="view-product-btn">
+                                <span>Jetzt ansehen</span>
+                                <i class="bi bi-arrow-right"></i>
+                            </div>
+                </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="similar-product-card" onclick="window.location.href='produkt-24.html'">
+                        <div class="product-image-wrapper">
+                            <img src="../produkt bilder/ware.png" class="product-image" alt="COBLED Arbeitsleuchte">
+                        </div>
+                        <div class="product-info">
+                            <h5 class="product-title">COBLED Arbeitsleuchte</h5>
                             <div class="price-container"><span class="current-price">€29.99</span></div>
                             <div class="view-product-btn">
                                 <span>Jetzt ansehen</span>
                                 <i class="bi bi-arrow-right"></i>
                             </div>
-                        </div>
-                    </div>
                 </div>
-                <div class="col">
-                    <div class="similar-product-card" onclick="window.location.href='produkt-23.html'">
-                        <div class="product-image-wrapper">
-                            <img src="../produkt bilder/ware.png" class="product-image" alt="LED Motion Sensor Licht Drahtlose">
-                        </div>
-                        <div class="product-info">
-                            <h5 class="product-title">LED Motion Sensor Licht Drahtlose</h5>
-                            <div class="price-container"><span class="current-price">€19.99</span></div>
-                            <div class="view-product-btn">
-                                <span>Jetzt ansehen</span>
-                                <i class="bi bi-arrow-right"></i>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+            </div>
+        </section>
 
     <!-- Footer -->
     <footer class="bg-dark text-white py-4">
@@ -302,11 +296,11 @@
     <script>
   // Produktdaten für diese Seite
   const product = {
-    id: 8,
-    name: "Körperpflege/Wellness Produkt 2",
-    price: 42.00,
+    id: 23,
+    name: "LED Motion Sensor Licht Drahtlos",
+    price: 19.99,
     image: "produkt bilder/ware.png",
-    description: "Hochwertige Pflegeprodukte für Wellness und Entspannung. Für Ihr tägliches Wohlbefinden."
+    description: "Praktisches LED-Bewegungsmelder-Licht mit automatischer Ein/Aus-Funktion. Perfekt für Schränke, Schubladen, Treppen oder als Nachtlicht. Einfach zu installieren und energieeffizient."
   };
 
   // Bundles dynamisch laden
@@ -315,7 +309,7 @@
     .then(products => {
       const prod = products.find(p => p.id === product.id);
       if (prod && prod.bundles && prod.bundles.length > 0) {
-        renderBundles();
+        renderBundles(prod.bundles);
       } else {
         // Fallback: Bundle-Box immer anzeigen
         renderBundles();
@@ -323,7 +317,7 @@
     });
 
   function renderBundles() {
-    const einzelpreis = 42.00;
+    const einzelpreis = 19.99;
     const staffel = [
       {qty:1, price:einzelpreis, original:einzelpreis},
       {qty:2, price:(einzelpreis*0.85), original:einzelpreis},
@@ -350,11 +344,12 @@
                   <span class="old">€${s.original.toFixed(2)}</span>
                   <span class="savings">Spare €${((s.original-s.price)*s.qty).toFixed(2)}</span>
                 </div>
-                ${s.qty>1?`<div class='bundle-total'>Gesamt: <b>€${(s.price*s.qty).toFixed(2)}</b> <span class='old'>€${(s.original*s.qty).toFixed(2)}</span></div>`:''}
+                ${s.qty>1?`<div style='margin-top:.7em;font-size:.97rem;'>Gesamt: <b>€${(s.price*s.qty).toFixed(2)}</b> <span class='old'>€${(s.original*s.qty).toFixed(2)}</span></div>`:''}
               </div>
             </div>
           `).join('')}
-          <button type="submit" class="btn bundle-add-btn">In den Warenkorb</button>
+          <!-- Added proper CSS class and event handler for bundle button -->
+          <button type="submit" class="btn bundle-add-btn wishlist-style-btn" onclick="addBundleAndRedirect(event)">In den Warenkorb</button>
         </form>
       </div>
     `;
@@ -407,7 +402,7 @@
   function addBundleToCart(bundle) {
     let cart = getCart();
     // Bundle als eigenes Cart-Item mit bundleId
-    const bundleId = `${product.id}-${bundle.id}`;
+    const bundleId = bundle.bundleId;
     const existing = cart.find(item => item.bundleId === bundleId);
     if (existing) {
       // Erhöhe die Menge bei wiederholtem Hinzufügen
@@ -415,36 +410,47 @@
     } else {
       cart.push({
         id: product.id,
-        name: product.name + ' - ' + bundle.name,
+        name: bundle.name,
         price: bundle.price,
         image: product.image,
         description: bundle.description,
         bundleId: bundleId,
-        bundleItems: bundle.items,
+        bundleItems: [], // Keine Items für die neue Staffel
         quantity: 1
       });
     }
     setCart(cart);
+  }
+
+  function addBundleAndRedirect(event) {
+    event.preventDefault();
+    const form = event.target.closest('form');
+    const selectedRadio = form.querySelector('input[name="bundle"]:checked');
+    if (!selectedRadio) return;
     
-    // Trigger same animations as regular cart buttons
-    const bundleButton = document.querySelector('.bundle-add-btn');
-    if (bundleButton) {
-      bundleButton.classList.add('success-animation');
-      setTimeout(() => {
-        bundleButton.classList.remove('success-animation');
-      }, 600);
-    }
+    const idx = parseInt(selectedRadio.value);
+    const staffel = [
+      {qty: 1, price: product.price, original: product.price},
+      {qty: 2, price: product.price * 0.85, original: product.price},
+      {qty: 3, price: product.price * 0.80, original: product.price}
+    ];
+    const s = staffel[idx];
     
-    // Animate navigation cart
-    const cartNavLink = document.querySelector('.cart-nav-link');
-    if (cartNavLink) {
-      cartNavLink.classList.add('cart-rainbow-bounce');
-      setTimeout(() => {
-        cartNavLink.classList.remove('cart-rainbow-bounce');
-      }, 1000);
-    }
+    addBundleToCart({
+      id: product.id,
+      name: product.name + ` (${s.qty} Set${s.qty>1?'s':''})`,
+      price: s.price * s.qty, // Gesamtpreis für das Bundle
+      image: product.image,
+      description: product.description + ` (Bundle: ${s.qty} Set${s.qty>1?'s':''})`,
+      bundleId: `${product.id}-qty${s.qty}`,
+      quantity: 1
+    });
     
-    // Popup anzeigen statt direkter Weiterleitung für Bundle
+    // Enhanced animations for bundle
+    triggerBundleButtonAnimation(event.target);
+    triggerNavCartAnimation();
+    
+    // Popup anzeigen statt direkter Weiterleitung
     if (typeof showAlert === 'function') {
       showAlert('Bundle zum Warenkorb hinzugefügt', 'cart.html');
     } else {
@@ -463,14 +469,15 @@
   }
   function toggleWishlist(product) {
     let wishlist = getWishlist();
-    const wishlistButtons = document.querySelectorAll('.wishlist-button');
-    
     if (isInWishlist(product.id)) {
       wishlist = wishlist.filter(item => Number(item.id) !== Number(product.id));
+      setWishlist(wishlist);
+      updateAllWishlistButtons(); // Update all wishlist buttons
+      
       if (typeof showAlert === 'function') {
         showAlert('Produkt von der Wunschliste entfernt', 'wishlist.html');
       } else {
-        showNotification('Von der Wunschliste entfernt', 'info');
+        showNotification('Produkt von der Wunschliste entfernt');
       }
     } else {
       wishlist.push({
@@ -480,48 +487,53 @@
         image: product.image,
         description: product.description
       });
+      setWishlist(wishlist);
       
-      // Trigger wishlist animation on all wishlist buttons
-      wishlistButtons.forEach(btn => triggerWishlistButtonAnimation(btn));
+      // Enhanced wishlist animation only when adding (same as index.html)
+      triggerWishlistButtonAnimation(product.id);
+      updateAllWishlistButtons(); // Update all wishlist buttons
       
       if (typeof showAlert === 'function') {
         showAlert('Produkt zur Wunschliste hinzugefügt', 'wishlist.html');
       } else {
-        showNotification('Zur Wunschliste hinzugefügt');
+        showNotification('Produkt zur Wunschliste hinzugefügt');
       }
     }
-    setWishlist(wishlist);
-    updateWishlistButton();
   }
-  function updateWishlistButton() {
-    const heroBtn = document.getElementById('wishlistBtn');
-    const cardBtn = document.getElementById('cardWishlistBtn');
+
+  function updateAllWishlistButtons() {
+    const isInList = isInWishlist(product.id);
     
-    if (isInWishlist(product.id)) {
-      if (heroBtn) {
-        heroBtn.classList.add('active');
-        heroBtn.innerHTML = '<i class="bi bi-heart-fill"></i> Entfernen';
-      }
-      if (cardBtn) {
-        cardBtn.classList.add('active');
-        cardBtn.innerHTML = '<i class="bi bi-heart-fill"></i> Entfernen';
-      }
-    } else {
-      if (heroBtn) {
-        heroBtn.classList.remove('active');
-        heroBtn.innerHTML = '<i class="bi bi-heart"></i> Zur Wunschliste';
-      }
-      if (cardBtn) {
-        cardBtn.classList.remove('active');
-        cardBtn.innerHTML = '<i class="bi bi-heart"></i> Zur Wunschliste hinzufügen';
+    // Update main wishlist button
+    const mainBtn = document.getElementById('wishlistBtn');
+    if (mainBtn) {
+      if (isInList) {
+        mainBtn.classList.add('active');
+        mainBtn.innerHTML = '<i class="bi bi-heart-fill"></i> Entfernen';
+      } else {
+        mainBtn.classList.remove('active');
+        mainBtn.innerHTML = '<i class="bi bi-heart"></i> Zur Wunschliste';
       }
     }
+    
+    // Update all quick order wishlist buttons
+    const quickOrderBtns = document.querySelectorAll('.wishlist-button');
+    quickOrderBtns.forEach(btn => {
+      if (isInList) {
+        btn.classList.add('active');
+        btn.innerHTML = '<i class="bi bi-heart-fill"></i> Entfernen';
+      } else {
+        btn.classList.remove('active');
+        btn.innerHTML = '<i class="bi bi-heart"></i> Zur Wunschliste';
+      }
+    });
   }
+
   function getCart() {
     return JSON.parse(localStorage.getItem('cart')) || [];
-  }
+            }
   function setCart(cart) {
-    localStorage.setItem('cart', JSON.stringify(cart));
+            localStorage.setItem('cart', JSON.stringify(cart));
   }
   function addToCart(product) {
     let cart = getCart();
@@ -570,7 +582,7 @@
       }
     }, 1700);
   }
-
+  
   function showNotification(message, type = 'success') {
     const notification = document.createElement('div');
     notification.className = `alert alert-${type} position-fixed end-0 m-4 shadow-lg fade show`;
@@ -615,30 +627,122 @@
     }, 2000);
   }
 
-  // Mengenfunktionen für Schnellbestellung
-  function decreaseQuantity(event) {
-    // Determine which input to use based on the clicked button
-    const button = event ? event.target : null;
-    const isDesktop = button && button.closest('.d-none.d-lg-block');
+  function addToCartAndRedirect() {
+    const productToAdd = {
+      ...product,
+      quantity: 1
+    };
+    addToCart(productToAdd);
     
-    const inputId = isDesktop ? 'quantity' : 'quantity-mobile';
-    const input = document.getElementById(inputId);
+    // Enhanced animations for product page
+    triggerCartButtonAnimation();
+    triggerNavCartAnimation();
     
-    if (input) {
-      const currentValue = parseInt(input.value, 10) || 1;
-      if (currentValue > 1) {
-        input.value = currentValue - 1;
-        updateTotalPrice();
+    // Popup anzeigen statt direkter Weiterleitung für "In den Warenkorb" Button
+    if (typeof showAlert === 'function') {
+      showAlert('Produkt zum Warenkorb hinzugefügt', 'cart.html');
+    } else {
+      showNotification('Zum Warenkorb hinzugefügt');
+    }
+  }
+
+  function triggerCartButtonAnimation() {
+    const cartButton = document.getElementById('heroCartBtn');
+    if (cartButton) {
+      // Use wishlist-style animation for main cart button
+      cartButton.classList.add('success-animation');
+      setTimeout(() => {
+        cartButton.classList.remove('success-animation');
+      }, 800);
+      
+      // Add cart icon pulse animation (red effect)
+      const cartIcon = cartButton.querySelector('i');
+      if (cartIcon) {
+        cartIcon.classList.add('cart-icon-pulse');
+        setTimeout(() => {
+          cartIcon.classList.remove('cart-icon-pulse');
+        }, 500);
+      }
+    }
+  }
+
+  // New animation function for quick order buttons (wishlist-style)
+  function triggerQuickOrderAnimation() {
+    const quickOrderButtons = document.querySelectorAll('.wishlist-style-btn');
+    quickOrderButtons.forEach(button => {
+      button.classList.add('success-animation');
+      setTimeout(() => {
+        button.classList.remove('success-animation');
+      }, 800);
+      
+      // Add cart icon pulse animation to button icon (red effect)
+      const buttonIcon = button.querySelector('i');
+      if (buttonIcon) {
+        buttonIcon.classList.add('cart-icon-pulse');
+        setTimeout(() => {
+          buttonIcon.classList.remove('cart-icon-pulse');
+        }, 500);
+      }
+    });
+  }
+
+  function triggerNavCartAnimation() {
+    const navCartButton = document.querySelector('.cart-nav-link');
+    if (navCartButton) {
+      navCartButton.classList.add('cart-rainbow-bounce');
+      setTimeout(() => {
+        navCartButton.classList.remove('cart-rainbow-bounce');
+      }, 800);
+    }
+  }
+
+  // Animation function for bundle button (wishlist-style)
+  function triggerBundleButtonAnimation(button) {
+    if (button) {
+      button.classList.add('success-animation');
+      setTimeout(() => {
+        button.classList.remove('success-animation');
+      }, 800);
+      
+      // Add cart icon pulse animation to bundle button icon (red effect)
+      const buttonIcon = button.querySelector('i');
+      if (buttonIcon) {
+        buttonIcon.classList.add('cart-icon-pulse');
+        setTimeout(() => {
+          buttonIcon.classList.remove('cart-icon-pulse');
+        }, 500);
+      }
+    }
+  }
+
+  // Enhanced wishlist animation (only for main button, not quick order)
+  function triggerWishlistButtonAnimation(productId) {
+    // Only animate the main wishlist button, not the quick order ones
+    const wishlistButton = document.getElementById('wishlistBtn');
+    
+    if (wishlistButton) {
+      wishlistButton.classList.add('success-animation');
+      setTimeout(() => {
+        wishlistButton.classList.remove('success-animation');
+      }, 800);
+      
+      // Heart pulse animation
+      const heartIcon = wishlistButton.querySelector('i');
+      if (heartIcon) {
+        heartIcon.classList.add('heart-pulse');
+        setTimeout(() => {
+          heartIcon.classList.remove('heart-pulse');
+        }, 500);
       }
     }
   }
 
   function increaseQuantity(event) {
-    // Determine which input to use based on the clicked button
+    // Determine which quantity input to use based on the clicked button
     const button = event ? event.target : null;
     const isDesktop = button && button.closest('.d-none.d-lg-block');
     
-    const inputId = isDesktop ? 'quantity' : 'quantity-mobile';
+    const inputId = isDesktop ? 'quantity-desktop' : 'quantity';
     const input = document.getElementById(inputId);
     
     if (input) {
@@ -650,10 +754,27 @@
     }
   }
 
+  function decreaseQuantity(event) {
+    // Determine which quantity input to use based on the clicked button
+    const button = event ? event.target : null;
+    const isDesktop = button && button.closest('.d-none.d-lg-block');
+    
+    const inputId = isDesktop ? 'quantity-desktop' : 'quantity';
+    const input = document.getElementById(inputId);
+    
+    if (input) {
+      const currentValue = parseInt(input.value, 10) || 1;
+      if (currentValue > 1) {
+        input.value = currentValue - 1;
+        updateTotalPrice();
+      }
+    }
+  }
+
   function updateTotalPrice() {
     // Update both mobile and desktop total prices
-    const mobileQuantity = parseInt(document.getElementById('quantity-mobile')?.value, 10) || 1;
-    const desktopQuantity = parseInt(document.getElementById('quantity')?.value, 10) || 1;
+    const mobileQuantity = parseInt(document.getElementById('quantity')?.value, 10) || 1;
+    const desktopQuantity = parseInt(document.getElementById('quantity-desktop')?.value, 10) || 1;
     
     // Einfache Berechnung: Gesamtpreis = Menge × Einzelpreis
     const mobileTotal = (product.price * mobileQuantity).toFixed(2);
@@ -672,8 +793,8 @@
     });
     
     // Update total prices
-    const mobileTotalElement = document.getElementById('totalPrice-mobile');
-    const desktopTotalElement = document.getElementById('totalPrice');
+    const mobileTotalElement = document.getElementById('totalPrice');
+    const desktopTotalElement = document.getElementById('totalPriceDesktop');
     
     if (mobileTotalElement) mobileTotalElement.textContent = `€${mobileTotal}`;
     if (desktopTotalElement) desktopTotalElement.textContent = `€${desktopTotal}`;
@@ -684,7 +805,7 @@
     const button = event ? event.target : null;
     const isDesktop = button && button.closest('.d-none.d-lg-block');
     
-    const inputId = isDesktop ? 'quantity' : 'quantity-mobile';
+    const inputId = isDesktop ? 'quantity-desktop' : 'quantity';
     const quantityInput = document.getElementById(inputId);
     const quantity = quantityInput ? parseInt(quantityInput.value, 10) || 1 : 1;
     
@@ -695,7 +816,7 @@
     addToCart(productToCart);
     
     // Enhanced animations for product page - wishlist style for quick order
-    triggerQuickOrderAnimation(button);
+    triggerQuickOrderAnimation();
     triggerNavCartAnimation();
     
     // Direkt zum Warenkorb weiterleiten
@@ -704,73 +825,28 @@
     }, 500); // Kurze Verzögerung für die Animation
   }
 
-  function triggerQuickOrderAnimation(button) {
-    // Only animate the specific button that was clicked
-    if (button) {
-      button.classList.add('success-animation');
-      setTimeout(() => {
-        button.classList.remove('success-animation');
-      }, 600);
-    }
-  }
-
   document.addEventListener('DOMContentLoaded', function() {
-    // Hero Wishlist-Button
-    let heroWishlistBtn = document.getElementById('wishlistBtn');
-    if (heroWishlistBtn) {
-      heroWishlistBtn.addEventListener('click', function(e) {
+    const allWishlistButtons = document.querySelectorAll('.wishlist-button');
+    allWishlistButtons.forEach(button => {
+      button.addEventListener('click', function(e) {
         e.preventDefault();
-        triggerWishlistButtonAnimation(this);
         toggleWishlist(product);
       });
-    }
+    });
     
-    // Hero Cart-Button
-    let heroCartBtn = document.getElementById('heroCartBtn');
-    if (heroCartBtn) {
-      heroCartBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        const quantity = parseInt(document.getElementById('quantity').value, 10) || 1;
-        const productToCart = {
-          ...product,
-          quantity: quantity
-        };
-        addToCart(productToCart);
-        
-        // Trigger animations
-        triggerCartButtonAnimation(this);
-        triggerNavCartAnimation();
-        triggerCartIconPulse();
-        
-        if (typeof showAlert === 'function') {
-          showAlert('Produkt zum Warenkorb hinzugefügt', 'cart.html');
-        } else {
-          showNotification('Zum Warenkorb hinzugefügt');
-        }
-      });
-    }
+    // Cart button uses onclick attribute, no need for additional event listener
     
-    // Card Wishlist-Button
-    let cardWishlistBtn = document.getElementById('cardWishlistBtn');
-    if (cardWishlistBtn) {
-      cardWishlistBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        triggerWishlistButtonAnimation(this);
-        toggleWishlist(product);
-      });
-    }
-    
-    // Update both wishlist buttons on page load
-    updateWishlistButton();
+    // Update all wishlist buttons on page load
+    updateAllWishlistButtons();
     
     // Buy Now Button
     const quantityInput = document.getElementById('quantity');
     const buyNowBtn = document.getElementById('buyNowBtn');
     
     if (quantityInput && buyNowBtn) {
-      quantityInput.addEventListener('input', updatePrices);
-      quantityInput.addEventListener('change', updatePrices);
-      updatePrices();
+      quantityInput.addEventListener('input', updateTotalPrice);
+      quantityInput.addEventListener('change', updateTotalPrice);
+      updateTotalPrice();
       
       buyNowBtn.addEventListener('click', function(e) {
         e.preventDefault();
@@ -781,11 +857,11 @@
         };
         addToCart(productToCart);
         
-        // Trigger animations
-        triggerCartButtonAnimation(this);
+        // Enhanced animations for product page - wishlist style for quick order
+        triggerQuickOrderAnimation();
         triggerNavCartAnimation();
-        triggerCartIconPulse();
         
+        // Popup anzeigen statt direkter Weiterleitung
         if (typeof showAlert === 'function') {
           showAlert('Produkt zum Warenkorb hinzugefügt', 'cart.html');
         } else {
@@ -793,44 +869,24 @@
         }
       });
     }
+
+    // Event-Listener für Quantity-Input (Mobile)
+    const quantityInputMobile = document.getElementById('quantity');
+    if (quantityInputMobile) {
+      quantityInputMobile.addEventListener('input', updateTotalPrice);
+      quantityInputMobile.addEventListener('change', updateTotalPrice);
+    }
+
+    // Event-Listener für Quantity-Input (Desktop)
+    const quantityInputDesktop = document.getElementById('quantity-desktop');
+    if (quantityInputDesktop) {
+      quantityInputDesktop.addEventListener('input', updateTotalPrice);
+      quantityInputDesktop.addEventListener('change', updateTotalPrice);
+    }
+
+    // Initialisiere die Preise
+    updateTotalPrice();
   });
-
-  // Animation functions
-  function triggerCartButtonAnimation(button) {
-    if (!button) return;
-    button.classList.add('success-animation');
-    setTimeout(() => {
-      button.classList.remove('success-animation');
-    }, 600);
-  }
-
-  function triggerWishlistButtonAnimation(button) {
-    if (!button) return;
-    button.classList.add('heart-pulse');
-    setTimeout(() => {
-      button.classList.remove('heart-pulse');
-    }, 600);
-  }
-
-  function triggerNavCartAnimation() {
-    const cartNavLink = document.querySelector('.cart-nav-link');
-    if (cartNavLink) {
-      cartNavLink.classList.add('cart-rainbow-bounce');
-      setTimeout(() => {
-        cartNavLink.classList.remove('cart-rainbow-bounce');
-      }, 1000);
-    }
-  }
-
-  function triggerCartIconPulse() {
-    const cartIcon = document.querySelector('.cart-nav-link i');
-    if (cartIcon) {
-      cartIcon.classList.add('cart-icon-pulse');
-      setTimeout(() => {
-        cartIcon.classList.remove('cart-icon-pulse');
-      }, 600);
-    }
-  }
-    </script>
+</script>
 </body>
 </html>

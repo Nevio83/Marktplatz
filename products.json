@@ -699,5 +699,220 @@
         "savings": 10
       }
     ]
+  },
+  {
+    "id": 21,
+    "name": "LED Water Ripple Crystal",
+    "price": 39.99,
+    "originalPrice": 59.99,
+    "category": "Beleuchtung",
+    "image": "produkt bilder/ware.png",
+    "description": "LED Water Ripple Ambient Night Light - USB Rotating Projection Crystal Table Lamp mit RGB Dimmable Home Decoration und 16 Farben. Perfekt für stimmungsvolle Beleuchtung.",
+    "features": [
+      "USB-betrieben für einfache Nutzung",
+      "Rotierende Projektion für dynamische Effekte",
+      "16 verschiedene Farben verfügbar",
+      "RGB dimmbar für perfekte Atmosphäre",
+      "Kristall-Design für elegante Optik"
+    ],
+    "bundles": [
+      {
+        "id": "bundle1",
+        "name": "Ambient Starter",
+        "description": "Lampe + Grundzubehör",
+        "items": [
+          "USB-Kabel",
+          "Bedienungsanleitung"
+        ],
+        "originalPrice": 49.99,
+        "bundlePrice": 44.99,
+        "savings": 5
+      },
+      {
+        "id": "bundle2",
+        "name": "Complete Ambience",
+        "description": "Komplettes Beleuchtungs-Set",
+        "items": [
+          "USB-Kabel",
+          "Bedienungsanleitung",
+          "Fernbedienung"
+        ],
+        "originalPrice": 69.99,
+        "bundlePrice": 54.99,
+        "savings": 15
+      }
+    ]
+  },
+  {
+    "id": 22,
+    "name": "Waterproof RGB LED Solar Light",
+    "price": 24.99,
+    "originalPrice": 34.99,
+    "category": "Beleuchtung",
+    "image": "produkt bilder/ware.png",
+    "description": "Wasserdichtes RGB LED Solar Licht für Stufen und Zäune. Energieeffiziente Solarbeleuchtung mit automatischer Ein-/Ausschaltung bei Dämmerung.",
+    "features": [
+      "Wasserdicht (IP65) für Außenbereich",
+      "Solarbetrieben - keine Stromkosten",
+      "RGB-Farbwechsel für stimmungsvolle Beleuchtung",
+      "Automatische Dämmerungsschaltung",
+      "Einfache Installation ohne Verkabelung"
+    ],
+    "bundles": [
+      {
+        "id": "bundle1",
+        "name": "Garden Starter",
+        "description": "Solarleuchte + Montagezubehör",
+        "items": [
+          "Montageschrauben",
+          "Installationsanleitung"
+        ],
+        "originalPrice": 34.99,
+        "bundlePrice": 29.99,
+        "savings": 5
+      },
+      {
+        "id": "bundle2",
+        "name": "Complete Garden",
+        "description": "Komplettes Garten-Beleuchtungsset",
+        "items": [
+          "Montageschrauben",
+          "Installationsanleitung",
+          "Zusätzliche Befestigung"
+        ],
+        "originalPrice": 44.99,
+        "bundlePrice": 34.99,
+        "savings": 10
+      }
+    ]
+  },
+  {
+    "id": 23,
+    "name": "LED Motion Sensor Licht Drahtlose",
+    "price": 19.99,
+    "originalPrice": 29.99,
+    "category": "Beleuchtung",
+    "image": "produkt bilder/ware.png",
+    "description": "Drahtloses LED Motion Sensor Licht mit Bewegungsmelder. Perfekt für Flure, Treppen, Schränke und andere Bereiche wo automatische Beleuchtung benötigt wird.",
+    "features": [
+      "Drahtlos - einfache Installation überall",
+      "Bewegungsmelder mit 3m Reichweite",
+      "Batteriebetrieben - bis zu 6 Monate Laufzeit",
+      "Automatische Ein-/Ausschaltung",
+      "Kompaktes Design für unauffällige Montage"
+    ],
+    "bundles": [
+      {
+        "id": "bundle1",
+        "name": "Motion Starter",
+        "description": "Sensor-Licht + Batterien",
+        "items": [
+          "3x AAA Batterien",
+          "Klebestreifen"
+        ],
+        "originalPrice": 29.99,
+        "bundlePrice": 24.99,
+        "savings": 5
+      },
+      {
+        "id": "bundle2",
+        "name": "Smart Home Pack",
+        "description": "Komplettes Sensor-Beleuchtungsset",
+        "items": [
+          "3x AAA Batterien",
+          "Klebestreifen",
+          "Zusätzliche Montageoption"
+        ],
+        "originalPrice": 39.99,
+        "bundlePrice": 29.99,
+        "savings": 10
+      }
+    ]
+  },
+  {
+    "id": 24,
+    "name": "COBLED Arbeitsleuchte",
+    "price": 34.99,
+    "originalPrice": 49.99,
+    "category": "Beleuchtung",
+    "image": "produkt bilder/ware.png",
+    "description": "Professionelle COBLED Arbeitsleuchte mit COB LED-Technologie. Ideal für Werkstatt, Garage, Camping und alle Arbeiten die helles, gleichmäßiges Licht benötigen.",
+    "features": [
+      "COB LED-Technologie für gleichmäßiges Licht",
+      "Bis zu 1000 Lumen Helligkeit",
+      "Wiederaufladbar über USB",
+      "Magnetische Befestigung und Haken",
+      "Wasserdicht (IP54) für Outdoor-Einsatz"
+    ],
+    "bundles": [
+      {
+        "id": "bundle1",
+        "name": "Work Starter",
+        "description": "Arbeitsleuchte + Ladezubehör",
+        "items": [
+          "USB-Ladekabel",
+          "Bedienungsanleitung"
+        ],
+        "originalPrice": 49.99,
+        "bundlePrice": 39.99,
+        "savings": 10
+      },
+      {
+        "id": "bundle2",
+        "name": "Professional Work",
+        "description": "Komplettes Arbeitsbeleuchtungsset",
+        "items": [
+          "USB-Ladekabel",
+          "Bedienungsanleitung",
+          "Zusätzliche Halterung"
+        ],
+        "originalPrice": 64.99,
+        "bundlePrice": 49.99,
+        "savings": 15
+      }
+    ]
+  },
+  {
+    "id": 25,
+    "name": "Nachtlichter mit Bewegungsmelder",
+    "price": 16.99,
+    "originalPrice": 24.99,
+    "category": "Beleuchtung",
+    "image": "produkt bilder/ware.png",
+    "description": "Automatische Nachtlichter mit Bewegungsmelder für sicheres Navigieren in der Dunkelheit. Perfekt für Schlafzimmer, Badezimmer, Flure und Kinderzimmer.",
+    "features": [
+      "Automatischer Bewegungsmelder",
+      "Warmes, augenschonendes Licht",
+      "Batteriebetrieben - bis zu 12 Monate",
+      "Klebestreifen für einfache Montage",
+      "Kompaktes, unauffälliges Design"
+    ],
+    "bundles": [
+      {
+        "id": "bundle1",
+        "name": "Night Safety",
+        "description": "Nachtlicht + Batterien",
+        "items": [
+          "3x AAA Batterien",
+          "Klebestreifen"
+        ],
+        "originalPrice": 24.99,
+        "bundlePrice": 19.99,
+        "savings": 5
+      },
+      {
+        "id": "bundle2",
+        "name": "Complete Night Safety",
+        "description": "Komplettes Nachtbeleuchtungsset",
+        "items": [
+          "3x AAA Batterien",
+          "Klebestreifen",
+          "Zusätzliche Befestigungsoptionen"
+        ],
+        "originalPrice": 34.99,
+        "bundlePrice": 24.99,
+        "savings": 10
+      }
+    ]
   }
 ]

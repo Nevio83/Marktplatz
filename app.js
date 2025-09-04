@@ -478,6 +478,9 @@ function debounce(func, timeout = 300) {
 
 function filterProducts(products, searchText, category) {
   return products.filter(product => {
+    // Skip products with IDs 4, 5, and 6
+    if (product.id >= 4 && product.id <= 6) return false;
+    
     const matchesSearch = product.name.toLowerCase().includes(searchText.toLowerCase()) ||
       product.description.toLowerCase().includes(searchText.toLowerCase());
     const matchesCategory = category === 'Alle Kategorien' || product.category === category;
