@@ -3,38 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Elektronisches Distanzmessgerät - Marktplatz</title>
+    <title>Haaröl-Applikator Kopfhaut Massager - Marktplatz</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link href="elektronik.css" rel="stylesheet">
+    <link href="koerperpflege-wellness.css" rel="stylesheet">
     <style>
+        .product-hero {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 4rem 0;
+        }
+        .product-image {
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        .product-image:hover {
+            transform: scale(1.02);
+        }
+        .price-tag {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
         .success-animation {
-            animation: success-animation 0.8s ease-in-out;
+            animation: successAnimation 0.6s ease;
         }
-        .cart-icon-pulse {
-            animation: cart-icon-pulse 0.5s ease-in-out;
-        }
-        .cart-rainbow-bounce {
-            animation: cart-rainbow-bounce 0.8s ease-in-out;
-        }
-        .heart-pulse {
-            animation: heart-pulse 0.5s ease-in-out;
-        }
-        @keyframes success-animation {
+        @keyframes successAnimation {
             0% { transform: scale(1); }
             50% { transform: scale(1.1); }
             100% { transform: scale(1); }
         }
-        @keyframes cart-icon-pulse {
+        .heart-pulse {
+            animation: heartPulse 0.6s ease;
+        }
+        @keyframes heartPulse {
             0% { transform: scale(1); }
             50% { transform: scale(1.2); }
             100% { transform: scale(1); }
         }
-        @keyframes cart-rainbow-bounce {
+        .cart-rainbow-bounce {
+            animation: cartRainbowBounce 1s ease;
+        }
+        @keyframes cartRainbowBounce {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-10px); }
         }
-        @keyframes heart-pulse {
+        .cart-icon-pulse {
+            animation: cartIconPulse 0.6s ease;
+        }
+        @keyframes cartIconPulse {
             0% { transform: scale(1); }
             50% { transform: scale(1.2); }
             100% { transform: scale(1); }
@@ -64,22 +85,22 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-6">
-                    <h1 class="display-4 fw-bold mb-3">Elektronisches Distanzmessgerät</h1>
-                    <p class="lead mb-4">Präzises digitales Distanzmessgerät für professionelle und private Anwendungen. Einfache Bedienung mit hoher Messgenauigkeit.</p>
+                    <h1 class="display-4 fw-bold mb-3">Haaröl-Applikator Kopfhaut Massager</h1>
+                    <p class="lead mb-4">Innovativer Haaröl-Applikator mit Kopfhaut-Massage-Funktion für gesunde Haare und entspannte Kopfhaut.</p>
                     <div class="d-flex align-items-center gap-3 mb-4">
-                        <span class="price-tag">€39.99</span>
-                        <span class="text-muted text-decoration-line-through">€54.99</span>
+                        <span class="price-tag">€8.99</span>
+                        <span class="text-muted text-decoration-line-through">€16.99</span>
                         <span class="badge bg-success">Kostenloser Versand in Europa</span>
                     </div>
-                    <button class="btn btn-light btn-lg me-3 add-to-cart" id="cartBtn" onclick="addToCartAndRedirect()">
+                    <button class="btn btn-light btn-lg me-3 add-to-cart" id="heroCartBtn">
                         <i class="bi bi-cart-plus"></i> In den Warenkorb
                     </button>
-                    <button class="btn btn-outline-light btn-lg" id="wishlistBtn">
+                    <button class="btn btn-outline-light btn-lg wishlist-style-btn wishlist-button" id="wishlistBtn">
                         <i class="bi bi-heart"></i> Zur Wunschliste
                     </button>
                 </div>
                 <div class="col-lg-6 text-center">
-                    <img src="../produkt bilder/ware.png" alt="Elektronisches Distanzmessgerät" class="img-fluid product-image" style="max-height: 400px;">
+                    <img src="../produkt bilder/ware.png" alt="Haaröl-Applikator Kopfhaut Massager" class="img-fluid product-image" style="max-height: 400px;">
                 </div>
             </div>
         </div>
@@ -91,36 +112,29 @@
             <div class="row">
                 <div class="col-lg-8">
                     <h2 class="mb-4">Produktbeschreibung</h2>
-                    <p class="lead mb-4">Präzises digitales Distanzmessgerät für professionelle und private Anwendungen. Einfache Bedienung mit hoher Messgenauigkeit.</p>
+                    <p class="lead mb-4">Innovativer Haaröl-Applikator mit Kopfhaut-Massage-Funktion für gesunde Haare und entspannte Kopfhaut.</p>
                     
                     <h3>Hauptmerkmale</h3>
                     <ul class="list-unstyled">
-                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Laser-Distanzmessung bis 40m</li>
-                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Genauigkeit ±2mm</li>
-                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>LCD-Display mit Hintergrundbeleuchtung</li>
-                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Mehrere Messmodi</li>
-                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Kompaktes Design</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Präzise Haaröl-Anwendung</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Integrierte Kopfhaut-Massage</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Einfache Handhabung</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Fördert Durchblutung</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Wiederverwendbar</li>
                     </ul>
 
                     <h3 class="mt-4">Technische Spezifikationen</h3>
                     <div class="row">
                         <div class="col-md-6">
-                            <p><strong>Kategorie:</strong> Technik/Gadgets</p>
-                            <p><strong>Artikelnummer:</strong> 019</p>
-                            <p><strong>Preis:</strong> €39.99</p>
+                            <p><strong>Kategorie:</strong> Körperpflege/Wellness</p>
+                            <p><strong>Preis:</strong> €8.99</p>
                         </div>
                         <div class="col-md-6">
                             <p><strong>Verfügbarkeit:</strong> Auf Lager</p>
-                            <p><strong>Lieferzeit:</strong> 7-14 Werktage</p>
+                            <p><strong>Lieferzeit:</strong> 10-20 Werktage</p>
+                            <p><strong>Lieferumfang:</strong> Produkt, Anleitung, Garantiekarte</p>
                         </div>
                     </div>
-
-                    <p><strong>Messbereich:</strong> 0.05 - 40m</p>
-                    <p><strong>Genauigkeit:</strong> ±2mm</p>
-                    <p><strong>Laser-Klasse:</strong> II (sicher für die Augen)</p>
-                    <p><strong>Batterielaufzeit:</strong> Bis zu 5000 Messungen</p>
-                    <p><strong>Abmessungen:</strong> 11 x 4.5 x 2.4 cm</p>
-                    <p><strong>Gewicht:</strong> 100g</p>
 
                     <!-- Schnellbestellung (Mobile only) -->
                     <div class="quick-order-card mt-5 d-lg-none">
@@ -132,25 +146,22 @@
                                 <label class="quantity-label">Menge:</label>
                                 <div class="quantity-input-group">
                                     <button class="quantity-btn" onclick="decreaseQuantity(event)">-</button>
-                                    <input type="number" class="quantity-input" id="quantity" value="1" min="1" max="10">
+                                    <input type="number" class="quantity-input" id="quantity-mobile" value="1" min="1" max="10">
                                     <button class="quantity-btn" onclick="increaseQuantity(event)">+</button>
                                 </div>
                             </div>
-                            
                             <div class="price-section">
-                                <div class="current-price">€39.99</div>
-                                <!-- Entfernt: <div class="total-price">Gesamt: <span id="totalPrice">€39.99</span></div> -->
+                                <div class="current-price">€<span id="currentPrice-mobile">8.99</span></div>
+                                <div class="total-price">Gesamt: <span id="totalPrice-mobile" class="text-success">€8.99</span></div>
                             </div>
-                            
                             <div class="action-buttons">
-                                <button class="buy-now-btn wishlist-style-btn" onclick="addToCartWithQuantity(event)">
+                                <button class="buy-now-btn add-to-cart" onclick="addToCartWithQuantity()">
                                     <i class="bi bi-cart-plus"></i> Jetzt kaufen
                                 </button>
-                                <button class="wishlist-btn wishlist-button" onclick="toggleWishlist(product)" data-product-id="19">
+                                <button class="wishlist-btn wishlist-style-btn wishlist-button" onclick="toggleWishlist(product)">
                                     <i class="bi bi-heart"></i> Zur Wunschliste
                                 </button>
                             </div>
-                            
                             <div class="features-section">
                                 <ul class="features-list">
                                     <li><i class="bi bi-truck"></i> Kostenloser Versand in Europa</li>
@@ -166,7 +177,6 @@
                 </div>
                 
                 <div class="col-lg-4">
-                    <!-- Schnellbestellung (Desktop only) -->
                     <div class="quick-order-card d-none d-lg-block">
                         <div class="quick-order-header">
                             <h4>Schnellbestellung</h4>
@@ -176,21 +186,21 @@
                                 <label class="quantity-label">Menge:</label>
                                 <div class="quantity-input-group">
                                     <button class="quantity-btn" onclick="decreaseQuantity(event)">-</button>
-                                    <input type="number" class="quantity-input" id="quantity-desktop" value="1" min="1" max="10">
+                                    <input type="number" class="quantity-input" id="quantity" value="1" min="1" max="10">
                                     <button class="quantity-btn" onclick="increaseQuantity(event)">+</button>
                                 </div>
                             </div>
                             
                             <div class="price-section">
-                                <div class="current-price">€39.99</div>
-                                <!-- Entfernt: <div class="total-price">Gesamt: <span id="totalPriceDesktop">€39.99</span></div> -->
+                                <div class="current-price">€<span id="currentPrice">8.99</span></div>
+                                <div class="total-price">Gesamt: <span id="totalPrice" class="text-success">€8.99</span></div>
                             </div>
                             
                             <div class="action-buttons">
-                                <button class="buy-now-btn wishlist-style-btn" onclick="addToCartWithQuantity(event)">
+                                <button class="buy-now-btn add-to-cart" id="buyNowBtn">
                                     <i class="bi bi-cart-plus"></i> Jetzt kaufen
                                 </button>
-                                <button class="wishlist-btn wishlist-button" onclick="toggleWishlist(product)" data-product-id="19">
+                                <button class="wishlist-btn wishlist-style-btn wishlist-button" id="cardWishlistBtn">
                                     <i class="bi bi-heart"></i> Zur Wunschliste
                                 </button>
                             </div>
@@ -214,46 +224,16 @@
         <div class="container">
             <div class="section-header text-center mb-5">
                 <h2 class="section-title">Ähnliche Produkte</h2>
-                <p class="section-subtitle">Entdecken Sie weitere praktische Helfer für Ihr Zuhause</p>
+                <p class="section-subtitle">Entdecken Sie weitere Produkte, die Ihnen gefallen könnten</p>
             </div>
             <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3 g-md-4">
                 <div class="col">
-                    <div class="similar-product-card" onclick="window.location.href='produkt-11.html'">
+                    <div class="similar-product-card" onclick="window.location.href='produkt-25.html'">
                         <div class="product-image-wrapper">
-                            <img src="../produkt bilder/ware.png" class="product-image" alt="350ml Elektrischer Mixer Entsafter">
+                            <img src="../produkt bilder/ware.png" class="product-image" alt="Nachtlichter mit Bewegungsmelder">
                         </div>
                         <div class="product-info">
-                            <h5 class="product-title">350ml Elektrischer Mixer Entsafter</h5>
-                            <div class="price-container"><span class="current-price">€29.99</span></div>
-                            <div class="view-product-btn">
-                                <span>Jetzt ansehen</span>
-                                <i class="bi bi-arrow-right"></i>
-                            </div>
-                </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="similar-product-card" onclick="window.location.href='produkt-20.html'">
-                        <div class="product-image-wrapper">
-                            <img src="../produkt bilder/ware.png" class="product-image" alt="ZigBee Smart DIY Motorisierte Rollos">
-                        </div>
-                        <div class="product-info">
-                            <h5 class="product-title">ZigBee Smart DIY Motorisierte Rollos</h5>
-                            <div class="price-container"><span class="current-price">€89.99</span></div>
-                            <div class="view-product-btn">
-                                <span>Jetzt ansehen</span>
-                                <i class="bi bi-arrow-right"></i>
-                            </div>
-                </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="similar-product-card" onclick="window.location.href='produkt-26.html'">
-                        <div class="product-image-wrapper">
-                            <img src="../produkt bilder/ware.png" class="product-image" alt="4 In 1 Self Cleaning Hair Brush">
-                        </div>
-                        <div class="product-info">
-                            <h5 class="product-title">4 In 1 Self Cleaning Hair Brush</h5>
+                            <h5 class="product-title">Nachtlichter mit Bewegungsmelder</h5>
                             <div class="price-container"><span class="current-price">€16.99</span></div>
                             <div class="view-product-btn">
                                 <span>Jetzt ansehen</span>
@@ -263,13 +243,43 @@
                     </div>
                 </div>
                 <div class="col">
-                    <div class="similar-product-card" onclick="window.location.href='produkt-27.html'">
+                    <div class="similar-product-card" onclick="window.location.href='produkt-17.html'">
                         <div class="product-image-wrapper">
-                            <img src="../produkt bilder/ware.png" class="product-image" alt="Volcanic Flame Aroma Essential Oil Diffuser">
+                            <img src="../produkt bilder/ware.png" class="product-image" alt="Bluetooth Anti-Lost Finder Wassertropfen">
                         </div>
                         <div class="product-info">
-                            <h5 class="product-title">Volcanic Flame Aroma Essential Oil Diffuser</h5>
+                            <h5 class="product-title">Bluetooth Anti-Lost Finder Wassertropfen</h5>
+                            <div class="price-container"><span class="current-price">€14.99</span></div>
+                            <div class="view-product-btn">
+                                <span>Jetzt ansehen</span>
+                                <i class="bi bi-arrow-right"></i>
+                            </div>
+                </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="similar-product-card" onclick="window.location.href='produkt-18.html'">
+                        <div class="product-image-wrapper">
+                            <img src="../produkt bilder/ware.png" class="product-image" alt="Smart LED Tischlampe">
+                        </div>
+                        <div class="product-info">
+                            <h5 class="product-title">Smart LED Tischlampe</h5>
                             <div class="price-container"><span class="current-price">€34.99</span></div>
+                            <div class="view-product-btn">
+                                <span>Jetzt ansehen</span>
+                                <i class="bi bi-arrow-right"></i>
+                            </div>
+                </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="similar-product-card" onclick="window.location.href='produkt-31.html'">
+                        <div class="product-image-wrapper">
+                            <img src="../produkt bilder/ware.png" class="product-image" alt="Elektrischer Kopfhaut-Massagekamm">
+                        </div>
+                        <div class="product-info">
+                            <h5 class="product-title">Elektrischer Kopfhaut-Massagekamm</h5>
+                            <div class="price-container"><span class="current-price">€12.99</span></div>
                             <div class="view-product-btn">
                                 <span>Jetzt ansehen</span>
                                 <i class="bi bi-arrow-right"></i>
@@ -292,11 +302,11 @@
     <script>
   // Produktdaten für diese Seite
   const product = {
-    id: 19,
-    name: "Elektronisches Distanzmessgerät",
-    price: 39.99,
+    id: 29,
+    name: "Haaröl-Applikator Kopfhaut Massager",
+    price: 8.99,
     image: "produkt bilder/ware.png",
-    description: "Präzises digitales Distanzmessgerät für professionelle und private Anwendungen. Einfache Bedienung mit hoher Messgenauigkeit."
+    description: "Innovativer Haaröl-Applikator mit Kopfhaut-Massage-Funktion für gesunde Haare und entspannte Kopfhaut."
   };
 
   // Bundles dynamisch laden
@@ -306,18 +316,21 @@
       const prod = products.find(p => p.id === product.id);
       if (prod && prod.bundles && prod.bundles.length > 0) {
         renderBundles(prod.bundles);
+      } else {
+        // Fallback: Bundle-Box immer anzeigen
+        renderBundles();
       }
     });
 
   function renderBundles() {
-    // Preisstaffel: [ {menge, preisProSet, originalProSet} ]
+    const einzelpreis = 8.99;
     const staffel = [
-      {qty: 1, price: product.price, original: product.price},
-      {qty: 2, price: product.price * 0.85, original: product.price},
-      {qty: 3, price: product.price * 0.80, original: product.price}
+      {qty:1, price:einzelpreis, original:einzelpreis},
+      {qty:2, price:(einzelpreis*0.85), original:einzelpreis},
+      {qty:3, price:(einzelpreis*0.80), original:einzelpreis}
     ];
     const section = document.getElementById('bundle-section');
-    let selected = 1; // Standard: 2 Sets
+    let selected = 1;
     section.innerHTML = `
       <div class="bundle-box">
         <div class="bundle-header">BUNDLE & SPARE</div>
@@ -337,11 +350,11 @@
                   <span class="old">€${s.original.toFixed(2)}</span>
                   <span class="savings">Spare €${((s.original-s.price)*s.qty).toFixed(2)}</span>
                 </div>
-                ${s.qty>1?`<div style='margin-top:.7em;font-size:.97rem;'>Gesamt: <b>€${(s.price*s.qty).toFixed(2)}</b> <span class='old'>€${(s.original*s.qty).toFixed(2)}</span></div>`:''}
+                ${s.qty>1?`<div class='bundle-total'>Gesamt: <b>€${(s.price*s.qty).toFixed(2)}</b> <span class='old'>€${(s.original*s.qty).toFixed(2)}</span></div>`:''}
               </div>
             </div>
           `).join('')}
-          <button type="submit" class="btn bundle-add-btn wishlist-style-btn" onclick="addBundleAndRedirect(event)">In den Warenkorb</button>
+          <button type="submit" class="btn bundle-add-btn">In den Warenkorb</button>
         </form>
       </div>
     `;
@@ -375,13 +388,26 @@
       });
     });
 
-    // Der Bundle-Button verwendet jetzt onclick="addBundleAndRedirect(event)"
+    section.querySelector('#bundleForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const idx = Array.from(radios).findIndex(r => r.checked);
+      const s = staffel[idx];
+      addBundleToCart({
+        id: product.id,
+        name: product.name + ` (${s.qty} Set${s.qty>1?'s':''})`,
+        price: s.price * s.qty, // Gesamtpreis für das Bundle
+        image: product.image,
+        description: product.description + ` (Bundle: ${s.qty} Set${s.qty>1?'s':''})`,
+        bundleId: `${product.id}-qty${s.qty}`,
+        quantity: 1
+      });
+    });
   }
 
   function addBundleToCart(bundle) {
     let cart = getCart();
     // Bundle als eigenes Cart-Item mit bundleId
-    const bundleId = bundle.bundleId;
+    const bundleId = `${product.id}-${bundle.id}`;
     const existing = cart.find(item => item.bundleId === bundleId);
     if (existing) {
       // Erhöhe die Menge bei wiederholtem Hinzufügen
@@ -399,41 +425,30 @@
       });
     }
     setCart(cart);
-  }
-
-  function addBundleAndRedirect(event) {
-    event.preventDefault();
-    const form = event.target.closest('form');
-    const selectedRadio = form.querySelector('input[name="bundle"]:checked');
-    if (!selectedRadio) return;
     
-    const idx = parseInt(selectedRadio.value);
-    const staffel = [
-      {qty: 1, price: product.price, original: product.price},
-      {qty: 2, price: product.price * 0.85, original: product.price},
-      {qty: 3, price: product.price * 0.80, original: product.price}
-    ];
-    const s = staffel[idx];
+    // Trigger same animations as regular cart buttons
+    const bundleButton = document.querySelector('.bundle-add-btn');
+    if (bundleButton) {
+      bundleButton.classList.add('success-animation');
+      setTimeout(() => {
+        bundleButton.classList.remove('success-animation');
+      }, 600);
+    }
     
-    addBundleToCart({
-      id: product.id,
-      name: product.name + ` (${s.qty} Set${s.qty>1?'s':''})`,
-      price: s.price * s.qty, // Gesamtpreis für das Bundle
-      image: product.image,
-      description: product.description + ` (Bundle: ${s.qty} Set${s.qty>1?'s':''})`,
-      bundleId: `${product.id}-qty${s.qty}`,
-      quantity: 1
-    });
+    // Animate navigation cart
+    const cartNavLink = document.querySelector('.cart-nav-link');
+    if (cartNavLink) {
+      cartNavLink.classList.add('cart-rainbow-bounce');
+      setTimeout(() => {
+        cartNavLink.classList.remove('cart-rainbow-bounce');
+      }, 1000);
+    }
     
-    // Enhanced animations for bundle
-    triggerBundleButtonAnimation(event.target);
-    triggerNavCartAnimation();
-    
-    // Popup anzeigen statt direkter Weiterleitung
+    // Show notification
     if (typeof showAlert === 'function') {
       showAlert('Bundle zum Warenkorb hinzugefügt', 'cart.html');
     } else {
-      showNotification('Bundle zum Warenkorb hinzugefügt');
+      showNotification('Bundle hinzugefügt');
     }
   }
 
@@ -450,13 +465,10 @@
     let wishlist = getWishlist();
     if (isInWishlist(product.id)) {
       wishlist = wishlist.filter(item => Number(item.id) !== Number(product.id));
-      setWishlist(wishlist);
-      updateAllWishlistButtons(); // Update all wishlist buttons
-      
       if (typeof showAlert === 'function') {
         showAlert('Produkt von der Wunschliste entfernt', 'wishlist.html');
       } else {
-        showNotification('Produkt von der Wunschliste entfernt');
+        showNotification('Von der Wunschliste entfernt', 'info');
       }
     } else {
       wishlist.push({
@@ -466,45 +478,38 @@
         image: product.image,
         description: product.description
       });
-      setWishlist(wishlist);
-      
-      // Enhanced wishlist animation only when adding (same as index.html)
-      triggerWishlistButtonAnimation(product.id);
-      updateAllWishlistButtons(); // Update all wishlist buttons
-      
       if (typeof showAlert === 'function') {
         showAlert('Produkt zur Wunschliste hinzugefügt', 'wishlist.html');
       } else {
-        showNotification('Produkt zur Wunschliste hinzugefügt');
+        showNotification('Zur Wunschliste hinzugefügt');
       }
     }
+    setWishlist(wishlist);
+    updateWishlistButton();
   }
-  function updateAllWishlistButtons() {
-    const isInList = isInWishlist(product.id);
+  function updateWishlistButton() {
+    const heroBtn = document.getElementById('wishlistBtn');
+    const cardBtn = document.getElementById('cardWishlistBtn');
     
-    // Update main wishlist button
-    const mainBtn = document.getElementById('wishlistBtn');
-    if (mainBtn) {
-      if (isInList) {
-        mainBtn.classList.add('active');
-        mainBtn.innerHTML = '<i class="bi bi-heart-fill"></i> Entfernen';
-      } else {
-        mainBtn.classList.remove('active');
-        mainBtn.innerHTML = '<i class="bi bi-heart"></i> Zur Wunschliste';
+    if (isInWishlist(product.id)) {
+      if (heroBtn) {
+        heroBtn.classList.add('active');
+        heroBtn.innerHTML = '<i class="bi bi-heart-fill"></i> Entfernen';
+      }
+      if (cardBtn) {
+        cardBtn.classList.add('active');
+        cardBtn.innerHTML = '<i class="bi bi-heart-fill"></i> Entfernen';
+      }
+    } else {
+      if (heroBtn) {
+        heroBtn.classList.remove('active');
+        heroBtn.innerHTML = '<i class="bi bi-heart"></i> Zur Wunschliste';
+      }
+      if (cardBtn) {
+        cardBtn.classList.remove('active');
+        cardBtn.innerHTML = '<i class="bi bi-heart"></i> Zur Wunschliste hinzufügen';
       }
     }
-    
-    // Update all quick order wishlist buttons
-    const quickOrderBtns = document.querySelectorAll('.wishlist-button');
-    quickOrderBtns.forEach(btn => {
-      if (isInList) {
-        btn.classList.add('active');
-        btn.innerHTML = '<i class="bi bi-heart-fill"></i> Entfernen';
-      } else {
-        btn.classList.remove('active');
-        btn.innerHTML = '<i class="bi bi-heart"></i> Zur Wunschliste';
-      }
-    });
   }
   function getCart() {
     return JSON.parse(localStorage.getItem('cart')) || [];
@@ -523,114 +528,6 @@
     }
     setCart(cart);
     // Keine direkte Weiterleitung mehr, da wir das Popup verwenden
-  }
-
-  function addToCartAndRedirect() {
-    const productToAdd = {
-      ...product,
-      quantity: 1
-    };
-    addToCart(productToAdd);
-    
-    // Enhanced animations for product page
-    triggerCartButtonAnimation();
-    triggerNavCartAnimation();
-    
-    // Popup anzeigen statt direkter Weiterleitung für "In den Warenkorb" Button
-    if (typeof showAlert === 'function') {
-      showAlert('Produkt zum Warenkorb hinzugefügt', 'cart.html');
-    } else {
-      showNotification('Zum Warenkorb hinzugefügt');
-    }
-  }
-
-  // Animation functions for product page
-  function triggerCartButtonAnimation() {
-    const cartButton = document.getElementById('cartBtn');
-    if (cartButton) {
-        cartButton.classList.add('add-to-cart', 'success-animation');
-        setTimeout(() => {
-            cartButton.classList.remove('success-animation');
-        }, 800);
-        
-        // Add cart icon pulse animation (red effect)
-        const cartIcon = cartButton.querySelector('i');
-        if (cartIcon) {
-            cartIcon.classList.add('cart-icon-pulse');
-            setTimeout(() => {
-                cartIcon.classList.remove('cart-icon-pulse');
-            }, 500);
-        }
-    }
-  }
-
-  function triggerQuickOrderAnimation() {
-    const quickOrderButtons = document.querySelectorAll('.wishlist-style-btn');
-    quickOrderButtons.forEach(button => {
-        button.classList.add('add-to-cart', 'success-animation');
-        setTimeout(() => {
-            button.classList.remove('success-animation');
-        }, 800);
-        
-        // Add cart icon pulse animation to button icon (red effect)
-        const buttonIcon = button.querySelector('i');
-        if (buttonIcon) {
-            buttonIcon.classList.add('cart-icon-pulse');
-            setTimeout(() => {
-                buttonIcon.classList.remove('cart-icon-pulse');
-            }, 500);
-        }
-    });
-  }
-
-  function triggerNavCartAnimation() {
-    const navCartButton = document.querySelector('.cart-nav-link');
-    if (navCartButton) {
-        navCartButton.classList.add('cart-rainbow-bounce');
-        setTimeout(() => {
-            navCartButton.classList.remove('cart-rainbow-bounce');
-        }, 800);
-    }
-  }
-
-  function triggerBundleButtonAnimation(button) {
-    if (button) {
-        button.classList.add('add-to-cart', 'success-animation');
-        setTimeout(() => {
-            button.classList.remove('success-animation');
-        }, 800);
-        
-        // Add cart icon pulse animation to bundle button icon (red effect)
-        const buttonIcon = button.querySelector('i');
-        if (buttonIcon) {
-            buttonIcon.classList.add('cart-icon-pulse');
-            setTimeout(() => {
-                buttonIcon.classList.remove('cart-icon-pulse');
-            }, 500);
-        }
-    }
-  }
-
-  // Enhanced wishlist animation (only for main button, not quick order)
-  function triggerWishlistButtonAnimation(productId) {
-    // Only animate the main wishlist button, not the quick order ones
-    const wishlistButton = document.getElementById('wishlistBtn');
-    
-    if (wishlistButton) {
-      wishlistButton.classList.add('success-animation');
-      setTimeout(() => {
-        wishlistButton.classList.remove('success-animation');
-      }, 800);
-      
-      // Heart pulse animation
-      const heartIcon = wishlistButton.querySelector('i');
-      if (heartIcon) {
-        heartIcon.classList.add('heart-pulse');
-        setTimeout(() => {
-          heartIcon.classList.remove('heart-pulse');
-        }, 500);
-      }
-    }
   }
   
   // showAlert function for cart popup
@@ -667,7 +564,7 @@
       }
     }, 1700);
   }
-  
+
   function showNotification(message, type = 'success') {
     const notification = document.createElement('div');
     notification.className = `alert alert-${type} position-fixed end-0 m-4 shadow-lg fade show`;
@@ -712,13 +609,13 @@
     }, 2000);
   }
 
-  // Funktionen für die neue Schnellbestellung
+  // Funktionen für die Schnellbestellung (wie in Produkt 1)
   function increaseQuantity(event) {
     // Determine which quantity input to use based on the clicked button
     const button = event ? event.target : null;
     const isDesktop = button && button.closest('.d-none.d-lg-block');
     
-    const inputId = isDesktop ? 'quantity-desktop' : 'quantity';
+    const inputId = isDesktop ? 'quantity' : 'quantity-mobile';
     const input = document.getElementById(inputId);
     
     if (input) {
@@ -735,7 +632,7 @@
     const button = event ? event.target : null;
     const isDesktop = button && button.closest('.d-none.d-lg-block');
     
-    const inputId = isDesktop ? 'quantity-desktop' : 'quantity';
+    const inputId = isDesktop ? 'quantity' : 'quantity-mobile';
     const input = document.getElementById(inputId);
     
     if (input) {
@@ -749,8 +646,8 @@
 
   function updateTotalPrice() {
     // Update both mobile and desktop total prices
-    const mobileQuantity = parseInt(document.getElementById('quantity')?.value, 10) || 1;
-    const desktopQuantity = parseInt(document.getElementById('quantity-desktop')?.value, 10) || 1;
+    const mobileQuantity = parseInt(document.getElementById('quantity-mobile')?.value, 10) || 1;
+    const desktopQuantity = parseInt(document.getElementById('quantity')?.value, 10) || 1;
     
     // Einfache Berechnung: Gesamtpreis = Menge × Einzelpreis
     const mobileTotal = (product.price * mobileQuantity).toFixed(2);
@@ -769,77 +666,174 @@
     });
     
     // Update total prices
-    const mobileTotalElement = document.getElementById('totalPrice');
-    const desktopTotalElement = document.getElementById('totalPriceDesktop');
+    const mobileTotalElement = document.getElementById('totalPrice-mobile');
+    const desktopTotalElement = document.getElementById('totalPrice');
     
     if (mobileTotalElement) mobileTotalElement.textContent = `€${mobileTotal}`;
     if (desktopTotalElement) desktopTotalElement.textContent = `€${desktopTotal}`;
   }
 
   function addToCartWithQuantity(event) {
-    // Determine which quantity input to use based on the clicked button
-    const button = event ? event.target : null;
-    const isDesktop = button && button.closest('.d-none.d-lg-block');
-    
-    const inputId = isDesktop ? 'quantity-desktop' : 'quantity';
-    const quantityInput = document.getElementById(inputId);
-    const quantity = quantityInput ? parseInt(quantityInput.value, 10) || 1 : 1;
-    
-    const productToCart = {
-      ...product,
-      quantity: quantity
-    };
-    addToCart(productToCart);
-    
-    // Enhanced animations for product page - wishlist style for quick order
-    triggerQuickOrderAnimation();
-    triggerNavCartAnimation();
-    
-    // Direkt zum Warenkorb weiterleiten
-    setTimeout(() => {
-      window.location.href = '../cart.html';
-    }, 500); // Kurze Verzögerung für die Animation
+  // Determine which quantity input to use based on the clicked button
+  const button = event ? event.target : null;
+  const isDesktop = button && button.closest('.d-none.d-lg-block');
+  
+  const inputId = isDesktop ? 'quantity' : 'quantity-mobile';
+  const quantityInput = document.getElementById(inputId);
+  const quantity = quantityInput ? parseInt(quantityInput.value, 10) || 1 : 1;
+  
+  const productToCart = {
+    ...product,
+    quantity: quantity
+  };
+  addToCart(productToCart);
+  
+  // Enhanced animations for product page - wishlist style for quick order
+  triggerQuickOrderAnimation();
+  triggerNavCartAnimation();
+  
+  // Direkt zum Warenkorb weiterleiten
+  setTimeout(() => {
+    window.location.href = '../cart.html';
+  }, 500); // Kurze Verzögerung für die Animation
+}
+
+  function triggerQuickOrderAnimation() {
+    const quickOrderCards = document.querySelectorAll('.quick-order-card');
+    quickOrderCards.forEach(card => {
+      card.classList.add('success-animation');
+      setTimeout(() => {
+        card.classList.remove('success-animation');
+      }, 800);
+    });
   }
+
   document.addEventListener('DOMContentLoaded', function() {
-    // Wishlist-Button
-    let wishlistBtn = document.getElementById('wishlistBtn');
-    if (!wishlistBtn) {
-      // Fallback: Erstelle Button, falls nicht vorhanden
-      const hero = document.querySelector('.product-hero .col-lg-6');
-      if (hero) {
-        wishlistBtn = document.createElement('button');
-        wishlistBtn.id = 'wishlistBtn';
-        wishlistBtn.className = 'btn btn-outline-light btn-lg ms-2';
-        hero.appendChild(wishlistBtn);
-      }
-    }
-    if (wishlistBtn) {
-      wishlistBtn.addEventListener('click', function(e) {
+    // Hero Wishlist-Button
+    let heroWishlistBtn = document.getElementById('wishlistBtn');
+    if (heroWishlistBtn) {
+      heroWishlistBtn.addEventListener('click', function(e) {
         e.preventDefault();
+        triggerWishlistButtonAnimation(this);
         toggleWishlist(product);
       });
     }
-
+    
+    // Hero Cart-Button
+    let heroCartBtn = document.getElementById('heroCartBtn');
+    if (heroCartBtn) {
+      heroCartBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        triggerCartButtonAnimation(this);
+        triggerNavCartAnimation();
+        triggerCartIconPulse();
+        
+        const quantity = parseInt(document.getElementById('quantity').value, 10) || 1;
+        const productToCart = {
+          ...product,
+          quantity: quantity
+        };
+        addToCart(productToCart);
+        // Popup anzeigen statt direkter Weiterleitung für "In den Warenkorb" Button
+        if (typeof showAlert === 'function') {
+          showAlert('Produkt zum Warenkorb hinzugefügt', 'cart.html');
+        } else {
+          showNotification('Zum Warenkorb hinzugefügt');
+        }
+      });
+    }
+    
+    // Card Wishlist-Button
+    let cardWishlistBtn = document.getElementById('cardWishlistBtn');
+    if (cardWishlistBtn) {
+      cardWishlistBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        triggerWishlistButtonAnimation(this);
+        toggleWishlist(product);
+      });
+    }
+    
+    // Update both wishlist buttons on page load
+    updateWishlistButton();
+    
     // Event-Listener für Quantity-Input (Mobile)
+    const quantityInputMobile = document.getElementById('quantity-mobile');
+    if (quantityInputMobile) {
+      quantityInputMobile.addEventListener('input', updateTotalPrice);
+      quantityInputMobile.addEventListener('change', updateTotalPrice);
+    }
+
+    // Event-Listener für Quantity-Input (Desktop)
     const quantityInput = document.getElementById('quantity');
     if (quantityInput) {
       quantityInput.addEventListener('input', updateTotalPrice);
       quantityInput.addEventListener('change', updateTotalPrice);
     }
 
-    // Event-Listener für Quantity-Input (Desktop)
-    const quantityInputDesktop = document.getElementById('quantity-desktop');
-    if (quantityInputDesktop) {
-      quantityInputDesktop.addEventListener('input', updateTotalPrice);
-      quantityInputDesktop.addEventListener('change', updateTotalPrice);
-    }
-
     // Initialisiere die Preise
     updateTotalPrice();
     
-    // Initialize all wishlist buttons with correct status
-    updateAllWishlistButtons();
+    // Buy Now Button
+    const buyNowBtn = document.getElementById('buyNowBtn');
+    
+    if (buyNowBtn) {
+      buyNowBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        triggerCartButtonAnimation(this);
+        triggerNavCartAnimation();
+        triggerCartIconPulse();
+        
+        const qty = quantityInput ? parseInt(quantityInput.value, 10) || 1 : 
+                    quantityInputMobile ? parseInt(quantityInputMobile.value, 10) || 1 : 1;
+        const productToCart = {
+          ...product,
+          quantity: qty
+        };
+        addToCart(productToCart);
+        // Direkt zum Warenkorb weiterleiten
+        setTimeout(() => {
+          window.location.href = '../cart.html';
+        }, 500); // Kurze Verzögerung für die Animation
+      });
+    }
   });
-</script>
+
+  // Animation functions for consistent button animations
+  function triggerCartButtonAnimation(button) {
+    if (!button) return;
+    button.classList.add('success-animation');
+    setTimeout(() => {
+      button.classList.remove('success-animation');
+    }, 600);
+  }
+
+  function triggerWishlistButtonAnimation(button) {
+    if (!button) return;
+    button.classList.add('heart-pulse');
+    setTimeout(() => {
+      button.classList.remove('heart-pulse');
+    }, 600);
+  }
+
+  function triggerNavCartAnimation() {
+    const cartLink = document.querySelector('.cart-nav-link');
+    if (cartLink) {
+      cartLink.classList.add('cart-rainbow-bounce');
+      setTimeout(() => {
+        cartLink.classList.remove('cart-rainbow-bounce');
+      }, 1000);
+    }
+  }
+
+  function triggerCartIconPulse() {
+    const cartIcons = document.querySelectorAll('.bi-cart3-fill, .bi-cart-plus');
+    cartIcons.forEach(icon => {
+      icon.classList.add('cart-icon-pulse');
+      setTimeout(() => {
+        icon.classList.remove('cart-icon-pulse');
+      }, 600);
+    });
+  }
+    </script>
 </body>
 </html>

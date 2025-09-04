@@ -105,111 +105,6 @@
     ]
   },
   {
-    "id": 7,
-    "name": "Körperpflege/Wellness Produkt 1",
-    "price": 30,
-    "category": "Körperpflege/Wellness",
-    "image": "produkt bilder/ware.png",
-    "description": "Pflegeprodukte und Wellness für Ihr Wohlbefinden.",
-    "bundles": [
-      {
-        "id": "bundle1",
-        "name": "Fitness Starter",
-        "description": "Produkt + Grundausstattung",
-        "items": [
-          "Trainingsplan",
-          "Grundausstattung"
-        ],
-        "originalPrice": 45,
-        "bundlePrice": 38,
-        "savings": 7
-      },
-      {
-        "id": "bundle2",
-        "name": "Fitness Pro",
-        "description": "Komplettes Training",
-        "items": [
-          "Trainingsplan",
-          "Premium Ausstattung",
-          "Personal Trainer"
-        ],
-        "originalPrice": 80,
-        "bundlePrice": 60,
-        "savings": 20
-      }
-    ]
-  },
-  {
-    "id": 8,
-    "name": "Körperpflege/Wellness Produkt 2",
-    "price": 42,
-    "category": "Körperpflege/Wellness",
-    "image": "produkt bilder/ware.png",
-    "description": "Pflegeprodukte und Wellness für Ihr Wohlbefinden.",
-    "bundles": [
-      {
-        "id": "bundle1",
-        "name": "Workout Bundle",
-        "description": "Produkt + Training",
-        "items": [
-          "Workout Guide",
-          "Zubehör"
-        ],
-        "originalPrice": 48,
-        "bundlePrice": 40,
-        "savings": 8
-      },
-      {
-        "id": "bundle2",
-        "name": "Elite Training",
-        "description": "Professionelles Training",
-        "items": [
-          "Workout Guide",
-          "Premium Zubehör",
-          "Online Coaching"
-        ],
-        "originalPrice": 85,
-        "bundlePrice": 65,
-        "savings": 20
-      }
-    ]
-  },
-  {
-    "id": 9,
-    "name": "Körperpflege/Wellness Produkt 3",
-    "price": 44,
-    "category": "Körperpflege/Wellness",
-    "image": "produkt bilder/ware.png",
-    "description": "Pflegeprodukte und Wellness für Ihr Wohlbefinden.",
-    "bundles": [
-      {
-        "id": "bundle1",
-        "name": "Active Bundle",
-        "description": "Produkt + Aktivität",
-        "items": [
-          "Aktivitätsplan",
-          "Equipment"
-        ],
-        "originalPrice": 50,
-        "bundlePrice": 42,
-        "savings": 8
-      },
-      {
-        "id": "bundle2",
-        "name": "Champion Pack",
-        "description": "Für Champions",
-        "items": [
-          "Aktivitätsplan",
-          "Premium Equipment",
-          "Champion Coaching"
-        ],
-        "originalPrice": 90,
-        "bundlePrice": 70,
-        "savings": 20
-      }
-    ]
-  },
-  {
     "id": 10,
     "name": "Elektrischer Wasserspender für Schreibtisch",
     "price": 49.99,
@@ -571,8 +466,8 @@
   },
   {
     "id": 18,
-    "name": "Home Electronic Clock Digitale Uhr",
-    "price": 24.99,
+    "name": "Smart LED Tischlampe",
+    "price": 34.99,
     "originalPrice": 39.99,
     "category": "Technik/Gadgets",
     "image": "produkt bilder/ware.png",
@@ -911,6 +806,318 @@
         ],
         "originalPrice": 34.99,
         "bundlePrice": 24.99,
+        "savings": 10
+      }
+    ]
+  },
+  {
+    "id": 26,
+    "name": "4 In 1 Self Cleaning Hair Brush",
+    "price": 10.99,
+    "originalPrice": 20.99,
+    "category": "Körperpflege/Wellness",
+    "image": "produkt bilder/ware.png",
+    "description": "Revolutionäre 4-in-1 selbstreinigende Haarbürste mit Anti-Statik-Massage-Funktion. Skalierbar, rotierend und selbstreinigend für perfekte Haarpflege.",
+    "sku": "CJ1711943102027542528",
+    "inStock": true,
+    "shippingTime": "7-15 Werktage",
+    "tags": [
+      "haarbürste",
+      "selbstreinigend",
+      "massage",
+      "anti-statik"
+    ],
+    "features": [
+      "4-in-1 Multifunktions-Design",
+      "Selbstreinigende Technologie",
+      "Anti-Statik-Massage-Funktion",
+      "Skalierbar und rotierend",
+      "Ergonomischer Griff"
+    ],
+    "bundles": [
+      {
+        "id": "bundle1",
+        "name": "Wellness Starter",
+        "description": "Produkt + Wellness Zubehör",
+        "items": [
+          "Pflegeanleitung",
+          "Garantiekarte"
+        ],
+        "originalPrice": 20.99,
+        "bundlePrice": 15.99,
+        "savings": 5
+      },
+      {
+        "id": "bundle2",
+        "name": "Complete Wellness",
+        "description": "Komplettes Wellness-Set",
+        "items": [
+          "Pflegeanleitung",
+          "Garantiekarte",
+          "Premium Support"
+        ],
+        "originalPrice": 35.99,
+        "bundlePrice": 25.99,
+        "savings": 10
+      }
+    ]
+  },
+  {
+    "id": 27,
+    "name": "Volcanic Flame Aroma Essential Oil Diffuser",
+    "price": 15.99,
+    "originalPrice": 29.99,
+    "category": "Körperpflege/Wellness",
+    "image": "produkt bilder/ware.png",
+    "description": "USB-betriebener Vulkanflammen-Aromadiffuser mit Quallen-Luftbefeuchter und Nachtlicht. Perfekt für entspannende Atmosphäre und Wellness.",
+    "sku": "CJ1602125961166860288",
+    "inStock": true,
+    "shippingTime": "7-15 Werktage",
+    "tags": [
+      "aromadiffuser",
+      "luftbefeuchter",
+      "nachtlicht",
+      "wellness"
+    ],
+    "features": [
+      "Vulkanflammen-Design für entspannende Atmosphäre",
+      "USB-betrieben für einfache Nutzung",
+      "Quallen-Luftbefeuchter-Funktion",
+      "Integriertes Nachtlicht",
+      "Tragbar und kompakt"
+    ],
+    "bundles": [
+      {
+        "id": "bundle1",
+        "name": "Wellness Starter",
+        "description": "Produkt + Wellness Zubehör",
+        "items": [
+          "Pflegeanleitung",
+          "Garantiekarte"
+        ],
+        "originalPrice": 25.99,
+        "bundlePrice": 20.99,
+        "savings": 5
+      },
+      {
+        "id": "bundle2",
+        "name": "Complete Wellness",
+        "description": "Komplettes Wellness-Set",
+        "items": [
+          "Pflegeanleitung",
+          "Garantiekarte",
+          "Premium Support"
+        ],
+        "originalPrice": 40.99,
+        "bundlePrice": 30.99,
+        "savings": 10
+      }
+    ]
+  },
+  {
+    "id": 28,
+    "name": "Mini Muskel Massage Pistole",
+    "price": 24.99,
+    "originalPrice": 44.99,
+    "category": "Körperpflege/Wellness",
+    "image": "produkt bilder/ware.png",
+    "description": "Kompakte Mini-Massage-Pistole für Muskelentspannung und Regeneration. Ideal für Sport, Fitness und tägliche Wellness-Routine.",
+    "sku": "ALI1005007060455752",
+    "inStock": true,
+    "shippingTime": "10-20 Werktage",
+    "tags": [
+      "massage",
+      "muskel",
+      "regeneration",
+      "sport"
+    ],
+    "features": [
+      "Kompaktes Mini-Design",
+      "Verschiedene Massage-Aufsätze",
+      "Einstellbare Geschwindigkeitsstufen",
+      "Wiederaufladbar über USB",
+      "Leise Betriebsgeräusche"
+    ],
+    "bundles": [
+      {
+        "id": "bundle1",
+        "name": "Wellness Starter",
+        "description": "Produkt + Wellness Zubehör",
+        "items": [
+          "Pflegeanleitung",
+          "Garantiekarte"
+        ],
+        "originalPrice": 34.99,
+        "bundlePrice": 29.99,
+        "savings": 5
+      },
+      {
+        "id": "bundle2",
+        "name": "Complete Wellness",
+        "description": "Komplettes Wellness-Set",
+        "items": [
+          "Pflegeanleitung",
+          "Garantiekarte",
+          "Premium Support"
+        ],
+        "originalPrice": 49.99,
+        "bundlePrice": 39.99,
+        "savings": 10
+      }
+    ]
+  },
+  {
+    "id": 29,
+    "name": "Haaröl-Applikator Kopfhaut Massager",
+    "price": 8.99,
+    "originalPrice": 16.99,
+    "category": "Körperpflege/Wellness",
+    "image": "produkt bilder/ware.png",
+    "description": "Innovativer Haaröl-Applikator mit Kopfhaut-Massage-Funktion. Gleichmäßige Verteilung von Haarölen und entspannende Kopfhautmassage in einem Gerät.",
+    "sku": "ALI1005007010671073",
+    "inStock": true,
+    "shippingTime": "10-20 Werktage",
+    "tags": [
+      "haaröl",
+      "kopfhaut",
+      "massage",
+      "haarpflege"
+    ],
+    "features": [
+      "Präzise Haaröl-Verteilung",
+      "Integrierte Kopfhautmassage",
+      "Ergonomisches Design",
+      "Einfache Reinigung",
+      "Für alle Haartypen geeignet"
+    ],
+    "bundles": [
+      {
+        "id": "bundle1",
+        "name": "Wellness Starter",
+        "description": "Produkt + Wellness Zubehör",
+        "items": [
+          "Pflegeanleitung",
+          "Garantiekarte"
+        ],
+        "originalPrice": 18.99,
+        "bundlePrice": 13.99,
+        "savings": 5
+      },
+      {
+        "id": "bundle2",
+        "name": "Complete Wellness",
+        "description": "Komplettes Wellness-Set",
+        "items": [
+          "Pflegeanleitung",
+          "Garantiekarte",
+          "Premium Support"
+        ],
+        "originalPrice": 33.99,
+        "bundlePrice": 23.99,
+        "savings": 10
+      }
+    ]
+  },
+  {
+    "id": 30,
+    "name": "Mini Electric Shoulder And Neck Massager",
+    "price": 19.99,
+    "originalPrice": 35.99,
+    "category": "Körperpflege/Wellness",
+    "image": "produkt bilder/ware.png",
+    "description": "Kompakter elektrischer Schulter- und Nackenmassager für die Halswirbelsäule. Perfekt für Büroarbeiter und zur Entspannung nach langen Arbeitstagen.",
+    "sku": "CJ08528DD9-69BF-4E58-9B32-A0BDE765DE33",
+    "inStock": true,
+    "shippingTime": "7-15 Werktage",
+    "tags": [
+      "nackenmassage",
+      "schulter",
+      "halswirbelsäule",
+      "entspannung"
+    ],
+    "features": [
+      "Speziell für Nacken und Schultern entwickelt",
+      "Elektrische Massage-Funktion",
+      "Kompakt und tragbar",
+      "Verschiedene Massage-Modi",
+      "Ideal für Büroarbeiter"
+    ],
+    "bundles": [
+      {
+        "id": "bundle1",
+        "name": "Wellness Starter",
+        "description": "Produkt + Wellness Zubehör",
+        "items": [
+          "Pflegeanleitung",
+          "Garantiekarte"
+        ],
+        "originalPrice": 29.99,
+        "bundlePrice": 24.99,
+        "savings": 5
+      },
+      {
+        "id": "bundle2",
+        "name": "Complete Wellness",
+        "description": "Komplettes Wellness-Set",
+        "items": [
+          "Pflegeanleitung",
+          "Garantiekarte",
+          "Premium Support"
+        ],
+        "originalPrice": 44.99,
+        "bundlePrice": 34.99,
+        "savings": 10
+      }
+    ]
+  },
+  {
+    "id": 31,
+    "name": "Elektrischer Kopfhaut-Massagekamm",
+    "price": 12.99,
+    "originalPrice": 22.99,
+    "category": "Körperpflege/Wellness",
+    "image": "produkt bilder/ware.png",
+    "description": "Elektrischer Kopfhaut-Massagekamm für entspannende Kopfmassage und verbesserte Durchblutung. Fördert Haarwachstum und Entspannung.",
+    "sku": "ALI1005007987737586",
+    "inStock": true,
+    "shippingTime": "10-20 Werktage",
+    "tags": [
+      "kopfhautmassage",
+      "elektrisch",
+      "haarwachstum",
+      "entspannung"
+    ],
+    "features": [
+      "Elektrische Vibrations-Massage",
+      "Fördert die Durchblutung der Kopfhaut",
+      "Unterstützt natürliches Haarwachstum",
+      "Wasserdicht für Duschnutzung",
+      "Ergonomischer Griff"
+    ],
+    "bundles": [
+      {
+        "id": "bundle1",
+        "name": "Wellness Starter",
+        "description": "Produkt + Wellness Zubehör",
+        "items": [
+          "Pflegeanleitung",
+          "Garantiekarte"
+        ],
+        "originalPrice": 22.99,
+        "bundlePrice": 17.99,
+        "savings": 5
+      },
+      {
+        "id": "bundle2",
+        "name": "Complete Wellness",
+        "description": "Komplettes Wellness-Set",
+        "items": [
+          "Pflegeanleitung",
+          "Garantiekarte",
+          "Premium Support"
+        ],
+        "originalPrice": 37.99,
+        "bundlePrice": 27.99,
         "savings": 10
       }
     ]
