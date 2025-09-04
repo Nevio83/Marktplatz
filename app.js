@@ -1238,7 +1238,7 @@ window.testEmptyCart = function() {
     console.log('Cart counter display:', counter ? counter.style.display : 'not found');
     
     // Füge ein Produkt hinzu
-    testAddProduct1();
+    testAddProduct17();
     
     setTimeout(() => {
       console.log('Cart counter after adding product:', counter ? counter.textContent : 'not found');
@@ -1247,24 +1247,24 @@ window.testEmptyCart = function() {
   }, 500);
 };
 
-// Direkte Test-Funktion für Produkt 1
-window.testAddProduct1 = function() {
-  console.log('Directly adding product 1 to cart...');
-  const product1 = {
-    id: 1,
-    name: "Elektronik Produkt 1",
-    price: 10.00,
+// Direkte Test-Funktion für Produkt 17 (Smart Watch)
+window.testAddProduct17 = function() {
+  console.log('Directly adding product 17 to cart...');
+  const product17 = {
+    id: 17,
+    name: "Smart Watch Pro",
+    price: 299.99,
     category: "Technik/Gadgets",
     image: "produkt bilder/ware.png",
-    description: "Innovative Technologie für Ihren Alltag."
+    description: "Moderne Smartwatch mit vielen Features."
   };
   
-  const existingItem = cartItems.find(item => Number(item.id) === 1);
+  const existingItem = cartItems.find(item => Number(item.id) === 17);
   if (existingItem) {
     existingItem.quantity++;
     console.log('Updated existing item quantity:', existingItem.quantity);
   } else {
-    cartItems.push({ ...product1, quantity: 1 });
+    cartItems.push({ ...product17, quantity: 1 });
     console.log('Added new item to cart');
   }
   
@@ -1273,7 +1273,7 @@ window.testAddProduct1 = function() {
   renderCartDropdown();
   showAlert('Produkt wurde zum Warenkorb hinzugefügt');
   
-  console.log('Product 1 added to cart successfully!');
+  console.log('Product 17 added to cart successfully!');
 };
 
 // Stelle sicher, dass changeQuantity, removeFromCart und clearCart global verfügbar sind:

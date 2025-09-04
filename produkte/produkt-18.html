@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Elektronik Produkt 1 - Marktplatz</title>
+    <title>Home Electronic Clock - Marktplatz</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="elektronik.css" rel="stylesheet">
@@ -64,10 +64,11 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-6">
-                    <h1 class="display-4 fw-bold mb-3">Elektronik Produkt 1</h1>
-                    <p class="lead mb-4">Innovative Technologie für Ihren Alltag. Dieses hochwertige Produkt bietet die perfekte Balance zwischen Funktionalität und Design.</p>
+                    <h1 class="display-4 fw-bold mb-3">Home Electronic Clock</h1>
+                    <p class="lead mb-4">Moderne elektronische Uhr für Ihr Zuhause. Stilvolles Design mit digitaler Anzeige und vielen praktischen Funktionen.</p>
                     <div class="d-flex align-items-center gap-3 mb-4">
-                        <span class="price-tag">€10.00</span>
+                        <span class="price-tag">€24.99</span>
+                        <span class="text-muted text-decoration-line-through">€34.99</span>
                         <span class="badge bg-success">Kostenloser Versand in Europa</span>
                     </div>
                     <button class="btn btn-light btn-lg me-3 add-to-cart" id="cartBtn" onclick="addToCartAndRedirect()">
@@ -78,7 +79,7 @@
                     </button>
                 </div>
                 <div class="col-lg-6 text-center">
-                    <img src="../produkt bilder/ware.png" alt="Elektronik Produkt 1" class="img-fluid product-image" style="max-height: 400px;">
+                    <img src="../produkt bilder/ware.png" alt="Home Electronic Clock" class="img-fluid product-image" style="max-height: 400px;">
                 </div>
             </div>
         </div>
@@ -90,30 +91,35 @@
             <div class="row">
                 <div class="col-lg-8">
                     <h2 class="mb-4">Produktbeschreibung</h2>
-                    <p class="lead mb-4">Innovative Technologie für Ihren Alltag. Dieses hochwertige Produkt bietet die perfekte Balance zwischen Funktionalität und Design.</p>
+                    <p class="lead mb-4">Moderne elektronische Uhr für Ihr Zuhause. Stilvolles Design mit digitaler Anzeige und vielen praktischen Funktionen.</p>
                     
                     <h3>Hauptmerkmale</h3>
                     <ul class="list-unstyled">
-                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Hochwertige Materialien</li>
-                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Langlebige Konstruktion</li>
-                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Benutzerfreundliches Design</li>
-                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Energieeffizient</li>
-                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>2 Jahre Garantie</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>LED-Display mit Hintergrundbeleuchtung</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Wecker-Funktion</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Temperaturanzeige</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>12/24 Stunden Format</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Batterie-Backup</li>
                     </ul>
 
                     <h3 class="mt-4">Technische Spezifikationen</h3>
                     <div class="row">
                         <div class="col-md-6">
-                            <p><strong>Kategorie:</strong> Elektronik</p>
-                            <p><strong>Artikelnummer:</strong> 001</p>
-                            <p><strong>Preis:</strong> €10.00</p>
+                            <p><strong>Kategorie:</strong> Technik/Gadgets</p>
+                            <p><strong>Artikelnummer:</strong> 018</p>
+                            <p><strong>Preis:</strong> €24.99</p>
                         </div>
                         <div class="col-md-6">
                             <p><strong>Verfügbarkeit:</strong> Auf Lager</p>
-                            <p><strong>Lieferzeit:</strong> 1-3 Werktage</p>
-                            <p><strong>Lieferumfang:</strong> Produkt, Anleitung, Garantiekarte</p>
+                            <p><strong>Lieferzeit:</strong> 5-12 Werktage</p>
                         </div>
                     </div>
+
+                    <p><strong>Display:</strong> LED mit Hintergrundbeleuchtung</p>
+                    <p><strong>Stromversorgung:</strong> AC Adapter + Batterie-Backup</p>
+                    <p><strong>Temperaturbereich:</strong> -10°C bis +50°C</p>
+                    <p><strong>Abmessungen:</strong> 15 x 8 x 4 cm</p>
+                    <p><strong>Gewicht:</strong> 250g</p>
 
                     <!-- Schnellbestellung (Mobile only) -->
                     <div class="quick-order-card mt-5 d-lg-none">
@@ -131,15 +137,15 @@
                             </div>
                             
                             <div class="price-section">
-                                <div class="current-price">€10.00</div>
-                                <!-- Entfernt: <div class="total-price">Gesamt: <span id="totalPrice">€10.00</span></div> -->
+                                <div class="current-price">€24.99</div>
+                                <!-- Entfernt: <div class="total-price">Gesamt: <span id="totalPrice">€24.99</span></div> -->
                             </div>
                             
                             <div class="action-buttons">
                                 <button class="buy-now-btn wishlist-style-btn" onclick="addToCartWithQuantity(event)">
                                     <i class="bi bi-cart-plus"></i> Jetzt kaufen
                                 </button>
-                                <button class="wishlist-btn wishlist-button" onclick="toggleWishlist(product)" data-product-id="1">
+                                <button class="wishlist-btn wishlist-button" onclick="toggleWishlist(product)" data-product-id="18">
                                     <i class="bi bi-heart"></i> Zur Wunschliste
                                 </button>
                             </div>
@@ -175,15 +181,15 @@
                             </div>
                             
                             <div class="price-section">
-                                <div class="current-price">€10.00</div>
-                                <!-- Entfernt: <div class="total-price">Gesamt: <span id="totalPriceDesktop">€10.00</span></div> -->
+                                <div class="current-price">€24.99</div>
+                                <!-- Entfernt: <div class="total-price">Gesamt: <span id="totalPriceDesktop">€24.99</span></div> -->
                             </div>
                             
                             <div class="action-buttons">
                                 <button class="buy-now-btn wishlist-style-btn" onclick="addToCartWithQuantity(event)">
                                     <i class="bi bi-cart-plus"></i> Jetzt kaufen
                                 </button>
-                                <button class="wishlist-btn wishlist-button" onclick="toggleWishlist(product)" data-product-id="1">
+                                <button class="wishlist-btn wishlist-button" onclick="toggleWishlist(product)" data-product-id="18">
                                     <i class="bi bi-heart"></i> Zur Wunschliste
                                 </button>
                             </div>
@@ -211,13 +217,13 @@
             </div>
             <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3 g-md-4">
                 <div class="col">
-                    <div class="similar-product-card" onclick="window.location.href='produkt-2.html'">
+                    <div class="similar-product-card" onclick="window.location.href='produkt-17.html'">
                         <div class="product-image-wrapper">
-                            <img src="../produkt bilder/ware.png" class="product-image" alt="Elektronik Produkt 2">
+                            <img src="../produkt bilder/ware.png" class="product-image" alt="Anti Lost Finder">
                         </div>
                         <div class="product-info">
-                            <h5 class="product-title">Elektronik Produkt 2</h5>
-                            <div class="price-container"><span class="current-price">€12.00</span></div>
+                            <h5 class="product-title">Anti Lost Finder</h5>
+                            <div class="price-container"><span class="current-price">€14.99</span></div>
                             <div class="view-product-btn">
                                 <span>Jetzt ansehen</span>
                                 <i class="bi bi-arrow-right"></i>
@@ -226,13 +232,13 @@
                     </div>
                 </div>
                 <div class="col">
-                    <div class="similar-product-card" onclick="window.location.href='produkt-3.html'">
+                    <div class="similar-product-card" onclick="window.location.href='produkt-19.html'">
                         <div class="product-image-wrapper">
-                            <img src="../produkt bilder/ware.png" class="product-image" alt="Elektronik Produkt 3">
+                            <img src="../produkt bilder/ware.png" class="product-image" alt="Distanzmessgerät">
                         </div>
                         <div class="product-info">
-                            <h5 class="product-title">Elektronik Produkt 3</h5>
-                            <div class="price-container"><span class="current-price">€14.00</span></div>
+                            <h5 class="product-title">Distanzmessgerät</h5>
+                            <div class="price-container"><span class="current-price">€39.99</span></div>
                             <div class="view-product-btn">
                                 <span>Jetzt ansehen</span>
                                 <i class="bi bi-arrow-right"></i>
@@ -241,13 +247,13 @@
                     </div>
                 </div>
                 <div class="col">
-                    <div class="similar-product-card" onclick="window.location.href='produkt-4.html'">
+                    <div class="similar-product-card" onclick="window.location.href='produkt-20.html'">
                         <div class="product-image-wrapper">
-                            <img src="../produkt bilder/ware.png" class="product-image" alt="Beleuchtung Produkt 1">
+                            <img src="../produkt bilder/ware.png" class="product-image" alt="Smart Rollos">
                         </div>
                         <div class="product-info">
-                            <h5 class="product-title">Beleuchtung Produkt 1</h5>
-                            <div class="price-container"><span class="current-price">€20.00</span></div>
+                            <h5 class="product-title">Smart Rollos</h5>
+                            <div class="price-container"><span class="current-price">€89.99</span></div>
                             <div class="view-product-btn">
                                 <span>Jetzt ansehen</span>
                                 <i class="bi bi-arrow-right"></i>
@@ -285,11 +291,11 @@
     <script>
   // Produktdaten für diese Seite
   const product = {
-    id: 1,
-    name: "Elektronik Produkt 1",
-    price: 10.00,
+    id: 18,
+    name: "Home Electronic Clock",
+    price: 24.99,
     image: "produkt bilder/ware.png",
-    description: "Innovative Technologie für Ihren Alltag. Dieses hochwertige Produkt bietet die perfekte Balance zwischen Funktionalität und Design."
+    description: "Moderne elektronische Uhr für Ihr Zuhause. Stilvolles Design mit digitaler Anzeige und vielen praktischen Funktionen."
   };
 
   // Bundles dynamisch laden

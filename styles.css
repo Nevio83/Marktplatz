@@ -984,7 +984,7 @@ body {
   font-size: 14px;
 }
 
-.form-select option[value="Elektronik"]::before {
+.form-select option[value="Technik/Gadgets"]::before {
   background: linear-gradient(135deg, #4facfe, #00f2fe);
   content: '⚡';
   display: flex;
@@ -1178,7 +1178,7 @@ body {
   background: linear-gradient(135deg, #667eea, #764ba2);
 }
 
-.custom-option[data-value="Elektronik"] .category-icon {
+.custom-option[data-value="Technik/Gadgets"] .category-icon {
   background: linear-gradient(135deg, #4facfe, #00f2fe);
 }
 

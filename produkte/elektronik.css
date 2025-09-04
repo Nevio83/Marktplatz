@@ -319,7 +319,7 @@
   box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4);
 }
 
-/* Schnellbestellung Styles - Elektronik (Layout wie Mode, aber Blau/Lila Farben) */
+/* Schnellbestellung Styles - Technik/Gadgets (Layout wie Mode, aber Blau/Lila Farben) */
 .quick-order-card {
   background: #fff;
   border-radius: 16px;
@@ -1409,7 +1409,7 @@
   transform: translateX(6px);
 }
 
-/* Preis-Anzeige - Elektronik (Blau/Violett) */
+/* Preis-Anzeige - Technik/Gadgets (Blau/Violett) */
 .current-price {
   font-size: 1.5rem;
   font-weight: 800;
@@ -1694,7 +1694,7 @@
   }
 }
 
-/* Kategorie-spezifische Button-Farben für Elektronik */
+/* Kategorie-spezifische Button-Farben für Technik/Gadgets */
 .product-card .btn.add-to-cart {
   background: linear-gradient(135deg, #764ba2, #667eea) !important;
   border: none !important;
@@ -1713,7 +1713,7 @@
   box-shadow: 0 4px 15px rgba(118, 75, 162, 0.2);
 }
 
-/* Warenkorb-Button Farbe für Elektronik */
+/* Warenkorb-Button Farbe für Technik/Gadgets */
 #cartButton {
   background: linear-gradient(135deg, #764ba2, #667eea) !important;
 }
@@ -1722,7 +1722,7 @@
   background: linear-gradient(135deg, #667eea, #764ba2) !important;
 }
 
-/* Preis-Farbe für Elektronik */
+/* Preis-Farbe für Technik/Gadgets */
 .product-card .h4 {
   color: #764ba2 !important;
 }

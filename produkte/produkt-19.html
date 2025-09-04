@@ -3,10 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Elektronik Produkt 2 - Marktplatz</title>
+    <title>Elektronisches Distanzmessgerät - Marktplatz</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="elektronik.css" rel="stylesheet">
+    <style>
+        .success-animation {
+            animation: success-animation 0.8s ease-in-out;
+        }
+        .cart-icon-pulse {
+            animation: cart-icon-pulse 0.5s ease-in-out;
+        }
+        .cart-rainbow-bounce {
+            animation: cart-rainbow-bounce 0.8s ease-in-out;
+        }
+        .heart-pulse {
+            animation: heart-pulse 0.5s ease-in-out;
+        }
+        @keyframes success-animation {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        @keyframes cart-icon-pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        @keyframes cart-rainbow-bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        @keyframes heart-pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+    </style>
 </head>
 <body>
     <!-- Navigation -->
@@ -31,13 +64,13 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-6">
-                    <h1 class="display-4 fw-bold mb-3">Elektronik Produkt 2</h1>
-                    <p class="lead mb-4">Beschreibungstext für Produkt 2</p>
+                    <h1 class="display-4 fw-bold mb-3">Elektronisches Distanzmessgerät</h1>
+                    <p class="lead mb-4">Präzises digitales Distanzmessgerät für professionelle und private Anwendungen. Einfache Bedienung mit hoher Messgenauigkeit.</p>
                     <div class="d-flex align-items-center gap-3 mb-4">
-                        <span class="price-tag">€12.00</span>
+                        <span class="price-tag">€39.99</span>
+                        <span class="text-muted text-decoration-line-through">€54.99</span>
                         <span class="badge bg-success">Kostenloser Versand in Europa</span>
                     </div>
-                    <!-- Updated hero buttons to match product-1 with proper classes and onclick handlers -->
                     <button class="btn btn-light btn-lg me-3 add-to-cart" id="cartBtn" onclick="addToCartAndRedirect()">
                         <i class="bi bi-cart-plus"></i> In den Warenkorb
                     </button>
@@ -46,7 +79,7 @@
                     </button>
                 </div>
                 <div class="col-lg-6 text-center">
-                    <img src="../produkt bilder/ware.png" alt="Elektronik Produkt 2" class="img-fluid product-image" style="max-height: 400px;">
+                    <img src="../produkt bilder/ware.png" alt="Elektronisches Distanzmessgerät" class="img-fluid product-image" style="max-height: 400px;">
                 </div>
             </div>
         </div>
@@ -58,26 +91,36 @@
             <div class="row">
                 <div class="col-lg-8">
                     <h2 class="mb-4">Produktbeschreibung</h2>
-                    <p class="lead mb-4">Innovative Technologie für Ihren Alltag. Dieses hochwertige Produkt bietet die perfekte Balance zwischen Funktionalität und Design.</p>
+                    <p class="lead mb-4">Präzises digitales Distanzmessgerät für professionelle und private Anwendungen. Einfache Bedienung mit hoher Messgenauigkeit.</p>
                     
                     <h3>Hauptmerkmale</h3>
                     <ul class="list-unstyled">
-                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Hochwertige Materialien</li><li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Langlebige Konstruktion</li><li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Benutzerfreundliches Design</li><li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Energieeffizient</li><li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>2 Jahre Garantie</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Laser-Distanzmessung bis 40m</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Genauigkeit ±2mm</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>LCD-Display mit Hintergrundbeleuchtung</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Mehrere Messmodi</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Kompaktes Design</li>
                     </ul>
 
                     <h3 class="mt-4">Technische Spezifikationen</h3>
                     <div class="row">
                         <div class="col-md-6">
-                            <p><strong>Kategorie:</strong> Elektronik</p>
-                            <p><strong>Artikelnummer:</strong> 002</p>
-                            <p><strong>Preis:</strong> €12.00</p>
+                            <p><strong>Kategorie:</strong> Technik/Gadgets</p>
+                            <p><strong>Artikelnummer:</strong> 019</p>
+                            <p><strong>Preis:</strong> €39.99</p>
                         </div>
                         <div class="col-md-6">
                             <p><strong>Verfügbarkeit:</strong> Auf Lager</p>
-                            <p><strong>Lieferzeit:</strong> 1-3 Werktage</p>
-                            <p><strong>Lieferumfang:</strong> Produkt, Anleitung, Garantiekarte</p>
+                            <p><strong>Lieferzeit:</strong> 7-14 Werktage</p>
                         </div>
                     </div>
+
+                    <p><strong>Messbereich:</strong> 0.05 - 40m</p>
+                    <p><strong>Genauigkeit:</strong> ±2mm</p>
+                    <p><strong>Laser-Klasse:</strong> II (sicher für die Augen)</p>
+                    <p><strong>Batterielaufzeit:</strong> Bis zu 5000 Messungen</p>
+                    <p><strong>Abmessungen:</strong> 11 x 4.5 x 2.4 cm</p>
+                    <p><strong>Gewicht:</strong> 100g</p>
 
                     <!-- Schnellbestellung (Mobile only) -->
                     <div class="quick-order-card mt-5 d-lg-none">
@@ -88,7 +131,6 @@
                             <div class="quantity-section">
                                 <label class="quantity-label">Menge:</label>
                                 <div class="quantity-input-group">
-                                    <!-- Updated quantity buttons to match product-1 with event parameter -->
                                     <button class="quantity-btn" onclick="decreaseQuantity(event)">-</button>
                                     <input type="number" class="quantity-input" id="quantity" value="1" min="1" max="10">
                                     <button class="quantity-btn" onclick="increaseQuantity(event)">+</button>
@@ -96,16 +138,15 @@
                             </div>
                             
                             <div class="price-section">
-                                <div class="current-price">€12.00</div>
-                                <!-- Removed total price display to match product-1 -->
+                                <div class="current-price">€39.99</div>
+                                <!-- Entfernt: <div class="total-price">Gesamt: <span id="totalPrice">€39.99</span></div> -->
                             </div>
                             
                             <div class="action-buttons">
-                                <!-- Updated buttons to match product-1 with wishlist-style-btn class and proper onclick -->
                                 <button class="buy-now-btn wishlist-style-btn" onclick="addToCartWithQuantity(event)">
                                     <i class="bi bi-cart-plus"></i> Jetzt kaufen
                                 </button>
-                                <button class="wishlist-btn wishlist-button" onclick="toggleWishlist(product)" data-product-id="2">
+                                <button class="wishlist-btn wishlist-button" onclick="toggleWishlist(product)" data-product-id="19">
                                     <i class="bi bi-heart"></i> Zur Wunschliste
                                 </button>
                             </div>
@@ -134,7 +175,6 @@
                             <div class="quantity-section">
                                 <label class="quantity-label">Menge:</label>
                                 <div class="quantity-input-group">
-                                    <!-- Updated quantity buttons to match product-1 with event parameter -->
                                     <button class="quantity-btn" onclick="decreaseQuantity(event)">-</button>
                                     <input type="number" class="quantity-input" id="quantity-desktop" value="1" min="1" max="10">
                                     <button class="quantity-btn" onclick="increaseQuantity(event)">+</button>
@@ -142,16 +182,15 @@
                             </div>
                             
                             <div class="price-section">
-                                <div class="current-price">€12.00</div>
-                                <!-- Removed total price display to match product-1 -->
+                                <div class="current-price">€39.99</div>
+                                <!-- Entfernt: <div class="total-price">Gesamt: <span id="totalPriceDesktop">€39.99</span></div> -->
                             </div>
                             
                             <div class="action-buttons">
-                                <!-- Updated buttons to match product-1 with wishlist-style-btn class and proper onclick -->
                                 <button class="buy-now-btn wishlist-style-btn" onclick="addToCartWithQuantity(event)">
                                     <i class="bi bi-cart-plus"></i> Jetzt kaufen
                                 </button>
-                                <button class="wishlist-btn wishlist-button" onclick="toggleWishlist(product)" data-product-id="2">
+                                <button class="wishlist-btn wishlist-button" onclick="toggleWishlist(product)" data-product-id="19">
                                     <i class="bi bi-heart"></i> Zur Wunschliste
                                 </button>
                             </div>
@@ -171,23 +210,21 @@
     </section>
 
     <!-- Ähnliche Produkte -->
-    
-        <!-- Ähnliche Produkte -->
-        <section class="py-5 similar-products-section">
-            <div class="container">
-                <div class="section-header text-center mb-5">
-                    <h2 class="section-title">Ähnliche Produkte</h2>
-                    <p class="section-subtitle">Entdecken Sie weitere Produkte, die Ihnen gefallen könnten</p>
-                </div>
-                <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3 g-md-4">
+    <section class="py-5 similar-products-section">
+        <div class="container">
+            <div class="section-header text-center mb-5">
+                <h2 class="section-title">Ähnliche Produkte</h2>
+                <p class="section-subtitle">Entdecken Sie weitere Produkte, die Ihnen gefallen könnten</p>
+            </div>
+            <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3 g-md-4">
                 <div class="col">
-                    <div class="similar-product-card" onclick="window.location.href='produkt-1.html'">
+                    <div class="similar-product-card" onclick="window.location.href='produkt-17.html'">
                         <div class="product-image-wrapper">
-                            <img src="../produkt bilder/ware.png" class="product-image" alt="Elektronik Produkt 1">
+                            <img src="../produkt bilder/ware.png" class="product-image" alt="Anti Lost Finder">
                         </div>
                         <div class="product-info">
-                            <h5 class="product-title">Elektronik Produkt 1</h5>
-                            <div class="price-container"><span class="current-price">€10.00</span></div>
+                            <h5 class="product-title">Anti Lost Finder</h5>
+                            <div class="price-container"><span class="current-price">€14.99</span></div>
                             <div class="view-product-btn">
                                 <span>Jetzt ansehen</span>
                                 <i class="bi bi-arrow-right"></i>
@@ -196,13 +233,13 @@
                     </div>
                 </div>
                 <div class="col">
-                    <div class="similar-product-card" onclick="window.location.href='produkt-3.html'">
+                    <div class="similar-product-card" onclick="window.location.href='produkt-18.html'">
                         <div class="product-image-wrapper">
-                            <img src="../produkt bilder/ware.png" class="product-image" alt="Elektronik Produkt 3">
+                            <img src="../produkt bilder/ware.png" class="product-image" alt="Home Electronic Clock">
                         </div>
                         <div class="product-info">
-                            <h5 class="product-title">Elektronik Produkt 3</h5>
-                            <div class="price-container"><span class="current-price">€14.00</span></div>
+                            <h5 class="product-title">Home Electronic Clock</h5>
+                            <div class="price-container"><span class="current-price">€24.99</span></div>
                             <div class="view-product-btn">
                                 <span>Jetzt ansehen</span>
                                 <i class="bi bi-arrow-right"></i>
@@ -211,38 +248,23 @@
                     </div>
                 </div>
                 <div class="col">
-                    <div class="similar-product-card" onclick="window.location.href='produkt-4.html'">
+                    <div class="similar-product-card" onclick="window.location.href='produkt-20.html'">
                         <div class="product-image-wrapper">
-                            <img src="../produkt bilder/ware.png" class="product-image" alt="Beleuchtung Produkt 1">
+                            <img src="../produkt bilder/ware.png" class="product-image" alt="Smart Rollos">
                         </div>
                         <div class="product-info">
-                            <h5 class="product-title">Beleuchtung Produkt 1</h5>
-                            <div class="price-container"><span class="current-price">€20.00</span></div>
+                            <h5 class="product-title">Smart Rollos</h5>
+                            <div class="price-container"><span class="current-price">€89.99</span></div>
                             <div class="view-product-btn">
                                 <span>Jetzt ansehen</span>
                                 <i class="bi bi-arrow-right"></i>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col">
-                    <div class="similar-product-card" onclick="window.location.href='produkt-5.html'">
-                        <div class="product-image-wrapper">
-                            <img src="../produkt bilder/ware.png" class="product-image" alt="Beleuchtung Produkt 2">
-                        </div>
-                        <div class="product-info">
-                            <h5 class="product-title">Beleuchtung Produkt 2</h5>
-                            <div class="price-container"><span class="current-price">€22.00</span></div>
-                            <div class="view-product-btn">
-                                <span>Jetzt ansehen</span>
-                                <i class="bi bi-arrow-right"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
     <!-- Footer -->
     <footer class="bg-dark text-white py-4">
@@ -255,11 +277,11 @@
     <script>
   // Produktdaten für diese Seite
   const product = {
-    id: 2,
-    name: "Elektronik Produkt 2",
-    price: 12.00,
+    id: 19,
+    name: "Elektronisches Distanzmessgerät",
+    price: 39.99,
     image: "produkt bilder/ware.png",
-    description: "Innovative Technologie für Ihren Alltag. Dieses hochwertige Produkt bietet die perfekte Balance zwischen Funktionalität und Design."
+    description: "Präzises digitales Distanzmessgerät für professionelle und private Anwendungen. Einfache Bedienung mit hoher Messgenauigkeit."
   };
 
   // Bundles dynamisch laden
@@ -304,7 +326,6 @@
               </div>
             </div>
           `).join('')}
-          <!-- Updated bundle button to match product-1 with wishlist-style-btn class and onclick handler -->
           <button type="submit" class="btn bundle-add-btn wishlist-style-btn" onclick="addBundleAndRedirect(event)">In den Warenkorb</button>
         </form>
       </div>
@@ -508,72 +529,70 @@
     }
   }
 
+  // Animation functions for product page
   function triggerCartButtonAnimation() {
     const cartButton = document.getElementById('cartBtn');
     if (cartButton) {
-      // Use wishlist-style animation for main cart button
-      cartButton.classList.add('success-animation');
-      setTimeout(() => {
-        cartButton.classList.remove('success-animation');
-      }, 800);
-      
-      // Add cart icon pulse animation (red effect)
-      const cartIcon = cartButton.querySelector('i');
-      if (cartIcon) {
-        cartIcon.classList.add('cart-icon-pulse');
+        cartButton.classList.add('add-to-cart', 'success-animation');
         setTimeout(() => {
-          cartIcon.classList.remove('cart-icon-pulse');
-        }, 500);
-      }
+            cartButton.classList.remove('success-animation');
+        }, 800);
+        
+        // Add cart icon pulse animation (red effect)
+        const cartIcon = cartButton.querySelector('i');
+        if (cartIcon) {
+            cartIcon.classList.add('cart-icon-pulse');
+            setTimeout(() => {
+                cartIcon.classList.remove('cart-icon-pulse');
+            }, 500);
+        }
     }
   }
 
-  // New animation function for quick order buttons (wishlist-style)
   function triggerQuickOrderAnimation() {
     const quickOrderButtons = document.querySelectorAll('.wishlist-style-btn');
     quickOrderButtons.forEach(button => {
-      button.classList.add('success-animation');
-      setTimeout(() => {
-        button.classList.remove('success-animation');
-      }, 800);
-      
-      // Add cart icon pulse animation to button icon (red effect)
-      const buttonIcon = button.querySelector('i');
-      if (buttonIcon) {
-        buttonIcon.classList.add('cart-icon-pulse');
+        button.classList.add('add-to-cart', 'success-animation');
         setTimeout(() => {
-          buttonIcon.classList.remove('cart-icon-pulse');
-        }, 500);
-      }
+            button.classList.remove('success-animation');
+        }, 800);
+        
+        // Add cart icon pulse animation to button icon (red effect)
+        const buttonIcon = button.querySelector('i');
+        if (buttonIcon) {
+            buttonIcon.classList.add('cart-icon-pulse');
+            setTimeout(() => {
+                buttonIcon.classList.remove('cart-icon-pulse');
+            }, 500);
+        }
     });
   }
 
   function triggerNavCartAnimation() {
     const navCartButton = document.querySelector('.cart-nav-link');
     if (navCartButton) {
-      navCartButton.classList.add('cart-rainbow-bounce');
-      setTimeout(() => {
-        navCartButton.classList.remove('cart-rainbow-bounce');
-      }, 800);
+        navCartButton.classList.add('cart-rainbow-bounce');
+        setTimeout(() => {
+            navCartButton.classList.remove('cart-rainbow-bounce');
+        }, 800);
     }
   }
 
-  // Animation function for bundle button (wishlist-style)
   function triggerBundleButtonAnimation(button) {
     if (button) {
-      button.classList.add('success-animation');
-      setTimeout(() => {
-        button.classList.remove('success-animation');
-      }, 800);
-      
-      // Add cart icon pulse animation to bundle button icon (red effect)
-      const buttonIcon = button.querySelector('i');
-      if (buttonIcon) {
-        buttonIcon.classList.add('cart-icon-pulse');
+        button.classList.add('add-to-cart', 'success-animation');
         setTimeout(() => {
-          buttonIcon.classList.remove('cart-icon-pulse');
-        }, 500);
-      }
+            button.classList.remove('success-animation');
+        }, 800);
+        
+        // Add cart icon pulse animation to bundle button icon (red effect)
+        const buttonIcon = button.querySelector('i');
+        if (buttonIcon) {
+            buttonIcon.classList.add('cart-icon-pulse');
+            setTimeout(() => {
+                buttonIcon.classList.remove('cart-icon-pulse');
+            }, 500);
+        }
     }
   }
 
