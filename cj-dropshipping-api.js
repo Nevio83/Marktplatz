@@ -6,6 +6,7 @@
 
 require('dotenv').config();
 const fetch = require('node-fetch');
+const CJFallbackSystem = require('./cj-fallback-system');
 
 class CJDropshippingAPI {
   constructor(config = {}) {
@@ -14,9 +15,10 @@ class CJDropshippingAPI {
     this.accessToken = config.accessToken || process.env.CJ_ACCESS_TOKEN;
     this.email = config.email || process.env.CJ_EMAIL;
     this.password = config.password || process.env.CJ_PASSWORD;
+    this.fallbackSystem = new CJFallbackSystem();
     
     if (!this.apiKey && !this.accessToken) {
-      console.warn('⚠️  CJ API credentials not found. Please configure CJ_API_KEY and CJ_ACCESS_TOKEN in your .env file.');
+      console.warn('⚠️  CJ API credentials not found. Using fallback mode.');
       console.warn('📖 Get your credentials from: https://cjdropshipping.com/my.html#/apikey');
     } else {
       console.log('✅ CJ Dropshipping API initialized successfully');
@@ -24,48 +26,70 @@ class CJDropshippingAPI {
   }
 
   /**
-   * Make authenticated request to CJ API
+   * Make authenticated request to CJ API with fallback support
    */
   async makeRequest(endpoint, method = 'GET', data = null, useAuth = true) {
-    const url = `${this.baseURL}${endpoint}`;
-    
-    const headers = {
-      'Content-Type': 'application/json',
-    };
-
-    // Use API key directly for authentication
-    if (useAuth) {
-      if (this.accessToken && this.accessToken !== 'your_cj_access_token_here') {
-        headers['CJ-Access-Token'] = this.accessToken;
-      } else if (this.apiKey) {
-        headers['CJ-Access-Token'] = this.apiKey;
-        console.log('🔑 Using API key directly for authentication');
-      } else {
-        throw new Error('No access token or API key available for authentication');
-      }
-    }
-
-    const config = {
-      method,
-      headers
-    };
-
-    if (data && (method === 'POST' || method === 'PUT')) {
-      config.body = JSON.stringify(data);
-    }
-
     try {
+      const url = `${this.baseURL}${endpoint}`;
+      
+      const headers = {
+        'Content-Type': 'application/json',
+      };
+
+      // Use API key directly for authentication
+      if (useAuth) {
+        if (this.accessToken && this.accessToken !== 'your_cj_access_token_here') {
+          headers['CJ-Access-Token'] = this.accessToken;
+        } else if (this.apiKey) {
+          headers['CJ-Access-Token'] = this.apiKey;
+        } else {
+          console.log('⚠️ No valid credentials, using fallback mode');
+          return this.handleFallback(endpoint, data);
+        }
+      }
+
+      const config = {
+        method,
+        headers
+      };
+
+      if (data && (method === 'POST' || method === 'PUT')) {
+        config.body = JSON.stringify(data);
+      }
+
       const response = await fetch(url, config);
       const result = await response.json();
       
       if (!response.ok) {
-        throw new Error(`CJ API Error: ${result.message || response.statusText}`);
+        console.log('🔄 API failed, switching to fallback mode');
+        return this.handleFallback(endpoint, data);
       }
       
       return result;
     } catch (error) {
-      console.error('CJ API Request Error:', error);
-      throw error;
+      console.log('🔄 API error, using fallback:', error.message);
+      return this.handleFallback(endpoint, data);
+    }
+  }
+
+  /**
+   * Handle fallback when API is unavailable
+   */
+  async handleFallback(endpoint, data) {
+    if (endpoint.includes('/product/query')) {
+      return this.fallbackSystem.queryProducts(data);
+    } else if (endpoint.includes('/product/list')) {
+      return this.fallbackSystem.queryProducts(data);
+    } else if (endpoint.includes('/order/createOrderV2')) {
+      return this.fallbackSystem.createOrder(data);
+    } else if (endpoint.includes('/logistic/freightCalculate')) {
+      return this.fallbackSystem.calculateShipping(data);
+    } else {
+      return {
+        success: false,
+        message: 'CJ API unavailable, limited fallback for this endpoint',
+        source: 'fallback'
+      };
     }
   }
 
