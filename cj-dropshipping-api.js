@@ -26,20 +26,23 @@ class CJDropshippingAPI {
   /**
    * Make authenticated request to CJ API
    */
-  async makeRequest(endpoint, method = 'GET', data = null) {
+  async makeRequest(endpoint, method = 'GET', data = null, useAuth = true) {
     const url = `${this.baseURL}${endpoint}`;
+    
     const headers = {
       'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'User-Agent': 'CJ-API-Client/1.0'
     };
 
-    // Add authentication headers based on available credentials
-    if (this.accessToken) {
-      headers['CJ-Access-Token'] = this.accessToken;
-    }
-    if (this.apiKey) {
-      headers['Authorization'] = `Bearer ${this.apiKey}`;
+    // Use API key directly for authentication
+    if (useAuth) {
+      if (this.accessToken && this.accessToken !== 'your_cj_access_token_here') {
+        headers['CJ-Access-Token'] = this.accessToken;
+      } else if (this.apiKey) {
+        headers['CJ-Access-Token'] = this.apiKey;
+        console.log('🔑 Using API key directly for authentication');
+      } else {
+        throw new Error('No access token or API key available for authentication');
+      }
     }
 
     const config = {
@@ -74,24 +77,49 @@ class CJDropshippingAPI {
    * Get Access Token
    */
   async getAccessToken() {
-    return this.makeRequest('/authentication/getAccessToken', 'POST', {
-      email: process.env.CJ_EMAIL,
-      password: process.env.CJ_PASSWORD
-    });
+    const url = `${this.baseURL}/api2.0/v1/authentication/getAccessToken`;
+    
+    const headers = {
+      'Content-Type': 'application/json'
+      // No authentication headers for token request
+    };
+
+    const config = {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({
+        email: this.email,
+        password: this.password
+      })
+    };
+
+    try {
+      const response = await fetch(url, config);
+      const result = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(`CJ API Error: ${result.message || response.statusText}`);
+      }
+      
+      return result;
+    } catch (error) {
+      console.error('CJ API Request Error:', error);
+      throw error;
+    }
   }
 
   /**
    * Refresh Access Token
    */
   async refreshAccessToken() {
-    return this.makeRequest('/authentication/refreshAccessToken', 'POST');
+    return this.makeRequest('/api2.0/v1/authentication/refreshAccessToken', 'POST');
   }
 
   /**
    * Logout
    */
   async logout() {
-    return this.makeRequest('/authentication/logout', 'POST');
+    return this.makeRequest('/api2.0/v1/authentication/logout', 'POST');
   }
 
   // ==========================================
@@ -103,56 +131,56 @@ class CJDropshippingAPI {
    */
   async getProductList(params = {}) {
     const queryString = new URLSearchParams(params).toString();
-    return this.makeRequest(`/product/list${queryString ? '?' + queryString : ''}`);
+    return this.makeRequest(`/api2.0/v1/product/list${queryString ? '?' + queryString : ''}`);
   }
 
   /**
    * Query Products
    */
   async queryProducts(params = {}) {
-    return this.makeRequest('/product/query', 'POST', params);
+    return this.makeRequest('/api2.0/v1/product/query', 'POST', params);
   }
 
   /**
    * Get Product Category
    */
   async getProductCategory() {
-    return this.makeRequest('/product/getCategory');
+    return this.makeRequest('/api2.0/v1/product/getCategory');
   }
 
   /**
    * Get Product Comments
    */
   async getProductComments(productId) {
-    return this.makeRequest(`/product/productComments?productId=${productId}`);
+    return this.makeRequest(`/api2.0/v1/product/productComments?productId=${productId}`);
   }
 
   /**
    * Add Product Comments
    */
   async addProductComments(data) {
-    return this.makeRequest('/product/comments', 'POST', data);
+    return this.makeRequest('/api2.0/v1/product/comments', 'POST', data);
   }
 
   /**
    * Query Product by VID (Variant ID)
    */
   async queryProductByVid(vid) {
-    return this.makeRequest(`/product/variant/queryByVid?vid=${vid}`);
+    return this.makeRequest(`/api2.0/v1/product/variant/queryByVid?vid=${vid}`);
   }
 
   /**
    * Query Product Variant
    */
   async queryProductVariant(productId) {
-    return this.makeRequest(`/product/variant/query?productId=${productId}`);
+    return this.makeRequest(`/api2.0/v1/product/variant/query?productId=${productId}`);
   }
 
   /**
    * Get Product Stock by VID
    */
   async getProductStockByVid(vid) {
-    return this.makeRequest(`/product/stock/queryByVid?vid=${vid}`);
+    return this.makeRequest(`/api2.0/v1/product/stock/queryByVid?vid=${vid}`);
   }
 
   // ==========================================
@@ -163,14 +191,14 @@ class CJDropshippingAPI {
    * Query Product Sourcing
    */
   async queryProductSourcing(params = {}) {
-    return this.makeRequest('/product/sourcing/query', 'POST', params);
+    return this.makeRequest('/api2.0/v1/product/sourcing/query', 'POST', params);
   }
 
   /**
    * Create Product Sourcing
    */
   async createProductSourcing(data) {
-    return this.makeRequest('/product/sourcing/create', 'POST', data);
+    return this.makeRequest('/api2.0/v1/product/sourcing/create', 'POST', data);
   }
 
   // ==========================================
@@ -182,35 +210,35 @@ class CJDropshippingAPI {
    */
   async getShoppingOrderList(params = {}) {
     const queryString = new URLSearchParams(params).toString();
-    return this.makeRequest(`/shopping/order/list${queryString ? '?' + queryString : ''}`);
+    return this.makeRequest(`/api2.0/v1/shopping/order/list${queryString ? '?' + queryString : ''}`);
   }
 
   /**
    * Create Order V2
    */
   async createOrderV2(orderData) {
-    return this.makeRequest('/shopping/order/createOrderV2', 'POST', orderData);
+    return this.makeRequest('/api2.0/v1/shopping/order/createOrderV2', 'POST', orderData);
   }
 
   /**
    * Confirm Order
    */
   async confirmOrder(orderId) {
-    return this.makeRequest('/shopping/order/confirmOrder', 'POST', { orderId });
+    return this.makeRequest('/api2.0/v1/shopping/order/confirmOrder', 'POST', { orderId });
   }
 
   /**
    * Delete Order
    */
   async deleteOrder(orderId) {
-    return this.makeRequest('/shopping/order/deleteOrder', 'POST', { orderId });
+    return this.makeRequest('/api2.0/v1/shopping/order/deleteOrder', 'POST', { orderId });
   }
 
   /**
    * Get Order Detail
    */
   async getOrderDetail(orderId) {
-    return this.makeRequest(`/shopping/order/getOrderDetail?orderId=${orderId}`);
+    return this.makeRequest(`/api2.0/v1/shopping/order/getOrderDetail?orderId=${orderId}`);
   }
 
   // ==========================================
@@ -221,14 +249,14 @@ class CJDropshippingAPI {
    * Pay Balance
    */
   async payBalance(data) {
-    return this.makeRequest('/shopping/pay/payBalance', 'POST', data);
+    return this.makeRequest('/api2.0/v1/shopping/pay/payBalance', 'POST', data);
   }
 
   /**
    * Get Balance
    */
   async getBalance() {
-    return this.makeRequest('/shopping/pay/getBalance');
+    return this.makeRequest('/api2.0/v1/shopping/pay/getBalance');
   }
 
   // ==========================================
@@ -239,28 +267,28 @@ class CJDropshippingAPI {
    * Get Track Info
    */
   async getTrackInfo(trackingNumber) {
-    return this.makeRequest(`/logistic/getTrackInfo?trackingNumber=${trackingNumber}`);
+    return this.makeRequest(`/api2.0/v1/logistic/getTrackInfo?trackingNumber=${trackingNumber}`);
   }
 
   /**
    * Track Info
    */
   async trackInfo(trackingNumber) {
-    return this.makeRequest(`/logistic/trackInfo?trackingNumber=${trackingNumber}`);
+    return this.makeRequest(`/api2.0/v1/logistic/trackInfo?trackingNumber=${trackingNumber}`);
   }
 
   /**
    * Freight Calculate
    */
   async freightCalculate(data) {
-    return this.makeRequest('/logistic/freightCalculate', 'POST', data);
+    return this.makeRequest('/api2.0/v1/logistic/freightCalculate', 'POST', data);
   }
 
   /**
    * Freight Calculate Tip
    */
   async freightCalculateTip(data) {
-    return this.makeRequest('/logistic/freightCalculateTip', 'POST', data);
+    return this.makeRequest('/api2.0/v1/logistic/freightCalculateTip', 'POST', data);
   }
 
   // ==========================================
@@ -272,35 +300,35 @@ class CJDropshippingAPI {
    */
   async getDisputeList(params = {}) {
     const queryString = new URLSearchParams(params).toString();
-    return this.makeRequest(`/disputes/getDisputeList${queryString ? '?' + queryString : ''}`);
+    return this.makeRequest(`/api2.0/v1/disputes/getDisputeList${queryString ? '?' + queryString : ''}`);
   }
 
   /**
    * Create Dispute
    */
   async createDispute(data) {
-    return this.makeRequest('/disputes/create', 'POST', data);
+    return this.makeRequest('/api2.0/v1/disputes/create', 'POST', data);
   }
 
   /**
    * Cancel Dispute
    */
   async cancelDispute(disputeId) {
-    return this.makeRequest('/disputes/cancel', 'POST', { disputeId });
+    return this.makeRequest('/api2.0/v1/disputes/cancel', 'POST', { disputeId });
   }
 
   /**
    * Dispute Products
    */
   async disputeProducts(params = {}) {
-    return this.makeRequest('/disputes/disputeProducts', 'POST', params);
+    return this.makeRequest('/api2.0/v1/disputes/disputeProducts', 'POST', params);
   }
 
   /**
    * Dispute Confirm Info
    */
   async disputeConfirmInfo(disputeId) {
-    return this.makeRequest(`/disputes/disputeConfirmInfo?disputeId=${disputeId}`);
+    return this.makeRequest(`/api2.0/v1/disputes/disputeConfirmInfo?disputeId=${disputeId}`);
   }
 
   // ==========================================
@@ -311,7 +339,7 @@ class CJDropshippingAPI {
    * Get Settings
    */
   async getSettings() {
-    return this.makeRequest('/setting/get');
+    return this.makeRequest('/api2.0/v1/setting/get');
   }
 
 
