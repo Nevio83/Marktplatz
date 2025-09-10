@@ -366,7 +366,78 @@ class CJDropshippingAPI {
     return this.makeRequest('/api2.0/v1/setting/get');
   }
 
+  // ==========================================
+  // WAREHOUSE APIs
+  // ==========================================
 
+  /**
+   * Get Warehouse List
+   */
+  async getWarehouseList(params = {}) {
+    const queryString = new URLSearchParams(params).toString();
+    return this.makeRequest(`/api2.0/v1/warehouse/list${queryString ? '?' + queryString : ''}`);
+  }
+
+  /**
+   * Query Warehouse Stock
+   */
+  async queryWarehouseStock(data) {
+    return this.makeRequest('/api2.0/v1/warehouse/stock/query', 'POST', data);
+  }
+
+  /**
+   * Get Stock Alert
+   */
+  async getStockAlert(params = {}) {
+    const queryString = new URLSearchParams(params).toString();
+    return this.makeRequest(`/api2.0/v1/warehouse/stock/alert${queryString ? '?' + queryString : ''}`);
+  }
+
+  // ==========================================
+  // STORE AUTHORIZATION APIs
+  // ==========================================
+
+  /**
+   * Get Store List
+   */
+  async getStoreList(params = {}) {
+    const queryString = new URLSearchParams(params).toString();
+    return this.makeRequest(`/api2.0/v1/store/list${queryString ? '?' + queryString : ''}`);
+  }
+
+  /**
+   * Authorize Store
+   */
+  async authorizeStore(data) {
+    return this.makeRequest('/api2.0/v1/store/authorize', 'POST', data);
+  }
+
+  /**
+   * Get Store Authorization Status
+   */
+  async getStoreAuthStatus(storeId) {
+    return this.makeRequest(`/api2.0/v1/store/authStatus?storeId=${storeId}`);
+  }
+
+  // ==========================================
+  // ANALYTICS APIs
+  // ==========================================
+
+  /**
+   * Get Sales Report
+   */
+  async getSalesReport(params = {}) {
+    const queryString = new URLSearchParams(params).toString();
+    return this.makeRequest(`/api2.0/v1/analytics/sales/report${queryString ? '?' + queryString : ''}`);
+  }
+
+  /**
+   * Get Product Performance
+   */
+  async getProductPerformance(params = {}) {
+    const queryString = new URLSearchParams(params).toString();
+    return this.makeRequest(`/api2.0/v1/analytics/product/performance${queryString ? '?' + queryString : ''}`);
+  }
 
   // ==========================================
   // UTILITY METHODS
@@ -440,7 +511,20 @@ class CJDropshippingAPI {
       settings: [
         'getSettings'
       ],
-
+      warehouse: [
+        'getWarehouseList',
+        'queryWarehouseStock',
+        'getStockAlert'
+      ],
+      storeAuthorization: [
+        'getStoreList',
+        'authorizeStore',
+        'getStoreAuthStatus'
+      ],
+      analytics: [
+        'getSalesReport',
+        'getProductPerformance'
+      ],
       utilities: [
         'testConnection',
         'getAvailableMethods',
