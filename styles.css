@@ -185,6 +185,9 @@ body {
   position: relative;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .product-card:hover {
@@ -254,6 +257,9 @@ body {
 /* Moderne Produktkarten-Inhalte */
 .product-card .card-body {
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 }
 
 .product-card .card-title {
@@ -269,6 +275,7 @@ body {
   font-size: 0.9rem;
   margin-bottom: 16px;
   line-height: 1.5;
+  flex-grow: 1;
 }
 
 .product-card .h4 {
